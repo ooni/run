@@ -1,12 +1,21 @@
+import React from 'react'
+
 import useragent from 'useragent'
+import Nettest from '../components/Nettest'
+import Document from '../components/Document'
+
+import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 
 const handleUniversalLink = (req, res) => {
-  console.log("Universal Link")
+  //const html = renderToString(<Document main={<Nettest />} />)
+  res.send(html)
   handleDefault(req, res)
 }
 
 const handleWindowLocation = (req, res) => {
   console.log("Window location")
+  //const html = renderToString(<Document main={<Nettest withWindowLocation/>} />)
+  res.send(html)
   handleDefault(req, res)
 }
 
@@ -16,11 +25,13 @@ const handleLocationIntent = (req, res) => {
 }
 
 const handleDefault = (req, res) => {
-  res.send("hello\n")
+  const html = renderToString(<Document main={<Nettest withWindowLocation/>} />)
+  res.send(html)
 }
 
 const nettestHandler = (req, res) => {
   let ua = useragent.parse(req.headers['user-agent'])
+
   if (ua.os.family == 'Android') {
     handleLocationIntent(req, res)
   } else if (ua.os.family == 'iOS' && Number(ua.os.major) >= 9) {
