@@ -1,7 +1,6 @@
 {
   "name": "ooni-run",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
   "dependencies": {
     "babel-plugin-styled-components": "^1.1.7",
@@ -10,15 +9,16 @@
     "babel-preset-react": "^6.24.1",
     "babel-register": "^6.26.0",
     "express": "^4.15.4",
-    "palx": "^1.0.2",
+    "next": "^3.2.2",
+    "ooni-components": "^0.1.0-alpha.3",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "rebass": "^1.0.4",
-    "styled-jsx": "^1.0.10",
+    "styled-components": "^2.1.2",
     "useragent": "^2.2.1"
   },
   "scripts": {
-    "dev": "NODE_ENV=development node index.js",
-    "start": "node index.js"
+    "dev": "next",
+    "start": "next start",
+    "build": "next build"
   }
 }

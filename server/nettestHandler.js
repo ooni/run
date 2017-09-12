@@ -6,30 +6,23 @@ import Invalid from '../components/Invalid'
 import Document from '../components/Document'
 import { androidPackage, appStoreLink, playStoreLink } from '../settings'
 
+import { getEncodedQuery } from '../utils/links'
+
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 
-const getEncodedQuery = (req) => {
-  const {tn,ta,mv} = req.query
-  let uri = 'tn='
-  uri += encodeURIComponent(tn)
-  if (ta !== undefined) {
-    uri += '&ta='
-    uri += encodeURIComponent(ta)
-  }
-  uri += '&mv='
-  uri += encodeURIComponent(mv)
-  return uri
-}
+// XXX
+// We should integrate this with piwik:
+// https://piwik.org/blog/2014/06/track-api-calls-node-js-piwik/
 
 const getCustomURI = (req) => {
   let uri = 'ooni://nettest?'
-  uri += getEncodedQuery(req)
+  uri += getEncodedQuery(req.query)
   return uri
 }
 
 const getIntentURI = (req) => {
   let uri = 'intent://nettest?'
-  uri += getEncodedQuery(req)
+  uri += getEncodedQuery(req.query)
   uri += '#Intent;'
   uri += 'package='
   uri += androidPackage
