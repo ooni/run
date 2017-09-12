@@ -7,7 +7,7 @@ const path = require('path')
 const nettestHandler = require('./server/nettestHandler')
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'production'
-process.env.PORT = parseInt(process.env.PORT) || 3200
+process.env.PORT = parseInt(process.env.PORT) || 3000
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({ dev })

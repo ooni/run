@@ -17,8 +17,8 @@
     "useragent": "^2.2.1"
   },
   "scripts": {
-    "dev": "next",
-    "start": "next start",
+    "dev": "node index.js",
+    "start": "NODE_ENV=production node index.js",
     "build": "next build"
   }
 }
