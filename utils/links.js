@@ -1,5 +1,7 @@
 export const baseURL = 'https://run.ooni.io'
 
+export const minimumVersion = '1.2.0'
+
 export const getEncodedQuery = ({tn, ta, mv}) => {
   let uri = 'tn='
   uri += encodeURIComponent(tn)
@@ -15,7 +17,7 @@ export const getEncodedQuery = ({tn, ta, mv}) => {
 export const getUniversalLink = (testName, urls) => {
   let query = {
     tn: testName,
-    mv: '1.1.6'
+    mv: minimumVersion
   }
   if (testName == 'web_connectivity' && urls) {
     query['ta'] = JSON.stringify({

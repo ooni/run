@@ -18,6 +18,10 @@ app.prepare()
   const server = express()
   server.get('/nettest', nettestHandler)
 
+  server.get('/apple-app-site-association', (req, res) => {
+    return res.sendFile(path.join(__dirname, 'static', 'apple-app-site-association'))
+  })
+
   server.get('*', (req, res) => {
     return handle(req, res)
   })
