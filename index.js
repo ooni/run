@@ -19,6 +19,7 @@ app.prepare()
   server.get('/nettest', nettestHandler)
 
   server.get('/apple-app-site-association', (req, res) => {
+    res.type('application/json')
     return res.sendFile(path.join(__dirname, 'static', 'apple-app-site-association'))
   })
 
