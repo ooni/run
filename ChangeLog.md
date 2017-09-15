@@ -1,5 +1,11 @@
 # ChangeLog
 
+## ooni-run 0.1.0-beta.5 [2017-09-15]
+
+Added:
+
+* Modal for generating links
+
 ## ooni-run 0.1.0-beta.3 [2017-09-12]
 
 Fixes:
