@@ -18,6 +18,9 @@ app.prepare()
   const server = express()
   server.get('/nettest', nettestHandler)
 
+  const staticDir = path.resolve(__dirname, 'static')
+  server.use('/static', express.static(staticDir))
+
   server.get('/apple-app-site-association', (req, res) => {
     res.type('application/json')
     return res.sendFile(path.join(__dirname, 'static', 'apple-app-site-association'))
