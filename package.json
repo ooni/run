@@ -3,11 +3,6 @@
   "version": "0.1.0-beta.5",
   "license": "MIT",
   "dependencies": {
-    "babel-plugin-styled-components": "^1.1.7",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-register": "^6.26.0",
     "express": "^4.15.4",
     "next": "^3.2.2",
     "ooni-components": "^0.1.0-alpha.10",
@@ -16,9 +11,22 @@
     "styled-components": "^2.1.2",
     "useragent": "^2.2.1"
   },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-styled-components": "^1.1.7",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "babelify": "^7.3.0",
+    "browserify": "^14.4.0",
+    "uglify-js": "^3.1.0"
+  },
   "scripts": {
     "dev": "NODE_ENV=development node index.js",
     "start": "NODE_ENV=production node index.js",
-    "build": "next build"
+    "build": "npm run build:next && npm run build:widgets",
+    "build:next": "next build",
+    "build:widgets": "browserify -t babelify widgets/index.js | uglifyjs > dist/widgets.js"
   }
 }
