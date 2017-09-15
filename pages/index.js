@@ -83,7 +83,6 @@ export default class extends React.Component {
       urls: [
         {value: 'http://', error: null}
       ],
-      universalLink: getUniversalLink('web_connectivity'),
       error: false,
       generated: false
     }
@@ -116,7 +115,6 @@ export default class extends React.Component {
       state.urls = state.urls
                         .filter((url, jdx) => jdx !== idx)
                         .map(url => Object.assign({}, url))
-      state.universalLink = getUniversalLink(state.selectedTest, state.urls)
       this.setState(state)
     }).bind(this)
   }
@@ -133,7 +131,6 @@ export default class extends React.Component {
         state.error = true
       } else {
         state.error = false
-        state.universalLink = getUniversalLink(state.selectedTest, state.urls)
       }
       this.setState(state)
     })
@@ -142,18 +139,18 @@ export default class extends React.Component {
   handleChange(stateName) {
     return ((value, event) => {
       let state = Object.assign({}, this.state)
-      const urls = this.state.urls.filter((url) => url !== '')
+      const urls = this.state.urls.filter((url) => url !== '').map(u => u.value)
       state[stateName] = value
-      state['universalLink'] = getUniversalLink(state.selectedTest, urls)
       this.setState(state)
     }).bind(this)
   }
 
   render() {
+    const universalLink = getUniversalLink(this.state.selectedTest, this.state.urls.map(u => u.value))
     const embedCode = `
     /* XXXX This is not real code!! */
     <a class='ooni-run-button'
-        href='${this.state.universalLink}'>
+        href='${universalLink}'>
       Run OONI!
     </a>
     <script>window.oonirnr = (function(d, s, id) {
@@ -247,19 +244,19 @@ export default class extends React.Component {
                   <Flex>
                   <Box pr={2}>
                     <TwitterShareButton
-                      url={this.state.universalLink}
+                      url={universalLink}
                       message='Run OONI Probe to test for censorship!'
                       />
                   </Box>
                   <Box pr={2}>
                     <FacebookShareButton
-                      url={this.state.universalLink}
+                      url={universalLink}
                       />
                   </Box>
                   </Flex>
 
                   <Heading pt={4} pb={2} f={3}>Share this URL with your friends</Heading>
-                  <Input value={this.state.universalLink} />
+                  <Input value={universalLink} />
 
                   <Heading pt={4} pb={2} f={3}>Or embed this code on your website</Heading>
                   <Input type='textarea' rows={10} value={embedCode} />
