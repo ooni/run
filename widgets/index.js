@@ -4,7 +4,8 @@ import ReactDom from 'react-dom'
 import OONIRunWidget from './OONIRunWidget'
 
 const renderRunWidgets = () => {
-  document.getElementsByClassName('ooni-run-button').map((el) => {
+  const runEls = document.getElementsByClassName('ooni-run-button')
+  [].forEach.call(runEls, (el) => {
     ReactDom.render(
       React.cloneElement(OONIRunWidget, {
         href: el.href,
