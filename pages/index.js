@@ -8,6 +8,7 @@ import MdDelete from 'react-icons/lib/md/delete'
 
 import {
   Heading,
+  Text,
   Container,
   Label,
   Input,
@@ -22,12 +23,13 @@ import {
   RadioGroup,
   RadioButton,
   Flex,
-  Box
+  Box,
+  InputWithIconButton,
+  Overlay,
+  Fixed,
+  FacebookShareButton,
+  TwitterShareButton
 } from 'ooni-components'
-
-/** XXX TMP **/
-import components from 'ooni-components'
-const InputWithIconButton = components.InputWithIconButton
 
 const supportedTests = [
   {
@@ -82,12 +84,15 @@ export default class extends React.Component {
         {value: 'http://', error: null}
       ],
       universalLink: getUniversalLink('web_connectivity'),
-      error: false
+      error: false,
+      generated: false
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleEditURL = this.handleEditURL.bind(this)
     this.addURL = this.addURL.bind(this)
     this.handleDeleteURL = this.handleDeleteURL.bind(this)
+    this.toggleGenerate = this.toggleGenerate.bind(this)
+
     this.urlRefs = new Map()
   }
 
@@ -99,6 +104,10 @@ export default class extends React.Component {
       console.log(this.urlRefs.get(idx))
       //this.urlRefs.get(idx).focus()
     })
+  }
+
+  toggleGenerate() {
+    this.setState({generated: !this.state.generated});
   }
 
   handleDeleteURL(idx) {
@@ -141,6 +150,29 @@ export default class extends React.Component {
   }
 
   render() {
+    const embedCode = `
+    /* XXXX This is not real code!! */
+    <a class='ooni-run-button'
+        href='${this.state.universalLink}'>
+      Run OONI!
+    </a>
+    <script>window.oonirnr = (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.oonirnr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://jsdelivr.com/tmp.js";
+      fjs.parentNode.insertBefore(js, fjs);
+
+      t._e = [];
+      t.ready = function(f) {
+        t._e.push(f);
+      };
+
+      return t;
+    }(document, "script", "ooni-rnr"));</script>
+    `
     return (
       <Layout>
         <Hero pb={4} pt={4}>
@@ -193,19 +225,55 @@ export default class extends React.Component {
 
           <Flex pt={3} pb={3} align='baseline' justify='space-around'>
             <Box>
-              <Link href={this.state.universalLink}>
-              <Button>
-              Run
+              <Button onClick={this.toggleGenerate}>
+                Generate
               </Button>
-            </Link>
             </Box>
           </Flex>
 
-          <Row>
-          <Column>
-            <Input value={this.state.universalLink} />
-          </Column>
-          </Row>
+        {this.state.generated
+        && <div>
+          <Fixed
+              top
+              right
+              bottom
+              left
+              onClick={this.toggleGenerate} />
+              <Overlay w={500}>
+                <Container>
+                  <Heading>You link is ready!</Heading>
+
+                  <Heading pt={4} pb={2} f={3}>Share it on social media</Heading>
+                  <Flex>
+                  <Box pr={2}>
+                    <TwitterShareButton
+                      url={this.state.universalLink}
+                      message='Run OONI Probe to test for censorship!'
+                      />
+                  </Box>
+                  <Box pr={2}>
+                    <FacebookShareButton
+                      url={this.state.universalLink}
+                      />
+                  </Box>
+                  </Flex>
+
+                  <Heading pt={4} pb={2} f={3}>Share this URL with your friends</Heading>
+                  <Input value={this.state.universalLink} />
+
+                  <Heading pt={4} pb={2} f={3}>Or embed this code on your website</Heading>
+                  <Input type='textarea' rows={10} value={embedCode} />
+
+                  <Box pt={4}>
+                  <Button onClick={this.toggleGenerate}>
+                  Done
+                  </Button>
+                  </Box>
+
+                </Container>
+              </Overlay>
+          </div>
+        }
         </Container>
       </Layout>
     )
