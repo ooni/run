@@ -7,12 +7,17 @@ const renderRunWidgets = () => {
   const runEls = document.getElementsByClassName('ooni-run-button')
 
   Array.prototype.forEach.call(runEls, (el) => {
+    const buttonContainer = document.createElement('div')
+    const { href, innerText } = el
+    el.parentNode.insertBefore(buttonContainer, el.nextSibling)
+    el.parentNode.removeChild(el)
+
     ReactDom.render(
-      React.cloneElement(OONIRunWidget, {
-        href: el.href,
-        text: el.innerText
+      React.createElement(OONIRunWidget, {
+        href,
+        text: innerText
       }),
-      el
+      buttonContainer
     )
   })
 }
