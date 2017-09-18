@@ -1,5 +1,11 @@
 # ChangeLog
 
+## ooni-run 0.1.0-beta.11 [2017-09-18]
+
+Added:
+
+* Support for Facebook and Twitter deep link handling
+
 ## ooni-run 0.1.0-beta.10 [2017-09-18]
 
 Added:
