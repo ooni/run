@@ -1,7 +1,8 @@
 {
   "plugins": [
     ["styled-components", {"ssr": true, "displayName": true, "preprocess": false}],
-    "babel-plugin-transform-object-rest-spread"
+    "babel-plugin-transform-object-rest-spread",
+    "inline-react-svg"
   ],
   "presets": [
     "es2015",

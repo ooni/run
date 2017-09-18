@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { getUniversalLink } from '../utils/links'
 
 import MdDelete from 'react-icons/lib/md/delete'
-
+import GraphicsOctopusModal from '../components/svgs/GraphicsOctopusModal.svg'
 import {
   Heading,
   Text,
@@ -31,26 +31,34 @@ import {
   TwitterShareButton
 } from 'ooni-components'
 
-const supportedTests = [
+const censorshipTests = [
   {
     key: 'web_connectivity',
-    name: 'Web Connectivity'
+    name: 'Web Connectivity',
+    desc: 'Check if websites are blocked'
   },
   {
     key: 'http_invalid_request_line',
-    name: 'HTTP Invalid Request Line'
+    name: 'HTTP Invalid Request Line',
+    desc: ''
   },
   {
     key: 'http_header_field_manipulation',
-    name: 'HTTP Header Field Manipulation'
-  },
+    name: 'HTTP Header Field Manipulation',
+    desc: ''
+  }
+]
+
+const netNeutralityTests = [
   {
     key: 'ndt',
-    name: 'NDT Speed Test'
+    name: 'NDT Speed Test',
+    desc: ''
   },
   {
     key: 'dash',
-    name: 'DASH Video Streaming'
+    name: 'DASH Video Streaming',
+    desc: ''
   }
 ]
 
@@ -72,6 +80,51 @@ const AddURLButton = Button.extend`
     background-color: transparent;
   color: ${props => props.theme.colors.gray7};
     border-bottom: 2px solid ${props => props.theme.colors.gray4};
+  }
+`
+
+const TestCategoryHeading = styled(Heading)`
+  padding: 10px 0;
+  font-size: ${props => props.theme.fontSizes[2]}px;
+  color: ${props => props.theme.colors[props.color] || props.theme.colors.black};
+`
+
+const TestDetailsLabel = (props) => {
+  // The links to the details of the test name are not in snake_case, but in dash-case
+  const testName = (props.value && props.value.replace(/[_]/g, '-')) || ''
+  const href = `https://ooni.torproject.org/nettest/${testName}`
+  return (
+    <div>
+      <Box>
+      {props.name}
+      </Box>
+      <Box>
+      {props.desc}
+      </Box>
+      <Box>
+        <Link styled={{fontStyle: 'italic'}} href={href}>Learn how this test works</Link>
+      </Box>
+    </div>
+  )
+}
+
+const GraphicsWithGradient = styled(Box)`
+  align-self: 'flex-end';
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom,
+      rgba(142, 219, 248, 0),
+      rgba(63, 128, 162, 1)
+    );
   }
 `
 
@@ -148,33 +201,16 @@ export default class extends React.Component {
   render() {
     const universalLink = getUniversalLink(this.state.selectedTest, this.state.urls.map(u => u.value))
     const embedCode = `
-    /* XXXX This is not real code!! */
-    <a class='ooni-run-button'
-        href='${universalLink}'>
-      Run OONI!
-    </a>
-    <script>window.oonirnr = (function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0],
-        t = window.oonirnr || {};
-      if (d.getElementById(id)) return t;
-      js = d.createElement(s);
-      js.id = id;
-      js.src = "https://jsdelivr.com/tmp.js";
-      fjs.parentNode.insertBefore(js, fjs);
-
-      t._e = [];
-      t.ready = function(f) {
-        t._e.push(f);
-      };
-
-      return t;
-    }(document, "script", "ooni-rnr"));</script>
+    <a href='${universalLink}' class='ooni-run-button'>Run OONI!</a>
+    /* If you have not already included the OONI widget code */
+    <script src='https://cdn.jsdelivr.net/npm/ooni-run/dist/widgets.js'></script>
     `
+
     return (
       <Layout>
         <Hero pb={4} pt={4}>
           <OONISubBrandRun />
-          <HeroLead>Some inspiring call to action</HeroLead>
+          <HeroLead>Let's fight internet censorship together!</HeroLead>
         </Hero>
         <Container pt={4}>
           <Row>
@@ -185,14 +221,31 @@ export default class extends React.Component {
               name='test_name'
               value={this.state.selectedTest}
               onChange={this.handleChange('selectedTest')}>
-            {supportedTests.map(({key, name}) => (
-              <RadioButton key={key} label={name} value={key} />
+            <TestCategoryHeading color='violet5'>Internet Censorship</TestCategoryHeading>
+            {censorshipTests.map(({key, name, desc}) => (
+              <RadioButton label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
+            ))}
+            <TestCategoryHeading color='cyan5'>Net Neutrality</TestCategoryHeading>
+            {netNeutralityTests.map(({key, name, desc}) => (
+              <RadioButton label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
             ))}
           </RadioGroup>
           </Column>
 
+          <Column w={1/2}>
+          <Heading f={2} pb={3}>What you can do</Heading>
           {this.state.selectedTest == 'web_connectivity'
-          && <Column w={1/2}>
+          && <Text>Choose the sites you want to test, generate a link, and share
+      it with your friends and contacts around the world. Encourage them to run
+      OONI Probe to test the sites of your choice!</Text>
+          }
+          {this.state.selectedTest != 'web_connectivity'
+          && <Text>Generate a link and share it with your friends and family
+            around the world. Encourage them to run OONI Probe to examine
+            measure network speed and performance!</Text>
+          }
+          {this.state.selectedTest == 'web_connectivity'
+          && <Box pt={4}>
           <Heading f={2} pb={3}>URLs</Heading>
             {this.state.urls.length == 0
             && <Row><Column>
@@ -216,17 +269,17 @@ export default class extends React.Component {
                 </AddURLButton>
               </Column>
               </Row>
-          </Column>}
+          </Box>}
+          <Box pt={3} pb={3}>
+            <Button onClick={this.toggleGenerate}>
+              Generate
+            </Button>
+          </Box>
+
+
+          </Column>
 
           </Row>
-
-          <Flex pt={3} pb={3} align='baseline' justify='space-around'>
-            <Box>
-              <Button onClick={this.toggleGenerate}>
-                Generate
-              </Button>
-            </Box>
-          </Flex>
 
         {this.state.generated
         && <div>
@@ -236,38 +289,48 @@ export default class extends React.Component {
               bottom
               left
               onClick={this.toggleGenerate} />
-              <Overlay w={500}>
-                <Container>
-                  <Heading>You link is ready!</Heading>
-
-                  <Heading pt={4} pb={2} f={3}>Share it on social media</Heading>
-                  <Flex>
-                  <Box pr={2}>
-                    <TwitterShareButton
-                      url={universalLink}
-                      message='Run OONI Probe to test for censorship!'
-                      />
+              <Overlay w={1000} p={0} style={{borderRadius: '20px'}}>
+                <Flex>
+                  <Box w={1/3} bg='#8ED8F8'>
+                    <Flex align='center' justify='center' style={{height: '100%'}}>
+                      <GraphicsWithGradient>
+                        <GraphicsOctopusModal />
+                      </GraphicsWithGradient>
+                    </Flex>
                   </Box>
-                  <Box pr={2}>
-                    <FacebookShareButton
-                      url={universalLink}
-                      />
+                  <Box w={2/3}>
+                  <Container p={3}>
+                    <Heading>You link is ready!</Heading>
+
+                    <Heading pt={4} pb={2} f={3}>Share it on social media</Heading>
+                    <Flex>
+                    <Box pr={2}>
+                      <TwitterShareButton
+                        url={universalLink}
+                        message='Run OONI Probe to test for censorship!'
+                        />
+                    </Box>
+                    <Box pr={2}>
+                      <FacebookShareButton
+                        url={universalLink}
+                        />
+                    </Box>
+                    </Flex>
+
+                    <Heading pt={4} pb={2} f={3}>Share this URL with your friends</Heading>
+                    <Input value={universalLink} />
+
+                    <Heading pt={4} pb={2} f={3}>Or embed this code on your website</Heading>
+                    <Input type='textarea' rows={6} value={embedCode} />
+
+                    <Box pt={4}>
+                    <Button onClick={this.toggleGenerate}>
+                    Done
+                    </Button>
+                    </Box>
+                  </Container>
                   </Box>
-                  </Flex>
-
-                  <Heading pt={4} pb={2} f={3}>Share this URL with your friends</Heading>
-                  <Input value={universalLink} />
-
-                  <Heading pt={4} pb={2} f={3}>Or embed this code on your website</Heading>
-                  <Input type='textarea' rows={10} value={embedCode} />
-
-                  <Box pt={4}>
-                  <Button onClick={this.toggleGenerate}>
-                  Done
-                  </Button>
-                  </Box>
-
-                </Container>
+                </Flex>
               </Overlay>
           </div>
         }
