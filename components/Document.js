@@ -37,12 +37,12 @@ const Document = props => {
       {props.deepLink && <meta name='twitter:app:url:ipad' content={props.deepLink} />}
       {props.universalLink && <meta name='twitter:app:url:googleplay' content={props.universalLink} />}
 
-			<meta name='twitter:app:name:iphone' content={mobileApp.iPhoneName} />
-			<meta name='twitter:app:id:iphone' content={mobileApp.iPhoneID} />
-			<meta name='twitter:app:name:ipad' content={mobileApp.iPadName} />
-			<meta name='twitter:app:id:ipad' content={mobileApp.iPadID} />
-			<meta name='twitter:app:name:googleplay' content={mobileApp.googlePlayName} />
-			<meta name='twitter:app:id:googleplay' content={mobileApp.googlePlayID} />
+      <meta name='twitter:app:name:iphone' content={mobileApp.iPhoneName} />
+      <meta name='twitter:app:id:iphone' content={mobileApp.iPhoneID} />
+      <meta name='twitter:app:name:ipad' content={mobileApp.iPadName} />
+      <meta name='twitter:app:id:ipad' content={mobileApp.iPadID} />
+      <meta name='twitter:app:name:googleplay' content={mobileApp.googlePlayName} />
+      <meta name='twitter:app:id:googleplay' content={mobileApp.googlePlayID} />
 
       {/* This is Facebook specific stuff
        * See:
