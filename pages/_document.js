@@ -2,6 +2,7 @@ import Document, { Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 
 import globalStyle from '../components/globalStyle'
+import meta from '../config/meta'
 
 export default class MyDocument extends Document {
   render () {
@@ -11,7 +12,9 @@ export default class MyDocument extends Document {
     return (
       <html>
         <Head>
-          <title>My page</title>
+          <title>{meta.defaultTitle}</title>
+          <meta http-equiv='Content-Type' content={meta.contentType} />
+          <meta name='viewport' content={meta.viewport} />
           {styleTags}
         </Head>
         <body>

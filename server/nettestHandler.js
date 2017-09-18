@@ -20,6 +20,20 @@ const getCustomURI = (req) => {
   return uri
 }
 
+const getUniversalLink = (req) => {
+  let uri = 'https://run.ooni.io/nettest?'
+  uri += getEncodedQuery(req.query)
+  return uri
+}
+
+const getTitle = (req) => {
+  return 'OONI Run'
+}
+
+const getDescription = (req) => {
+  return 'Run OONI Probe'
+}
+
 const getIntentURI = (req) => {
   let uri = 'intent://nettest?'
   uri += getEncodedQuery(req.query)
@@ -32,13 +46,44 @@ const getIntentURI = (req) => {
 }
 
 const handleUniversalLink = (req, res) => {
-  const html = renderToString(<Document main={<Nettest />} />)
+  const deepLink = getCustomURI(req)
+  const description = getDescription(req)
+  const title = getTitle(req)
+  const universalLink = getUniversalLink(req)
+
+  const html = renderToString(
+    <Document
+      title={title}
+      ogTitle={title}
+      ogDescription={title}
+      universalLink={universalLink}
+      deepLink={deepLink}
+      main={<Nettest />}
+    />
+  )
   res.send(html)
 }
 
 const handleWindowLocation = (req, res, storeLink) => {
   const deepLink = getCustomURI(req)
-  const html = renderToString(<Document main={<Nettest withWindowLocation deepLink={deepLink} storeLink={storeLink}/>} />)
+  const description = getDescription(req)
+  const title = getTitle(req)
+  const universalLink = getUniversalLink(req)
+
+  const html = renderToString(
+    <Document
+      title={title}
+      ogTitle={title}
+      ogDescription={title}
+      universalLink={universalLink}
+      deepLink={deepLink}
+      main={
+        <Nettest
+          withWindowLocation
+          deepLink={deepLink}
+          storeLink={storeLink}/>
+      } />
+  )
   res.send(html)
 }
 
@@ -48,18 +93,42 @@ const handleLocationIntent = (req, res) => {
 }
 
 const handleDefault = (req, res) => {
-  const html = renderToString(<Document main={<Nettest />} />)
+  const deepLink = getCustomURI(req)
+  const description = getDescription(req)
+  const title = getTitle(req)
+  const universalLink = getUniversalLink(req)
+
+  const html = renderToString(
+    <Document
+      title={title}
+      ogTitle={title}
+      ogDescription={title}
+      universalLink={universalLink}
+      deepLink={deepLink}
+      main={<Nettest />} />
+  )
   res.send(html)
 }
 
 const nettestHandler = (req, res) => {
   const {tn, mv, ta} = req.query
   if (tn === undefined) {
-    res.end(renderToString(<Document main={<Invalid reason="missing tn"/>} />))
+    res.end(
+      renderToString(
+        <Document
+          main={<Invalid reason="missing tn"/>}
+        />
+      )
+    )
     return
   }
   if (mv === undefined) {
-    res.end(renderToString(<Document main={<Invalid reason="missing mv"/>} />))
+    res.end(
+      renderToString(
+        <Document
+          main={<Invalid reason="missing mv"/>} />
+      )
+    )
     return
   }
 
