@@ -27,7 +27,6 @@ import {
   InputWithIconButton,
   Overlay,
   Fixed,
-  FacebookShareButton,
   TwitterShareButton
 } from 'ooni-components'
 
@@ -312,11 +311,6 @@ export default class extends React.Component {
                       <TwitterShareButton
                         url={universalLink}
                         message='Run OONI Probe to test for censorship!'
-                        />
-                    </Box>
-                    <Box pr={2}>
-                      <FacebookShareButton
-                        url={universalLink}
                         />
                     </Box>
                     </Flex>
