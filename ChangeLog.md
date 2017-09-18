@@ -1,5 +1,13 @@
 # ChangeLog
 
+## ooni-run 0.1.0-beta.10 [2017-09-18]
+
+Added:
+
+* Add nicer modal
+
+* Minimal widget for site embedment
+
 ## ooni-run 0.1.0-beta.5 [2017-09-15]
 
 Added:
