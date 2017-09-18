@@ -27,8 +27,9 @@ const Document = props => {
 
       {/* Open Graph meta tags. Shared by Twitter and Facebook */}
       <meta name='og:type' content='website' />
-      {props.ogTitle && <meta name='og:title' content={props.ogTitle} />}
       {props.universalLink && <meta name='og:url' content={props.universalLink} />}
+      {props.ogTitle && <meta name='og:title' content={props.ogTitle} />}
+      <meta name='og:image' content='https://run.ooni.io/static/images/Run-VerticalColorW400px.png' />
       {props.ogDescription && <meta name='og:description' content={props.ogDescription} />}
 
       {/* This is Twitter specific stuff
@@ -37,6 +38,7 @@ const Document = props => {
       {props.deepLink && <meta name='twitter:app:url:ipad' content={props.deepLink} />}
       {props.universalLink && <meta name='twitter:app:url:googleplay' content={props.universalLink} />}
 
+      <meta name='twitter:image' content='https://run.ooni.io/static/images/Run-VerticalColorW400px.png' />
       <meta name='twitter:app:name:iphone' content={mobileApp.iPhoneName} />
       <meta name='twitter:app:id:iphone' content={mobileApp.iPhoneID} />
       <meta name='twitter:app:name:ipad' content={mobileApp.iPadName} />
@@ -48,7 +50,6 @@ const Document = props => {
        * See:
        * * https://developers.facebook.com/docs/applinks/add-to-content/
        * * https://blog.branch.io/how-to-deep-link-on-facebook/ */}
-
       <meta property='al:android:package' content={mobileApp.googlePlayID} />
       <meta property='al:android:app_name' content={mobileApp.googlePlayName} />
       {props.deepLink && <meta property='al:android:url' content={props.deepLink} />}
