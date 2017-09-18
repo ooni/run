@@ -98,12 +98,16 @@ const TestDetailsLabel = (props) => {
       <Box>
       {props.name}
       </Box>
-      <Box>
-      {props.desc}
-      </Box>
-      <Box>
-        <Link styled={{fontStyle: 'italic'}} href={href}>Learn how this test works</Link>
-      </Box>
+      {props.checked
+      && <Box>
+        {props.desc}
+        </Box>
+      }
+      {props.checked
+      && <Box>
+          <Link styled={{fontStyle: 'italic'}} href={href}>Learn how this test works</Link>
+        </Box>
+      }
     </div>
   )
 }
