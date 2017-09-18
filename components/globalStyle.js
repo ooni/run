@@ -19,6 +19,7 @@ const CharterBold = '/static/fonts/Charter-Bold.woff'
 const FiraSansLight = '/static/fonts/FiraSans-Light.woff'
 const FiraSansRegular = '/static/fonts/FiraSans-Regular.woff'
 const FiraSansBold = '/static/fonts/FiraSans-Bold.woff'
+const FiraSansSemiBold = '/static/fonts/FiraSans-SemiBold.woff'
 
 const SourceCodeProBold = '/static/fonts/SourceCodePro-Bold.woff'
 const SourceCodeProRegular = '/static/fonts/SourceCodePro-Regular.woff'
@@ -84,6 +85,13 @@ injectGlobal`
     src: url('${FiraSansRegular}') format('woff');
     font-style: normal;
     font-weight: 400;
+  }
+
+  @font-face {
+    font-family: "Fira Sans";
+    src: url('${FiraSansSemiBold}') format('woff');
+    font-style: normal;
+    font-weight: 600;
   }
 
   @font-face {
