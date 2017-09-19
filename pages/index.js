@@ -112,22 +112,34 @@ const TestDetailsLabel = (props) => {
 }
 
 const GraphicsWithGradient = styled(Box)`
-  align-self: 'flex-end';
   width: 100%;
   height: 100%;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+
+  svg {
+    width: 100%;
+  }
 
   &:before {
     content: '';
     position: absolute;
     top: 50%;
-    right: 0;
     bottom: 0;
     left: 0;
+    right: 0;
     background-image: linear-gradient(to bottom,
       rgba(142, 219, 248, 0),
       rgba(63, 128, 162, 1)
     );
+  }
+`
+const BrandContainer = styled.div`
+  max-width: 100%;
+  svg {
+    max-width: 100%;
   }
 `
 
@@ -212,14 +224,16 @@ export default class extends React.Component {
     return (
       <Layout>
         <Hero pb={4} pt={4}>
-          <OONISubBrandRun />
+          <BrandContainer>
+            <OONISubBrandRun />
+          </BrandContainer>
           <HeroLead>Let's fight internet censorship together!</HeroLead>
         </Hero>
         <Container pt={4}>
-          <Row>
+          <Flex wrap>
 
-          <Column w={1/2}>
-          <Heading f={2} pb={3}>Test Name</Heading>
+          <Box w={[1, 1/2]} pb={3}>
+          <Heading f={2} pb={3} pt={2}>Test Name</Heading>
       		<RadioGroup
               name='test_name'
               value={this.state.selectedTest}
@@ -233,10 +247,10 @@ export default class extends React.Component {
               <RadioButton label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
             ))}
           </RadioGroup>
-          </Column>
+          </Box>
 
-          <Column w={1/2}>
-          <Heading f={2} pb={3}>What you can do</Heading>
+          <Box w={[1, 1/2]}>
+          <Heading f={2} pb={3} pt={2}>What you can do</Heading>
           {this.state.selectedTest == 'web_connectivity'
           && <Text>Choose the sites you want to test, generate a link, and share
       it with your friends and contacts around the world. Encourage them to run
@@ -280,9 +294,9 @@ export default class extends React.Component {
           </Box>
 
 
-          </Column>
+          </Box>
 
-          </Row>
+          </Flex>
 
         {this.state.generated
         && <div>
@@ -292,21 +306,19 @@ export default class extends React.Component {
               bottom
               left
               onClick={this.toggleGenerate} />
-              <Overlay w={1000} p={0} style={{borderRadius: '20px'}}>
-                <Flex>
-                  <Box w={1/3} bg='#8ED8F8'>
-                    <Flex align='center' justify='center' style={{height: '100%'}}>
-                      <GraphicsWithGradient>
-                        <GraphicsOctopusModal />
-                      </GraphicsWithGradient>
-                    </Flex>
+              <Overlay w={[1, 9/10]} p={0} style={{borderRadius: '20px', height: '90%'}}>
+                <Flex wrap style={{height: '100%'}}>
+                  <Box w={[1, 1/3]} bg='#8ED8F8'>
+                    <GraphicsWithGradient>
+                      <GraphicsOctopusModal />
+                    </GraphicsWithGradient>
                   </Box>
-                  <Box w={2/3}>
+                  <Box w={[1, 2/3]}>
                   <Container p={3}>
-                    <Heading>You link is ready!</Heading>
+                    <Heading center>You link is ready!</Heading>
 
-                    <Heading pt={4} pb={2} f={3}>Share it on social media</Heading>
-                    <Flex>
+                    <Heading pt={4} pb={2} f={3} center>Share it on social media</Heading>
+                    <Flex align='center' justify='center'>
                     <Box pr={2}>
                       <TwitterShareButton
                         url={universalLink}
@@ -322,9 +334,11 @@ export default class extends React.Component {
                     <Input type='textarea' rows={6} value={embedCode} />
 
                     <Box pt={4}>
-                    <Button onClick={this.toggleGenerate}>
-                    Done
-                    </Button>
+                      <Flex justify='center' align='center'>
+                        <Button onClick={this.toggleGenerate}>
+                        Done
+                        </Button>
+                      </Flex>
                     </Box>
                   </Container>
                   </Box>
