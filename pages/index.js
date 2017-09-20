@@ -6,6 +6,9 @@ import { getUniversalLink } from '../utils/links'
 
 import MdDelete from 'react-icons/lib/md/delete'
 import GraphicsOctopusModal from '../components/svgs/GraphicsOctopusModal.svg'
+
+import OONIRunHero from '../components/OONIRunHero'
+
 import {
   Heading,
   Text,
@@ -17,9 +20,6 @@ import {
   Column,
   Link,
   Pre,
-  Hero,
-  HeroLead,
-  OONISubBrandRun,
   RadioGroup,
   RadioButton,
   Flex,
@@ -223,12 +223,8 @@ export default class extends React.Component {
 
     return (
       <Layout>
-        <Hero pb={4} pt={4}>
-          <BrandContainer>
-            <OONISubBrandRun />
-          </BrandContainer>
-          <HeroLead>Let's fight internet censorship together!</HeroLead>
-        </Hero>
+        <OONIRunHero />
+
         <Container pt={4}>
           <Flex wrap>
 

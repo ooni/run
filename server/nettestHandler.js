@@ -10,6 +10,8 @@ import { getEncodedQuery } from '../utils/links'
 
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 
+const installLink = 'https://ooni.torproject.org/install'
+
 // XXX
 // We should integrate this with piwik:
 // https://piwik.org/blog/2014/06/track-api-calls-node-js-piwik/
@@ -81,6 +83,7 @@ const handleWindowLocation = (req, res, storeLink) => {
         <Nettest
           withWindowLocation
           deepLink={deepLink}
+          installLink={installLink}
           storeLink={storeLink}/>
       } />
   )
@@ -105,7 +108,9 @@ const handleDefault = (req, res) => {
       ogDescription={title}
       universalLink={universalLink}
       deepLink={deepLink}
-      main={<Nettest />} />
+      main={<Nettest
+              installLink={installLink}
+              deepLink={deepLink} />} />
   )
   res.send(html)
 }
