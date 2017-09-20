@@ -1,12 +1,12 @@
 {
   "name": "ooni-run",
-  "version": "0.1.0-beta.11",
+  "version": "0.1.0-beta.12",
   "license": "MIT",
   "dependencies": {
     "babel-plugin-inline-react-svg": "^0.4.0",
     "express": "^4.15.4",
     "next": "^3.2.2",
-    "ooni-components": "^0.1.0-alpha.11",
+    "ooni-components": "^0.1.0-alpha.12",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "styled-components": "^2.1.2",
