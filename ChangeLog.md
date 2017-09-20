@@ -1,5 +1,13 @@
 # ChangeLog
 
+## ooni-run 0.1.0-beta.13 [2017-09-20]
+
+Changed:
+
+* Better styling of the /nettest? page
+
+## [IGNORE] ooni-run 0.1.0-beta.12 [2017-09-19]
+
 ## ooni-run 0.1.0-beta.11 [2017-09-18]
 
 Added:
