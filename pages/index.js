@@ -25,8 +25,7 @@ import {
   Flex,
   Box,
   InputWithIconButton,
-  Overlay,
-  Fixed,
+  Modal,
   TwitterShareButton
 } from 'ooni-components'
 
@@ -34,34 +33,74 @@ const censorshipTests = [
   {
     key: 'web_connectivity',
     name: 'Web Connectivity',
-    desc: 'Check if websites are blocked'
-  },
+    desc: 'Check if websites are blocked.',
+    href: 'https://ooni.torproject.org/nettest/web-connectivity/'
+  }
+]
+const cTestKeys = censorshipTests.map(d => d.key)
+
+const middleBoxTests = [
   {
     key: 'http_invalid_request_line',
     name: 'HTTP Invalid Request Line',
-    desc: ''
+    desc: 'Find middleboxes.',
+    href: 'https://ooni.torproject.org/nettest/http-invalid-request-line/'
   },
   {
     key: 'http_header_field_manipulation',
-    name: 'HTTP Header Field Manipulation',
-    desc: ''
+    name: 'HTTP Header Field Manipulation.',
+    desc: 'Find middleboxes',
+    href: 'https://ooni.torproject.org/nettest/http-header-field-manipulation/'
   }
 ]
+const mbTestKeys = middleBoxTests.map(d => d.key)
 
 const netNeutralityTests = [
   {
     key: 'ndt',
     name: 'NDT Speed Test',
-    desc: ''
+    desc: 'Measure the speed and performance of your network.',
+    href: 'https://ooni.torproject.org/nettest/ndt/'
   },
   {
     key: 'dash',
     name: 'DASH Video Streaming',
-    desc: ''
+    desc: 'Measure video streaming performance.',
+    href: 'https://ooni.torproject.org/nettest/dash/'
   }
 ]
+const nnTestKeys = netNeutralityTests.map(d => d.key)
 
-const AddURLButton = Button.extend`
+const isIn = (k, a) => a.indexOf(k) !== -1
+
+const WhatCanYouDoText = props => {
+  if (isIn(props.test, nnTestKeys)) {
+    return <Text>
+      Generate a link and share it with your friends and contacts around the
+    world. Encourage them to run OONI Probe to measure the speed and
+    performance of their networks!
+      </Text>
+  }
+
+  if (isIn(props.test, mbTestKeys)) {
+    return <Text>
+      Generate a link and share it with your friends and contacts around the
+    world. Encourage them to run OONI Probe to find middleboxes in their
+    networks!
+      </Text>
+  }
+
+  if (isIn(props.test, cTestKeys)) {
+    return <Text>
+      Generate a link and share it with your friends and contacts around the
+    world. Encourage them to run OONI Probe to test the sites of your choice!
+      </Text>
+  }
+
+  return <Text>Generate a link and share it with your friends and contacts around the world.</Text>
+}
+
+const AddURLButton = styled(Button)`
   color: ${props => props.theme.colors.gray5};
   border-radius: 0;
   padding: 0;
@@ -103,7 +142,7 @@ const TestDetailsLabel = (props) => {
       }
       {props.checked
       && <Box>
-          <Link href={href}><Text italic>Learn how this test works</Text></Link>
+          <Link href={href}><Text italic>Learn how this test works here</Text></Link>
         </Box>
       }
     </div>
@@ -219,7 +258,6 @@ export default class extends React.Component {
     /* If you have not already included the OONI widget code */
     <script src='https://cdn.jsdelivr.net/npm/ooni-run/dist/widgets.js'></script>
     `
-
     return (
       <Layout>
         <OONIRunHero />
@@ -241,108 +279,96 @@ export default class extends React.Component {
             {netNeutralityTests.map(({key, name, desc}) => (
               <RadioButton label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
             ))}
+            <TestCategoryHeading h={4} color='orange5'>Middleboxes</TestCategoryHeading>
+            {middleBoxTests.map(({key, name, desc}) => (
+              <RadioButton label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
+            ))}
+
           </RadioGroup>
           </Box>
 
           <Box w={[1, 1/2]}>
-          <Heading h={3}>What you can do</Heading>
-          {this.state.selectedTest == 'web_connectivity'
-          && <Text>Choose the sites you want to test, generate a link, and share
-      it with your friends and contacts around the world. Encourage them to run
-      OONI Probe to test the sites of your choice!</Text>
-          }
-          {this.state.selectedTest != 'web_connectivity'
-          && <Text>Generate a link and share it with your friends and family
-            around the world. Encourage them to run OONI Probe to examine
-            measure network speed and performance!</Text>
-          }
-          {this.state.selectedTest == 'web_connectivity'
-          && <Box pt={4}>
-          <Heading h={3} pb={3}>URLs</Heading>
-            {this.state.urls.length == 0
-            && <Row><Column>
-              Click "Add URL" below to add a URL to test
-              </Column></Row>
-            }
-            {this.state.urls.map((url, idx) => <Row key={`url-${idx}`}>
-              <Column>
-              <InputWithIconButton
-                     value={url.value}
-                     icon={<MdDelete />}
-                     error={url.error}
-                     onChange={this.handleEditURL(idx)}
-                     onAction={this.handleDeleteURL(idx)} />
-              </Column>
-              </Row>)}
-              <Row>
-              <Column>
-                <AddURLButton onClick={this.addURL}>
-                + Add URL
-                </AddURLButton>
-              </Column>
-              </Row>
-          </Box>}
-          <Box pt={3} pb={3}>
-            <Button onClick={this.toggleGenerate}>
-              Generate
-            </Button>
-          </Box>
+            <Heading h={3}>What you can do</Heading>
+            <WhatCanYouDoText test={this.state.selectedTest} />
 
+            {this.state.selectedTest == 'web_connectivity'
+            && <Box pt={4}>
+            <Heading h={3} pb={3}>URLs</Heading>
+              {this.state.urls.length == 0
+              && <div>
+                Click "Add URL" below to add a URL to test
+                </div>
+              }
+              {this.state.urls.map((url, idx) => <div key={`url-${idx}`}>
+                <InputWithIconButton
+                       value={url.value}
+                       icon={<MdDelete />}
+                       error={url.error}
+                       onChange={this.handleEditURL(idx)}
+                       onAction={this.handleDeleteURL(idx)} />
+                </div>)}
+                <div>
+                  <AddURLButton onClick={this.addURL}>
+                  + Add URL
+                  </AddURLButton>
+                </div>
+            </Box>}
+            <Box pt={3} pb={3}>
+              <Button onClick={this.toggleGenerate}>
+                Generate
+              </Button>
+            </Box>
 
           </Box>
 
           </Flex>
 
-        {this.state.generated
-        && <div>
-          <Fixed
-              top
-              right
-              bottom
-              left
-              onClick={this.toggleGenerate} />
-              {/* XXX fix height on mobile */}
-              {/* XXX an X button */}
-              <Overlay w={[9/10, 6/10]} p={0} style={{borderRadius: '20px', height: '60%'}}>
-                <Flex wrap style={{height: '100%'}}>
-                  <Box w={[1, 1/3]} bg='#8ED8F8'>
-                    <GraphicsWithGradient>
-                      <GraphicsOctopusModal />
-                    </GraphicsWithGradient>
-                  </Box>
-                  <Box w={[1, 2/3]}>
-                  <Container p={[2, 4]} ml={[3, 5]} mr={[3, 5]}>
-                    <Heading center>You link is ready!</Heading>
+          <Modal
+            onHideClick={this.toggleGenerate}
+            show={this.state.generated}
+            width={[9/10, 6/10]}
+            height={[9/10, 6/10]}
+            p={0}
+            closeButton='right'
+            style={{borderRadius: '20px'}}>
 
-                    <Heading pt={4} pb={2} h={3} center>Share it on social media</Heading>
-                    <Flex align='center' justify='center'>
-                    <Box pr={2}>
-                      <TwitterShareButton
-                        url={universalLink}
-                        message='Run OONI Probe to test for censorship!'
-                        />
-                    </Box>
-                    </Flex>
+            <Flex wrap>
+              <Box w={[1, 1/3]} bg='#8ED8F8'>
+                <GraphicsWithGradient>
+                  <GraphicsOctopusModal />
+                </GraphicsWithGradient>
+              </Box>
+              <Box w={[1, 2/3]}>
+              <Container p={[4, 2]} ml={[5, 3]} mr={[5, 3]}>
+                <Heading h={1} center>Your link is ready!</Heading>
 
-                    <Heading pt={4} pb={2} f={3}>Share this URL with your friends</Heading>
-                    <Input value={universalLink} />
-
-                    <Heading pt={4} pb={2} f={3}>Or embed this code on your website</Heading>
-                    <Input type='textarea' rows={6} value={embedCode} />
-
-                    <Box pt={4}>
-                      <Flex justify='center' align='center'>
-                        <Button onClick={this.toggleGenerate}>
-                        Done
-                        </Button>
-                      </Flex>
-                    </Box>
-                  </Container>
-                  </Box>
+                <Heading pt={4} pb={2} h={3} center>Share it on social media</Heading>
+                <Flex align='center' justify='center'>
+                <Box pr={2}>
+                  <TwitterShareButton
+                    url={universalLink}
+                    message='Run OONI Probe to test for censorship!'
+                    />
+                </Box>
                 </Flex>
-              </Overlay>
-          </div>
-        }
+
+                <Heading center pt={4} pb={2} h={3}>Share this URL with your friends</Heading>
+                <Input value={universalLink} />
+
+                <Heading center pt={4} pb={2} h={3}>Or embed this code on your website</Heading>
+                <Input type='textarea' rows={6} value={embedCode} />
+
+                <Box pt={4}>
+                  <Flex justify='center' align='center'>
+                    <Button onClick={this.toggleGenerate}>
+                    Done
+                    </Button>
+                  </Flex>
+                </Box>
+              </Container>
+              </Box>
+            </Flex>
+          </Modal>
         </Container>
       </Layout>
     )
