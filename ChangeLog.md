@@ -1,5 +1,13 @@
 # ChangeLog
 
+## ooni-run 0.1.0-beta.15 [2017-09-20]
+
+Changed:
+
+* Refactor the nettest page based on next.js
+* Improvements to the look and feel
+* Edited the copy
+
 ## ooni-run 0.1.0-beta.13 [2017-09-20]
 
 Changed:
