@@ -111,10 +111,10 @@ export default class extends React.Component {
       <Layout>
         <OONIRunHero />
         <Container p={4}>
-          <Text pt={2}>Through this link you are able to run specific OONI Probe tests in the mobile app.</Text>
+          <Text pt={2}>Measure internet censorship by running OONI Probe.</Text>
 
           <Heading pt={4} h={2}>You have the app</Heading>
-          <Text pt={2} pb={3}>If you have the OONI Probe app installed click Run below to start the test.</Text>
+          <Text pt={2} pb={3}>If you have the OONI Probe app installed, click Run to start the test.</Text>
 
           <Link href={deepLink}>
             <Button>Run</Button>
@@ -122,7 +122,7 @@ export default class extends React.Component {
 
           <Heading pt={4} h={2}>Get the app</Heading>
           <Text pt={2} pb={3}>
-            If you are on a desktop computer, click on install below to learn how you can install OONI Probe.
+            If you are on a desktop computer, click Install to learn how you can install OONI Probe.
           </Text>
 
           <Link href={installLink}>
