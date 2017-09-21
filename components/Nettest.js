@@ -21,25 +21,27 @@ const Nettest = props => {
       window.location = '${storeLink}';
     }, 500)
   }`
+  const center = false
 
   return (
     <Layout>
       <OONIRunHero />
-      <Container pt={4}>
-        <Text pt={2}>Through this link you are able to run specific OONI Probe tests in the mobile app.</Text>
+      <Container p={4}>
+        <Text pt={2} center={center}>Through this link you are able to run specific OONI Probe tests in the mobile app.</Text>
 
-        <Heading pt={4} pb={3}>You have the app</Heading>
-        <Text pt={2} pb={3}>If you have the OONI Probe app installed click Run below to start the test.</Text>
+        <Heading pt={4} pb={3} center={center}>You have the app</Heading>
+        <Text pt={2} pb={3} center={center}>If you have the OONI Probe app installed click Run below to start the test.</Text>
 
           <Link href={deepLink}>
             <Button>Run</Button>
           </Link>
 
-        <Heading pb={3} pt={4}>Get the app</Heading>
-        <Text pt={2} pb={3}>
+        <Heading pb={3} pt={4} center={center}>Get the app</Heading>
+        <Text pt={2} pb={3} center={center}>
           If you are on a desktop computer, click on install below to learn how you can install OONI Probe.
         </Text>
 
+      {/* <Flex justify='center' align='center'> */}
           <Link href={installLink}>
             <Button>
             Install

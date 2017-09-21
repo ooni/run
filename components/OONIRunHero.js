@@ -19,7 +19,9 @@ export default props => {
       <BrandContainer>
         <OONISubBrandRun />
       </BrandContainer>
-      <HeroLead>Let's fight internet censorship together!</HeroLead>
+      <HeroLead>
+      Let's fight internet censorship together!
+    </HeroLead>
     </Hero>
   )
 }

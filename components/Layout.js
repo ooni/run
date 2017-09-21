@@ -1,10 +1,10 @@
 import React from 'react'
 
-import { Provider, rebassTheme } from 'ooni-components'
+import { Provider, theme } from 'ooni-components'
 
 const Layout = props => (
   <div>
-    <Provider theme={rebassTheme}>
+    <Provider theme={theme}>
       <div className='content'>
         { props.children }
       </div>

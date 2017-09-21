@@ -84,7 +84,6 @@ const AddURLButton = Button.extend`
 
 const TestCategoryHeading = styled(Heading)`
   padding: 10px 0;
-  font-size: ${props => props.theme.fontSizes[2]}px;
   color: ${props => props.theme.colors[props.color] || props.theme.colors.black};
 `
 
@@ -98,13 +97,13 @@ const TestDetailsLabel = (props) => {
       {props.name}
       </Box>
       {props.checked
-      && <Box>
-        {props.desc}
+      && <Box pt={1}>
+        <Text italic>{props.desc}</Text>
         </Box>
       }
       {props.checked
       && <Box>
-          <Link styled={{fontStyle: 'italic'}} href={href}>Learn how this test works</Link>
+          <Link href={href}><Text italic>Learn how this test works</Text></Link>
         </Box>
       }
     </div>
@@ -225,20 +224,20 @@ export default class extends React.Component {
       <Layout>
         <OONIRunHero />
 
-        <Container pt={4}>
+        <Container pt={4} maxWidth={800}>
           <Flex wrap>
 
           <Box w={[1, 1/2]} pb={3}>
-          <Heading f={2} pb={3} pt={2}>Test Name</Heading>
+          <Heading h={3}>Test Name</Heading>
       		<RadioGroup
               name='test_name'
               value={this.state.selectedTest}
               onChange={this.handleChange('selectedTest')}>
-            <TestCategoryHeading color='violet5'>Internet Censorship</TestCategoryHeading>
+            <TestCategoryHeading h={4} color='violet5'>Internet Censorship</TestCategoryHeading>
             {censorshipTests.map(({key, name, desc}) => (
               <RadioButton label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
             ))}
-            <TestCategoryHeading color='cyan5'>Net Neutrality</TestCategoryHeading>
+            <TestCategoryHeading h={4} color='cyan5'>Net Neutrality</TestCategoryHeading>
             {netNeutralityTests.map(({key, name, desc}) => (
               <RadioButton label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
             ))}
@@ -246,7 +245,7 @@ export default class extends React.Component {
           </Box>
 
           <Box w={[1, 1/2]}>
-          <Heading f={2} pb={3} pt={2}>What you can do</Heading>
+          <Heading h={3}>What you can do</Heading>
           {this.state.selectedTest == 'web_connectivity'
           && <Text>Choose the sites you want to test, generate a link, and share
       it with your friends and contacts around the world. Encourage them to run
@@ -259,7 +258,7 @@ export default class extends React.Component {
           }
           {this.state.selectedTest == 'web_connectivity'
           && <Box pt={4}>
-          <Heading f={2} pb={3}>URLs</Heading>
+          <Heading h={3} pb={3}>URLs</Heading>
             {this.state.urls.length == 0
             && <Row><Column>
               Click "Add URL" below to add a URL to test
@@ -302,7 +301,9 @@ export default class extends React.Component {
               bottom
               left
               onClick={this.toggleGenerate} />
-              <Overlay w={[1, 9/10]} p={0} style={{borderRadius: '20px', height: '90%'}}>
+              {/* XXX fix height on mobile */}
+              {/* XXX an X button */}
+              <Overlay w={[9/10, 6/10]} p={0} style={{borderRadius: '20px', height: '60%'}}>
                 <Flex wrap style={{height: '100%'}}>
                   <Box w={[1, 1/3]} bg='#8ED8F8'>
                     <GraphicsWithGradient>
@@ -310,10 +311,10 @@ export default class extends React.Component {
                     </GraphicsWithGradient>
                   </Box>
                   <Box w={[1, 2/3]}>
-                  <Container p={3}>
+                  <Container p={[2, 4]} ml={[3, 5]} mr={[3, 5]}>
                     <Heading center>You link is ready!</Heading>
 
-                    <Heading pt={4} pb={2} f={3} center>Share it on social media</Heading>
+                    <Heading pt={4} pb={2} h={3} center>Share it on social media</Heading>
                     <Flex align='center' justify='center'>
                     <Box pr={2}>
                       <TwitterShareButton
