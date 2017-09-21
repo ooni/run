@@ -1,10 +1,9 @@
 require("babel-register")()
 
+const useragent = require('useragent')
 const next = require('next')
 const express = require('express')
 const path = require('path')
-
-const nettestHandler = require('./server/nettestHandler')
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 process.env.PORT = parseInt(process.env.PORT) || 3000
@@ -16,7 +15,6 @@ const handle = app.getRequestHandler()
 app.prepare()
 .then(() => {
   const server = express()
-  server.get('/nettest', nettestHandler)
 
   const staticDir = path.resolve(__dirname, 'static')
   server.use('/static', express.static(staticDir))
@@ -24,6 +22,14 @@ app.prepare()
   server.get('/apple-app-site-association', (req, res) => {
     res.type('application/json')
     return res.sendFile(path.join(__dirname, 'static', 'apple-app-site-association'))
+  })
+
+  server.get('/nettest', (req, res) => {
+    let ua = useragent.parse(req.headers['user-agent'])
+    if (ua.family === 'Chrome Mobile' && Number(ua.major) >= 25) {
+      return res.redirect(getIntentURI(req))
+    }
+    return handle(req, res)
   })
 
   server.get('*', (req, res) => {
