@@ -1,5 +1,10 @@
 # ChangeLog
 
+## ooni-run 0.1.0-beta.16 [2017-09-20]
+
+Changes:
+* Update ooni-components to latest version
+
 ## ooni-run 0.1.0-beta.15 [2017-09-20]
 
 Changed:
