@@ -260,40 +260,40 @@ export default class extends React.Component {
     `
     return (
       <Layout>
-        <OONIRunHero />
+        <OONIRunHero href={'https://ooni.torproject.org'} />
 
         <Container pt={4} maxWidth={800}>
           <Flex wrap>
 
           <Box w={[1, 1/2]} pb={3}>
-          <Heading h={3}>Test Name</Heading>
+          <Heading h={2}>Test Name</Heading>
       		<RadioGroup
               name='test_name'
               value={this.state.selectedTest}
               onChange={this.handleChange('selectedTest')}>
             <TestCategoryHeading h={4} color='violet5'>Internet Censorship</TestCategoryHeading>
             {censorshipTests.map(({key, name, desc}) => (
-              <RadioButton label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
+              <RadioButton key={key} label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
             ))}
             <TestCategoryHeading h={4} color='cyan5'>Net Neutrality</TestCategoryHeading>
             {netNeutralityTests.map(({key, name, desc}) => (
-              <RadioButton label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
+              <RadioButton key={key} label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
             ))}
             <TestCategoryHeading h={4} color='orange5'>Middleboxes</TestCategoryHeading>
             {middleBoxTests.map(({key, name, desc}) => (
-              <RadioButton label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
+              <RadioButton key={key} label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
             ))}
 
           </RadioGroup>
           </Box>
 
           <Box w={[1, 1/2]}>
-            <Heading h={3}>What you can do</Heading>
+            <Heading h={2}>What you can do</Heading>
             <WhatCanYouDoText test={this.state.selectedTest} />
 
             {this.state.selectedTest == 'web_connectivity'
             && <Box pt={4}>
-            <Heading h={3} pb={3}>URLs</Heading>
+            <Heading h={2} pb={3}>URLs</Heading>
               {this.state.urls.length == 0
               && <div>
                 Click "Add URL" below to add a URL to test
@@ -333,13 +333,13 @@ export default class extends React.Component {
             style={{borderRadius: '20px'}}>
 
             <Flex wrap>
-              <Box w={[1, 1/3]} bg='#8ED8F8'>
+              <Box w={[1, 1/3]} style={{backgroundColor: '#8ED8F8'}}>
                 <GraphicsWithGradient>
                   <GraphicsOctopusModal />
                 </GraphicsWithGradient>
               </Box>
               <Box w={[1, 2/3]}>
-              <Container p={[4, 2]} ml={[5, 3]} mr={[5, 3]}>
+              <Container p={[1, 2]} ml={[2, 4]} mr={[2, 4]}>
                 <Heading h={1} center>Your link is ready!</Heading>
 
                 <Heading pt={4} pb={2} h={3} center>Share it on social media</Heading>
@@ -352,10 +352,10 @@ export default class extends React.Component {
                 </Box>
                 </Flex>
 
-                <Heading center pt={4} pb={2} h={3}>Share this URL with your friends</Heading>
+                <Heading pt={4} pb={2} h={3}>Share this URL with your friends</Heading>
                 <Input value={universalLink} />
 
-                <Heading center pt={4} pb={2} h={3}>Or embed this code on your website</Heading>
+                <Heading pt={4} pb={2} h={3}>Or embed this code on your website</Heading>
                 <Input type='textarea' rows={6} value={embedCode} />
 
                 <Box pt={4}>

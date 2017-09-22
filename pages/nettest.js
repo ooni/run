@@ -109,11 +109,11 @@ export default class extends React.Component {
 
     return (
       <Layout>
-        <OONIRunHero />
+        <OONIRunHero href={'https://run.ooni.io'} />
         <Container p={4}>
           <Text pt={2}>Measure internet censorship by running OONI Probe.</Text>
 
-          <Heading pt={4} h={2}>You have the app</Heading>
+          <Heading pt={2} h={2}>You have the app</Heading>
           <Text pt={2} pb={3}>If you have the OONI Probe app installed, click Run to start the test.</Text>
 
           <Link href={deepLink}>

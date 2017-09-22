@@ -3,7 +3,8 @@ import React from 'react'
 import {
   Hero,
   HeroLead,
-  OONISubBrandRun
+  LogoOONIRun,
+  Link
 } from 'ooni-components'
 
 import styled from 'styled-components'
@@ -17,7 +18,9 @@ export default props => {
   return (
     <Hero pb={4} pt={4}>
       <BrandContainer>
-        <OONISubBrandRun />
+        <Link href={props.href}>
+          <LogoOONIRun />
+        </Link>
       </BrandContainer>
       <HeroLead>
       Let's fight internet censorship together!
