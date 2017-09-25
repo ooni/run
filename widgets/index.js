@@ -1,5 +1,3 @@
-import OONIRunWidget from './OONIRunWidget'
-
 const widgetBaseUrl = 'http://localhost:3000/widget'
 // Stolen from: https://gist.github.com/dciccale/4087856
 const DomReady = function(a,b,c){b=document,c='addEventListener';b[c]?b[c]('DOMContentLoaded',a):window.attachEvent('onload',a)}
