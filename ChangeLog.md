@@ -1,5 +1,10 @@
 # ChangeLog
 
+## ooni-run 0.1.0-beta.17 [2017-09-25]
+
+Fixes:
+* Twitter support
+
 ## ooni-run 0.1.0-beta.16 [2017-09-20]
 
 Changes:
