@@ -1,5 +1,6 @@
 import React from 'react'
 
+import Head from 'next/head'
 
 import {
   Container,
@@ -18,7 +19,7 @@ import { getEncodedQuery } from '../utils/links'
 import Layout from '../components/Layout'
 import OONIRunHero from '../components/OONIRunHero'
 
-import { androidPackage, appStoreLink, playStoreLink } from '../settings'
+import mobileApp from '../config/mobileApp'
 
 const useragent = require('useragent/index.js')
 
@@ -37,7 +38,7 @@ const getUniversalLink = (query) => {
 }
 
 const getTitle = (query) => {
-  return 'OONI Run'
+  return 'OONI Run | Let\'s fight internet censorship together!'
 }
 
 const getDescription = (query) => {
@@ -49,9 +50,9 @@ const getIntentURI = (query) => {
   uri += getEncodedQuery(query)
   uri += '#Intent;'
   uri += 'package='
-  uri += androidPackage
+  uri += mobileApp.googlePlayID
   uri += ';scheme=ooni;end;S.browser_fallback_url='
-  uri += playStoreLink
+  uri += mobileApp.googlePlayLink
   return uri
 }
 
@@ -69,9 +70,9 @@ export default class extends React.Component {
       withWindowLocation = false
 
     if (ua.os.family == 'iOS') {
-      storeLink = appStoreLink
+      storeLink = mobileApp.appStoreLink
     } else {
-      storeLink = playStoreLink
+      storeLink = mobileApp.googlePlayLink
     }
 
     if (ua.os.family == 'Android') {
@@ -94,12 +95,25 @@ export default class extends React.Component {
       withWindowLocation,
       storeLink,
       installLink,
-      userAgent
+      userAgent,
+      universalLink,
+      title,
+      description
     }
   }
 
   render() {
-    const { userAgent, deepLink, withWindowLocation, storeLink, installLink } = this.props
+    const {
+      userAgent,
+      deepLink,
+      withWindowLocation,
+      storeLink,
+      installLink,
+      universalLink,
+      title,
+      description
+    } = this.props
+
     const windowScript = `window.onload = function() {
       document.getElementById('l').src = '${deepLink}';
       setTimeout(function() {
@@ -108,7 +122,44 @@ export default class extends React.Component {
     }`
 
     return (
-      <Layout>
+      <Layout title={title}>
+        <Head>
+          <meta name='twitter:card' content='app' />
+          <meta name='twitter:site' content='@OpenObservatory' />
+
+          {/* Open Graph meta tags. Shared by Twitter and Facebook */}
+          <meta name='og:type' content='website' />
+          {universalLink && <meta name='og:url' content={universalLink} />}
+          {title && <meta name='og:title' content={title} />}
+          <meta name='og:image' content='https://run.ooni.io/static/images/Run-VerticalColorW400px.png' />
+          {description && <meta name='og:description' content={description} />}
+
+          {/* This is Twitter specific stuff
+            * See: https://dev.twitter.com/cards/types/app */}
+          {deepLink && <meta name='twitter:app:url:iphone' content={deepLink} />}
+          {deepLink && <meta name='twitter:app:url:ipad' content={deepLink} />}
+          {universalLink && <meta name='twitter:app:url:googleplay' content={universalLink} />}
+
+          <meta name='twitter:image' content='https://run.ooni.io/static/images/Run-VerticalColorW400px.png' />
+          <meta name='twitter:app:name:iphone' content={mobileApp.iPhoneName} />
+          <meta name='twitter:app:id:iphone' content={mobileApp.iPhoneID} />
+          <meta name='twitter:app:name:ipad' content={mobileApp.iPadName} />
+          <meta name='twitter:app:id:ipad' content={mobileApp.iPadID} />
+          <meta name='twitter:app:name:googleplay' content={mobileApp.googlePlayName} />
+          <meta name='twitter:app:id:googleplay' content={mobileApp.googlePlayID} />
+
+          {/* This is Facebook specific stuff
+            * See:
+            * * https://developers.facebook.com/docs/applinks/add-to-content/
+            * * https://blog.branch.io/how-to-deep-link-on-facebook/ */}
+          <meta property='al:android:package' content={mobileApp.googlePlayID} />
+          <meta property='al:android:app_name' content={mobileApp.googlePlayName} />
+          {deepLink && <meta property='al:android:url' content={deepLink} />}
+
+          <meta property='al:ios:app_store_id' content={mobileApp.iPhoneID} />
+          <meta property='al:ios:app_name' content={mobileApp.iPhoneName} />
+          {deepLink && <meta property='al:ios:url' content={deepLink} />}
+        </Head>
         <OONIRunHero href={'https://run.ooni.io'} />
         <Container p={4}>
           <Text pt={2}>Measure internet censorship by running OONI Probe.</Text>

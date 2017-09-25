@@ -12,9 +12,6 @@ export default class MyDocument extends Document {
     return (
       <html>
         <Head>
-          <title>{meta.defaultTitle}</title>
-          <meta http-equiv='Content-Type' content={meta.contentType} />
-          <meta name='viewport' content={meta.viewport} />
           {styleTags}
         </Head>
         <body>
