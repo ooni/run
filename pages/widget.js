@@ -121,7 +121,6 @@ export default class extends React.Component {
     const title = query.title || 'Fight Censorship'
     const runLink = query.link || 'https://run.ooni.io/'
 
-    console.log(req, query)
     return {
       widgetType,
       title,
