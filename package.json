@@ -26,9 +26,9 @@
   "scripts": {
     "dev": "NODE_ENV=development node index.js",
     "start": "NODE_ENV=production node index.js",
-    "build": "npm run build:next && npm run build:widgets",
+    "build": "yarn run build:next && yarn run build:widgets",
     "build:next": "next build",
     "build:widgets": "browserify -t babelify widgets/index.js > dist/widgets.js",
-    "release": "npm run build && npm publish"
+    "release": "yarn run build && yarn publish"
   }
 }
