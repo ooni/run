@@ -30,7 +30,7 @@ const renderRunWidgets = () => {
                         '&title=' + encodeURIComponent(innerText) +
                         '&type=banner')
     iframe.setAttribute('width', '400');
-    iframe.setAttribute('height', '400');
+    iframe.setAttribute('height', '307');
     iframe.setAttribute('frameborder', '0');
     iframe.setAttribute('scrolling', 'no');
     el.parentNode.replaceChild(iframe, el)
