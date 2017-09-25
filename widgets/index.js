@@ -1,18 +1,42 @@
 import OONIRunWidget from './OONIRunWidget'
 
+const widgetBaseUrl = 'http://localhost:3000/widget'
+// Stolen from: https://gist.github.com/dciccale/4087856
+const DomReady = function(a,b,c){b=document,c='addEventListener';b[c]?b[c]('DOMContentLoaded',a):window.attachEvent('onload',a)}
+
 const renderRunWidgets = () => {
-  const runEls = document.getElementsByClassName('ooni-run-button')
+  const buttonEls = document.getElementsByClassName('ooni-run-button')
 
-  Array.prototype.forEach.call(runEls, (el) => {
-    const buttonContainer = document.createElement('div')
+  Array.prototype.forEach.call(buttonEls, (el) => {
     const { href, innerText } = el
-    el.parentNode.insertBefore(buttonContainer, el.nextSibling)
-    el.parentNode.removeChild(el)
+    const iframe = document.createElement('iframe')
+    iframe.setAttribute('src',
+      widgetBaseUrl + '?link=' + encodeURIComponent(href) + '&type=button')
+    iframe.setAttribute('width', '200');
+    iframe.setAttribute('height', '60');
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('scrolling', 'no');
+    el.parentNode.replaceChild(iframe, el)
+  })
 
-    buttonContainer.appendChild(
-      OONIRunWidget({href, text: innerText})
-    )
+  const bannerEls = document.getElementsByClassName('ooni-run-banner')
+
+  Array.prototype.forEach.call(bannerEls, (el) => {
+    const { href, innerText } = el
+    const iframe = document.createElement('iframe')
+    iframe.setAttribute('src',
+                        widgetBaseUrl +
+                        '?link=' + encodeURIComponent(href) +
+                        '&title=' + encodeURIComponent(innerText) +
+                        '&type=banner')
+    iframe.setAttribute('width', '400');
+    iframe.setAttribute('height', '400');
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('scrolling', 'no');
+    el.parentNode.replaceChild(iframe, el)
   })
 }
 
-renderRunWidgets()
+DomReady(() => {
+  renderRunWidgets()
+})

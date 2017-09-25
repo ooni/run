@@ -12,7 +12,8 @@ module.exports = {
     config.plugins.push(
       new webpack.IgnorePlugin(/\.\/lib\/update/)
     )
-		config.module.rules.push({
+
+    config.module.rules.push({
       test: /\.(eot|ttf|woff|woff2|otf)$/,
       use: [
         {
