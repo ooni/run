@@ -1,5 +1,11 @@
 # ChangeLog
 
+## ooni-run 0.1.0-beta.21 [2017-09-26]
+
+Changes:
+* Update ooni-components
+* Make widget test name dynamic
+
 ## ooni-run 0.1.0-beta.20 [2017-09-26]
 
 Fixes:
