@@ -1,5 +1,15 @@
 # ChangeLog
 
+## ooni-run 0.1.0-beta.18 [2017-09-26]
+
+Added:
+
+* Banner style widget
+
+Changes:
+
+* Update the widget code to use iframes
+
 ## ooni-run 0.1.0-beta.17 [2017-09-25]
 
 Fixes:
