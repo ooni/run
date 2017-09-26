@@ -1,5 +1,15 @@
 # ChangeLog
 
+## ooni-run 0.1.0-beta.19 [2017-09-26]
+
+Fixes:
+
+* Bug in widget
+* Bug in widget code
+
+Changes:
+* Increase size of modal
+
 ## ooni-run 0.1.0-beta.18 [2017-09-26]
 
 Added:
