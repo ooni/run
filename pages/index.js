@@ -261,7 +261,7 @@ export default class extends React.Component {
     /* For a tall banner */
     <div data-link='${universalLink}' class='ooni-run-banner'>
       Fight Censorship
-    </a>
+    </div>
     /* If you have not already included the OONI widget code */
     <script src='https://cdn.jsdelivr.net/npm/ooni-run/dist/widgets.js'></script>
     `
@@ -334,7 +334,7 @@ export default class extends React.Component {
             onHideClick={this.toggleGenerate}
             show={this.state.generated}
             width={[9/10, 6/10]}
-            height={[9/10, 6/10]}
+            height={[9/10, 7/10]}
             p={0}
             closeButton='right'
             style={{borderRadius: '20px'}}>
