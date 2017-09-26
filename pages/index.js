@@ -254,7 +254,14 @@ export default class extends React.Component {
   render() {
     const universalLink = getUniversalLink(this.state.selectedTest, this.state.urls.map(u => u.value))
     const embedCode = `
+
+    /* For a simple button */
     <a href='${universalLink}' class='ooni-run-button'>Run OONI!</a>
+
+    /* For a tall banner */
+    <div data-link='${universalLink}' class='ooni-run-banner'>
+      Fight Censorship
+    </a>
     /* If you have not already included the OONI widget code */
     <script src='https://cdn.jsdelivr.net/npm/ooni-run/dist/widgets.js'></script>
     `

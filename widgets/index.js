@@ -2,35 +2,36 @@ const widgetBaseUrl = 'https://run.ooni.io/widget'
 // Stolen from: https://gist.github.com/dciccale/4087856
 const DomReady = function(a,b,c){b=document,c='addEventListener';b[c]?b[c]('DOMContentLoaded',a):window.attachEvent('onload',a)}
 
+const makeIframe = (w, h, src) => {
+  const iframe = document.createElement('iframe')
+  iframe.setAttribute('src',)
+  iframe.setAttribute('width', w)
+  iframe.setAttribute('height', h)
+  iframe.setAttribute('frameborder', '0')
+  iframe.setAttribute('scrolling', 'no')
+  return iframe
+}
+
 const renderRunWidgets = () => {
   const buttonEls = document.getElementsByClassName('ooni-run-button')
 
   Array.prototype.forEach.call(buttonEls, (el) => {
     const { href, innerText } = el
-    const iframe = document.createElement('iframe')
-    iframe.setAttribute('src',
-      widgetBaseUrl + '?link=' + encodeURIComponent(href) + '&type=button')
-    iframe.setAttribute('width', '200');
-    iframe.setAttribute('height', '60');
-    iframe.setAttribute('frameborder', '0');
-    iframe.setAttribute('scrolling', 'no');
+    const iframe = makeIframe('200', '60', widgetBaseUrl + '?link=' +
+      encodeURIComponent(href) + '&type=button')
     el.parentNode.replaceChild(iframe, el)
   })
 
   const bannerEls = document.getElementsByClassName('ooni-run-banner')
 
   Array.prototype.forEach.call(bannerEls, (el) => {
-    const { href, innerText } = el
-    const iframe = document.createElement('iframe')
-    iframe.setAttribute('src',
-                        widgetBaseUrl +
-                        '?link=' + encodeURIComponent(href) +
+    const { dataset, innerText } = el
+    const link = dataset.link || 'https://run.ooni.io'
+
+    const iframe = makeIframe('400', '307', widgetBaseUrl +
+                        '?link=' + encodeURIComponent(link) +
                         '&title=' + encodeURIComponent(innerText) +
                         '&type=banner')
-    iframe.setAttribute('width', '400');
-    iframe.setAttribute('height', '307');
-    iframe.setAttribute('frameborder', '0');
-    iframe.setAttribute('scrolling', 'no');
     el.parentNode.replaceChild(iframe, el)
   })
 }

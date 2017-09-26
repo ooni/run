@@ -28,7 +28,7 @@
     "start": "NODE_ENV=production node index.js",
     "build": "yarn run build:next && yarn run build:widgets",
     "build:next": "next build",
-    "build:widgets": "browserify -t babelify widgets/index.js > dist/widgets.js",
+    "build:widgets": "browserify -t babelify widgets/index.js | uglifyjs > dist/widgets.js",
     "debug:widgets": "yarn run build:widgets && cp dist/widgets.js static/widgets.js",
     "release": "yarn run build && yarn publish"
   }
