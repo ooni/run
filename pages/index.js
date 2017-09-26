@@ -29,76 +29,12 @@ import {
   TwitterShareButton
 } from 'ooni-components'
 
-const censorshipTests = [
-  {
-    key: 'web_connectivity',
-    name: 'Web Connectivity',
-    desc: 'Check if websites are blocked.',
-    href: 'https://ooni.torproject.org/nettest/web-connectivity/'
-  }
-]
-const cTestKeys = censorshipTests.map(d => d.key)
-
-const middleBoxTests = [
-  {
-    key: 'http_invalid_request_line',
-    name: 'HTTP Invalid Request Line',
-    desc: 'Find middleboxes.',
-    href: 'https://ooni.torproject.org/nettest/http-invalid-request-line/'
-  },
-  {
-    key: 'http_header_field_manipulation',
-    name: 'HTTP Header Field Manipulation.',
-    desc: 'Find middleboxes',
-    href: 'https://ooni.torproject.org/nettest/http-header-field-manipulation/'
-  }
-]
-const mbTestKeys = middleBoxTests.map(d => d.key)
-
-const netNeutralityTests = [
-  {
-    key: 'ndt',
-    name: 'NDT Speed Test',
-    desc: 'Measure the speed and performance of your network.',
-    href: 'https://ooni.torproject.org/nettest/ndt/'
-  },
-  {
-    key: 'dash',
-    name: 'DASH Video Streaming',
-    desc: 'Measure video streaming performance.',
-    href: 'https://ooni.torproject.org/nettest/dash/'
-  }
-]
-const nnTestKeys = netNeutralityTests.map(d => d.key)
-
-const isIn = (k, a) => a.indexOf(k) !== -1
-
-const WhatCanYouDoText = props => {
-  if (isIn(props.test, nnTestKeys)) {
-    return <Text>
-      Generate a link and share it with your friends and contacts around the
-    world. Encourage them to run OONI Probe to measure the speed and
-    performance of their networks!
-      </Text>
-  }
-
-  if (isIn(props.test, mbTestKeys)) {
-    return <Text>
-      Generate a link and share it with your friends and contacts around the
-    world. Encourage them to run OONI Probe to find middleboxes in their
-    networks!
-      </Text>
-  }
-
-  if (isIn(props.test, cTestKeys)) {
-    return <Text>
-      Generate a link and share it with your friends and contacts around the
-    world. Encourage them to run OONI Probe to test the sites of your choice!
-      </Text>
-  }
-
-  return <Text>Generate a link and share it with your friends and contacts around the world.</Text>
-}
+import {
+  censorshipTests,
+  netNeutralityTests,
+  middleBoxTests,
+  WhatCanYouDoText
+} from '../utils/nettest'
 
 const AddURLButton = styled(Button)`
   color: ${props => props.theme.colors.gray5};
@@ -333,13 +269,13 @@ export default class extends React.Component {
           <Modal
             onHideClick={this.toggleGenerate}
             show={this.state.generated}
-            width={[9/10, 6/10]}
+            width={[9/10, 7/10]}
             height={[9/10, 7/10]}
             p={0}
             closeButton='right'
             style={{borderRadius: '20px'}}>
 
-            <Flex wrap>
+            <Flex wrap style={{minHeight: '100%'}}>
               <Box w={[1, 1/3]} style={{backgroundColor: '#8ED8F8'}}>
                 <GraphicsWithGradient>
                   <GraphicsOctopusModal />

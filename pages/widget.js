@@ -1,3 +1,5 @@
+import url from 'url'
+
 import {
   Container,
   Button,
@@ -14,6 +16,9 @@ import Layout from '../components/Layout'
 
 import styled from 'styled-components'
 
+import {
+  getTestType
+} from '../utils/nettest'
 
 const StyledButtonWidget = styled(Button)`
   padding-top: 5px;
@@ -23,7 +28,7 @@ const StyledButtonWidget = styled(Button)`
 `
 
 const ButtonWidget = (props) => (
-  <Link href={props.link}>
+  <Link href={props.runLink}>
     <StyledButtonWidget>
       <img
         src='/static/images/ButtonOONI.png'
@@ -94,21 +99,21 @@ const BannerWidget = (props) => (
     <Hr />
     <Container maxWidth={350}>
       <Text center>Help take a stance against internet censorship and test for</Text>
-      <Heading center h={5}>Middleboxes</Heading>
+      <Heading center h={5}>{props.testType}</Heading>
       <ButtonCenterContainer>
-        <Link href={props.runLink} />
+        <Link href={props.runLink}>
           <BannerButton>
           Run OONI
           </BannerButton>
-        <Link href={props.runLink} />
+        </Link>
       </ButtonCenterContainer>
       <PoweredBy>
         <Text>Powered By</Text>
         <Link href='https://ooni.io/'>
-        <img
-          src='/static/images/ButtonOONI.png'
-          srcSet='/static/images/ButtonOONI@2x.png 2x, /static/images/ButtonOONI@4x.png 4x'
-        />
+          <img
+            src='/static/images/ButtonOONI.png'
+            srcSet='/static/images/ButtonOONI@2x.png 2x, /static/images/ButtonOONI@4x.png 4x'
+          />
         </Link>
       </PoweredBy>
     </Container>
@@ -121,10 +126,16 @@ export default class extends React.Component {
     const title = query.title || 'Fight Censorship'
     const runLink = query.link || 'https://run.ooni.io/'
 
+    const u = url.parse(runLink, true)
+    const testName = u.query.tn || 'web_connectivity'
+    const testType = getTestType(testName)
+
     return {
       widgetType,
       title,
-      runLink
+      runLink,
+      testName,
+      testType
     }
   }
 
@@ -132,13 +143,15 @@ export default class extends React.Component {
     const {
       widgetType,
       title,
-      runLink
+      runLink,
+      testType,
+      testName
     } = this.props
 
     if (widgetType === 'banner') {
       return (
         <Layout>
-          <BannerWidget title={title} runLink={runLink}/>
+          <BannerWidget testType={testType} title={title} runLink={runLink}/>
         </Layout>
       )
     }
