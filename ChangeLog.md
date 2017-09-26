@@ -1,5 +1,11 @@
 # ChangeLog
 
+## ooni-run 0.1.0-beta.20 [2017-09-26]
+
+Fixes:
+
+* Adds missing images
+
 ## ooni-run 0.1.0-beta.19 [2017-09-26]
 
 Fixes:
