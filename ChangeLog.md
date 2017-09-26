@@ -1,5 +1,9 @@
 # ChangeLog
 
+## ooni-run 0.1.0 [2017-09-26]
+
+Stable release of ooni-run
+
 ## ooni-run 0.1.0-beta.22 [2017-09-26]
 
 Fixes:
