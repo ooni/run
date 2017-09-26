@@ -4,7 +4,7 @@ const DomReady = function(a,b,c){b=document,c='addEventListener';b[c]?b[c]('DOMC
 
 const makeIframe = (w, h, src) => {
   const iframe = document.createElement('iframe')
-  iframe.setAttribute('src',)
+  iframe.setAttribute('src', src)
   iframe.setAttribute('width', w)
   iframe.setAttribute('height', h)
   iframe.setAttribute('frameborder', '0')
