@@ -28,14 +28,14 @@ const StyledButtonWidget = styled(Button)`
 `
 
 const ButtonWidget = (props) => (
-  <Link href={props.runLink}>
+  <a href={props.runLink} target='_parent'>
     <StyledButtonWidget>
       <img
         src='/static/images/ButtonOONI.png'
         srcSet='/static/images/ButtonOONI@2x.png 2x, /static/images/ButtonOONI@4x.png 4x'
       />
     </StyledButtonWidget>
-  </Link>
+  </a>
 )
 
 const StyledBannerContainer = styled.div`
@@ -101,20 +101,20 @@ const BannerWidget = (props) => (
       <Text center>Help take a stance against internet censorship and test for</Text>
       <Heading center h={5}>{props.testType}</Heading>
       <ButtonCenterContainer>
-        <Link href={props.runLink}>
+        <a href={props.runLink} target='_parent'>
           <BannerButton>
           Run OONI
           </BannerButton>
-        </Link>
+        </a>
       </ButtonCenterContainer>
       <PoweredBy>
         <Text>Powered By</Text>
-        <Link href='https://ooni.io/'>
+        <a href='https://ooni.io/' target='_parent'>
           <img
             src='/static/images/ButtonOONI.png'
             srcSet='/static/images/ButtonOONI@2x.png 2x, /static/images/ButtonOONI@4x.png 4x'
           />
-        </Link>
+        </a>
       </PoweredBy>
     </Container>
   </StyledBannerContainer>
