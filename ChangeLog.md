@@ -1,5 +1,10 @@
 # ChangeLog
 
+## ooni-run 0.1.0-beta.22 [2017-09-26]
+
+Fixes:
+* Set link target to parent
+
 ## ooni-run 0.1.0-beta.21 [2017-09-26]
 
 Changes:
