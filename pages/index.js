@@ -62,6 +62,10 @@ const TestCategoryHeading = styled(Heading)`
   color: ${props => props.theme.colors[props.color] || props.theme.colors.black};
 `
 
+const StyleLinkButton = Button.extend`
+  text-transform: none;
+`
+
 const TestDetailsLabel = (props) => {
   // The links to the details of the test name are not in snake_case, but in dash-case
   const testName = (props.value && props.value.replace(/[_]/g, '-')) || ''
@@ -276,7 +280,7 @@ export default class extends React.Component {
             style={{borderRadius: '20px'}}>
 
             <Flex wrap style={{minHeight: '100%'}}>
-              <Box w={[1, 1/3]} style={{backgroundColor: '#8ED8F8'}}>
+              <Box w={[1, 1/3]} height={[1, 1/3]} style={{backgroundColor: '#8ED8F8'}}>
                 <GraphicsWithGradient>
                   <GraphicsOctopusModal />
                 </GraphicsWithGradient>
@@ -287,12 +291,19 @@ export default class extends React.Component {
 
                 <Heading pt={4} pb={2} h={3} center>Share it on social media</Heading>
                 <Flex align='center' justify='center'>
-                <Box pr={2}>
-                  <TwitterShareButton
-                    url={universalLink}
-                    message='Run OONI Probe to test for censorship!'
-                    />
-                </Box>
+                  <Box pr={2}>
+                    <TwitterShareButton
+                      url={universalLink}
+                      message='Run OONI Probe to test for censorship!'
+                      />
+                  </Box>
+                  <Box pr={2}>
+                    <Link href={universalLink}>
+                      <StyleLinkButton>
+                        Link
+                      </StyleLinkButton>
+                    </Link>
+                  </Box>
                 </Flex>
 
                 <Heading pt={4} pb={2} h={3}>Share this URL with your friends</Heading>
