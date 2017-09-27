@@ -1,5 +1,11 @@
 # ChangeLog
 
+## ooni-run 0.1.1 [2017-09-27]
+
+Changes:
+
+* Add some fallback fonts
+
 ## ooni-run 0.1.0 [2017-09-26]
 
 Stable release of ooni-run
