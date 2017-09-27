@@ -36,6 +36,4 @@ const renderRunWidgets = () => {
   })
 }
 
-DomReady(() => {
-  renderRunWidgets()
-})
+document.readyState in {'loaded':1, 'interactive':1, 'complete':1} ? renderRunWidgets() : DomReady(() => { renderRunWidgets() })
