@@ -46,12 +46,12 @@ injectGlobal`
 		border: 0;
 		font-size: 100%;
 		font: inherit;
-    font-family: "Fira Sans";
+    font-family: "Fira Sans", "Lucida", "Calibri", "Myriad", "Helvetica", "Arial", sans-serif;
 		vertical-align: baseline;
 	}
 
 	/* HTML5 display-role reset for older browsers */
-	article, aside, details, figcaption, figure, 
+	article, aside, details, figcaption, figure,
 	footer, header, hgroup, menu, nav, section {
 		display: block;
 	}
