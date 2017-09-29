@@ -1,5 +1,11 @@
 # ChangeLog
 
+## ooni-run 0.1.2 [2017-09-29]
+
+Fixes:
+
+* Do not break when loaded with async
+
 ## ooni-run 0.1.1 [2017-09-27]
 
 Changes:
