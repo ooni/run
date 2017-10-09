@@ -48,7 +48,7 @@ export const isIn = (k, a) => a.indexOf(k) !== -1
 
 export const getTestType = testName => {
   if (isIn(testName, nnTestKeys)) {
-    return 'Network Neutrality'
+    return 'Speed & Performance'
   }
   if (isIn(testName, mbTestKeys)) {
     return 'Middleboxes'

@@ -222,7 +222,7 @@ export default class extends React.Component {
             {censorshipTests.map(({key, name, desc}) => (
               <RadioButton key={key} label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
             ))}
-            <TestCategoryHeading h={4} color='cyan5'>Net Neutrality</TestCategoryHeading>
+            <TestCategoryHeading h={4} color='cyan5'>Speed & Performance</TestCategoryHeading>
             {netNeutralityTests.map(({key, name, desc}) => (
               <RadioButton key={key} label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
             ))}
