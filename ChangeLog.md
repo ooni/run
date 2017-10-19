@@ -1,5 +1,11 @@
 # ChangeLog
 
+## ooni-run 0.1.3 [2017-09-29]
+
+Changes:
+
+* Rename Netwrok Neutrality to Speed & Performance
+
 ## ooni-run 0.1.2 [2017-09-29]
 
 Fixes:
