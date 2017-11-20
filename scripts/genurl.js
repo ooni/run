@@ -2,7 +2,7 @@
 import * as fs from 'fs'
 import { getUniversalLink } from '../utils/links'
 
-const CSV_PATH = '../../test-lists/lists/global.csv'
+const CSV_PATH = process.argv[2] || '../../test-lists/lists/global.csv'
 
 fs.readFile(CSV_PATH, 'utf8', function (err,data) {
   if (err) {
