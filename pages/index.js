@@ -170,14 +170,16 @@ export default class extends React.Component {
       const value = event.target.value
       let state = Object.assign({}, this.state)
       state.urls = state.urls.map(url => Object.assign({}, url))
-      state.urls[idx]['value'] = value
-      state.urls[idx]['error'] = null
-      if (!value.startsWith('https://') && !value.startsWith('http://')) {
-        state.urls[idx]['error'] = 'URL must start with http:// or https://'
-        state.error = true
-      } else {
-        state.error = false
-      }
+      state.error = false
+      let update = value.split('\n').map((line) => {
+        let itm = {'value': line, 'error': null}
+        if (!line.startsWith('https://') && !line.startsWith('http://')) {
+          itm['error'] = 'URL must start with http:// or https://'
+          state.error = true
+        }
+        return itm
+      })
+      state.urls.splice.apply(state.urls, [idx, 1].concat(update))
       this.setState(state)
     })
   }
