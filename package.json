@@ -30,6 +30,7 @@
     "build:next": "next build",
     "build:widgets": "browserify -t babelify widgets/index.js | uglifyjs > dist/widgets.js",
     "debug:widgets": "yarn run build:widgets && cp dist/widgets.js static/widgets.js",
-    "release": "yarn run build && yarn publish --new-version $(jq -r .version package.json)"
+    "release": "yarn run build && yarn publish --new-version $(jq -r .version package.json)",
+    "genurl": "babel-node scripts/genurl.js"
   }
 }
