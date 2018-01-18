@@ -89,6 +89,104 @@ const TestDetailsLabel = (props) => {
   )
 }
 
+class AddURLsSection extends React.Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      urls: props.urls
+    }
+    this.handleDeleteURL = this.handleDeleteURL.bind(this)
+    this.handleEditURL = this.handleEditURL.bind(this)
+    this.handleKeyPress = this.handleKeyPress.bind(this)
+    this.addURL = this.addURL.bind(this)
+    this.urlRefs = new Map()
+  }
+
+  addURL() {
+    let state = Object.assign({}, this.state)
+    const idx = this.state.urls.length
+    state.urls.push({value: 'http://', error: null, ref: null})
+    this.props.onUpdatedURLs(state.urls)
+    this.setState(state, () => {
+      // This is a ghetto hax, that is a workaround for:
+      // https://github.com/jxnblk/rebass/issues/329
+      const urlInputs = document.getElementsByClassName('url-input')
+      const target = urlInputs[urlInputs.length - 1]
+      target.focus()
+      target.setSelectionRange(7,7)
+    })
+  }
+
+  handleKeyPress (e) {
+    if (e.key === 'Enter') {
+      this.addURL()
+    }
+  }
+
+  handleDeleteURL(idx) {
+    return ((event) => {
+      let state = Object.assign({}, this.state)
+      state.urls = state.urls
+                        .filter((url, jdx) => jdx !== idx)
+                        .map(url => Object.assign({}, url))
+      this.setState(state)
+      this.props.onUpdatedURLs(state.urls)
+    }).bind(this)
+  }
+
+  handleEditURL(idx) {
+    return ((event) => {
+      const value = event.target.value
+      let state = Object.assign({}, this.state)
+      state.urls = state.urls.map(url => Object.assign({}, url))
+      state.error = false
+      let update = value.split(' ').map((line) => {
+        let itm = {'value': line, 'error': null}
+        if (!line.startsWith('https://') && !line.startsWith('http://')) {
+          itm['error'] = 'URL must start with http:// or https://'
+          state.error = true
+        }
+        return itm
+      })
+      state.urls.splice.apply(state.urls, [idx, 1].concat(update))
+      this.setState(state)
+    })
+  }
+
+  render() {
+    const { onUpdatedURLs } = this.props
+    const { urls } = this.state
+
+    return (
+      <Box pt={4}>
+      <Heading h={2} pb={3}>URLs</Heading>
+        {urls.length == 0
+        && <div>
+          Click "Add URL" below to add a URL to test
+          </div>
+        }
+        {urls.map((url, idx) => <div key={`url-${idx}`}>
+          <InputWithIconButton
+                className='url-input'
+                value={url.value}
+                icon={<MdDelete />}
+                error={url.error}
+                onKeyPress={this.handleKeyPress}
+                onBlur={() => onUpdatedURLs(urls)}
+                onChange={this.handleEditURL(idx)}
+                onAction={this.handleDeleteURL(idx)} />
+          </div>)}
+        <div>
+          <AddURLButton onClick={this.addURL}>
+          + Add URL
+          </AddURLButton>
+        </div>
+        </Box>
+      )
+    }
+}
+
 const GraphicsWithGradient = styled(Box)`
   width: 100%;
   height: 100%;
@@ -132,56 +230,13 @@ export default class extends React.Component {
       error: false,
       generated: false
     }
+
     this.handleChange = this.handleChange.bind(this)
-    this.handleEditURL = this.handleEditURL.bind(this)
-    this.addURL = this.addURL.bind(this)
-    this.handleDeleteURL = this.handleDeleteURL.bind(this)
     this.toggleGenerate = this.toggleGenerate.bind(this)
-
-    this.urlRefs = new Map()
-  }
-
-  addURL() {
-    let state = Object.assign({}, this.state)
-    const idx = this.state.urls.length
-    state.urls.push({value: 'http://', error: null, ref: null})
-    this.setState(state, () => {
-      console.log(this.urlRefs.get(idx))
-      //this.urlRefs.get(idx).focus()
-    })
   }
 
   toggleGenerate() {
     this.setState({generated: !this.state.generated});
-  }
-
-  handleDeleteURL(idx) {
-    return ((event) => {
-      let state = Object.assign({}, this.state)
-      state.urls = state.urls
-                        .filter((url, jdx) => jdx !== idx)
-                        .map(url => Object.assign({}, url))
-      this.setState(state)
-    }).bind(this)
-  }
-
-  handleEditURL(idx) {
-    return ((event) => {
-      const value = event.target.value
-      let state = Object.assign({}, this.state)
-      state.urls = state.urls.map(url => Object.assign({}, url))
-      state.error = false
-      let update = value.split('\n').map((line) => {
-        let itm = {'value': line, 'error': null}
-        if (!line.startsWith('https://') && !line.startsWith('http://')) {
-          itm['error'] = 'URL must start with http:// or https://'
-          state.error = true
-        }
-        return itm
-      })
-      state.urls.splice.apply(state.urls, [idx, 1].concat(update))
-      this.setState(state)
-    })
   }
 
   handleChange(stateName) {
@@ -241,27 +296,7 @@ export default class extends React.Component {
             <WhatCanYouDoText test={this.state.selectedTest} />
 
             {this.state.selectedTest == 'web_connectivity'
-            && <Box pt={4}>
-            <Heading h={2} pb={3}>URLs</Heading>
-              {this.state.urls.length == 0
-              && <div>
-                Click "Add URL" below to add a URL to test
-                </div>
-              }
-              {this.state.urls.map((url, idx) => <div key={`url-${idx}`}>
-                <InputWithIconButton
-                       value={url.value}
-                       icon={<MdDelete />}
-                       error={url.error}
-                       onChange={this.handleEditURL(idx)}
-                       onAction={this.handleDeleteURL(idx)} />
-                </div>)}
-                <div>
-                  <AddURLButton onClick={this.addURL}>
-                  + Add URL
-                  </AddURLButton>
-                </div>
-            </Box>}
+            && <AddURLsSection urls={this.state.urls} onUpdatedURLs={this.handleChange('urls')} />}
             <Box pt={3} pb={3}>
               <Button onClick={this.toggleGenerate}>
                 Generate
