@@ -1,5 +1,17 @@
 # ChangeLog
 
+## ooni-run 0.1.4 [2018-01-18]
+
+Added:
+
+* Support multiline pasting of URLs
+* Support for entering multiple URLs by hitting enter
+
+Changes:
+
+* Improvement to the performance of the input area
+* Move cursor to the end of line when adding a new URL
+
 ## ooni-run 0.1.3 [2017-09-29]
 
 Changes:
