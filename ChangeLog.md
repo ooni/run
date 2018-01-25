@@ -1,5 +1,11 @@
 # ChangeLog
 
+## ooni-run 0.1.5 [2018-01-25]
+
+Fixes:
+
+* Upgrade next.js to 3.2.3
+
 ## ooni-run 0.1.4 [2018-01-18]
 
 Added:

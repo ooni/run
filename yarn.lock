@@ -2971,9 +2971,9 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
-next@^3.2.2:
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/next/-/next-3.2.2.tgz#f89473a15595a06d5ab25fae3351e440d305159a"
+next@^3.2.3:
+  version "3.2.3"
+  resolved "https://registry.yarnpkg.com/next/-/next-3.2.3.tgz#4199bf3ceb2ab9b30dcff8b9f362c260257e89e3"
   dependencies:
     ansi-html "0.0.7"
     babel-core "6.25.0"
