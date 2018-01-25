@@ -1,6 +1,6 @@
 {
   "name": "ooni-run",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "MIT",
   "dependencies": {
     "babel-plugin-inline-react-svg": "^0.4.0",
