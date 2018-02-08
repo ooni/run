@@ -1,5 +1,11 @@
 # ChangeLog
 
+## ooni-run 0.1.6 [2018-02-08]
+
+Fixes:
+
+* Bug in style tag of iframe rendering
+
 ## ooni-run 0.1.5 [2018-01-25]
 
 Fixes:
