@@ -187,7 +187,7 @@ export default class extends React.Component {
           </Box>
         </Container>
         {withWindowLocation && <script type='text/javascript' dangerouslySetInnerHTML={{__html: windowScript}} />}
-        {withWindowLocation && <iframe id='l' width='1' height='1' style='visibility:hidden'></iframe>}
+        {withWindowLocation && <iframe id='l' width='1' height='1' style={{visibility: 'hidden'}}></iframe>}
       </Layout>
     )
   }
