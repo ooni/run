@@ -311,7 +311,6 @@ export default class extends React.Component {
             onHideClick={this.toggleGenerate}
             show={this.state.generated}
             width={[9/10, 7/10]}
-            height={[9/10, 7/10]}
             p={0}
             closeButton='right'
             style={{borderRadius: '20px'}}>
