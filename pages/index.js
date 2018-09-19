@@ -267,7 +267,7 @@ export default class extends React.Component {
         <OONIRunHero href={'https://ooni.torproject.org'} />
 
         <Container pt={4} maxWidth={800}>
-          <Flex wrap>
+          <Flex flexWrap>
 
           <Box width={[1, 1/2]} pb={3}>
           <Heading h={2}>Test Name</Heading>
@@ -315,7 +315,7 @@ export default class extends React.Component {
             closeButton='right'
             style={{borderRadius: '20px'}}>
 
-            <Flex css={{minHeight: '100%'}}>
+            <Flex flexWrap css={{minHeight: '100%'}}>
               <Box width={[1, 1/3]} css={{minHeight: '100%', backgroundColor: '#8ED8F8'}}>
                 <GraphicsWithGradient>
                   <GraphicsOctopusModal />
