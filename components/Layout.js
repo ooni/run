@@ -3,6 +3,8 @@ import React from 'react'
 import Head from 'next/head'
 import { Provider, theme } from 'ooni-components'
 
+import GlobalStyle from './globalStyle'
+
 import meta from '../config/meta'
 
 const Layout = props => (
@@ -16,6 +18,7 @@ const Layout = props => (
       <div className='content'>
         { props.children }
       </div>
+      <GlobalStyle />
     </Provider>
   </div>
 )
