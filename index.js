@@ -1,4 +1,4 @@
-require("babel-register")()
+require('@babel/register')
 
 const useragent = require('useragent')
 const next = require('next')
