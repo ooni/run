@@ -45,17 +45,6 @@ const getDescription = (query) => {
   return 'Run OONI Probe'
 }
 
-const getIntentURI = (query) => {
-  let uri = 'intent://nettest?'
-  uri += getEncodedQuery(query)
-  uri += '#Intent;'
-  uri += 'package='
-  uri += mobileApp.googlePlayID
-  uri += ';scheme=ooni;end;S.browser_fallback_url='
-  uri += mobileApp.googlePlayLink
-  return uri
-}
-
 export default class extends React.Component {
   static async getInitialProps({ req, query }) {
     const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
