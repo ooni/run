@@ -4,6 +4,7 @@ const useragent = require('useragent')
 const next = require('next')
 const express = require('express')
 const path = require('path')
+const { getIntentURI } = require('./utils/links')
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'production'
 process.env.PORT = parseInt(process.env.PORT) || 3000
@@ -27,7 +28,7 @@ app.prepare()
   server.get('/nettest', (req, res) => {
     let ua = useragent.parse(req.headers['user-agent'])
     if (ua.family === 'Chrome Mobile' && Number(ua.major) >= 25) {
-      return res.redirect(getIntentURI(req))
+      return res.redirect(getIntentURI(req.query))
     }
     return handle(req, res)
   })

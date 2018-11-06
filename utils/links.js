@@ -1,3 +1,5 @@
+import mobileApp from '../config/mobileApp'
+
 export const baseURL = 'https://run.ooni.io'
 
 export const minimumVersion = '1.2.0'
@@ -26,4 +28,15 @@ export const getUniversalLink = (testName, urls) => {
   }
   const queryPart = getEncodedQuery(query)
   return `${baseURL}/nettest?${queryPart}`
+}
+
+export const getIntentURI = (query) => {
+  let uri = 'intent://nettest?'
+  uri += getEncodedQuery(query)
+  uri += '#Intent;'
+  uri += 'package='
+  uri += mobileApp.googlePlayID
+  uri += ';scheme=ooni;end;S.browser_fallback_url='
+  uri += mobileApp.googlePlayLink
+  return uri
 }
