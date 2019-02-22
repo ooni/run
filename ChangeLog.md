@@ -1,5 +1,11 @@
 # ChangeLog
 
+## ooni-run 0.1.7 [2019-02-22]
+
+Fixes:
+
+* Bug in intent redirect on android in-app browsers
+
 ## ooni-run 0.1.6 [2018-02-08]
 
 Fixes:
