@@ -269,9 +269,9 @@ export default class extends React.Component {
         <OONIRunHero href={'https://ooni.torproject.org'} />
 
         <Container pt={4} maxWidth={800}>
-          <Flex wrap>
+          <Flex flexWrap='wrap'>
 
-          <Box w={[1, 1/2]} pb={3}>
+          <Box width={[1, 1/2]} pb={3}>
           <Heading h={2}>Test Name</Heading>
       		<RadioGroup
               name='test_name'
@@ -293,7 +293,7 @@ export default class extends React.Component {
           </RadioGroup>
           </Box>
 
-          <Box w={[1, 1/2]}>
+          <Box width={[1, 1/2]}>
             <Heading h={2}>What you can do</Heading>
             <WhatCanYouDoText test={this.state.selectedTest} />
 
@@ -312,19 +312,19 @@ export default class extends React.Component {
           <Modal
             onHideClick={this.toggleGenerate}
             show={this.state.generated}
-            width={[9/10, 7/10]}
-            height={[9/10, 7/10]}
+            w={[9/10, 7/10]}
+            h={[9/10, 7/10]}
             p={0}
             closeButton='right'
             style={{borderRadius: '20px'}}>
 
-            <Flex wrap style={{minHeight: '100%'}}>
-              <Box w={[1, 1/3]} height={[1, 1/3]} style={{backgroundColor: '#8ED8F8'}}>
+            <Flex flexWrap='wrap' style={{minHeight: '100%'}}>
+              <Box width={[1, 1/3]} height={[1, 1/3]} style={{backgroundColor: '#8ED8F8'}}>
                 <GraphicsWithGradient>
                   <GraphicsOctopusModal />
                 </GraphicsWithGradient>
               </Box>
-              <Box w={[1, 2/3]}>
+              <Box width={[1, 2/3]}>
               <Container p={[1, 2]} ml={[2, 4]} mr={[2, 4]}>
                 <Heading h={1} center>Your link is ready!</Heading>
 
