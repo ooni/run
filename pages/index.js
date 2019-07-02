@@ -64,7 +64,7 @@ const TestCategoryHeading = styled(Heading)`
   color: ${props => props.theme.colors[props.color] || props.theme.colors.black};
 `
 
-const StyleLinkButton = Button.extend`
+const StyleLinkButton = styled(Button)`
   text-transform: none;
 `
 
