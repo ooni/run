@@ -312,8 +312,8 @@ export default class extends React.Component {
           <Modal
             onHideClick={this.toggleGenerate}
             show={this.state.generated}
-            w={[9/10, 7/10]}
-            h={[9/10, 7/10]}
+            width={[9/10, 7/10]}
+            // height={[9/10, 7/10]}
             p={0}
             closeButton='right'
             style={{borderRadius: '20px'}}>
@@ -326,10 +326,10 @@ export default class extends React.Component {
               </Box>
               <Box width={[1, 2/3]}>
               <Container p={[1, 2]} ml={[2, 4]} mr={[2, 4]}>
-                <Heading h={1} center>Your link is ready!</Heading>
+                <Heading h={1} textAlign='center'>Your link is ready!</Heading>
 
-                <Heading pt={4} pb={2} h={3} center>Share it on social media</Heading>
-                <Flex align='center' justify='center'>
+                <Heading pt={4} pb={2} h={3} textAlign='center'>Share it on social media</Heading>
+                <Flex alignItems='center' justifyContent='center'>
                   <Box pr={2}>
                     <TwitterShareButton
                       url={universalLink}
