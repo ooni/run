@@ -9,7 +9,7 @@ const Layout = props => (
   <div>
     <Head>
       <title>{props.title || meta.defaultTitle}</title>
-      <meta http-equiv='Content-Type' content={meta.contentType} />
+      <meta httpEquiv='Content-Type' content={meta.contentType} />
       <meta name='viewport' content={meta.viewport} />
     </Head>
     <Provider theme={theme}>
