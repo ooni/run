@@ -19,7 +19,7 @@ WORKDIR /usr/src/app
 # .cache removal leads to two times smaller image and 
 RUN set -ex \
     && yarn install --frozen-lockfile \
-    && yarn run build \
+    && yarn run build:next \
     && rm -rf /home/node/.cache \
     && :
 
