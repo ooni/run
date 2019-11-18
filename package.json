@@ -25,7 +25,7 @@
   },
   "scripts": {
     "dev": "NODE_ENV=development node index.js",
-    "start": "NODE_ENV=production node index.js",
+    "start": "NODE_ENV=production node --max-http-header-size=32768 index.js",
     "build": "yarn run build:next && yarn run build:widgets",
     "build:next": "next build",
     "build:widgets": "browserify -t babelify widgets/index.js | uglifyjs > dist/widgets.js",
