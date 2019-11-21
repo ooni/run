@@ -68,6 +68,10 @@ const StyleLinkButton = styled(Button)`
   text-transform: none;
 `
 
+const ItalicText = styled(Text)`
+  font-style: italic;
+`
+
 const TestDetailsLabel = (props) => {
   // The links to the details of the test name are not in snake_case, but in dash-case
   const testName = (props.value && props.value.replace(/[_]/g, '-')) || ''
@@ -75,16 +79,16 @@ const TestDetailsLabel = (props) => {
   return (
     <div>
       <Box>
-      {props.name}
+        {props.name}
       </Box>
       {props.checked
-      && <Box pt={1}>
-        <Text italic>{props.desc}</Text>
+        && <Box pt={1}>
+          <ItalicText>{props.desc}</ItalicText>
         </Box>
       }
       {props.checked
-      && <Box>
-          <Link href={href}><Text italic>Learn how this test works here</Text></Link>
+        && <Box>
+          <Link color='blue7' href={href}><ItalicText>Learn how this test works here</ItalicText></Link>
         </Box>
       }
     </div>
@@ -313,7 +317,6 @@ export default class extends React.Component {
             onHideClick={this.toggleGenerate}
             show={this.state.generated}
             width={[9/10, 7/10]}
-            // height={[9/10, 7/10]}
             p={0}
             closeButton='right'
             style={{borderRadius: '20px'}}>
