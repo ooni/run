@@ -1,3 +1,5 @@
+import React from 'react'
+
 import Layout from '../components/Layout'
 
 import styled from 'styled-components'
@@ -62,27 +64,31 @@ const TestCategoryHeading = styled(Heading)`
   color: ${props => props.theme.colors[props.color] || props.theme.colors.black};
 `
 
-const StyleLinkButton = Button.extend`
+const StyleLinkButton = styled(Button)`
   text-transform: none;
+`
+
+const ItalicText = styled(Text)`
+  font-style: italic;
 `
 
 const TestDetailsLabel = (props) => {
   // The links to the details of the test name are not in snake_case, but in dash-case
   const testName = (props.value && props.value.replace(/[_]/g, '-')) || ''
-  const href = `https://ooni.torproject.org/nettest/${testName}`
+  const href = `https://ooni.org/nettest/${testName}`
   return (
     <div>
       <Box>
-      {props.name}
+        {props.name}
       </Box>
       {props.checked
-      && <Box pt={1}>
-        <Text italic>{props.desc}</Text>
+        && <Box pt={1}>
+          <ItalicText>{props.desc}</ItalicText>
         </Box>
       }
       {props.checked
-      && <Box>
-          <Link href={href}><Text italic>Learn how this test works here</Text></Link>
+        && <Box>
+          <Link color='blue7' href={href}><ItalicText>Learn how this test works here</ItalicText></Link>
         </Box>
       }
     </div>
@@ -267,9 +273,9 @@ export default class extends React.Component {
         <OONIRunHero href={'https://ooni.torproject.org'} />
 
         <Container pt={4} maxWidth={800}>
-          <Flex wrap>
+          <Flex flexWrap='wrap'>
 
-          <Box w={[1, 1/2]} pb={3}>
+          <Box width={[1, 1/2]} pb={3}>
           <Heading h={2}>Test Name</Heading>
       		<RadioGroup
               name='test_name'
@@ -291,7 +297,7 @@ export default class extends React.Component {
           </RadioGroup>
           </Box>
 
-          <Box w={[1, 1/2]}>
+          <Box width={[1, 1/2]}>
             <Heading h={2}>What you can do</Heading>
             <WhatCanYouDoText test={this.state.selectedTest} />
 
@@ -311,23 +317,22 @@ export default class extends React.Component {
             onHideClick={this.toggleGenerate}
             show={this.state.generated}
             width={[9/10, 7/10]}
-            height={[9/10, 7/10]}
             p={0}
             closeButton='right'
             style={{borderRadius: '20px'}}>
 
-            <Flex wrap style={{minHeight: '100%'}}>
-              <Box w={[1, 1/3]} height={[1, 1/3]} style={{backgroundColor: '#8ED8F8'}}>
+            <Flex flexWrap='wrap' style={{minHeight: '100%'}}>
+              <Box width={[1, 1/3]} height={[1, 1/3]} style={{backgroundColor: '#8ED8F8'}}>
                 <GraphicsWithGradient>
                   <GraphicsOctopusModal />
                 </GraphicsWithGradient>
               </Box>
-              <Box w={[1, 2/3]}>
+              <Box width={[1, 2/3]}>
               <Container p={[1, 2]} ml={[2, 4]} mr={[2, 4]}>
-                <Heading h={1} center>Your link is ready!</Heading>
+                <Heading h={1} textAlign='center'>Your link is ready!</Heading>
 
-                <Heading pt={4} pb={2} h={3} center>Share it on social media</Heading>
-                <Flex align='center' justify='center'>
+                <Heading pt={4} pb={2} h={3} textAlign='center'>Share it on social media</Heading>
+                <Flex alignItems='center' justifyContent='center'>
                   <Box pr={2}>
                     <TwitterShareButton
                       url={universalLink}
