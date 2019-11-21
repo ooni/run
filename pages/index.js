@@ -75,7 +75,7 @@ const ItalicText = styled(Text)`
 const TestDetailsLabel = (props) => {
   // The links to the details of the test name are not in snake_case, but in dash-case
   const testName = (props.value && props.value.replace(/[_]/g, '-')) || ''
-  const href = `https://ooni.torproject.org/nettest/${testName}`
+  const href = `https://ooni.org/nettest/${testName}`
   return (
     <div>
       <Box>
