@@ -1,6 +1,6 @@
 {
   "name": "ooni-run",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "license": "BSD-3-Clause",
   "dependencies": {
     "babel-plugin-inline-react-svg": "1.1.0",
@@ -18,7 +18,7 @@
     "@babel/core": "7.4.4",
     "@babel/register": "7.4.4",
     "babel-plugin-styled-components": "1.10.0",
-    "babelify": "^7.3.0",
+    "babelify": "10.0.0",
     "browserify": "^14.4.0",
     "uglify-js": "^3.1.0"
   },

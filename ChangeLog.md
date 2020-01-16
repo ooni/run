@@ -1,5 +1,21 @@
 # ChangeLog
 
+## ooni-run 0.1.8 [2020-01-15]
+
+Added:
+
+* `Dockerfile` for easier deployment
+
+Fixes:
+
+* Fix warning about invalid DOM property 'http-equiv'
+* hotfix: pass in --max-http-header-size=32768 to support larger queries
+
+Changes:
+
+* Upgrade dependencies to new versions
+  (e.g next, styled-components, ooni-components)
+
 ## ooni-run 0.1.7 [2019-02-22]
 
 Fixes:
