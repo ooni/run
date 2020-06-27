@@ -151,18 +151,10 @@ export default class extends React.Component {
         </Head>
         <OONIRunHero href={'https://run.ooni.io'} />
         <Container p={4}>
-          <Text pt={2}>Measure internet censorship by running OONI Probe.</Text>
 
-          <Heading pt={2} h={2}>You have the app</Heading>
-          <Text pt={2} pb={3}>If you have the OONI Probe app installed, click Run to start the test.</Text>
-
-          <Link href={deepLink}>
-            <Button>Run</Button>
-          </Link>
-
-          <Heading pt={4} h={2}>Get the app</Heading>
+          <Heading pt={4} h={2}>Install the OONI Probe mobile app</Heading>
           <Text pt={2} pb={3}>
-            If you are on a desktop computer, click Install to learn how you can install OONI Probe.
+            Currently, OONI Run links only work with the OONI Probe mobile app. 
           </Text>
 
           <Link href={installLink}>
