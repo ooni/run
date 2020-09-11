@@ -124,7 +124,7 @@ export default class extends React.Component {
           {description && <meta name='og:description' content={description} />}
 
           {/* This is Twitter specific stuff
-            * See: https://dev.twitter.com/cards/types/app */}
+          * See: https://dev.twitter.com/cards/types/app */}
           {deepLink && <meta name='twitter:app:url:iphone' content={deepLink} />}
           {deepLink && <meta name='twitter:app:url:ipad' content={deepLink} />}
           {universalLink && <meta name='twitter:app:url:googleplay' content={universalLink} />}
@@ -140,7 +140,7 @@ export default class extends React.Component {
           {/* This is Facebook specific stuff
             * See:
             * * https://developers.facebook.com/docs/applinks/add-to-content/
-            * * https://blog.branch.io/how-to-deep-link-on-facebook/ */}
+          * * https://blog.branch.io/how-to-deep-link-on-facebook/ */}
           <meta property='al:android:package' content={mobileApp.googlePlayID} />
           <meta property='al:android:app_name' content={mobileApp.googlePlayName} />
           {deepLink && <meta property='al:android:url' content={deepLink} />}
@@ -151,28 +151,31 @@ export default class extends React.Component {
         </Head>
         <OONIRunHero href={'https://run.ooni.io'} />
         <Container p={4}>
-          <Text pt={2}>Measure internet censorship by running OONI Probe.</Text>
 
-          <Heading pt={2} h={2}>You have the app</Heading>
-          <Text pt={2} pb={3}>If you have the OONI Probe app installed, click Run to start the test.</Text>
+          <Heading pt={2} h={2}>You already have the OONI Probe mobile app</Heading>
+          <Text pt={2} pb={3}>
+            Tap Run and open this link with your OONI Probe mobile app to start the test.
+          </Text>
 
           <Link href={deepLink}>
-            <Button>Run</Button>
+            <Button>
+              Run
+            </Button>
           </Link>
 
-          <Heading pt={4} h={2}>Get the app</Heading>
+          <Heading pt={4} h={2}>Install the OONI Probe mobile app</Heading>
           <Text pt={2} pb={3}>
-            If you are on a desktop computer, click Install to learn how you can install OONI Probe.
+            Currently, OONI Run links only work with the OONI Probe mobile app.
           </Text>
 
           <Link href={installLink}>
             <Button>
-            Install
+              Install
             </Button>
           </Link>
 
           <Box mt={5}>
-          <Code>{userAgent}</Code>
+            <Code>{userAgent}</Code>
           </Box>
         </Container>
         {withWindowLocation && <script type='text/javascript' dangerouslySetInnerHTML={{__html: windowScript}} />}
