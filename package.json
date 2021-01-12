@@ -3,13 +3,19 @@
   "version": "0.1.8",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "@formatjs/intl-utils": "0.6.1",
     "babel-plugin-inline-react-svg": "1.1.0",
     "express": "^4.15.4",
+    "full-icu": "1.3.0",
+    "intl": "1.2.5",
+    "intl-locales-supported": "1.8.4",
     "next": "9.3.2",
+    "next-transpile-modules": "4.0.2",
     "ooni-components": "0.2.10",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-icons": "2.2.7",
+    "react-intl": "3.1.12",
     "styled-components": "3.4.10",
     "useragent": "^2.2.1"
   },
@@ -17,6 +23,7 @@
     "@babel/cli": "7.4.4",
     "@babel/core": "7.4.4",
     "@babel/register": "7.4.4",
+    "@formatjs/cli": "1.1.12",
     "babel-plugin-styled-components": "1.10.0",
     "babelify": "10.0.0",
     "browserify": "^14.4.0",
@@ -28,12 +35,13 @@
     "react-icons": "2.2.7"
   },
   "scripts": {
-    "dev": "NODE_ENV=development node index.js",
-    "start": "NODE_ENV=production node --max-http-header-size=32768 index.js",
-    "build": "yarn run build:next && yarn run build:widgets",
+    "dev": "NODE_ENV=development node --icu-data-dir=node_modules/full-icu index.js",
+    "start": "NODE_ENV=production node --max-http-header-size=32768 --icu-data-dir=node_modules/full-icu index.js",
+    "build": "yarn run build:next && yarn extract && yarn run build:widgets",
     "build:next": "next build",
     "build:widgets": "browserify -t babelify widgets/index.js | uglifyjs > dist/widgets.js",
     "debug:widgets": "yarn run build:widgets && cp dist/widgets.js static/widgets.js",
+    "extract": "node ./scripts/extract '{pages,components}/*.{js,ts,tsx}'",
     "release": "yarn run build && yarn publish --new-version $(jq -r .version package.json)",
     "genurl": "babel-node scripts/genurl.js"
   }

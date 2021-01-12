@@ -3,7 +3,7 @@ import React from 'react'
 import Layout from '../components/Layout'
 
 import styled from 'styled-components'
-
+import { FormattedMessage } from 'react-intl'
 import { getUniversalLink } from '../utils/links'
 
 import MdDelete from 'react-icons/lib/md/delete'
@@ -276,7 +276,9 @@ export default class extends React.Component {
           <Flex flexWrap='wrap'>
 
           <Box width={[1, 1/2]} pb={3}>
-          <Heading h={2}>Test Name</Heading>
+          <Heading h={2}>
+            <FormattedMessage id='Home.Heading.TestNamee' defaultMessage='Test Name' />
+          </Heading>
       		<RadioGroup
               name='test_name'
               value={this.state.selectedTest}
