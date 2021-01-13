@@ -1,6 +1,6 @@
 {
   "name": "ooni-run",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "license": "BSD-3-Clause",
   "dependencies": {
     "@formatjs/intl-utils": "0.6.1",
