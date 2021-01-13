@@ -11,7 +11,7 @@ spawnSync('npx', [
   'extract',
   '--messages-dir',
   'lang/.messages/',
-  '--remove-default-message',
+  '--extract-from-format-message-call',
   ...sourceFiles,
 ])
 
