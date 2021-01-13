@@ -50,11 +50,11 @@ export const messages = defineMessages({
   },
   mbText: {
     id: 'WhatCanYouDoText.Middleboxes',
-    defaultMessage:'Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!'
+    defaultMessage:'Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to find middleboxes in their networks!'
   },
   webText: {
     id: 'WhatCanYouDoText.WebCensorship',
-    defaultMessage:'Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!'
+    defaultMessage:'Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to test the sites of your choice!'
   },
   genericText: {
     id: 'WhatCanYouDoText.Generic',
