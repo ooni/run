@@ -35,8 +35,5 @@
   "WhatCanYouDoText.Middleboxes": "Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to find middleboxes in their networks!",
   "WhatCanYouDoText.WebCensorship": "Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to test the sites of your choice!",
   "WhatCanYouDoText.Generic": "Generate a link and share it with your friends and contacts around the world.",
-  "Text.NetNeutrality": "Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!",
-  "Text.Middleboxes": "Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!",
-  "Text.WebCensorship": "Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!",
-  "Text.Generic": "Generate a link and share it with your friends and contacts around the world."
+  "Sidebar.Text.Learn": "Learn how this test works here"
 }

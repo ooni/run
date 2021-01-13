@@ -59,6 +59,10 @@ export const messages = defineMessages({
   genericText: {
     id: 'WhatCanYouDoText.Generic',
     defaultMessage:'Generate a link and share it with your friends and contacts around the world.'
+  },
+  learn: {
+    id: 'Sidebar.Text.Learn',
+    defaultMessage: 'Learn how this test works here'
   }
 })
 

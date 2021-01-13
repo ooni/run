@@ -91,7 +91,7 @@ const TestDetailsLabel = ({ id, name, desc, checked, value }) => {
       }
       {checked
         && <Box>
-          <Link color='blue7' href={href}><ItalicText>Learn how this test works here</ItalicText></Link>
+          <Link color='blue7' href={href}><ItalicText>{intl.formatMessage(nettestMessages['learn'])}</ItalicText></Link>
         </Box>
       }
     </div>
