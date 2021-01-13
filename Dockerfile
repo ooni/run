@@ -3,7 +3,7 @@
 
 # Build: run ooni-sysadmin.git/scripts/docker-build from this directory
 
-FROM node:carbon
+FROM node:erbium
 
 # BEGIN root
 USER root
