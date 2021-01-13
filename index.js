@@ -76,8 +76,7 @@ app.prepare().then(() => {
     const locale = req.acceptsLanguages(supportedLanguages) || 'en'
     req.locale = locale
     req.localeDataScript = getLocaleDataScript(locale)
-    // req.messages = dev ? {} : getMessages(locale)
-    req.messages = getMessages(locale)
+    req.messages = dev ? {} : getMessages(locale)
     next()
   })
 
