@@ -230,6 +230,16 @@ const BrandContainer = styled.div`
   }
 `
 
+const TwitterButton = ({ universalLink }) => {
+  const intl = useIntl()
+  return (
+    <TwitterShareButton
+      url={universalLink}
+      message={intl.formatMessage({id: 'Share.Twitter.Tweet', defaultMessage: 'Run OONI Probe to test for censorship!'})}
+    />
+  )
+}
+
 export default class extends React.Component {
   constructor() {
     super()
@@ -282,7 +292,7 @@ export default class extends React.Component {
 
           <Box width={[1, 1/2]} pb={3}>
           <Heading h={2}>
-            <FormattedMessage id='Home.Heading.TestNamee' defaultMessage='Test Name' />
+            <FormattedMessage id='Home.Heading.TestName' defaultMessage='Test Name' />
           </Heading>
       		<RadioGroup
               name='test_name'
@@ -342,35 +352,40 @@ export default class extends React.Component {
               </Box>
               <Box width={[1, 2/3]}>
               <Container p={[1, 2]} ml={[2, 4]} mr={[2, 4]}>
-                <Heading h={1} textAlign='center'>Your link is ready!</Heading>
+                <Heading h={1} textAlign='center'>
+                  <FormattedMessage id='Modal.Heading.LinkReady' defaultMessage='Your link is ready!' />
+                </Heading>
 
-                <Heading pt={4} pb={2} h={3} textAlign='center'>Share it on social media</Heading>
+                <Heading pt={4} pb={2} h={3} textAlign='center'>
+                  <FormattedMessage id='Modal.Heading.ShareIt' defaultMessage='Share it on social media' />
+                </Heading>
                 <Flex alignItems='center' justifyContent='center'>
                   <Box pr={2}>
-                    <TwitterShareButton
-                      url={universalLink}
-                      message='Run OONI Probe to test for censorship!'
-                      />
+                    <TwitterButton universalLink={universalLink} />
                   </Box>
                   <Box pr={2}>
                     <Link href={universalLink}>
                       <StyleLinkButton>
-                        Link
+                        <FormattedMessage id='Modal.Button.Link' defaultMessage='Link' />
                       </StyleLinkButton>
                     </Link>
                   </Box>
                 </Flex>
 
-                <Heading pt={4} pb={2} h={3}>Share this URL with your friends</Heading>
+                <Heading pt={4} pb={2} h={3}>
+                  <FormattedMessage id='Modal.Heading.ShareThisURL' defaultMessage='Share this URL with your friends' />
+                </Heading>
                 <Input value={universalLink} />
 
-                <Heading pt={4} pb={2} h={3}>Or embed this code on your website</Heading>
+                <Heading pt={4} pb={2} h={3}>
+                  <FormattedMessage id='Modal.Heading.EmbedThisCode' defaultMessage='Or embed this code on your website' />
+                </Heading>
                 <Input type='textarea' rows={6} value={embedCode} />
 
                 <Box pt={4}>
                   <Flex justify='center' align='center'>
                     <Button onClick={this.toggleGenerate}>
-                    Done
+                      <FormattedMessage id='Modal.Button.Done' defaultMessage='Done' />
                     </Button>
                   </Flex>
                 </Box>

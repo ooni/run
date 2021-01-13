@@ -45,19 +45,19 @@ export const messages = defineMessages({
     defaultMessage: 'Measure video streaming performance.'
   },
   nnText: {
-    id: 'Text.NetNeutrality',
+    id: 'WhatCanYouDoText.NetNeutrality',
     defaultMessage:'Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!'
   },
   mbText: {
-    id: 'Text.Middleboxes',
+    id: 'WhatCanYouDoText.Middleboxes',
     defaultMessage:'Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!'
   },
   webText: {
-    id: 'Text.WebCensorship',
+    id: 'WhatCanYouDoText.WebCensorship',
     defaultMessage:'Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!'
   },
   genericText: {
-    id: 'Text.Generic',
+    id: 'WhatCanYouDoText.Generic',
     defaultMessage:'Generate a link and share it with your friends and contacts around the world.'
   }
 })
