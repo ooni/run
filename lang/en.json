@@ -1,25 +1,146 @@
-{
-  "Hero.SubTitle": "Let's fight internet censorship together!",
-  "Title.URLs": "URLs",
-  "Button.AddUrl": "Add URL",
-  "Home.Heading.TestNamee": "Test Name",
-  "Sidebar.WebConnectivity.Title": "Internet Censorship",
-  "Sidebar.Performance.Title": "Speed & Performance",
-  "Sidebar.Middleboxes.Title": "Middleboxes",
-  "Title.WhatCanYouDo": "What you can do",
-  "Button.Generate": "Generate",
-  "Test.WebConnectivity.Name": "Web Connectivity",
-  "Test.HTTPInValidRequestLine.Name": "HTTP Invalid Request Line",
-  "Test.HTTPHeaderFieldManipulation.Name": "HTTP Header Field Manipulation",
-  "Test.NDT.Name": "NDT Speed Test",
-  "Test.Dash.Name": "DASH Video Streaming",
-  "Test.WebConnectivity.Description": "Check if websites are blocked.",
-  "Test.HTTPInValidRequestLine.Description": "Find middleboxes.",
-  "Test.HTTPHeaderFieldManipulation.Description": "Find middleboxes.",
-  "Test.NDT.Description": "Measure the speed and performance of your network.",
-  "Test.Dash.Description": "Measure video streaming performance.",
-  "Text.NetNeutrality": "Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!",
-  "Text.Middleboxes": "Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!",
-  "Text.WebCensorship": "Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!",
-  "Text.Generic": "Generate a link and share it with your friends and contacts around the world."
-}
+[
+  {
+    "id": "Hero.SubTitle",
+    "defaultMessage": "Let's fight internet censorship together!"
+  },
+  {
+    "id": "Title.URLs",
+    "defaultMessage": "URLs"
+  },
+  {
+    "id": "Button.AddUrl",
+    "defaultMessage": "Add URL"
+  },
+  {
+    "id": "Share.Twitter.Tweet",
+    "defaultMessage": "Run OONI Probe to test for censorship!"
+  },
+  {
+    "id": "Home.Heading.TestName",
+    "defaultMessage": "Test Name"
+  },
+  {
+    "id": "Sidebar.WebConnectivity.Title",
+    "defaultMessage": "Internet Censorship"
+  },
+  {
+    "id": "Sidebar.Performance.Title",
+    "defaultMessage": "Speed & Performance"
+  },
+  {
+    "id": "Sidebar.Middleboxes.Title",
+    "defaultMessage": "Middleboxes"
+  },
+  {
+    "id": "Title.WhatCanYouDo",
+    "defaultMessage": "What you can do"
+  },
+  {
+    "id": "Button.Generate",
+    "defaultMessage": "Generate"
+  },
+  {
+    "id": "Modal.Heading.LinkReady",
+    "defaultMessage": "Your link is ready!"
+  },
+  {
+    "id": "Modal.Heading.ShareIt",
+    "defaultMessage": "Share it on social media"
+  },
+  {
+    "id": "Modal.Button.Link",
+    "defaultMessage": "Link"
+  },
+  {
+    "id": "Modal.Heading.ShareThisURL",
+    "defaultMessage": "Share this URL with your friends"
+  },
+  {
+    "id": "Modal.Heading.EmbedThisCode",
+    "defaultMessage": "Or embed this code on your website"
+  },
+  {
+    "id": "Modal.Button.Done",
+    "defaultMessage": "Done"
+  },
+  {
+    "id": "Nettest.Heading.HaveMobileApp",
+    "defaultMessage": "You already have the OONI Probe mobile app"
+  },
+  {
+    "id": "Nettest.Text.HaveMobileApp",
+    "defaultMessage": "Tap Run and open this link with your OONI Probe mobile app to start the test."
+  },
+  {
+    "id": "Nettest.Button.Run",
+    "defaultMessage": "Run"
+  },
+  {
+    "id": "Nettest.Heading.InstallApp",
+    "defaultMessage": "Install the OONI Probe mobile app"
+  },
+  {
+    "id": "Nettest.Text.InstallApp",
+    "defaultMessage": "Currently, OONI Run links only work with the OONI Probe mobile app."
+  },
+  {
+    "id": "Nettest.Button.Install",
+    "defaultMessage": "Install"
+  },
+  {
+    "id": "Test.WebConnectivity.Name",
+    "defaultMessage": "Web Connectivity"
+  },
+  {
+    "id": "Test.HTTPInValidRequestLine.Name",
+    "defaultMessage": "HTTP Invalid Request Line"
+  },
+  {
+    "id": "Test.HTTPHeaderFieldManipulation.Name",
+    "defaultMessage": "HTTP Header Field Manipulation"
+  },
+  {
+    "id": "Test.NDT.Name",
+    "defaultMessage": "NDT Speed Test"
+  },
+  {
+    "id": "Test.Dash.Name",
+    "defaultMessage": "DASH Video Streaming"
+  },
+  {
+    "id": "Test.WebConnectivity.Description",
+    "defaultMessage": "Check if websites are blocked."
+  },
+  {
+    "id": "Test.HTTPInValidRequestLine.Description",
+    "defaultMessage": "Find middleboxes."
+  },
+  {
+    "id": "Test.HTTPHeaderFieldManipulation.Description",
+    "defaultMessage": "Find middleboxes."
+  },
+  {
+    "id": "Test.NDT.Description",
+    "defaultMessage": "Measure the speed and performance of your network."
+  },
+  {
+    "id": "Test.Dash.Description",
+    "defaultMessage": "Measure video streaming performance."
+  },
+  {
+    "id": "WhatCanYouDoText.NetNeutrality",
+    "defaultMessage": "Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!"
+  },
+  {
+    "id": "WhatCanYouDoText.Middleboxes",
+    "defaultMessage": "Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!"
+  },
+  {
+    "id": "WhatCanYouDoText.WebCensorship",
+    "defaultMessage": "Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!"
+  },
+  {
+    "id": "WhatCanYouDoText.Generic",
+    "defaultMessage": "Generate a link and share it with your friends and contacts around the world."
+  }
+]

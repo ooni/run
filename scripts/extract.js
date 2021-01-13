@@ -11,25 +11,22 @@ spawnSync('npx', [
   'extract',
   '--messages-dir',
   'lang/.messages/',
+  '--out-file',
+  'lang/en.json',
   '--extract-from-format-message-call',
   ...sourceFiles,
 ])
-
-const defaultMessages = glob
-  .sync('./lang/.messages/**/*.json')
-  .map((filename) => readFileSync(filename, 'utf8'))
-  .map((file) => JSON.parse(file))
-  .reduce((messages, descriptors) => {
-    descriptors.forEach(({ id, defaultMessage }) => {
-      if (messages.hasOwnProperty(id) && messages[id] !== defaultMessage) {
-        throw new Error(
-          `Duplicate message id: ${id} (duplicate message ids are allowed, but only if the defaultMessages match!)`
-        )
-      }
-      messages[id] = defaultMessage
-    })
-    return messages
-  }, {})
-
-writeFileSync('./lang/en.json', JSON.stringify(defaultMessages, null, 2))
 console.log(`> Wrote default messages to: "${resolve('./lang/en.json')}"`)
+
+// npx json2csv -H -i en.json -f id,defaultMessage
+spawnSync('npx', [
+  'json2csv',
+  '--no-header',
+  '--fields',
+  'id,defaultMessage',
+  '--input',
+  'lang/en.json',
+  '--output',
+  'lang/.messages/en.csv'
+])
+console.log(`> Wrote CSV formatted file to: "${resolve('./lang/.messages/en.csv')}"`)
