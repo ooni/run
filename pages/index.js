@@ -1,9 +1,8 @@
 import React from 'react'
-
 import Layout from '../components/Layout'
 
 import styled from 'styled-components'
-
+import { FormattedMessage, useIntl } from 'react-intl'
 import { getUniversalLink } from '../utils/links'
 
 import MdDelete from 'react-icons/lib/md/delete'
@@ -27,6 +26,7 @@ import {
   Flex,
   Box,
   InputWithIconButton,
+  IconButton,
   Modal,
   TwitterShareButton
 } from 'ooni-components'
@@ -35,7 +35,8 @@ import {
   censorshipTests,
   netNeutralityTests,
   middleBoxTests,
-  WhatCanYouDoText
+  WhatCanYouDoText,
+  messages as nettestMessages
 } from '../utils/nettest'
 
 const AddURLButton = styled(Button)`
@@ -47,15 +48,23 @@ const AddURLButton = styled(Button)`
   text-align: left;
   text-transform: none;
 
-  &:hover {
+  &:hover, &:hover:enabled {
     background-color: transparent;
-  color: ${props => props.theme.colors.gray6};
+    color: ${props => props.theme.colors.gray6};
     border-bottom: 1px solid ${props => props.theme.colors.gray3};
   }
-  &:active {
+  &:active, &:active:enabled {
     background-color: transparent;
-  color: ${props => props.theme.colors.gray7};
+    color: ${props => props.theme.colors.gray7};
     border-bottom: 2px solid ${props => props.theme.colors.gray4};
+  }
+`
+const StyleFixIconButton = styled.div`
+  & button:hover:enabled {
+    background-color: transparent;
+  }
+  & button:active:enabled {
+    background-color: transparent;
   }
 `
 
@@ -72,23 +81,26 @@ const ItalicText = styled(Text)`
   font-style: italic;
 `
 
-const TestDetailsLabel = (props) => {
+const TestDetailsLabel = ({ id, name, desc, checked, value }) => {
+  const intl = useIntl()
   // The links to the details of the test name are not in snake_case, but in dash-case
-  const testName = (props.value && props.value.replace(/[_]/g, '-')) || ''
+  const testName = (value && value.replace(/[_]/g, '-')) || ''
   const href = `https://ooni.org/nettest/${testName}`
   return (
     <div>
       <Box>
-        {props.name}
+        {intl.formatMessage(nettestMessages[`${id}_name`])}
       </Box>
-      {props.checked
+      {checked
         && <Box pt={1}>
-          <ItalicText>{props.desc}</ItalicText>
+          <ItalicText>
+            {intl.formatMessage(nettestMessages[`${id}_desc`])}
+          </ItalicText>
         </Box>
       }
-      {props.checked
+      {checked
         && <Box>
-          <Link color='blue7' href={href}><ItalicText>Learn how this test works here</ItalicText></Link>
+          <Link color='blue7' href={href}><ItalicText>{intl.formatMessage(nettestMessages['learn'])}</ItalicText></Link>
         </Box>
       }
     </div>
@@ -166,13 +178,15 @@ class AddURLsSection extends React.Component {
 
     return (
       <Box pt={4}>
-      <Heading h={2} pb={3}>URLs</Heading>
+      <Heading h={2} pb={3}>
+        <FormattedMessage id='Title.URLs' defaultMessage='URLs' />
+      </Heading>
         {urls.length == 0
         && <div>
           Click "Add URL" below to add a URL to test
           </div>
         }
-        {urls.map((url, idx) => <div key={`url-${idx}`}>
+        {urls.map((url, idx) => <StyleFixIconButton key={`url-${idx}`} className='input-with-button'>
           <InputWithIconButton
                 className='url-input'
                 value={url.value}
@@ -182,10 +196,10 @@ class AddURLsSection extends React.Component {
                 onBlur={() => onUpdatedURLs(urls)}
                 onChange={this.handleEditURL(idx)}
                 onAction={this.handleDeleteURL(idx)} />
-          </div>)}
+          </StyleFixIconButton>)}
         <div>
           <AddURLButton onClick={this.addURL}>
-          + Add URL
+          + <FormattedMessage id='Button.AddUrl' defaultMessage='Add URL' />
           </AddURLButton>
         </div>
         </Box>
@@ -224,6 +238,16 @@ const BrandContainer = styled.div`
     max-width: 100%;
   }
 `
+
+const TwitterButton = ({ universalLink }) => {
+  const intl = useIntl()
+  return (
+    <TwitterShareButton
+      url={universalLink}
+      message={intl.formatMessage({id: 'Share.Twitter.Tweet', defaultMessage: 'Run OONI Probe to test for censorship!'})}
+    />
+  )
+}
 
 export default class extends React.Component {
   constructor() {
@@ -276,36 +300,44 @@ export default class extends React.Component {
           <Flex flexWrap='wrap'>
 
           <Box width={[1, 1/2]} pb={3}>
-          <Heading h={2}>Test Name</Heading>
+          <Heading h={2}>
+            <FormattedMessage id='Home.Heading.TestName' defaultMessage='Test Name' />
+          </Heading>
       		<RadioGroup
               name='test_name'
               value={this.state.selectedTest}
               onChange={this.handleChange('selectedTest')}>
-            <TestCategoryHeading h={4} color='violet5'>Internet Censorship</TestCategoryHeading>
+            <TestCategoryHeading h={4} color='violet5'>
+              <FormattedMessage id='Sidebar.WebConnectivity.Title' defaultMessage='Internet Censorship' />
+            </TestCategoryHeading>
             {censorshipTests.map(({key, name, desc}) => (
-              <RadioButton key={key} label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
+              <RadioButton key={key} label={<TestDetailsLabel id={key} name={name} desc={desc} />} value={key} />
             ))}
-            <TestCategoryHeading h={4} color='cyan5'>Speed & Performance</TestCategoryHeading>
+            <TestCategoryHeading h={4} color='cyan5'>
+              <FormattedMessage id='Sidebar.Performance.Title' defaultMessage='Speed & Performance' />
+            </TestCategoryHeading>
             {netNeutralityTests.map(({key, name, desc}) => (
-              <RadioButton key={key} label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
+              <RadioButton key={key} label={<TestDetailsLabel id={key} name={name} desc={desc} />} value={key} />
             ))}
-            <TestCategoryHeading h={4} color='orange5'>Middleboxes</TestCategoryHeading>
+            <TestCategoryHeading h={4} color='orange5'>
+              <FormattedMessage id='Sidebar.Middleboxes.Title' defaultMessage='Middleboxes' />
+            </TestCategoryHeading>
             {middleBoxTests.map(({key, name, desc}) => (
-              <RadioButton key={key} label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
+              <RadioButton key={key} label={<TestDetailsLabel id={key} name={name} desc={desc} />} value={key} />
             ))}
 
           </RadioGroup>
           </Box>
 
           <Box width={[1, 1/2]}>
-            <Heading h={2}>What you can do</Heading>
+            <Heading h={2}><FormattedMessage id='Title.WhatCanYouDo' defaultMessage='What you can do' /></Heading>
             <WhatCanYouDoText test={this.state.selectedTest} />
 
             {this.state.selectedTest == 'web_connectivity'
             && <AddURLsSection urls={this.state.urls} onUpdatedURLs={this.handleChange('urls')} />}
             <Box pt={3} pb={3}>
               <Button onClick={this.toggleGenerate}>
-                Generate
+                <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
               </Button>
             </Box>
 
@@ -329,35 +361,40 @@ export default class extends React.Component {
               </Box>
               <Box width={[1, 2/3]}>
               <Container p={[1, 2]} ml={[2, 4]} mr={[2, 4]}>
-                <Heading h={1} textAlign='center'>Your link is ready!</Heading>
+                <Heading h={1} textAlign='center'>
+                  <FormattedMessage id='Modal.Heading.LinkReady' defaultMessage='Your link is ready!' />
+                </Heading>
 
-                <Heading pt={4} pb={2} h={3} textAlign='center'>Share it on social media</Heading>
+                <Heading pt={4} pb={2} h={3} textAlign='center'>
+                  <FormattedMessage id='Modal.Heading.ShareIt' defaultMessage='Share it on social media' />
+                </Heading>
                 <Flex alignItems='center' justifyContent='center'>
                   <Box pr={2}>
-                    <TwitterShareButton
-                      url={universalLink}
-                      message='Run OONI Probe to test for censorship!'
-                      />
+                    <TwitterButton universalLink={universalLink} />
                   </Box>
                   <Box pr={2}>
                     <Link href={universalLink}>
                       <StyleLinkButton>
-                        Link
+                        <FormattedMessage id='Modal.Button.Link' defaultMessage='Link' />
                       </StyleLinkButton>
                     </Link>
                   </Box>
                 </Flex>
 
-                <Heading pt={4} pb={2} h={3}>Share this URL with your friends</Heading>
+                <Heading pt={4} pb={2} h={3}>
+                  <FormattedMessage id='Modal.Heading.ShareThisURL' defaultMessage='Share this URL with your friends' />
+                </Heading>
                 <Input value={universalLink} />
 
-                <Heading pt={4} pb={2} h={3}>Or embed this code on your website</Heading>
+                <Heading pt={4} pb={2} h={3}>
+                  <FormattedMessage id='Modal.Heading.EmbedThisCode' defaultMessage='Or embed this code on your website' />
+                </Heading>
                 <Input type='textarea' rows={6} value={embedCode} />
 
                 <Box pt={4}>
                   <Flex justify='center' align='center'>
                     <Button onClick={this.toggleGenerate}>
-                    Done
+                      <FormattedMessage id='Modal.Button.Done' defaultMessage='Done' />
                     </Button>
                   </Flex>
                 </Box>

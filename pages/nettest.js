@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Head from 'next/head'
-
+import { FormattedMessage, useIntl } from 'react-intl'
 import {
   Container,
   Button,
@@ -23,7 +23,7 @@ import mobileApp from '../config/mobileApp'
 
 const useragent = require('useragent/index.js')
 
-const installLink = 'https://ooni.torproject.org/install'
+const installLink = 'https://ooni.org/install'
 
 const getCustomURI = (query) => {
   let uri = 'ooni://nettest?'
@@ -152,25 +152,41 @@ export default class extends React.Component {
         <OONIRunHero href={'https://run.ooni.io'} />
         <Container p={4}>
 
-          <Heading pt={2} h={2}>You already have the OONI Probe mobile app</Heading>
+          <Heading pt={2} h={2}>
+            <FormattedMessage
+              id='Nettest.Heading.HaveMobileApp'
+              defaultMessage='You already have the OONI Probe mobile app'
+            />
+          </Heading>
           <Text pt={2} pb={3}>
-            Tap Run and open this link with your OONI Probe mobile app to start the test.
+            <FormattedMessage
+              id='Nettest.Text.HaveMobileApp'
+              defaultMessage='Tap Run and open this link with your OONI Probe mobile app to start the test.'
+            />
           </Text>
 
           <Link href={deepLink}>
             <Button>
-              Run
+              <FormattedMessage id='Nettest.Button.Run' defaultMessage='Run' />
             </Button>
           </Link>
 
-          <Heading pt={4} h={2}>Install the OONI Probe mobile app</Heading>
+          <Heading pt={4} h={2}>
+            <FormattedMessage
+              id='Nettest.Heading.InstallApp'
+              defaultMessage='Install the OONI Probe mobile app'
+            />
+          </Heading>
           <Text pt={2} pb={3}>
-            Currently, OONI Run links only work with the OONI Probe mobile app.
+            <FormattedMessage
+              id='Nettest.Text.InstallApp'
+              defaultMessage='Currently, OONI Run links only work with the OONI Probe mobile app.'
+            />
           </Text>
 
           <Link href={installLink}>
             <Button>
-              Install
+              <FormattedMessage id='Nettest.Button.Install' defaultMessage='Install' />
             </Button>
           </Link>
 
