@@ -1,3 +1,11 @@
 {
-  "Home.Heading.TestNamee": "Test Name"
+  "Hero.SubTitle": "Let's fight internet censorship together!",
+  "Title.URLs": "URLs",
+  "Button.AddUrl": "Add URL",
+  "Home.Heading.TestNamee": "Test Name",
+  "Sidebar.WebConnectivity.Title": "Internet Censorship",
+  "Sidebar.Performance.Title": "Speed & Performance",
+  "Sidebar.Middleboxes.Title": "Middleboxes",
+  "Title.WhatCanYouDo": "What you can do",
+  "Button.Generate": "Generate"
 }

@@ -1,13 +1,73 @@
 import {
   Text
 } from 'ooni-components'
+import { defineMessages, useIntl } from 'react-intl'
+
+export const messages = defineMessages({
+  web_connectivity_name: {
+    id: 'Test.WebConnectivity.Name',
+    defaultMessage: 'Web Connectivity',
+  },
+  http_invalid_request_line_name: {
+    id: 'Test.HTTPInValidRequestLine.Name',
+    defaultMessage: 'HTTP Invalid Request Line'
+  },
+  http_header_field_manipulation_name: {
+    id: 'Test.HTTPHeaderFieldManipulation.Name',
+    defaultMessage: 'HTTP Header Field Manipulation'
+  },
+  ndt_name: {
+    id: 'Test.NDT.Name',
+    defaultMessage: 'NDT Speed Test'
+  },
+  dash_name: {
+    id: 'Test.Dash.Name',
+    defaultMessage: 'DASH Video Streaming'
+  },
+  web_connectivity_desc: {
+    id: 'Test.WebConnectivity.Description',
+    defaultMessage: 'Check if websites are blocked.'
+  },
+  http_invalid_request_line_desc: {
+    id: 'Test.HTTPInValidRequestLine.Description',
+    defaultMessage: 'Find middleboxes.'
+  },
+  http_header_field_manipulation_desc: {
+    id: 'Test.HTTPHeaderFieldManipulation.Description',
+    defaultMessage: 'Find middleboxes.'
+  },
+  ndt_desc: {
+    id: 'Test.NDT.Description',
+    defaultMessage: 'Measure the speed and performance of your network.'
+  },
+  dash_desc: {
+    id: 'Test.Dash.Description',
+    defaultMessage: 'Measure video streaming performance.'
+  },
+  nnText: {
+    id: 'Text.NetNeutrality',
+    defaultMessage:'Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!'
+  },
+  mbText: {
+    id: 'Text.Middleboxes',
+    defaultMessage:'Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!'
+  },
+  webText: {
+    id: 'Text.WebCensorship',
+    defaultMessage:'Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!'
+  },
+  genericText: {
+    id: 'Text.Generic',
+    defaultMessage:'Generate a link and share it with your friends and contacts around the world.'
+  }
+})
 
 export const censorshipTests = [
   {
     key: 'web_connectivity',
     name: 'Web Connectivity',
     desc: 'Check if websites are blocked.',
-    href: 'https://ooni.torproject.org/nettest/web-connectivity/'
+    href: 'https://ooni.org/nettest/web-connectivity/'
   }
 ]
 export const cTestKeys = censorshipTests.map(d => d.key)
@@ -17,13 +77,13 @@ export const middleBoxTests = [
     key: 'http_invalid_request_line',
     name: 'HTTP Invalid Request Line',
     desc: 'Find middleboxes.',
-    href: 'https://ooni.torproject.org/nettest/http-invalid-request-line/'
+    href: 'https://ooni.org/nettest/http-invalid-request-line/'
   },
   {
     key: 'http_header_field_manipulation',
     name: 'HTTP Header Field Manipulation.',
     desc: 'Find middleboxes',
-    href: 'https://ooni.torproject.org/nettest/http-header-field-manipulation/'
+    href: 'https://ooni.org/nettest/http-header-field-manipulation/'
   }
 ]
 export const mbTestKeys = middleBoxTests.map(d => d.key)
@@ -33,13 +93,13 @@ export const netNeutralityTests = [
     key: 'ndt',
     name: 'NDT Speed Test',
     desc: 'Measure the speed and performance of your network.',
-    href: 'https://ooni.torproject.org/nettest/ndt/'
+    href: 'https://ooni.org/nettest/ndt/'
   },
   {
     key: 'dash',
     name: 'DASH Video Streaming',
     desc: 'Measure video streaming performance.',
-    href: 'https://ooni.torproject.org/nettest/dash/'
+    href: 'https://ooni.org/nettest/dash/'
   }
 ]
 export const nnTestKeys = netNeutralityTests.map(d => d.key)
@@ -59,30 +119,18 @@ export const getTestType = testName => {
 }
 
 export const WhatCanYouDoText = props => {
+  const intl = useIntl()
   if (isIn(props.test, nnTestKeys)) {
-    return <Text>
-      Generate a link and share it with your friends and contacts around the
-    world. Encourage them to run OONI Probe to measure the speed and
-    performance of their networks!
-      </Text>
+    return <Text>{intl.formatMessage(messages.nnText)}</Text>
   }
 
   if (isIn(props.test, mbTestKeys)) {
-    return <Text>
-      Generate a link and share it with your friends and contacts around the
-    world. Encourage them to run OONI Probe to find middleboxes in their
-    networks!
-      </Text>
+    return <Text>{intl.formatMessage(messages.mbText)}</Text>
   }
 
   if (isIn(props.test, cTestKeys)) {
-    return <Text>
-      Generate a link and share it with your friends and contacts around the
-    world. Encourage them to run OONI Probe to test the sites of your choice!
-      </Text>
+    return <Text>{intl.formatMessage(messages.webText)}</Text>
   }
 
-  return <Text>Generate a link and share it with your friends and contacts around the world.</Text>
+  return <Text>{intl.formatMessage(messages.genericText)}</Text>
 }
-
-

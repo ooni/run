@@ -1,9 +1,8 @@
 import React from 'react'
-
 import Layout from '../components/Layout'
 
 import styled from 'styled-components'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { getUniversalLink } from '../utils/links'
 
 import MdDelete from 'react-icons/lib/md/delete'
@@ -35,7 +34,8 @@ import {
   censorshipTests,
   netNeutralityTests,
   middleBoxTests,
-  WhatCanYouDoText
+  WhatCanYouDoText,
+  messages as nettestMessages
 } from '../utils/nettest'
 
 const AddURLButton = styled(Button)`
@@ -72,21 +72,24 @@ const ItalicText = styled(Text)`
   font-style: italic;
 `
 
-const TestDetailsLabel = (props) => {
+const TestDetailsLabel = ({ id, name, desc, checked, value }) => {
+  const intl = useIntl()
   // The links to the details of the test name are not in snake_case, but in dash-case
-  const testName = (props.value && props.value.replace(/[_]/g, '-')) || ''
+  const testName = (value && value.replace(/[_]/g, '-')) || ''
   const href = `https://ooni.org/nettest/${testName}`
   return (
     <div>
       <Box>
-        {props.name}
+        {intl.formatMessage(nettestMessages[`${id}_name`])}
       </Box>
-      {props.checked
+      {checked
         && <Box pt={1}>
-          <ItalicText>{props.desc}</ItalicText>
+          <ItalicText>
+            {intl.formatMessage(nettestMessages[`${id}_desc`])}
+          </ItalicText>
         </Box>
       }
-      {props.checked
+      {checked
         && <Box>
           <Link color='blue7' href={href}><ItalicText>Learn how this test works here</ItalicText></Link>
         </Box>
@@ -166,7 +169,9 @@ class AddURLsSection extends React.Component {
 
     return (
       <Box pt={4}>
-      <Heading h={2} pb={3}>URLs</Heading>
+      <Heading h={2} pb={3}>
+        <FormattedMessage id='Title.URLs' defaultMessage='URLs' />
+      </Heading>
         {urls.length == 0
         && <div>
           Click "Add URL" below to add a URL to test
@@ -185,7 +190,7 @@ class AddURLsSection extends React.Component {
           </div>)}
         <div>
           <AddURLButton onClick={this.addURL}>
-          + Add URL
+          + <FormattedMessage id='Button.AddUrl' defaultMessage='Add URL' />
           </AddURLButton>
         </div>
         </Box>
@@ -283,31 +288,37 @@ export default class extends React.Component {
               name='test_name'
               value={this.state.selectedTest}
               onChange={this.handleChange('selectedTest')}>
-            <TestCategoryHeading h={4} color='violet5'>Internet Censorship</TestCategoryHeading>
+            <TestCategoryHeading h={4} color='violet5'>
+              <FormattedMessage id='Sidebar.WebConnectivity.Title' defaultMessage='Internet Censorship' />
+            </TestCategoryHeading>
             {censorshipTests.map(({key, name, desc}) => (
-              <RadioButton key={key} label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
+              <RadioButton key={key} label={<TestDetailsLabel id={key} name={name} desc={desc} />} value={key} />
             ))}
-            <TestCategoryHeading h={4} color='cyan5'>Speed & Performance</TestCategoryHeading>
+            <TestCategoryHeading h={4} color='cyan5'>
+              <FormattedMessage id='Sidebar.Performance.Title' defaultMessage='Speed & Performance' />
+            </TestCategoryHeading>
             {netNeutralityTests.map(({key, name, desc}) => (
-              <RadioButton key={key} label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
+              <RadioButton key={key} label={<TestDetailsLabel id={key} name={name} desc={desc} />} value={key} />
             ))}
-            <TestCategoryHeading h={4} color='orange5'>Middleboxes</TestCategoryHeading>
+            <TestCategoryHeading h={4} color='orange5'>
+              <FormattedMessage id='Sidebar.Middleboxes.Title' defaultMessage='Middleboxes' />
+            </TestCategoryHeading>
             {middleBoxTests.map(({key, name, desc}) => (
-              <RadioButton key={key} label={<TestDetailsLabel name={name} desc={desc} />} value={key} />
+              <RadioButton key={key} label={<TestDetailsLabel id={key} name={name} desc={desc} />} value={key} />
             ))}
 
           </RadioGroup>
           </Box>
 
           <Box width={[1, 1/2]}>
-            <Heading h={2}>What you can do</Heading>
+            <Heading h={2}><FormattedMessage id='Title.WhatCanYouDo' defaultMessage='What you can do' /></Heading>
             <WhatCanYouDoText test={this.state.selectedTest} />
 
             {this.state.selectedTest == 'web_connectivity'
             && <AddURLsSection urls={this.state.urls} onUpdatedURLs={this.handleChange('urls')} />}
             <Box pt={3} pb={3}>
               <Button onClick={this.toggleGenerate}>
-                Generate
+                <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
               </Button>
             </Box>
 

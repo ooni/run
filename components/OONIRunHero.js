@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { FormattedMessage } from 'react-intl'
 import {
   Hero,
   HeroLead,
@@ -23,7 +23,10 @@ export default props => {
         </Link>
       </BrandContainer>
       <HeroLead>
-      Let's fight internet censorship together!
+      <FormattedMessage
+        id='Hero.SubTitle'
+        defaultMessage="Let's fight internet censorship together!"
+      />
     </HeroLead>
     </Hero>
   )
