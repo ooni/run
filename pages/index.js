@@ -26,6 +26,7 @@ import {
   Flex,
   Box,
   InputWithIconButton,
+  IconButton,
   Modal,
   TwitterShareButton
 } from 'ooni-components'
@@ -47,15 +48,23 @@ const AddURLButton = styled(Button)`
   text-align: left;
   text-transform: none;
 
-  &:hover {
+  &:hover, &:hover:enabled {
     background-color: transparent;
-  color: ${props => props.theme.colors.gray6};
+    color: ${props => props.theme.colors.gray6};
     border-bottom: 1px solid ${props => props.theme.colors.gray3};
   }
-  &:active {
+  &:active, &:active:enabled {
     background-color: transparent;
-  color: ${props => props.theme.colors.gray7};
+    color: ${props => props.theme.colors.gray7};
     border-bottom: 2px solid ${props => props.theme.colors.gray4};
+  }
+`
+const StyleFixIconButton = styled.div`
+  & button:hover:enabled {
+    background-color: transparent;
+  }
+  & button:active:enabled {
+    background-color: transparent;
   }
 `
 
@@ -177,7 +186,7 @@ class AddURLsSection extends React.Component {
           Click "Add URL" below to add a URL to test
           </div>
         }
-        {urls.map((url, idx) => <div key={`url-${idx}`}>
+        {urls.map((url, idx) => <StyleFixIconButton key={`url-${idx}`} className='input-with-button'>
           <InputWithIconButton
                 className='url-input'
                 value={url.value}
@@ -187,7 +196,7 @@ class AddURLsSection extends React.Component {
                 onBlur={() => onUpdatedURLs(urls)}
                 onChange={this.handleEditURL(idx)}
                 onAction={this.handleDeleteURL(idx)} />
-          </div>)}
+          </StyleFixIconButton>)}
         <div>
           <AddURLButton onClick={this.addURL}>
           + <FormattedMessage id='Button.AddUrl' defaultMessage='Add URL' />
