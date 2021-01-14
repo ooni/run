@@ -7,10 +7,12 @@ FROM node:erbium
 
 # BEGIN root
 USER root
+RUN groupmod -g 1007 node && usermod -u 1007 -g 1007 node
 COPY . /usr/src/app
 RUN set -ex \
     && chown -R node:node /usr/src/app \
     && :
+
 # END root
 
 USER node
