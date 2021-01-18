@@ -34,5 +34,6 @@
   "WhatCanYouDoText.NetNeutrality": "產生一個連結，並與全世界的親朋好友分享，推薦他們使用 OONI Probe 來測量網路的速度及效能！",
   "WhatCanYouDoText.Middleboxes": "產生一個連結，並與全世界的親朋好友分享，推薦他們使用 OONI Probe 來測量網路的速度及效能！",
   "WhatCanYouDoText.WebCensorship": "產生一個連結，並與全世界的親朋好友分享，推薦他們使用 OONI Probe 來測量網路的速度及效能！",
-  "WhatCanYouDoText.Generic": "產生一個連結，並與全世界的親朋好友分享"
+  "WhatCanYouDoText.Generic": "產生一個連結，並與全世界的親朋好友分享",
+  "Sidebar.Text.Learn":	"瞭解檢測原理"
 }
