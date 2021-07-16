@@ -124,7 +124,7 @@ class AddURLsSection extends React.Component {
   addURL() {
     let state = Object.assign({}, this.state)
     const idx = this.state.urls.length
-    state.urls.push({value: 'http://', error: null, ref: null})
+    state.urls.push({value: 'https://', error: null, ref: null})
     this.props.onUpdatedURLs(state.urls)
     this.setState(state, () => {
       // This is a ghetto hax, that is a workaround for:
@@ -132,7 +132,7 @@ class AddURLsSection extends React.Component {
       const urlInputs = document.getElementsByClassName('url-input')
       const target = urlInputs[urlInputs.length - 1]
       target.focus()
-      target.setSelectionRange(7,7)
+      target.setSelectionRange(8,8)
     })
   }
 
@@ -255,7 +255,7 @@ export default class extends React.Component {
     this.state = {
       selectedTest: 'web_connectivity',
       urls: [
-        {value: 'http://', error: null}
+        {value: 'https://', error: null}
       ],
       error: false,
       generated: false
