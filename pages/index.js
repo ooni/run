@@ -160,7 +160,9 @@ class AddURLsSection extends React.Component {
       state.urls = state.urls.map(url => Object.assign({}, url))
       state.error = false
       let update = value.split(' ').map((line) => {
-        let itm = {'value': line, 'error': null}
+        const duplicateSchemeRegex = /^https:\/\/(https?)/
+        const fixedLine = line.replace(duplicateSchemeRegex, (_, p1) => p1)
+        let itm = {'value': fixedLine, 'error': null}
         if (!line.startsWith('https://') && !line.startsWith('http://')) {
           itm['error'] = 'URL must start with http:// or https://'
           state.error = true
