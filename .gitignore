@@ -2,7 +2,8 @@ node_modules/
 .idea/
 .DS_Store
 .next/
-dist/
+dist/*
+!dist/.keep
 package-lock.json
 yarn-error.log
 lang/.messages
