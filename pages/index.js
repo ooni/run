@@ -14,19 +14,14 @@ import {
   Heading,
   Text,
   Container,
-  Label,
   Input,
   Button,
-  Row,
-  Column,
   Link,
-  Pre,
   RadioGroup,
   RadioButton,
   Flex,
   Box,
   InputWithIconButton,
-  IconButton,
   Modal,
   TwitterShareButton
 } from 'ooni-components'
@@ -183,6 +178,9 @@ class AddURLsSection extends React.Component {
       <Heading h={2} pb={3}>
         <FormattedMessage id='Title.URLs' defaultMessage='URLs' />
       </Heading>
+      <ItalicText>
+        <FormattedMessage id='Notice.Paste' defaultMessage='Note: If you have a long list of URLs to add, you can copy them and paste into one of the boxes below.' />
+      </ItalicText>
         {urls.length == 0
         && <div>
           Click "Add URL" below to add a URL to test
