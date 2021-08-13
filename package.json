@@ -9,7 +9,7 @@
     "full-icu": "1.3.0",
     "intl": "1.2.5",
     "intl-locales-supported": "1.8.4",
-    "next": "9.3.2",
+    "next": "11.1.0",
     "next-transpile-modules": "4.0.2",
     "ooni-components": "0.2.10",
     "react": "16.8.6",
