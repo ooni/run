@@ -33,6 +33,7 @@ import {
   WhatCanYouDoText,
   messages as nettestMessages
 } from '../utils/nettest'
+import URLs from '../components/URLs'
 
 const AddURLButton = styled(Button)`
   color: ${props => props.theme.colors.gray5};
@@ -334,13 +335,15 @@ export default class extends React.Component {
             <WhatCanYouDoText test={this.state.selectedTest} />
 
             {this.state.selectedTest == 'web_connectivity'
-            && <AddURLsSection urls={this.state.urls} onUpdatedURLs={this.handleChange('urls')} />}
+            && <URLs toggleGenerate={this.toggleGenerate} />}
+            {/*
+              <AddURLsSection urls={this.state.urls} onUpdatedURLs={this.handleChange('urls')} />}
             <Box pt={3} pb={3}>
               <Button onClick={this.toggleGenerate}>
                 <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
               </Button>
-            </Box>
-
+            </Box> */
+            }
           </Box>
 
           </Flex>
