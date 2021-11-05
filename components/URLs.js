@@ -81,7 +81,7 @@ const URLs = ({ onSubmit }) => {
 
   const onKeyPress = useCallback((e) => {
     if (e.key === 'Enter') {
-      append({ url: '' })
+      append({ url: '' }, { shouldFocus: true })
     }
   }, [append])
 
@@ -114,7 +114,6 @@ const URLs = ({ onSubmit }) => {
       <Text fontWeight='lighter'>
         <FormattedMessage id='Notice.Paste' defaultMessage='Note: If you have a long list of URLs to add, you can copy them and paste into one of the boxes below.' />
       </Text>
-      <form onSubmit={handleSubmit(onSubmit)}>
         <Flex flexDirection='column' my={3}>
           {controlledFields.map((field, index) => (
             <Controller
@@ -144,10 +143,9 @@ const URLs = ({ onSubmit }) => {
             + <FormattedMessage id='Button.AddUrl' defaultMessage='Add URL' />
           </AddURLButton>
         </Box>
-        <Button type='submit' disabled={!isValid}>
+        <Button onClick={handleSubmit(onSubmit)} disabled={!isValid}>
           <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
         </Button>
-      </form>
     </Flex>
   )
 }
