@@ -59,8 +59,8 @@ const validationSchema = Yup.object().shape({
   )
 });
 
-const URLs = ({ toggleGenerate }) => {
-  const { control, formState, watch, trigger } = useForm({
+const URLs = ({ onSubmit }) => {
+  const { control, formState, watch, trigger, handleSubmit } = useForm({
     mode: 'onTouched',
     defaultValues: { urls: [ { url: '' } ] },
     resolver: yupResolver(validationSchema)
@@ -114,38 +114,40 @@ const URLs = ({ toggleGenerate }) => {
       <Text fontWeight='lighter'>
         <FormattedMessage id='Notice.Paste' defaultMessage='Note: If you have a long list of URLs to add, you can copy them and paste into one of the boxes below.' />
       </Text>
-      <Flex flexDirection='column' my={3}>
-        {controlledFields.map((field, index) => (
-          <Controller
-            render={({ field }) => (
-              // <input {...field} />
-              <StyleFixIconButton key={`url-${index}`} className='input-with-button'>
-                <InputWithIconButton
-                  {...field}
-                  className='url-input'
-                  value={field.value}
-                  icon={<MdDelete />}
-                  placeholder='https://'
-                  error={errors?.['urls']?.[index]?.['url']?.message}
-                  onKeyPress={onKeyPress}
-                  onAction={() => remove(index)}
-                  onPaste={(e) => handlePaste(e, index, field.onChange)}
-                />
-              </StyleFixIconButton>
-            )}
-            name={`urls.${index}.url`}
-            control={control}
-          />
-        ))}
-      </Flex>
-      <Box my={2}>
-        <AddURLButton onClick={() => append({ url: '' })}>
-          + <FormattedMessage id='Button.AddUrl' defaultMessage='Add URL' />
-        </AddURLButton>
-      </Box>
-      <Button onClick={toggleGenerate} disabled={!isValid}>
-        <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
-      </Button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Flex flexDirection='column' my={3}>
+          {controlledFields.map((field, index) => (
+            <Controller
+              render={({ field }) => (
+                // <input {...field} />
+                <StyleFixIconButton key={`url-${index}`} className='input-with-button'>
+                  <InputWithIconButton
+                    {...field}
+                    className='url-input'
+                    value={field.value}
+                    icon={<MdDelete />}
+                    placeholder='https://'
+                    error={errors?.['urls']?.[index]?.['url']?.message}
+                    onKeyPress={onKeyPress}
+                    onAction={() => remove(index)}
+                    onPaste={(e) => handlePaste(e, index, field.onChange)}
+                  />
+                </StyleFixIconButton>
+              )}
+              name={`urls.${index}.url`}
+              control={control}
+            />
+          ))}
+        </Flex>
+        <Box my={2}>
+          <AddURLButton onClick={() => append({ url: '' })}>
+            + <FormattedMessage id='Button.AddUrl' defaultMessage='Add URL' />
+          </AddURLButton>
+        </Box>
+        <Button type='submit' disabled={!isValid}>
+          <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
+        </Button>
+      </form>
     </Flex>
   )
 }

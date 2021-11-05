@@ -255,19 +255,25 @@ export default class extends React.Component {
     super()
     this.state = {
       selectedTest: 'web_connectivity',
-      urls: [
-        {value: 'https://', error: null}
-      ],
+      urls: [],
       error: false,
       generated: false
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.toggleGenerate = this.toggleGenerate.bind(this)
+    this.onSubmitURLs = this.onSubmitURLs.bind(this)
   }
 
   toggleGenerate() {
     this.setState({generated: !this.state.generated});
+  }
+
+  onSubmitURLs({ urls }) {
+    this.setState({
+      urls: urls.map(u => u.url),
+      generated: !this.state.generated
+    })
   }
 
   handleChange(stateName) {
@@ -280,7 +286,7 @@ export default class extends React.Component {
   }
 
   render() {
-    const universalLink = getUniversalLink(this.state.selectedTest, this.state.urls.map(u => u.value))
+    const universalLink = getUniversalLink(this.state.selectedTest, [...this.state.urls])
     const embedCode = `
 
     /* For a simple button */
@@ -299,7 +305,6 @@ export default class extends React.Component {
 
         <Container pt={4} maxWidth={800}>
           <Flex flexWrap='wrap'>
-
           <Box width={[1, 1/2]} pb={3}>
           <Heading h={2}>
             <FormattedMessage id='Home.Heading.TestName' defaultMessage='Test Name' />
@@ -334,18 +339,16 @@ export default class extends React.Component {
             <Heading h={2}><FormattedMessage id='Title.WhatCanYouDo' defaultMessage='What you can do' /></Heading>
             <WhatCanYouDoText test={this.state.selectedTest} />
 
-            {this.state.selectedTest == 'web_connectivity'
-            && <URLs toggleGenerate={this.toggleGenerate} />}
-            {/*
-              <AddURLsSection urls={this.state.urls} onUpdatedURLs={this.handleChange('urls')} />}
-            <Box pt={3} pb={3}>
-              <Button onClick={this.toggleGenerate}>
-                <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
-              </Button>
-            </Box> */
-            }
+            {this.state.selectedTest == 'web_connectivity' ? (
+              <URLs onSubmit={this.onSubmitURLs} />
+            ) : (
+              <Box pt={3} pb={3}>
+                <Button onClick={this.toggleGenerate}>
+                  <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
+                </Button>
+              </Box>
+            )}
           </Box>
-
           </Flex>
 
           <Modal
