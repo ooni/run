@@ -143,7 +143,7 @@ const URLs = ({ onSubmit }) => {
             + <FormattedMessage id='Button.AddUrl' defaultMessage='Add URL' />
           </AddURLButton>
         </Box>
-        <Button onClick={handleSubmit(onSubmit)} disabled={!isValid}>
+        <Button onClick={handleSubmit(onSubmit)}>
           <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
         </Button>
     </Flex>
