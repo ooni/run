@@ -114,6 +114,10 @@ const URLs = ({ onSubmit }) => {
       <Text fontWeight='lighter'>
         <FormattedMessage id='Notice.Paste' defaultMessage='Note: If you have a long list of URLs to add, you can copy them and paste into one of the boxes below.' />
       </Text>
+        <datalist id="url-prefixes">
+          <option value="https://" />
+          <option value="http://" />
+        </datalist>
         <Flex flexDirection='column' my={3}>
           {controlledFields.map((field, index) => (
             <Controller
@@ -126,6 +130,7 @@ const URLs = ({ onSubmit }) => {
                     value={field.value}
                     icon={<MdDelete />}
                     placeholder='https://'
+                    list='url-prefixes'
                     error={errors?.['urls']?.[index]?.['url']?.message}
                     onKeyPress={onKeyPress}
                     onAction={() => remove(index)}
