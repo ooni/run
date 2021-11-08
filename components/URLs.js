@@ -90,9 +90,9 @@ const URLs = ({ onSubmit }) => {
     e.preventDefault()
 
     const pastedText = e.clipboardData.getData('Text')
-    const newEntries = pastedText.split('\n').map((line, i) => (
-      { url: line }
-    ))
+    const newEntries = pastedText.split('\n')
+      .filter(line => String(line).length > 0)
+      .map((line, i) => ({ url: line }))
 
     // Place first pasted entry into event and trigger onChange
     // This updates the field being pasted into with the first entry
