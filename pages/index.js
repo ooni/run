@@ -1,35 +1,25 @@
 import React from 'react'
-import Layout from '../components/Layout'
-
 import styled from 'styled-components'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { getUniversalLink } from '../utils/links'
-
-import MdDelete from 'react-icons/lib/md/delete'
-import GraphicsOctopusModal from '../components/svgs/GraphicsOctopusModal.svg'
-
-import OONIRunHero from '../components/OONIRunHero'
-
 import {
   Heading,
   Text,
   Container,
-  Label,
   Input,
   Button,
-  Row,
-  Column,
   Link,
-  Pre,
   RadioGroup,
   RadioButton,
   Flex,
   Box,
-  InputWithIconButton,
-  IconButton,
   Modal,
   TwitterShareButton
 } from 'ooni-components'
+
+import Layout from '../components/Layout'
+import { getUniversalLink } from '../utils/links'
+import GraphicsOctopusModal from '../components/svgs/GraphicsOctopusModal.svg'
+import OONIRunHero from '../components/OONIRunHero'
 
 import {
   censorshipTests,
@@ -38,35 +28,7 @@ import {
   WhatCanYouDoText,
   messages as nettestMessages
 } from '../utils/nettest'
-
-const AddURLButton = styled(Button)`
-  color: ${props => props.theme.colors.gray5};
-  border-radius: 0;
-  padding: 0;
-  background-color: transparent;
-  border-bottom: 1px solid ${props => props.theme.colors.gray1};
-  text-align: left;
-  text-transform: none;
-
-  &:hover, &:hover:enabled {
-    background-color: transparent;
-    color: ${props => props.theme.colors.gray6};
-    border-bottom: 1px solid ${props => props.theme.colors.gray3};
-  }
-  &:active, &:active:enabled {
-    background-color: transparent;
-    color: ${props => props.theme.colors.gray7};
-    border-bottom: 2px solid ${props => props.theme.colors.gray4};
-  }
-`
-const StyleFixIconButton = styled.div`
-  & button:hover:enabled {
-    background-color: transparent;
-  }
-  & button:active:enabled {
-    background-color: transparent;
-  }
-`
+import URLs from '../components/URLs'
 
 const TestCategoryHeading = styled(Heading)`
   padding: 10px 0;
@@ -107,106 +69,6 @@ const TestDetailsLabel = ({ id, name, desc, checked, value }) => {
   )
 }
 
-class AddURLsSection extends React.Component {
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      urls: props.urls
-    }
-    this.handleDeleteURL = this.handleDeleteURL.bind(this)
-    this.handleEditURL = this.handleEditURL.bind(this)
-    this.handleKeyPress = this.handleKeyPress.bind(this)
-    this.addURL = this.addURL.bind(this)
-    this.urlRefs = new Map()
-  }
-
-  addURL() {
-    let state = Object.assign({}, this.state)
-    const idx = this.state.urls.length
-    state.urls.push({value: 'http://', error: null, ref: null})
-    this.props.onUpdatedURLs(state.urls)
-    this.setState(state, () => {
-      // This is a ghetto hax, that is a workaround for:
-      // https://github.com/jxnblk/rebass/issues/329
-      const urlInputs = document.getElementsByClassName('url-input')
-      const target = urlInputs[urlInputs.length - 1]
-      target.focus()
-      target.setSelectionRange(7,7)
-    })
-  }
-
-  handleKeyPress (e) {
-    if (e.key === 'Enter') {
-      this.addURL()
-    }
-  }
-
-  handleDeleteURL(idx) {
-    return ((event) => {
-      let state = Object.assign({}, this.state)
-      state.urls = state.urls
-                        .filter((url, jdx) => jdx !== idx)
-                        .map(url => Object.assign({}, url))
-      this.setState(state)
-      this.props.onUpdatedURLs(state.urls)
-    }).bind(this)
-  }
-
-  handleEditURL(idx) {
-    return ((event) => {
-      const value = event.target.value
-      let state = Object.assign({}, this.state)
-      state.urls = state.urls.map(url => Object.assign({}, url))
-      state.error = false
-      let update = value.split(' ').map((line) => {
-        let itm = {'value': line, 'error': null}
-        if (!line.startsWith('https://') && !line.startsWith('http://')) {
-          itm['error'] = 'URL must start with http:// or https://'
-          state.error = true
-        }
-        return itm
-      })
-      state.urls.splice.apply(state.urls, [idx, 1].concat(update))
-      this.setState(state)
-    })
-  }
-
-  render() {
-    const { onUpdatedURLs } = this.props
-    const { urls } = this.state
-
-    return (
-      <Box pt={4}>
-      <Heading h={2} pb={3}>
-        <FormattedMessage id='Title.URLs' defaultMessage='URLs' />
-      </Heading>
-        {urls.length == 0
-        && <div>
-          Click "Add URL" below to add a URL to test
-          </div>
-        }
-        {urls.map((url, idx) => <StyleFixIconButton key={`url-${idx}`} className='input-with-button'>
-          <InputWithIconButton
-                className='url-input'
-                value={url.value}
-                icon={<MdDelete />}
-                error={url.error}
-                onKeyPress={this.handleKeyPress}
-                onBlur={() => onUpdatedURLs(urls)}
-                onChange={this.handleEditURL(idx)}
-                onAction={this.handleDeleteURL(idx)} />
-          </StyleFixIconButton>)}
-        <div>
-          <AddURLButton onClick={this.addURL}>
-          + <FormattedMessage id='Button.AddUrl' defaultMessage='Add URL' />
-          </AddURLButton>
-        </div>
-        </Box>
-      )
-    }
-}
-
 const GraphicsWithGradient = styled(Box)`
   width: 100%;
   height: 100%;
@@ -232,12 +94,6 @@ const GraphicsWithGradient = styled(Box)`
     );
   }
 `
-const BrandContainer = styled.div`
-  max-width: 100%;
-  svg {
-    max-width: 100%;
-  }
-`
 
 const TwitterButton = ({ universalLink }) => {
   const intl = useIntl()
@@ -254,19 +110,25 @@ export default class extends React.Component {
     super()
     this.state = {
       selectedTest: 'web_connectivity',
-      urls: [
-        {value: 'http://', error: null}
-      ],
+      urls: [],
       error: false,
       generated: false
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.toggleGenerate = this.toggleGenerate.bind(this)
+    this.onSubmitURLs = this.onSubmitURLs.bind(this)
   }
 
   toggleGenerate() {
     this.setState({generated: !this.state.generated});
+  }
+
+  onSubmitURLs({ urls }) {
+    this.setState({
+      urls: urls.map(u => u.url),
+      generated: !this.state.generated
+    })
   }
 
   handleChange(stateName) {
@@ -279,7 +141,7 @@ export default class extends React.Component {
   }
 
   render() {
-    const universalLink = getUniversalLink(this.state.selectedTest, this.state.urls.map(u => u.value))
+    const universalLink = getUniversalLink(this.state.selectedTest, [...this.state.urls])
     const embedCode = `
 
     /* For a simple button */
@@ -298,7 +160,6 @@ export default class extends React.Component {
 
         <Container pt={4} maxWidth={800}>
           <Flex flexWrap='wrap'>
-
           <Box width={[1, 1/2]} pb={3}>
           <Heading h={2}>
             <FormattedMessage id='Home.Heading.TestName' defaultMessage='Test Name' />
@@ -333,16 +194,16 @@ export default class extends React.Component {
             <Heading h={2}><FormattedMessage id='Title.WhatCanYouDo' defaultMessage='What you can do' /></Heading>
             <WhatCanYouDoText test={this.state.selectedTest} />
 
-            {this.state.selectedTest == 'web_connectivity'
-            && <AddURLsSection urls={this.state.urls} onUpdatedURLs={this.handleChange('urls')} />}
-            <Box pt={3} pb={3}>
-              <Button onClick={this.toggleGenerate}>
-                <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
-              </Button>
-            </Box>
-
+            {this.state.selectedTest == 'web_connectivity' ? (
+              <URLs onSubmit={this.onSubmitURLs} />
+            ) : (
+              <Box pt={3} pb={3}>
+                <Button onClick={this.toggleGenerate}>
+                  <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
+                </Button>
+              </Box>
+            )}
           </Box>
-
           </Flex>
 
           <Modal
