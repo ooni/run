@@ -159,51 +159,21 @@ export default class extends React.Component {
         <OONIRunHero href={'https://ooni.torproject.org'} />
 
         <Container pt={4} maxWidth={800}>
-          <Flex flexWrap='wrap'>
-          <Box width={[1, 1/2]} pb={3}>
-          <Heading h={2}>
-            <FormattedMessage id='Home.Heading.TestName' defaultMessage='Test Name' />
-          </Heading>
-      		<RadioGroup
-              name='test_name'
-              value={this.state.selectedTest}
-              onChange={this.handleChange('selectedTest')}>
-            <TestCategoryHeading h={4} color='violet5'>
-              <FormattedMessage id='Sidebar.WebConnectivity.Title' defaultMessage='Internet Censorship' />
-            </TestCategoryHeading>
-            {censorshipTests.map(({key, name, desc}) => (
-              <RadioButton key={key} label={<TestDetailsLabel id={key} name={name} desc={desc} />} value={key} />
-            ))}
-            <TestCategoryHeading h={4} color='cyan5'>
-              <FormattedMessage id='Sidebar.Performance.Title' defaultMessage='Speed & Performance' />
-            </TestCategoryHeading>
-            {netNeutralityTests.map(({key, name, desc}) => (
-              <RadioButton key={key} label={<TestDetailsLabel id={key} name={name} desc={desc} />} value={key} />
-            ))}
-            <TestCategoryHeading h={4} color='orange5'>
-              <FormattedMessage id='Sidebar.Middleboxes.Title' defaultMessage='Middleboxes' />
-            </TestCategoryHeading>
-            {middleBoxTests.map(({key, name, desc}) => (
-              <RadioButton key={key} label={<TestDetailsLabel id={key} name={name} desc={desc} />} value={key} />
-            ))}
+          <Flex justifyContent='center'>
+            <Box width={3/4}>
+              <Heading h={2}><FormattedMessage id='Title.WhatCanYouDo' defaultMessage='What you can do' /></Heading>
+              <WhatCanYouDoText test={this.state.selectedTest} />
 
-          </RadioGroup>
-          </Box>
-
-          <Box width={[1, 1/2]}>
-            <Heading h={2}><FormattedMessage id='Title.WhatCanYouDo' defaultMessage='What you can do' /></Heading>
-            <WhatCanYouDoText test={this.state.selectedTest} />
-
-            {this.state.selectedTest == 'web_connectivity' ? (
-              <URLs onSubmit={this.onSubmitURLs} />
-            ) : (
-              <Box pt={3} pb={3}>
-                <Button onClick={this.toggleGenerate}>
-                  <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
-                </Button>
-              </Box>
-            )}
-          </Box>
+              {this.state.selectedTest == 'web_connectivity' ? (
+                <URLs onSubmit={this.onSubmitURLs} />
+              ) : (
+                <Box pt={3} pb={3}>
+                  <Button onClick={this.toggleGenerate}>
+                    <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
+                  </Button>
+                </Box>
+              )}
+            </Box>
           </Flex>
 
           <Modal
