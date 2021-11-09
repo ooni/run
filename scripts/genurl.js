@@ -9,5 +9,5 @@ fs.readFile(CSV_PATH, 'utf8', function (err,data) {
     return console.log(err)
   }
   const urls = data.split('\n').map(x => x.split(',')[0]).filter(x => x !== 'url' && x !== '')
-  console.log(getUniversalLink('web_connectivity', urls))
+  console.log(getUniversalLink(urls))
 })
