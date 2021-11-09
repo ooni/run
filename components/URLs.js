@@ -60,23 +60,16 @@ const validationSchema = Yup.object().shape({
 });
 
 const URLs = ({ onSubmit }) => {
-  const { control, formState, watch, trigger, handleSubmit } = useForm({
+  const { control, formState, trigger, handleSubmit } = useForm({
     mode: 'onTouched',
     defaultValues: { urls: [ { url: '' } ] },
     resolver: yupResolver(validationSchema)
   })
-  const { isDirty, isValid, errors } = formState
+  const { errors } = formState
 
-  const { fields, append, remove, insert, update } = useFieldArray({
+  const { fields, append, remove, insert, replace } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: "urls", // unique name for your Field Array
-  })
-  const watchFieldArray = watch('urls')
-  const controlledFields = fields.map((field, index) => {
-    return {
-      ...field,
-      ...watchFieldArray[index]
-    }
   })
 
   const onKeyPress = useCallback((e) => {
@@ -92,7 +85,7 @@ const URLs = ({ onSubmit }) => {
     const pastedText = e.clipboardData.getData('Text')
     const newEntries = pastedText.split('\n')
       .filter(line => String(line).length > 0)
-      .map((line, i) => ({ url: line }))
+      .map((line) => ({ url: line }))
 
     // Place first pasted entry into event and trigger onChange
     // This updates the field being pasted into with the first entry
@@ -100,11 +93,12 @@ const URLs = ({ onSubmit }) => {
     onChange(e)
     
     // Insert fields into the form using the rest of the entries
-    insert(index + 1, newEntries.slice(1))
+    // insert(index + 1, newEntries.slice(1))
+    replace([...newEntries])
 
     // Trigger validation to show any errors in the new entries
     trigger()
-  }, [append, insert, update])
+  }, [append, insert, replace])
 
   return (
     <Flex flexDirection='column'>
@@ -119,15 +113,14 @@ const URLs = ({ onSubmit }) => {
           <option value="http://" />
         </datalist>
         <Flex flexDirection='column' my={3}>
-          {controlledFields.map((field, index) => (
+          {fields.map((item, index) => (
             <Controller
+              key={item.id}
               render={({ field }) => (
-                // <input {...field} />
-                <StyleFixIconButton key={`url-${index}`} className='input-with-button'>
+                <StyleFixIconButton className='input-with-button'>
                   <InputWithIconButton
                     {...field}
                     className='url-input'
-                    value={field.value}
                     icon={<MdDelete />}
                     placeholder='https://'
                     list='url-prefixes'
