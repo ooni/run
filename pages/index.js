@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo, useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { FormattedMessage, useIntl } from 'react-intl'
 import {
@@ -8,8 +8,6 @@ import {
   Input,
   Button,
   Link,
-  RadioGroup,
-  RadioButton,
   Flex,
   Box,
   Modal,
@@ -21,53 +19,11 @@ import { getUniversalLink } from '../utils/links'
 import GraphicsOctopusModal from '../components/svgs/GraphicsOctopusModal.svg'
 import OONIRunHero from '../components/OONIRunHero'
 
-import {
-  censorshipTests,
-  netNeutralityTests,
-  middleBoxTests,
-  WhatCanYouDoText,
-  messages as nettestMessages
-} from '../utils/nettest'
 import URLs from '../components/URLs'
-
-const TestCategoryHeading = styled(Heading)`
-  padding: 10px 0;
-  color: ${props => props.theme.colors[props.color] || props.theme.colors.black};
-`
 
 const StyleLinkButton = styled(Button)`
   text-transform: none;
 `
-
-const ItalicText = styled(Text)`
-  font-style: italic;
-`
-
-const TestDetailsLabel = ({ id, name, desc, checked, value }) => {
-  const intl = useIntl()
-  // The links to the details of the test name are not in snake_case, but in dash-case
-  const testName = (value && value.replace(/[_]/g, '-')) || ''
-  const href = `https://ooni.org/nettest/${testName}`
-  return (
-    <div>
-      <Box>
-        {intl.formatMessage(nettestMessages[`${id}_name`])}
-      </Box>
-      {checked
-        && <Box pt={1}>
-          <ItalicText>
-            {intl.formatMessage(nettestMessages[`${id}_desc`])}
-          </ItalicText>
-        </Box>
-      }
-      {checked
-        && <Box>
-          <Link color='blue7' href={href}><ItalicText>{intl.formatMessage(nettestMessages['learn'])}</ItalicText></Link>
-        </Box>
-      }
-    </div>
-  )
-}
 
 const GraphicsWithGradient = styled(Box)`
   width: 100%;
@@ -105,122 +61,66 @@ const TwitterButton = ({ universalLink }) => {
   )
 }
 
-export default class extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      selectedTest: 'web_connectivity',
-      urls: [],
-      error: false,
-      generated: false
-    }
+const Home = () => {
+  const [urls, setUrls] = useState([])
+  const [showModal, setShowModal] = useState(false)
 
-    this.handleChange = this.handleChange.bind(this)
-    this.toggleGenerate = this.toggleGenerate.bind(this)
-    this.onSubmitURLs = this.onSubmitURLs.bind(this)
-  }
+  const onSubmitURLs = useCallback(({ urls }) => {
+    setUrls([...urls])
+    setShowModal(true)
+  }, [])
 
-  toggleGenerate() {
-    this.setState({generated: !this.state.generated});
-  }
-
-  onSubmitURLs({ urls }) {
-    this.setState({
-      urls: urls.map(u => u.url),
-      generated: !this.state.generated
-    })
-  }
-
-  handleChange(stateName) {
-    return ((value, event) => {
-      let state = Object.assign({}, this.state)
-      const urls = this.state.urls.filter((url) => url !== '').map(u => u.value)
-      state[stateName] = value
-      this.setState(state)
-    }).bind(this)
-  }
-
-  render() {
-    const universalLink = getUniversalLink(this.state.selectedTest, [...this.state.urls])
+  const [universalLink, embedCode] = useMemo(() => {
+    console.log('generating links and embed code')
+    const universalLink = getUniversalLink([...urls])
     const embedCode = `
+/* For a simple button */
+<a href='${universalLink}' class='ooni-run-button'>Run OONI!</a>
 
-    /* For a simple button */
-    <a href='${universalLink}' class='ooni-run-button'>Run OONI!</a>
+/* For a tall banner */
+<div data-link='${universalLink}' class='ooni-run-banner'>
+  Fight Censorship
+</div>
 
-    /* For a tall banner */
-    <div data-link='${universalLink}' class='ooni-run-banner'>
-      Fight Censorship
-    </div>
-    /* If you have not already included the OONI widget code */
-    <script src='https://cdn.jsdelivr.net/npm/ooni-run/dist/widgets.js'></script>
-    `
-    return (
-      <Layout>
-        <OONIRunHero href={'https://ooni.torproject.org'} />
+/* If you have not already included the OONI widget code */
+<script src='https://cdn.jsdelivr.net/npm/ooni-run/dist/widgets.js'></script>
+`
+    return [universalLink, embedCode]
+  }, [urls])
 
-        <Container pt={4} maxWidth={800}>
-          <Flex flexWrap='wrap'>
-          <Box width={[1, 1/2]} pb={3}>
-          <Heading h={2}>
-            <FormattedMessage id='Home.Heading.TestName' defaultMessage='Test Name' />
-          </Heading>
-      		<RadioGroup
-              name='test_name'
-              value={this.state.selectedTest}
-              onChange={this.handleChange('selectedTest')}>
-            <TestCategoryHeading h={4} color='violet5'>
-              <FormattedMessage id='Sidebar.WebConnectivity.Title' defaultMessage='Internet Censorship' />
-            </TestCategoryHeading>
-            {censorshipTests.map(({key, name, desc}) => (
-              <RadioButton key={key} label={<TestDetailsLabel id={key} name={name} desc={desc} />} value={key} />
-            ))}
-            <TestCategoryHeading h={4} color='cyan5'>
-              <FormattedMessage id='Sidebar.Performance.Title' defaultMessage='Speed & Performance' />
-            </TestCategoryHeading>
-            {netNeutralityTests.map(({key, name, desc}) => (
-              <RadioButton key={key} label={<TestDetailsLabel id={key} name={name} desc={desc} />} value={key} />
-            ))}
-            <TestCategoryHeading h={4} color='orange5'>
-              <FormattedMessage id='Sidebar.Middleboxes.Title' defaultMessage='Middleboxes' />
-            </TestCategoryHeading>
-            {middleBoxTests.map(({key, name, desc}) => (
-              <RadioButton key={key} label={<TestDetailsLabel id={key} name={name} desc={desc} />} value={key} />
-            ))}
+  return (
+    <Layout>
+      <OONIRunHero href={'https://ooni.torproject.org'} />
 
-          </RadioGroup>
-          </Box>
-
-          <Box width={[1, 1/2]}>
+      <Container pt={4} maxWidth={800}>
+        <Flex justifyContent='center'>
+          <Box width={3/4}>
             <Heading h={2}><FormattedMessage id='Title.WhatCanYouDo' defaultMessage='What you can do' /></Heading>
-            <WhatCanYouDoText test={this.state.selectedTest} />
-
-            {this.state.selectedTest == 'web_connectivity' ? (
-              <URLs onSubmit={this.onSubmitURLs} />
-            ) : (
-              <Box pt={3} pb={3}>
-                <Button onClick={this.toggleGenerate}>
-                  <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
-                </Button>
-              </Box>
-            )}
+            <FormattedMessage
+              tagName={Text}
+              id='WhatCanYouDoText.WebCensorship'
+              defaultMessage='Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to test the sites of your choice!'
+            />
+            <URLs onSubmit={onSubmitURLs} />
           </Box>
-          </Flex>
+        </Flex>
 
-          <Modal
-            onHideClick={this.toggleGenerate}
-            show={this.state.generated}
-            width={[9/10, 7/10]}
-            p={0}
-            closeButton='right'
-            style={{borderRadius: '20px'}}>
+        <Modal
+          onHideClick={() => setShowModal(false)}
+          show={showModal}
+          closeButton='right'
+          width={[9/10, 7/10]}
+          p={0}
+          style={{borderRadius: '20px'}}
+        >
 
-            <Flex flexWrap='wrap' style={{minHeight: '100%'}}>
-              <Box width={[1, 1/3]} height={[1, 1/3]} style={{backgroundColor: '#8ED8F8'}}>
-                <GraphicsWithGradient>
-                  <GraphicsOctopusModal />
-                </GraphicsWithGradient>
-              </Box>
-              <Box width={[1, 2/3]}>
+          <Flex flexWrap='wrap' style={{minHeight: '100%'}}>
+            <Box width={[1, 1/3]} height={[1, 1/3]} style={{backgroundColor: '#8ED8F8'}}>
+              <GraphicsWithGradient>
+                <GraphicsOctopusModal />
+              </GraphicsWithGradient>
+            </Box>
+            <Box width={[1, 2/3]}>
               <Container p={[1, 2]} ml={[2, 4]} mr={[2, 4]}>
                 <Heading h={1} textAlign='center'>
                   <FormattedMessage id='Modal.Heading.LinkReady' defaultMessage='Your link is ready!' />
@@ -254,17 +154,18 @@ export default class extends React.Component {
 
                 <Box pt={4}>
                   <Flex justify='center' align='center'>
-                    <Button onClick={this.toggleGenerate}>
+                    <Button onClick={() => setShowModal(false)}>
                       <FormattedMessage id='Modal.Button.Done' defaultMessage='Done' />
                     </Button>
                   </Flex>
                 </Box>
               </Container>
-              </Box>
-            </Flex>
-          </Modal>
-        </Container>
-      </Layout>
-    )
-  }
+            </Box>
+          </Flex>
+        </Modal>
+      </Container>
+    </Layout>
+  )
 }
+
+export default Home

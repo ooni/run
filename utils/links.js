@@ -16,7 +16,8 @@ export const getEncodedQuery = ({tn, ta, mv}) => {
   return uri
 }
 
-export const getUniversalLink = (testName, urls) => {
+export const getUniversalLink = (urls) => {
+  const testName = 'web_connectivity'
   let query = {
     tn: testName,
     mv: minimumVersion
