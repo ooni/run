@@ -53,7 +53,7 @@ const validationSchema = Yup.object().shape({
                 'should be a valid URL format e.g "https://ooni.org/post/"',
                 (value) => {
                   try {
-                    let url = new URL(value)
+                    const url = new URL(value)
                     if (url.protocol != "http:" && url.protocol != "https:") {
                       return false
                     }
