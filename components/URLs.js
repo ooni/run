@@ -48,20 +48,21 @@ const validationSchema = Yup.object().shape({
       Yup.object().shape({
           url: Yup.string()
               .required('cannot be empty')
-              .matches(/^http(s?)/, 'should start with "https" or "http"')
               .test(
                 'is-valid-url',
                 'should be a valid URL format e.g "https://ooni.org/post/"',
                 (value) => {
                   try {
-                    new URL(value)
+                    let url = new URL(value)
+                    if (url.protocol != "http:" && url.protocol != "https:") {
+                      return false
+                    }
                     return true
                   } catch {
                     return false
                   }
                 }
               )
-      // more validations here
       })
   )
 });
