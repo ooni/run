@@ -56,7 +56,7 @@ const TwitterButton = ({ universalLink }) => {
   return (
     <TwitterShareButton
       url={universalLink}
-      message={intl.formatMessage({id: 'Share.Twitter.Tweet', defaultMessage: 'Run OONI Probe to test for censorship!'})}
+      message={intl.formatMessage({ id: 'Share.Twitter.Tweet', defaultMessage: 'Run OONI Probe to test for censorship!' })}
     />
   )
 }
@@ -72,7 +72,7 @@ const Home = () => {
 
   const [universalLink, embedCode] = useMemo(() => {
     console.log('generating links and embed code')
-    const universalLink = getUniversalLink([...urls])
+    const universalLink = getUniversalLink(urls.map((e) => e.url))
     const embedCode = `
 /* For a simple button */
 <a href='${universalLink}' class='ooni-run-button'>Run OONI!</a>
@@ -94,7 +94,7 @@ const Home = () => {
 
       <Container pt={4} maxWidth={800}>
         <Flex justifyContent='center'>
-          <Box width={3/4}>
+          <Box width={3 / 4}>
             <Heading h={2}><FormattedMessage id='Title.WhatCanYouDo' defaultMessage='What you can do' /></Heading>
             <FormattedMessage
               tagName={Text}
@@ -109,18 +109,18 @@ const Home = () => {
           onHideClick={() => setShowModal(false)}
           show={showModal}
           closeButton='right'
-          width={[9/10, 7/10]}
+          width={[9 / 10, 7 / 10]}
           p={0}
-          style={{borderRadius: '20px'}}
+          style={{ borderRadius: '20px' }}
         >
 
-          <Flex flexWrap='wrap' style={{minHeight: '100%'}}>
-            <Box width={[1, 1/3]} height={[1, 1/3]} style={{backgroundColor: '#8ED8F8'}}>
+          <Flex flexWrap='wrap' style={{ minHeight: '100%' }}>
+            <Box width={[1, 1 / 3]} height={[1, 1 / 3]} style={{ backgroundColor: '#8ED8F8' }}>
               <GraphicsWithGradient>
                 <GraphicsOctopusModal />
               </GraphicsWithGradient>
             </Box>
-            <Box width={[1, 2/3]}>
+            <Box width={[1, 2 / 3]}>
               <Container p={[1, 2]} ml={[2, 4]} mr={[2, 4]}>
                 <Heading h={1} textAlign='center'>
                   <FormattedMessage id='Modal.Heading.LinkReady' defaultMessage='Your link is ready!' />
