@@ -43,18 +43,26 @@ const StyleFixIconButton = styled.div`
   }
 `
 
-// Based on https://github.com/citizenlab/test-lists/blob/fd9620f6402f66f7835a831fdcd0731b449e9c52/scripts/lint-lists.py#L18
-const urlValidityRegex = /^(?:http)s?:\/\/(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::\d+)?(?:\/?|[/?]\S+)$/i
-
 const validationSchema = Yup.object().shape({
   urls: Yup.array().of(
       Yup.object().shape({
           url: Yup.string()
               .required('cannot be empty')
-              .matches(/^http(s?)/, 'should start with "https" or "http"')
-              .matches(urlValidityRegex, 'should be a valid URL format e.g "https://ooni.org/post/"')
-              .matches(/\/$/, 'should end with a slash e.g "https://ooni.org/"')
-      // more validations here
+              .test(
+                'is-valid-url',
+                'should be a valid URL format e.g "https://ooni.org/post/"',
+                (value) => {
+                  try {
+                    const url = new URL(value)
+                    if (url.protocol != "http:" && url.protocol != "https:") {
+                      return false
+                    }
+                    return true
+                  } catch {
+                    return false
+                  }
+                }
+              )
       })
   )
 });

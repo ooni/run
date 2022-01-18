@@ -66,7 +66,9 @@ const Home = () => {
   const [showModal, setShowModal] = useState(false)
 
   const onSubmitURLs = useCallback(({ urls }) => {
-    setUrls([...urls])
+    setUrls(urls.map((url) => {
+      return {"url": new URL(url.url).toString()}
+    }))
     setShowModal(true)
   }, [])
 
