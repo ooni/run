@@ -23,6 +23,8 @@ RUN set -ex \
     && rm -rf /home/node/.cache \
     && :
 
+RUN chown -R node:node /usr/src/app
+
 EXPOSE 3000
 
 CMD [ "yarn", "run", "start" ]
