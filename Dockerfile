@@ -23,7 +23,8 @@ RUN set -ex \
     && rm -rf /home/node/.cache \
     && :
 
-RUN chown -R node:node /usr/src/app
+RUN mkdir -p /usr/src/app/node_modules/.cache
+RUN chown -R node:node /usr/src/app/node_modules/.cache
 
 EXPOSE 3000
 
