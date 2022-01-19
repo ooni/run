@@ -1,39 +1,30 @@
-# Install dependencies only when needed
-FROM node:16-alpine AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+# Best practices for development, and not for a production deployment
+# from https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
 
-# Rebuild the source code only when needed
-FROM node:16-alpine AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
-RUN yarn build:next
+# Build: run ooni-sysadmin.git/scripts/docker-build from this directory
 
-# Production image, copy all the files and run next
-FROM node:16-alpine AS runner
-WORKDIR /app
+FROM node:erbium
 
-ENV NODE_ENV production
+# BEGIN root
+USER root
+RUN groupmod -g 1007 node && usermod -u 1007 -g 1007 node
+COPY . /usr/src/app
+RUN set -ex \
+    && chown -R node:node /usr/src/app \
+    && :
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+# END root
 
-COPY --from=builder /app/ .
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+USER node
+WORKDIR /usr/src/app
 
-USER nextjs
+# .cache removal leads to two times smaller image and 
+RUN set -ex \
+    && yarn install --frozen-lockfile \
+    && yarn run build:next \
+    && rm -rf /home/node/.cache \
+    && :
 
 EXPOSE 3000
 
-ENV PORT 3000
-
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry.
-# ENV NEXT_TELEMETRY_DISABLED 1
-
-CMD ["yarn", "run", "start"]
+CMD [ "yarn", "run", "start" ]
