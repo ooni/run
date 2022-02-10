@@ -1,26 +1,50 @@
-import Document, { Head, Main, NextScript } from 'next/document'
+import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 
-import globalStyle from '../components/globalStyle'
-import meta from '../config/meta'
-
 export default class MyDocument extends Document {
-  render () {
+  static async getInitialProps(ctx) {
     const sheet = new ServerStyleSheet()
-    const main = sheet.collectStyles(<Main />)
-    const styleTags = sheet.getStyleElement()
+    const originalRenderPage = ctx.renderPage
+
+    try {
+      ctx.renderPage = () =>
+        originalRenderPage({
+          enhanceApp: (App) => (props) =>
+            sheet.collectStyles(<App {...props} />),
+        })
+
+      const initialProps = await Document.getInitialProps(ctx)
+      return {
+        ...initialProps,
+        styles: (
+          <>
+            {initialProps.styles}
+            {sheet.getStyleElement()}
+          </>
+        ),
+      }
+    }
+    catch (err) {
+      console.log(err)
+      throw err
+    } finally {
+      sheet.seal()
+    }
+  }
+
+  render () {
     return (
-      <html>
+      <Html>
         <Head>
-          {styleTags}
+          {this.props.styleTags}
         </Head>
         <body>
           <div className='root'>
-            {main}
+            <Main />
           </div>
           <NextScript />
         </body>
-      </html>
+      </Html>
     )
   }
 }

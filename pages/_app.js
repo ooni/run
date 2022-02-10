@@ -1,5 +1,10 @@
 import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl'
 
+import { theme } from 'ooni-components'
+import { ThemeProvider } from 'styled-components'
+
+import GlobalStyle from '../components/globalStyle'
+
 // This is optional but highly recommended
 // since it prevents memory leak
 const cache = createIntlCache()
@@ -14,7 +19,10 @@ function MyApp({ Component, pageProps, locale, messages }) {
   )
   return (
     <RawIntlProvider value={intl}>
-      <Component {...pageProps} />
+      <GlobalStyle />
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
     </RawIntlProvider>
   )
 }
