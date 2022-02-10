@@ -1,6 +1,5 @@
 require("@babel/register")()
 
-const useragent = require('useragent')
 const next = require('next')
 const express = require('express')
 const path = require('path')
@@ -86,6 +85,7 @@ app.prepare().then(() => {
   })
 
   server.get('/nettest', (req, res) => {
+    const useragent = require('useragent')
     let ua = useragent.parse(req.headers['user-agent'])
     if (ua.family === 'Chrome Mobile' && Number(ua.major) >= 25) {
       return res.redirect(getIntentURI(req.query))

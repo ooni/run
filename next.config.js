@@ -10,16 +10,11 @@ const withTM = require('next-transpile-modules')([
 ])
 
 module.exports = withTM({
-  webpack: (config) => {
-    // This is used to mock the dependencies of useragent for the browser
-    config.node = {
-      fs: 'empty',
-      net: 'empty',
-      tls: 'empty'
-    }
-
+  webpack: (config, options) => {
     config.plugins.push(
-      new webpack.IgnorePlugin(/\.\/lib\/update/)
+      new webpack.IgnorePlugin({
+        resourceRegExp: /\.\/lib\/update/
+      })
     )
 
     config.module.rules.push({

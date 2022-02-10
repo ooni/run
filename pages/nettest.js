@@ -10,8 +10,7 @@ import {
   Heading,
   Text,
   Flex,
-  Box,
-  Code
+  Box
 } from 'ooni-components'
 
 import { getEncodedQuery } from '../utils/links'
@@ -20,8 +19,6 @@ import Layout from '../components/Layout'
 import OONIRunHero from '../components/OONIRunHero'
 
 import mobileApp from '../config/mobileApp'
-
-const useragent = require('useragent/index.js')
 
 const installLink = 'https://ooni.org/install'
 
@@ -45,44 +42,44 @@ const getDescription = (query) => {
   return 'Run OONI Probe'
 }
 
-export default class extends React.Component {
-  static async getInitialProps({ req, query }) {
-    const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
-    const ua = useragent.parse(userAgent)
+export async function getServerSideProps ({ req, query }) {
+  const userAgent = req.headers['user-agent']
+  const ua = require('useragent/index.js').parse(userAgent)
 
-    const deepLink = getCustomURI(query)
-    const description = getDescription(query)
-    const title = getTitle(query)
-    const universalLink = getUniversalLink(query)
+  const deepLink = getCustomURI(query)
+  const description = getDescription(query)
+  const title = getTitle(query)
+  const universalLink = getUniversalLink(query)
 
-    let storeLink,
-      withWindowLocation = false
+  let storeLink,
+    withWindowLocation = false
 
-    if (ua.os.family == 'iOS') {
-      storeLink = mobileApp.appStoreLink
+  if (ua.os.family == 'iOS') {
+    storeLink = mobileApp.appStoreLink
+  } else {
+    storeLink = mobileApp.googlePlayLink
+  }
+
+  if (ua.os.family == 'Android') {
+    // Accordingy to
+    // https://developer.chrome.com/multidevice/android/intents
+    // this is the preferred method for Chrome mobile >= 25
+    if (ua.family === 'Chrome Mobile' && Number(ua.major) >= 25) {
+      // This case is handled with a server-side redirect
     } else {
-      storeLink = mobileApp.googlePlayLink
-    }
-
-    if (ua.os.family == 'Android') {
-      // Accordingy to
-      // https://developer.chrome.com/multidevice/android/intents
-      // this is the preferred method for Chrome mobile >= 25
-      if (ua.family === 'Chrome Mobile' && Number(ua.major) >= 25) {
-        // This case is handled with a server-side redirect
-      } else {
-        withWindowLocation = true
-      }
-    } else if (ua.os.family == 'iOS' && Number(ua.os.major) >= 9) {
-      // Nothing special is needed as the universal link should just work
-    } else if (ua.os.family == 'iOS' && Number(ua.os.major) < 9) {
       withWindowLocation = true
     }
+  } else if (ua.os.family == 'iOS' && Number(ua.os.major) >= 9) {
+    // Nothing special is needed as the universal link should just work
+  } else if (ua.os.family == 'iOS' && Number(ua.os.major) < 9) {
+    withWindowLocation = true
+  }
 
-    return {
-      deepLink,
+  return {
+    props: {
       withWindowLocation,
       storeLink,
+      deepLink,
       installLink,
       userAgent,
       universalLink,
@@ -90,7 +87,9 @@ export default class extends React.Component {
       description
     }
   }
+}
 
+export default class extends React.Component {
   render() {
     const {
       userAgent,
@@ -191,7 +190,7 @@ export default class extends React.Component {
           </Link>
 
           <Box mt={5}>
-            <Code>{userAgent}</Code>
+            <Text>{userAgent}</Text>
           </Box>
         </Container>
         {withWindowLocation && <script type='text/javascript' dangerouslySetInnerHTML={{__html: windowScript}} />}
