@@ -1,6 +1,6 @@
 import mobileApp from '../config/mobileApp'
 
-export const baseURL = process.env.NEXT_PUBLIC_VERCEL_URL || 'http://localhost:3000'
+export const baseURL = process.env.VERCEL_URL || 'https://run.ooni.io'
 
 export const minimumVersion = '1.2.0'
 

@@ -1,5 +1,4 @@
 import React from 'react'
-
 import Head from 'next/head'
 import { FormattedMessage, useIntl } from 'react-intl'
 import {
@@ -13,16 +12,16 @@ import {
   Box,
   Code
 } from 'ooni-components'
+import useragent from 'useragent'
 
-import { getEncodedQuery } from '../utils/links'
+import { getEncodedQuery, getIntentURI } from '../utils/links'
 
 import Layout from '../components/Layout'
 import OONIRunHero from '../components/OONIRunHero'
 
 import mobileApp from '../config/mobileApp'
 
-const useragent = require('useragent/index.js')
-
+const baseURL = process.env.VERCEL_URL || 'https://run.ooni.io'
 const installLink = 'https://ooni.org/install'
 
 const getCustomURI = (query) => {
@@ -32,7 +31,7 @@ const getCustomURI = (query) => {
 }
 
 const getUniversalLink = (query) => {
-  let uri = 'https://run.ooni.io/nettest?'
+  let uri = baseURL + '/nettest?'
   uri += getEncodedQuery(query)
   return uri
 }
@@ -70,6 +69,7 @@ export default class extends React.Component {
       // this is the preferred method for Chrome mobile >= 25
       if (ua.family === 'Chrome Mobile' && Number(ua.major) >= 25) {
         // This case is handled with a server-side redirect
+        res.redirect(getIntentURI(query))
       } else {
         withWindowLocation = true
       }
@@ -120,7 +120,7 @@ export default class extends React.Component {
           <meta name='og:type' content='website' />
           {universalLink && <meta name='og:url' content={universalLink} />}
           {title && <meta name='og:title' content={title} />}
-          <meta name='og:image' content='https://run.ooni.io/static/images/Run-VerticalColorW400px.png' />
+          <meta name='og:image' content={`${baseURL}/static/images/Run-VerticalColorW400px.png`} />
           {description && <meta name='og:description' content={description} />}
 
           {/* This is Twitter specific stuff
@@ -149,7 +149,7 @@ export default class extends React.Component {
           <meta property='al:ios:app_name' content={mobileApp.iPhoneName} />
           {deepLink && <meta property='al:ios:url' content={deepLink} />}
         </Head>
-        <OONIRunHero href={'https://run.ooni.io'} />
+        <OONIRunHero href={baseURL} />
         <Container p={4}>
 
           <Heading pt={2} h={2}>
