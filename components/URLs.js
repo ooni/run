@@ -130,7 +130,7 @@ const URLs = ({ onSubmit }) => {
                     {...field}
                     className='url-input'
                     icon={<MdDelete />}
-                    placeholder='eg: https://twitter.com/'
+                    placeholder='https://twitter.com/'
                     list='url-prefixes'
                     error={errors?.['urls']?.[index]?.['url']?.message}
                     onKeyPress={onKeyPress}
