@@ -2,6 +2,7 @@
   "Hero.SubTitle": "攜手對抗網路封鎖！",
   "Title.URLs": "網址",
   "Button.AddUrl": "加入網址",
+  "Notice.Paste": "注意：如果您有很長的 URL 列表要添加，您可以將它們複製並粘貼到下面的框中之一。",
   "Share.Twitter.Tweet": "執行 OONI Probe （OONI 探測器）來檢測網路封鎖！",
   "Home.Heading.TestName": "測試名稱",
   "Sidebar.WebConnectivity.Title": "網路封鎖",
