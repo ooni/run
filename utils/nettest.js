@@ -1,7 +1,7 @@
 import {
   Text
 } from 'ooni-components'
-import { defineMessages, useIntl } from 'react-intl'
+import { defineMessages,FormattedMessage, useIntl } from 'react-intl'
 
 export const messages = defineMessages({
   web_connectivity_name: {
@@ -112,13 +112,13 @@ export const isIn = (k, a) => a.indexOf(k) !== -1
 
 export const getTestType = testName => {
   if (isIn(testName, nnTestKeys)) {
-    return 'Speed & Performance'
+    return <FormattedMessage id='Sidebar.Performance.Title' defaultMessage='Speed & Performance' />
   }
   if (isIn(testName, mbTestKeys)) {
-    return 'Middleboxes'
+    return <FormattedMessage id='Sidebar.Middleboxes.Title' defaultMessage='Middleboxes' />
   }
   if (isIn(testName, cTestKeys)) {
-    return 'Web Censorship'
+    return <FormattedMessage id='Sidebar.WebCensorship.Title' defaultMessage='Web Censorship' />
   }
 }
 
