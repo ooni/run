@@ -99,10 +99,9 @@ const URLs = ({ onSubmit }) => {
     // This updates the field being pasted into with the first entry
     e.target.value = newEntries[0].url
     onChange(e)
-    
+
     // Insert fields into the form using the rest of the entries
-    // insert(index + 1, newEntries.slice(1))
-    replace([...newEntries])
+    insert(index + 1, newEntries.slice(1))
 
     // Trigger validation to show any errors in the new entries
     trigger()
