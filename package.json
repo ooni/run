@@ -12,13 +12,13 @@
     "intl-locales-supported": "1.8.4",
     "next": "9.3.2",
     "next-transpile-modules": "4.0.2",
-    "ooni-components": "0.2.10",
+    "ooni-components": "^0.5.0-alpha.3",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-hook-form": "^7.17.5",
     "react-icons": "2.2.7",
     "react-intl": "3.1.12",
-    "styled-components": "3.4.10",
+    "styled-components": "5.1.1",
     "useragent": "^2.2.1",
     "yup": "^0.32.11"
   },
@@ -34,12 +34,11 @@
     "uglify-js": "^3.1.0"
   },
   "resolutions": {
-    "@rebass/grid": "6.0.0-3",
-    "styled-components": "3.4.10",
+    "styled-components": "5.1.1",
     "react-icons": "2.2.7"
   },
   "scripts": {
-    "dev": "NODE_ENV=development node --icu-data-dir=node_modules/full-icu index.js",
+    "dev": "node --icu-data-dir=node_modules/full-icu index.js",
     "start": "NODE_ENV=production node --max-http-header-size=32768 --icu-data-dir=node_modules/full-icu index.js",
     "build": "yarn run build:next && yarn extract && yarn run build:widgets",
     "build:next": "next build",

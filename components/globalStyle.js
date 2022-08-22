@@ -1,4 +1,4 @@
-import { injectGlobal } from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
 
 /*
  * XXX these imports are currently broken
@@ -25,7 +25,7 @@ const FiraSansSemiBold = '/static/fonts/FiraSans-SemiBold.woff'
 const SourceCodeProBold = '/static/fonts/SourceCodePro-Bold.woff'
 const SourceCodeProRegular = '/static/fonts/SourceCodePro-Regular.woff'
 
-injectGlobal`
+const GlobalStyle = createGlobalStyle`
 
   /* CSS reset */
 	html, body, div, span, applet, object, iframe,
@@ -137,3 +137,5 @@ injectGlobal`
     font-weight: 700;
   }
 `
+
+export default GlobalStyle;

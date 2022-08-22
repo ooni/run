@@ -6,6 +6,7 @@ import {
   Text,
   Container,
   Input,
+  Textarea,
   Button,
   Link,
   Flex,
@@ -75,6 +76,7 @@ const Home = () => {
   const [universalLink, embedCode] = useMemo(() => {
     console.log('generating links and embed code')
     const universalLink = getUniversalLink(urls.map((e) => e.url))
+    console.log(universalLink)
     const embedCode = `
 /* For a simple button */
 <a href='${universalLink}' class='ooni-run-button'>Run OONI!</a>
@@ -111,7 +113,8 @@ const Home = () => {
           onHideClick={() => setShowModal(false)}
           show={showModal}
           closeButton='right'
-          width={[9 / 10, 7 / 10]}
+          maxWidth={800}
+          // width={[9 / 10, 7 / 10]}
           p={0}
           style={{ borderRadius: '20px' }}
         >
@@ -152,7 +155,7 @@ const Home = () => {
                 <Heading pt={4} pb={2} h={3}>
                   <FormattedMessage id='Modal.Heading.EmbedThisCode' defaultMessage='Or embed this code on your website' />
                 </Heading>
-                <Input type='textarea' rows={6} value={embedCode} />
+                <Textarea rows={6} value={embedCode} />
 
                 <Box pt={4}>
                   <Flex justify='center' align='center'>

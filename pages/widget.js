@@ -3,13 +3,8 @@ import url from 'url'
 import {
   Container,
   Button,
-  IconButton,
-  Link,
   Heading,
   Text,
-  Flex,
-  Box,
-  Code
 } from 'ooni-components'
 
 import Layout from '../components/Layout'

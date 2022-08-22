@@ -5,13 +5,10 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import {
   Container,
   Button,
-  IconButton,
   Link,
   Heading,
   Text,
-  Flex,
   Box,
-  Code
 } from 'ooni-components'
 
 import { getEncodedQuery } from '../utils/links'
@@ -191,7 +188,9 @@ export default class extends React.Component {
           </Link>
 
           <Box mt={5}>
-            <Code>{userAgent}</Code>
+            <Box as="pre">
+              {userAgent}
+            </Box>
           </Box>
         </Container>
         {withWindowLocation && <script type='text/javascript' dangerouslySetInnerHTML={{__html: windowScript}} />}

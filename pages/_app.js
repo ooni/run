@@ -1,4 +1,5 @@
 import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl'
+import GlobalStyle from '../components/globalStyle'
 
 // This is optional but highly recommended
 // since it prevents memory leak
@@ -13,9 +14,12 @@ function MyApp({ Component, pageProps, locale, messages }) {
     cache
   )
   return (
-    <RawIntlProvider value={intl}>
-      <Component {...pageProps} />
-    </RawIntlProvider>
+		<>
+			<GlobalStyle />
+    	<RawIntlProvider value={intl}>
+      	<Component {...pageProps} />
+    	</RawIntlProvider>
+		</>
   )
 }
 
