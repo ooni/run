@@ -94,80 +94,87 @@ const Home = () => {
 
   return (
     <Layout>
-      <OONIRunHero href={'https://ooni.torproject.org'} />
+      <OONIRunHero href={'https://ooni.torproject.org'}  />
 
-      <Container pt={4} maxWidth={800}>
+      <Container pt={4} sx={{maxWidth: '800px !important'}}>
         <Flex justifyContent='center'>
           <Box width={3 / 4}>
             <Heading h={2}><FormattedMessage id='Title.WhatCanYouDo' defaultMessage='What you can do' /></Heading>
             <FormattedMessage
-              tagName={Text}
               id='WhatCanYouDoText.WebCensorship'
               defaultMessage='Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to test the sites of your choice!'
-            />
+            >
+              {txt => <Text as='p' lineHeight={1.25}>{txt}</Text>}
+            </FormattedMessage>
             <URLs onSubmit={onSubmitURLs} />
           </Box>
         </Flex>
+        
+          <Modal
+            onHideClick={() => setShowModal(false)}
+            show={showModal}
+            closeButton="right"
+            sx={{
+              borderRadius: 20, 
+              width: '70%',
+              height: '74%',
 
-        <Modal
-          onHideClick={() => setShowModal(false)}
-          show={showModal}
-          closeButton='right'
-          maxWidth={800}
-          // width={[9 / 10, 7 / 10]}
-          p={0}
-          style={{ borderRadius: '20px' }}
-        >
+              '@media(max-width: 768px)': {
+                width: '90%',
+                height: '90%'
+              }
+            }}
+          >
+            <Flex flexWrap="wrap" sx={{ minHeight: '100%' }}>
+              <Box width={[1, 1 / 3]} sx={{ backgroundColor: '#8ED8F8' }}>
+                <GraphicsWithGradient>
+                  <GraphicsOctopusModal />
+                </GraphicsWithGradient>
+              </Box>
 
-          <Flex flexWrap='wrap' style={{ minHeight: '100%' }}>
-            <Box width={[1, 1 / 3]} height={[1, 1 / 3]} style={{ backgroundColor: '#8ED8F8' }}>
-              <GraphicsWithGradient>
-                <GraphicsOctopusModal />
-              </GraphicsWithGradient>
-            </Box>
-            <Box width={[1, 2 / 3]}>
-              <Container p={[1, 2]} ml={[2, 4]} mr={[2, 4]}>
-                <Heading h={1} textAlign='center'>
-                  <FormattedMessage id='Modal.Heading.LinkReady' defaultMessage='Your link is ready!' />
-                </Heading>
+              <Box width={[1, 2 / 3]}>
+                <Container p={[1, 2]} ml={[2, 4]} mr={[2, 4]}>
+                  <Heading h={1} textAlign='center'>
+                    <FormattedMessage id='Modal.Heading.LinkReady' defaultMessage='Your link is ready!' />
+                  </Heading>
 
-                <Heading pt={4} pb={2} h={3} textAlign='center'>
-                  <FormattedMessage id='Modal.Heading.ShareIt' defaultMessage='Share it on social media' />
-                </Heading>
-                <Flex alignItems='center' justifyContent='center'>
-                  <Box pr={2}>
-                    <TwitterButton universalLink={universalLink} />
-                  </Box>
-                  <Box pr={2}>
-                    <Link href={universalLink}>
-                      <StyleLinkButton>
-                        <FormattedMessage id='Modal.Button.Link' defaultMessage='Link' />
-                      </StyleLinkButton>
-                    </Link>
-                  </Box>
-                </Flex>
-
-                <Heading pt={4} pb={2} h={3}>
-                  <FormattedMessage id='Modal.Heading.ShareThisURL' defaultMessage='Share this URL with your friends' />
-                </Heading>
-                <Input value={universalLink} />
-
-                <Heading pt={4} pb={2} h={3}>
-                  <FormattedMessage id='Modal.Heading.EmbedThisCode' defaultMessage='Or embed this code on your website' />
-                </Heading>
-                <Textarea rows={6} value={embedCode} />
-
-                <Box pt={4}>
-                  <Flex justify='center' align='center'>
-                    <Button onClick={() => setShowModal(false)}>
-                      <FormattedMessage id='Modal.Button.Done' defaultMessage='Done' />
-                    </Button>
+                  <Heading pt={4} pb={2} h={3} textAlign='center'>
+                    <FormattedMessage id='Modal.Heading.ShareIt' defaultMessage='Share it on social media' />
+                  </Heading>
+                  <Flex alignItems='center' justifyContent='center'>
+                    <Box pr={2}>
+                      <TwitterButton universalLink={universalLink} />
+                    </Box>
+                    <Box pr={2}>
+                      <Link href={universalLink}>
+                        <StyleLinkButton>
+                          <FormattedMessage id='Modal.Button.Link' defaultMessage='Link' />
+                        </StyleLinkButton>
+                      </Link>
+                    </Box>
                   </Flex>
-                </Box>
-              </Container>
-            </Box>
-          </Flex>
-        </Modal>
+
+                  <Heading pt={4} pb={2} h={3}>
+                    <FormattedMessage id='Modal.Heading.ShareThisURL' defaultMessage='Share this URL with your friends' />
+                  </Heading>
+                  <Input value={universalLink} />
+
+                  <Heading pt={4} pb={2} h={3}>
+                    <FormattedMessage id='Modal.Heading.EmbedThisCode' defaultMessage='Or embed this code on your website' />
+                  </Heading>
+                  <Textarea rows={6} value={embedCode} />
+
+                  <Box pt={4}>
+                    <Flex justify='center' align='center'>
+                      <Button onClick={() => setShowModal(false)}>
+                        <FormattedMessage id='Modal.Button.Done' defaultMessage='Done' />
+                      </Button>
+                    </Flex>
+                  </Box>
+                </Container>
+              </Box>
+            </Flex>
+          </Modal>
       </Container>
     </Layout>
   )

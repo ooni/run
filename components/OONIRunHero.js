@@ -8,15 +8,20 @@ import {
 } from 'ooni-components'
 
 import styled from 'styled-components'
+
 const BrandContainer = styled.div`
   max-width: 100%;
+  height: 95px;
+  margin-top: 20px;
+
   svg {
     max-width: 100%;
   }
 `
+
 export default props => {
   return (
-    <Hero pb={4} pt={4}>
+    <Hero pb={4} pt={4} sx={{maxWidth: '100% !important'}}>
       <BrandContainer>
         <Link href={props.href}>
           <LogoOONIRun />

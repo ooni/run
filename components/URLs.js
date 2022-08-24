@@ -112,14 +112,14 @@ const URLs = ({ onSubmit }) => {
       <Heading h={2}>
         <FormattedMessage id='Title.URLs' defaultMessage='URLs' />
       </Heading>
-      <Text fontWeight='lighter'>
-        <FormattedMessage id='Notice.Paste' defaultMessage='Note: If you have a long list of URLs to add, you can copy them and paste into one of the boxes below.' />
-      </Text>
+        <FormattedMessage id='Notice.Paste' defaultMessage='Note: If you have a long list of URLs to add, you can copy them and paste into one of the boxes below.'>
+          {txt => <Text as="p" fontWeight="lighter" lineHeight={1.25}>{txt}</Text>}
+        </FormattedMessage>
         <datalist id="url-prefixes">
           <option value="https://" />
           <option value="http://" />
         </datalist>
-        <Flex flexDirection='column' my={3}>
+        <Flex flexDirection='column' marginBottom={3} marginTop={4}>
           {fields.map((item, index) => (
             <Controller
               key={item.id}
@@ -148,7 +148,7 @@ const URLs = ({ onSubmit }) => {
             + <FormattedMessage id='Button.AddUrl' defaultMessage='Add URL' />
           </AddURLButton>
         </Box>
-        <Button width={1/3} mx='auto' onClick={handleSubmit(onSubmit)}>
+        <Button width={1/3} height={40} p={0} mx='auto' onClick={handleSubmit(onSubmit)}>
           <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
         </Button>
     </Flex>

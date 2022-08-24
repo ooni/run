@@ -12,7 +12,7 @@
     "intl-locales-supported": "1.8.4",
     "next": "9.3.2",
     "next-transpile-modules": "4.0.2",
-    "ooni-components": "^0.5.0-alpha.3",
+    "ooni-components": "^0.5.0-alpha.4",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-hook-form": "^7.17.5",
@@ -38,7 +38,7 @@
     "react-icons": "2.2.7"
   },
   "scripts": {
-    "dev": "node --icu-data-dir=node_modules/full-icu index.js",
+    "dev": "NODE_ENV=development node --icu-data-dir=node_modules/full-icu index.js",
     "start": "NODE_ENV=production node --max-http-header-size=32768 --icu-data-dir=node_modules/full-icu index.js",
     "build": "yarn run build:next && yarn extract && yarn run build:widgets",
     "build:next": "next build",
