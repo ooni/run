@@ -114,19 +114,11 @@ const Home = () => {
             onHideClick={() => setShowModal(false)}
             show={showModal}
             closeButton="right"
-            sx={{
-              borderRadius: 20, 
-              width: '70%',
-              height: '74%',
-
-              '@media(max-width: 768px)': {
-                width: '90%',
-                height: '90%'
-              }
-            }}
+            width={[9 / 10, 7 / 10]}
+            sx={{borderRadius: 20}}
           >
             <Flex flexWrap="wrap" sx={{ minHeight: '100%' }}>
-              <Box width={[1, 1 / 3]} sx={{ backgroundColor: '#8ED8F8' }}>
+              <Box width={[1, 1 / 3]} backgroundColor='#8ED8F8'>
                 <GraphicsWithGradient>
                   <GraphicsOctopusModal />
                 </GraphicsWithGradient>
