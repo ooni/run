@@ -76,7 +76,6 @@ const Home = () => {
   const [universalLink, embedCode] = useMemo(() => {
     console.log('generating links and embed code')
     const universalLink = getUniversalLink(urls.map((e) => e.url))
-    console.log(universalLink)
     const embedCode = `
 /* For a simple button */
 <a href='${universalLink}' class='ooni-run-button'>Run OONI!</a>
