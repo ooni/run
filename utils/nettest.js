@@ -54,7 +54,7 @@ export const messages = defineMessages({
   },
   webText: {
     id: 'WhatCanYouDoText.WebCensorship',
-    defaultMessage:'Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to test the sites of your choice!'
+    defaultMessage:'Add websites below that you would like to test for censorship. Click "Generate" to create a link based on those websites. Share that link with OONI Probe mobile app users so that they can test the websites of your choice!'
   },
   genericText: {
     id: 'WhatCanYouDoText.Generic',
