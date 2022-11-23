@@ -38,7 +38,7 @@ const getUniversalLink = (query) => {
 }
 
 const getTitle = (query) => {
-  return 'OONI Run | Let\'s fight internet censorship together!'
+  return 'OONI Run | Coordinate website censorship testing'
 }
 
 const getDescription = (query) => {

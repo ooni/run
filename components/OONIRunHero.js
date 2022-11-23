@@ -25,7 +25,7 @@ export default props => {
       <HeroLead>
       <FormattedMessage
         id='Hero.SubTitle'
-        defaultMessage="Let's fight internet censorship together!"
+        defaultMessage="Coordinate website censorship testing"
       />
     </HeroLead>
     </Hero>

@@ -92,16 +92,15 @@ const Home = () => {
 
   return (
     <Layout>
-      <OONIRunHero href={'https://ooni.torproject.org'} />
+      <OONIRunHero href={'https://ooni.org'} />
 
       <Container pt={4} maxWidth={800}>
         <Flex justifyContent='center'>
           <Box width={3 / 4}>
-            <Heading h={2}><FormattedMessage id='Title.WhatCanYouDo' defaultMessage='What you can do' /></Heading>
             <FormattedMessage
               tagName={Text}
               id='WhatCanYouDoText.WebCensorship'
-              defaultMessage='Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to test the sites of your choice!'
+              defaultMessage='Add websites below that you would like to test for censorship. Click "Generate" to create a link based on those websites. Share that link with OONI Probe mobile app users so that they can test the websites of your choice!'
             />
             <URLs onSubmit={onSubmitURLs} />
           </Box>
@@ -145,7 +144,7 @@ const Home = () => {
                 </Flex>
 
                 <Heading pt={4} pb={2} h={3}>
-                  <FormattedMessage id='Modal.Heading.ShareThisURL' defaultMessage='Share this URL with your friends' />
+                  <FormattedMessage id='Modal.Heading.ShareThisURL' defaultMessage='Share this link with OONI Probe mobile app users' />
                 </Heading>
                 <Input value={universalLink} />
 
