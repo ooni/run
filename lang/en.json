@@ -12,7 +12,7 @@
   "Modal.Heading.LinkReady": "Your link is ready!",
   "Modal.Heading.ShareIt": "Share it on social media",
   "Modal.Button.Link": "Link",
-  "Modal.Heading.ShareThisURL": "Share this URL with your friends",
+  "Modal.Heading.ShareThisURL": "Share this link with OONI Probe mobile app users",
   "Modal.Heading.EmbedThisCode": "Or embed this code on your website",
   "Modal.Button.Done": "Done",
   "Nettest.Heading.HaveMobileApp": "You already have the OONI Probe mobile app",
@@ -33,7 +33,7 @@
   "Test.Dash.Description": "Measure video streaming performance.",
   "WhatCanYouDoText.NetNeutrality": "Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to measure the speed and performance of their networks!",
   "WhatCanYouDoText.Middleboxes": "Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to find middleboxes in their networks!",
-  "WhatCanYouDoText.WebCensorship": "Generate a link and share it with your friends and contacts around the world. Encourage them to run OONI Probe to test the sites of your choice!",
+  "WhatCanYouDoText.WebCensorship": "Add websites below that you would like to test for censorship. Click \"Generate\" to create a link based on those websites. Share that link with OONI Probe mobile app users so that they can test the websites of your choice!",
   "WhatCanYouDoText.Generic": "Generate a link and share it with your friends and contacts around the world.",
   "Sidebar.Text.Learn": "Learn how this test works here"
 }
