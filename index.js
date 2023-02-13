@@ -85,6 +85,11 @@ app.prepare().then(() => {
     return res.sendFile(path.join(__dirname, 'public', 'static', 'apple-app-site-association'))
   })
 
+  server.get('/.well-known/assetlinks.json', (req, res) => {
+    res.type('application/json')
+    return res.sendFile(path.join(__dirname, 'public', 'static', 'assetlinks.json'))
+  })
+
   server.get('/nettest', (req, res) => {
     let ua = useragent.parse(req.headers['user-agent'])
     if (ua.family === 'Chrome Mobile' && Number(ua.major) >= 25) {
