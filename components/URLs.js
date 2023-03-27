@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl"
 import styled from "styled-components"
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import MdDelete from 'react-icons/lib/md/delete'
+import { MdDelete } from 'react-icons/md'
 
 const AddURLButton = styled(Button)`
   color: ${props => props.theme.colors.gray5};
