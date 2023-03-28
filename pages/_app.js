@@ -1,36 +1,31 @@
-import { createIntl, createIntlCache, RawIntlProvider } from 'react-intl'
+import { IntlProvider } from 'react-intl'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
 
-// This is optional but highly recommended
-// since it prevents memory leak
-const cache = createIntlCache()
+export default function MyApp({ Component, pageProps }) {
+  const { locale, defaultLocale } = useRouter()
 
-function MyApp({ Component, pageProps, locale, messages }) {
-  const intl = createIntl(
-    {
-      locale,
-      messages,
-    },
-    cache
-  )
+  const messages = useMemo(() => {
+    try {
+      const messages = require(`../public/static/lang/${locale}.json`)
+      const defaultMessages = require(`../public/static/lang/${defaultLocale}.json`)
+
+      const mergedMessages = Object.assign({}, defaultMessages, messages)
+      return mergedMessages
+    } catch (e) {
+      console.error(`Failed to load messages for ${locale}: ${e.message}`)
+      const defaultMessages = require(`../public/static/lang/${defaultLocale}.json`)
+      return defaultMessages
+    }
+  }, [locale, defaultLocale])
+
   return (
-    <RawIntlProvider value={intl}>
+    <IntlProvider
+      locale={locale}
+      defaultLocale={defaultLocale}
+      messages={messages}
+    >
       <Component {...pageProps} />
-    </RawIntlProvider>
+    </IntlProvider>
   )
 }
-
-MyApp.getInitialProps = async ({ Component, ctx }) => {
-  let pageProps = {}
-
-  const { req } = ctx
-  const locale = req?.locale ?? ''
-  const messages = req?.messages ?? {}
-
-  if (Component.getInitialProps) {
-    Object.assign(pageProps, await Component.getInitialProps(ctx))
-  }
-
-  return { pageProps, locale, messages }
-}
-
-export default MyApp

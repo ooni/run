@@ -128,7 +128,7 @@ const URLs = ({ onSubmit }) => {
                   <InputWithIconButton
                     {...field}
                     className='url-input'
-                    icon={<MdDelete />}
+                    icon={<MdDelete size={30} />}
                     placeholder='https://twitter.com/'
                     list='url-prefixes'
                     error={errors?.['urls']?.[index]?.['url']?.message}
@@ -148,7 +148,7 @@ const URLs = ({ onSubmit }) => {
             + <FormattedMessage id='Button.AddUrl' defaultMessage='Add URL' />
           </AddURLButton>
         </Box>
-        <Button width={1/3} mx='auto' onClick={handleSubmit(onSubmit)}>
+        <Button width={1/4} mx='auto' onClick={handleSubmit(onSubmit)}>
           <FormattedMessage id='Button.Generate' defaultMessage='Generate' />
         </Button>
     </Flex>

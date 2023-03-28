@@ -15,18 +15,18 @@ const BrandContainer = styled.div`
   }
 `
 const OONIRunHero = (props) => (
-  <Hero pb={4} pt={4}>
+  <Hero pb={4} pt={4} sx={{width: '100%', maxWidth: 'none !important'}}>
     <BrandContainer>
       <Link href={props.href}>
         <LogoOONIRun />
       </Link>
     </BrandContainer>
     <HeroLead>
-    <FormattedMessage
-      id='Hero.SubTitle'
-      defaultMessage="Coordinate website censorship testing"
-    />
-  </HeroLead>
+      <FormattedMessage
+        id='Hero.SubTitle'
+        defaultMessage="Coordinate website censorship testing"
+      />
+    </HeroLead>
   </Hero>
 )
 

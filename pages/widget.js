@@ -120,45 +120,43 @@ const BannerWidget = (props) => (
   </StyledBannerContainer>
 )
 
-export default class extends React.Component {
-  static async getInitialProps({ req, query }) {
-    const widgetType = query.type || 'banner'
-    const title = query.title || 'Fight Censorship'
-    const runLink = query.link || 'https://run.ooni.io/'
+export const getServerSideProps = async ({ query }) => {
+  const widgetType = query.type || 'banner'
+  const title = query.title || 'Fight Censorship'
+  const runLink = query.link || 'https://run.ooni.io/'
 
-    const u = url.parse(runLink, true)
-    const testName = u.query.tn || 'web_connectivity'
-    const testType = getTestType(testName)
+  const u = url.parse(runLink, true)
+  const testName = u.query.tn || 'web_connectivity'
+  const testType = getTestType(testName)
 
-    return {
+  return {
+    props: {
       widgetType,
       title,
       runLink,
       testName,
-      testType
+      testType,
     }
   }
+}
 
-  render() {
-    const {
-      widgetType,
-      title,
-      runLink,
-      testType,
-      testName
-    } = this.props
-
-    if (widgetType === 'banner') {
-      return (
-        <Layout>
-          <BannerWidget testType={testType} title={title} runLink={runLink}/>
-        </Layout>
-      )
-    }
+const Widget = ({
+  widgetType,
+  title,
+  runLink,
+  testType,
+  testName
+}) => {
+  if (widgetType === 'banner') {
     return (
       <Layout>
-        <ButtonWidget title={title} runLink={runLink}/>
+        <BannerWidget testType={testType} title={title} runLink={runLink}/>
       </Layout>
     )
   }
+  return (
+    <Layout>
+      <ButtonWidget title={title} runLink={runLink}/>
+    </Layout>
+  )
 }
