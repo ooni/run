@@ -160,3 +160,5 @@ const Widget = ({
     </Layout>
   )
 }
+
+export default Widget

@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
+import GlobalStyle from './globalStyle'
 
 import meta from '../config/meta'
-import GlobalStyle from './GlobalStyle'
 
 const Layout = props => (
   <div>
@@ -12,8 +12,8 @@ const Layout = props => (
       <meta httpEquiv='Content-Type' content={meta.contentType} />
       <meta name='viewport' content={meta.viewport} />
     </Head>
+    <GlobalStyle />
     <ThemeProvider theme={theme}>
-      <GlobalStyle />
       <div className='content'>
         { props.children }
       </div>
