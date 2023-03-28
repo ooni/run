@@ -122,6 +122,8 @@ const Home = () => {
           onHideClick={() => setShowModal(false)}
           show={showModal}
           closeButton='right'
+          borderRadius='20px'
+          width='70%'
         >
           <Flex flexWrap='wrap' style={{ minHeight: '100%' }}>
             <Box width={[1, 1, 1 / 4]} style={{ backgroundColor: '#8ED8F8' }}>
@@ -129,7 +131,7 @@ const Home = () => {
                 <GraphicsOctopusModal />
               </GraphicsWithGradient>
             </Box>
-            <Box width={[1, 1, 3 / 4]} p={[3, 4]}>
+            <Box width={[1, 1, 3 / 4]} px={[3, 4]} pt={3} pb={6}>
               <Heading h={1} textAlign='center'>
                 <FormattedMessage id='Modal.Heading.LinkReady' defaultMessage='Your link is ready!' />
               </Heading>
