@@ -3,7 +3,7 @@ import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
 
 import meta from '../config/meta'
-import GlobalStyle from 'components/GlobalStyle'
+import GlobalStyle from './GlobalStyle'
 
 const Layout = props => (
   <div>
