@@ -57,7 +57,7 @@ export const getServerSideProps = async ({ req, query }) => {
   if (ua.family === 'Chrome Mobile' && Number(ua.major) >= 25) {
     return {
       redirect: {
-        destination: getIntentURI(req.query),
+        destination: getIntentURI(query),
       }
     }
   }
