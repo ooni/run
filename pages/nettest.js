@@ -10,8 +10,7 @@ import {
   Heading,
   Text,
   Flex,
-  Box,
-  Code
+  Box
 } from 'ooni-components'
 
 import { getIntentURI, getEncodedQuery } from 'utils/links'
@@ -20,6 +19,11 @@ import Layout from '../components/Layout'
 import OONIRunHero from '../components/OONIRunHero'
 
 import mobileApp from '../config/mobileApp'
+import styled from 'styled-components'
+
+const StyledCode = styled.code`
+font-family: courier, monospace;
+`
 
 const useragent = require('useragent/index.js')
 
@@ -49,7 +53,7 @@ export const getServerSideProps = async ({ req, query }) => {
   const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
   const ua = useragent.parse(userAgent)
 
-  // redirect
+  // redirect - previously handled with custom server
   if (ua.family === 'Chrome Mobile' && Number(ua.major) >= 25) {
     return {
       redirect: {
@@ -199,7 +203,7 @@ const Nettest = ({
         </Link>
 
         <Box mt={5}>
-          <Code>{userAgent}</Code>
+          <StyledCode>{userAgent}</StyledCode>
         </Box>
       </Container>
       {withWindowLocation && <script type='text/javascript' dangerouslySetInnerHTML={{__html: windowScript}} />}
