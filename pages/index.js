@@ -131,7 +131,7 @@ const Home = () => {
                 <GraphicsOctopusModal />
               </GraphicsWithGradient>
             </Box>
-            <Box width={[1, 1, 3 / 4]} px={[3, 4]} pt={3} pb={6}>
+            <Box width={[1, 1, 3 / 4]} px={[3, 4]} pt={3} pb={3}>
               <Heading h={1} textAlign='center'>
                 <FormattedMessage id='Modal.Heading.LinkReady' defaultMessage='Your link is ready!' />
               </Heading>
