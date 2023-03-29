@@ -8,6 +8,7 @@ import {
 } from 'ooni-components'
 
 import styled from 'styled-components'
+import LocaleSwitcher from './LocaleSwitcher'
 const BrandContainer = styled.div`
   max-width: 100%;
   svg {
@@ -16,6 +17,7 @@ const BrandContainer = styled.div`
 `
 const OONIRunHero = (props) => (
   <Hero pb={4} pt={4} sx={{width: '100%', maxWidth: 'none !important'}}>
+    <LocaleSwitcher />
     <BrandContainer>
       <Link href={props.href}>
         <LogoOONIRun />

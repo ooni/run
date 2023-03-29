@@ -18,7 +18,7 @@ const LanguageSelect = styled.select`
   border: none;
   text-transform: capitalize;
   cursor: pointer;
-  position: fixed;
+  position: absolute;
   top: 10px;
   right: 20px;
 `

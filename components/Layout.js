@@ -3,7 +3,6 @@ import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
 import GlobalStyle from './globalStyle'
 
-import LocaleSwitcher from './LocaleSwitcher'
 import meta from '../config/meta'
 
 const Layout = props => (

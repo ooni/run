@@ -21,7 +21,6 @@ import GraphicsOctopusModal from '../components/svgs/GraphicsOctopusModal.svg'
 import OONIRunHero from '../components/OONIRunHero'
 
 import URLs from '../components/URLs'
-import LocaleSwitcher from 'components/LocaleSwitcher'
 
 const StyleLinkButton = styled(Button)`
   text-transform: none;
@@ -102,8 +101,6 @@ const Home = () => {
 
   return (
     <Layout>
-      <LocaleSwitcher />
-
       <OONIRunHero href={'https://ooni.org'} />
 
       <Container pt={4} maxWidth={800}>
