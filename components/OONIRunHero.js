@@ -14,20 +14,20 @@ const BrandContainer = styled.div`
     max-width: 100%;
   }
 `
-export default props => {
-  return (
-    <Hero pb={4} pt={4}>
-      <BrandContainer>
-        <Link href={props.href}>
-          <LogoOONIRun />
-        </Link>
-      </BrandContainer>
-      <HeroLead>
+const OONIRunHero = (props) => (
+  <Hero pb={4} pt={4} sx={{width: '100%', maxWidth: 'none !important'}}>
+    <BrandContainer>
+      <Link href={props.href}>
+        <LogoOONIRun />
+      </Link>
+    </BrandContainer>
+    <HeroLead>
       <FormattedMessage
         id='Hero.SubTitle'
         defaultMessage="Coordinate website censorship testing"
       />
     </HeroLead>
-    </Hero>
-  )
-}
+  </Hero>
+)
+
+export default OONIRunHero

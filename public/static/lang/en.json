@@ -3,7 +3,7 @@
   "Title.URLs": "URLs",
   "Button.AddUrl": "Add URL",
   "Button.Generate": "Generate",
-  "Notice.Paste": "Note: If you have a long list of URLs to add, you can copy them and paste into one of the boxes below.",
+  "Share.Twitter.Button": "Tweet",
   "Share.Twitter.Tweet": "Run OONI Probe to test for censorship!",
   "Home.Heading.TestName": "Test Name",
   "Sidebar.WebConnectivity.Title": "Internet Censorship",
