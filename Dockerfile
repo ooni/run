@@ -1,30 +1,46 @@
-# Best practices for development, and not for a production deployment
-# from https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
+# Based on https://nextjs.org/docs/deployment#docker-image
 
 # Build: run ooni-sysadmin.git/scripts/docker-build from this directory
 
-FROM node:erbium
+# Note: node:16.3-alpine3.12 is chosen as a workaround to build issues on darwin/arm64
+# Based on this issue: https://github.com/docker/for-mac/issues/5831
 
-# BEGIN root
-USER root
-RUN groupmod -g 1007 node && usermod -u 1007 -g 1007 node
-COPY . /usr/src/app
-RUN set -ex \
-    && chown -R node:node /usr/src/app \
-    && :
+# Install dependencies only when needed
+FROM node:16.3-alpine3.12 AS deps
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-# END root
+# Rebuild the source code only when needed
+FROM node:16.3-alpine3.12 AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN yarn build
 
-USER node
-WORKDIR /usr/src/app
+# Production image, copy all the files and run next
+FROM node:16.3-alpine3.12 AS runner
+WORKDIR /app
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
-# .cache removal leads to two times smaller image and 
-RUN set -ex \
-    && yarn install --frozen-lockfile \
-    && yarn run build:next \
-    && rm -rf /home/node/.cache \
-    && :
+# You only need to copy next.config.js if you are NOT using the default configuration
+COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/public ./public
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
 
 EXPOSE 3000
+ENV PORT 3000
 
-CMD [ "yarn", "run", "start" ]
+CMD ["node", "server.js"]
+
