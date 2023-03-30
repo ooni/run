@@ -27,7 +27,8 @@
   },
   "resolutions": {
     "styled-components": "5.1.1",
-    "react-icons": "4.4.0"
+    "react-icons": "4.4.0",
+    "minimist": "1.2.6"
   },
   "scripts": {
     "dev": "next dev -p 3100",
