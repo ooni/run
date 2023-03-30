@@ -42,5 +42,5 @@ USER nextjs
 EXPOSE 3000
 ENV PORT 3000
 
-CMD ["node", "server.js"]
+CMD ["node", "--max-http-header-size", "1024000", "server.js"]
 
