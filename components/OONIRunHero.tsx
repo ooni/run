@@ -12,6 +12,7 @@ const BrandContainer = styled.div`
 `
 
 type OONIRunHeroProps = { href: string }
+
 const OONIRunHero = ({ href }: OONIRunHeroProps) => (
   <Hero pb={4} pt={2} sx={{width: '100%', maxWidth: 'none !important'}}>
     <LocaleSwitcher />
