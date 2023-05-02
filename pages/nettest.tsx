@@ -1,15 +1,11 @@
-import React from 'react'
-
 import Head from 'next/head'
 import { FormattedMessage, useIntl } from 'react-intl'
 import {
   Container,
   Button,
-  IconButton,
   Link,
   Heading,
   Text,
-  Flex,
   Box
 } from 'ooni-components'
 
@@ -20,6 +16,8 @@ import OONIRunHero from '../components/OONIRunHero'
 
 import mobileApp from '../config/mobileApp'
 import styled from 'styled-components'
+import { GetServerSideProps } from 'next'
+import { ParsedUrlQuery } from 'querystring'
 
 const StyledCode = styled.code`
 font-family: courier, monospace;
@@ -29,27 +27,30 @@ const useragent = require('useragent/index.js')
 
 const installLink = 'https://ooni.org/install'
 
-const getCustomURI = (query) => {
+const getCustomURI = (query: ParsedUrlQuery) => {
   let uri = 'ooni://nettest?'
   uri += getEncodedQuery(query)
   return uri
 }
 
-const getUniversalLink = (query) => {
+const getUniversalLink = (query: ParsedUrlQuery) => {
   let uri = 'https://run.ooni.io/nettest?'
   uri += getEncodedQuery(query)
   return uri
 }
 
-const getTitle = (query) => {
-  return 'OONI Run | Coordinate website censorship testing'
+type Props = {
+  deepLink: string,
+  withWindowLocation: boolean,
+  storeLink: string,
+  installLink: string,
+  userAgent: string | undefined,
+  universalLink: string,
+  title: string,
+  description: string,
 }
 
-const getDescription = (query) => {
-  return 'Run OONI Probe'
-}
-
-export const getServerSideProps = async ({ req, query }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({ req, query }) => {
   const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
   const ua = useragent.parse(userAgent)
 
@@ -58,13 +59,14 @@ export const getServerSideProps = async ({ req, query }) => {
     return {
       redirect: {
         destination: getIntentURI(query),
+        permanent: false,
       }
     }
   }
 
   const deepLink = getCustomURI(query)
-  const description = getDescription(query)
-  const title = getTitle(query)
+  const description = 'Run OONI Probe'
+  const title = 'OONI Run | Coordinate website censorship testing'
   const universalLink = getUniversalLink(query)
 
   let storeLink,
@@ -91,18 +93,18 @@ export const getServerSideProps = async ({ req, query }) => {
     withWindowLocation = true
   }
 
-  return {
-    props: {
-      deepLink,
-      withWindowLocation,
-      storeLink,
-      installLink,
-      userAgent,
-      universalLink,
-      title,
-      description,
-    }
+  const props: Props = {
+    deepLink,
+    withWindowLocation,
+    storeLink,
+    installLink,
+    userAgent,
+    universalLink,
+    title,
+    description,
   }
+
+  return { props }
 }
 
 const Nettest = ({
@@ -114,7 +116,7 @@ const Nettest = ({
   universalLink,
   title,
   description
-}) => {
+}: Props) => {
   const windowScript = `window.onload = function() {
     document.getElementById('l').src = '${deepLink}';
     setTimeout(function() {
@@ -206,8 +208,8 @@ const Nettest = ({
           <StyledCode>{userAgent}</StyledCode>
         </Box>
       </Container>
-      {withWindowLocation && <script type='text/javascript' dangerouslySetInnerHTML={{__html: windowScript}} />}
-      {withWindowLocation && <iframe id='l' width='1' height='1' style={{visibility: 'hidden'}}></iframe>}
+      <>{withWindowLocation && <script type='text/javascript' dangerouslySetInnerHTML={{__html: windowScript}} />}</>
+      <>{withWindowLocation && <iframe id='l' width='1' height='1' style={{visibility: 'hidden'}}></iframe>}</>
     </Layout>
   )
 }

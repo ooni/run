@@ -1,4 +1,4 @@
-import { useCallback } from "react"
+import { useCallback, ClipboardEvent } from "react"
 import { Flex, Box, Button, Heading, InputWithIconButton, Text } from "ooni-components"
 import { useForm, useFieldArray, Controller } from "react-hook-form"
 import { FormattedMessage } from "react-intl"
@@ -67,7 +67,7 @@ const validationSchema = Yup.object().shape({
   )
 });
 
-const URLs = ({ onSubmit }) => {
+const URLs = ({ onSubmit }: {onSubmit: ({urls} : {urls: Array<{url: string}>}) => void}) => {
   const { control, formState, trigger, handleSubmit } = useForm({
     mode: 'onTouched',
     defaultValues: { urls: [ { url: '' } ] },
@@ -80,24 +80,25 @@ const URLs = ({ onSubmit }) => {
     name: "urls", // unique name for your Field Array
   })
 
-  const onKeyPress = useCallback((e) => {
+  const onKeyPress = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Enter') {
       append({ url: '' }, { shouldFocus: true })
     }
   }, [append])
 
-  const handlePaste = useCallback((e, index, onChange) => {
+  const handlePaste = useCallback((e: ClipboardEvent, index: number, onChange: (event: ClipboardEvent) => void) => {
     // block the usual paste action
     e.preventDefault()
 
     const pastedText = e.clipboardData.getData('Text')
     const newEntries = pastedText.split('\n')
-      .filter(line => String(line).length > 0)
-      .map((line) => ({ url: line }))
+      .filter((line: string) => line.length > 0)
+      .map((line: string) => ({ url: line }))
 
     // Place first pasted entry into event and trigger onChange
     // This updates the field being pasted into with the first entry
-    e.target.value = newEntries[0].url
+    const eventTarget = e.target as HTMLInputElement
+    eventTarget.value = newEntries[0].url
     onChange(e)
 
     // Insert fields into the form using the rest of the entries
@@ -134,7 +135,7 @@ const URLs = ({ onSubmit }) => {
                     error={errors?.['urls']?.[index]?.['url']?.message}
                     onKeyPress={onKeyPress}
                     onAction={() => remove(index)}
-                    onPaste={(e) => handlePaste(e, index, field.onChange)}
+                    onPaste={(e: ClipboardEvent) => handlePaste(e, index, field.onChange)}
                   />
                 </StyleFixIconButton>
               )}

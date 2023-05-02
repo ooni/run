@@ -15,11 +15,11 @@ const BrandContainer = styled.div`
     max-width: 100%;
   }
 `
-const OONIRunHero = (props) => (
+const OONIRunHero = ({href}: {href: string}) => (
   <Hero pb={4} pt={4} sx={{width: '100%', maxWidth: 'none !important'}}>
     <LocaleSwitcher />
     <BrandContainer>
-      <Link href={props.href}>
+      <Link href={href}>
         <LogoOONIRun />
       </Link>
     </BrandContainer>

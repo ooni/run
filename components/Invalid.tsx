@@ -7,11 +7,11 @@ import {
   Text
 } from 'rebass'
 
-const Invalid = props => (
+const Invalid = ({ reason }: {reason: string}) => (
   <Layout>
     <Container>
       <Heading>Invalid request</Heading>
-      <Text>The request is invalid: {props.reason || ''}</Text>
+      <Text>The request is invalid: {reason || ''}</Text>
     </Container>
   </Layout>
 )

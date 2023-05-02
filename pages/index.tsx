@@ -1,3 +1,5 @@
+import type { NextPage } from 'next'
+
 import React, { useMemo, useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -52,14 +54,14 @@ const GraphicsWithGradient = styled(Box)`
   }
 `
 
-const TwitterButton = ({ universalLink }) => {
+const TwitterButton = ({ universalLink }: {universalLink: string}) => {
   const intl = useIntl()
   const message = encodeURIComponent(intl.formatMessage({ id: 'Share.Twitter.Tweet', defaultMessage: 'Run OONI Probe to test for censorship!' }))
   const url = encodeURIComponent(universalLink)
   const tweetUrl = `https://twitter.com/intent/tweet?text=${message}&url=${url}`
 
   return (
-    <a href={tweetUrl} taget='_blank'>
+    <a href={tweetUrl} target='_blank'>
       <Button>
         <Flex alignContent='center'>
           <Text mr={2}>{intl.formatMessage({id: 'Share.Twitter.Button', defaultMessage: 'Tweet'})}</Text>
@@ -70,11 +72,15 @@ const TwitterButton = ({ universalLink }) => {
   )
 }
 
-const Home = () => {
-  const [urls, setUrls] = useState([])
+type Urls = Array<{
+  url: string;
+}>
+
+const Home: NextPage = () => {
+  const [urls, setUrls] = useState<Urls>([])
   const [showModal, setShowModal] = useState(false)
 
-  const onSubmitURLs = useCallback(({ urls }) => {
+  const onSubmitURLs = useCallback(({ urls } : {urls: Urls}) => {
     setUrls(urls.map((url) => {
       return {"url": new URL(url.url).toString()}
     }))

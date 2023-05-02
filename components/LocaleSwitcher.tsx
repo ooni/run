@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
-export const getLocalisedLanguageName = (regionCode, locale) => {
+export const getLocalisedLanguageName = (regionCode: string, locale: string) => {
   try {
     return new Intl.DisplayNames([locale], { type: 'language' }).of(String(regionCode))
   } catch (e) {
@@ -12,7 +12,7 @@ export const getLocalisedLanguageName = (regionCode, locale) => {
 
 const languages = process.env.LOCALES
 
-const LanguageSelect = styled.select`
+const LanguageSelect = styled.select<{ml: number[]}>`
   color: ${props => props.theme.colors.white};
   background: none;
   border: none;
@@ -28,7 +28,7 @@ const LocaleSwitcher = () => {
   const { pathname, asPath, query } = router
   const { locale } = useIntl()
 
-  const handleLocaleChange = (event) => {
+  const handleLocaleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     router.push({ pathname, query }, asPath, { locale: event.target.value })
   }
 

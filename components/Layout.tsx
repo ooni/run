@@ -5,17 +5,17 @@ import GlobalStyle from './globalStyle'
 
 import meta from '../config/meta'
 
-const Layout = props => (
+const Layout = ({title, children}: {title?: string, children: JSX.Element | JSX.Element[]}) => (
   <div>
     <Head>
-      <title>{props.title || meta.defaultTitle}</title>
+      <title>{title || meta.defaultTitle}</title>
       <meta httpEquiv='Content-Type' content={meta.contentType} />
       <meta name='viewport' content={meta.viewport} />
     </Head>
     <GlobalStyle />
     <ThemeProvider theme={theme}>
       <div className='content'>
-        { props.children }
+        { children }
       </div>
     </ThemeProvider>
   </div>

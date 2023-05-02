@@ -2,8 +2,10 @@ import { IntlProvider } from 'react-intl'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 
-export default function MyApp({ Component, pageProps }) {
-  const { locale, defaultLocale } = useRouter()
+import type { AppProps } from 'next/app'
+
+function MyApp({ Component, pageProps }: AppProps) {
+  const { locale = 'en', defaultLocale } = useRouter()
 
   const messages = useMemo(() => {
     try {
@@ -12,7 +14,7 @@ export default function MyApp({ Component, pageProps }) {
 
       const mergedMessages = Object.assign({}, defaultMessages, messages)
       return mergedMessages
-    } catch (e) {
+    } catch (e: any) {
       console.error(`Failed to load messages for ${locale}: ${e.message}`)
       const defaultMessages = require(`../public/static/lang/${defaultLocale}.json`)
       return defaultMessages
@@ -29,3 +31,5 @@ export default function MyApp({ Component, pageProps }) {
     </IntlProvider>
   )
 }
+
+export default MyApp

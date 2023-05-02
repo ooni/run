@@ -1,24 +1,18 @@
-import url from 'url'
+import { URL } from 'url'
 
 import {
   Container,
   Button,
-  IconButton,
-  Link,
   Heading,
   Text,
-  Flex,
-  Box,
-  Code
 } from 'ooni-components'
 
 import Layout from '../components/Layout'
 
 import styled from 'styled-components'
+import { GetServerSideProps } from 'next'
 
-import {
-  getTestType
-} from '../utils/nettest'
+import { getTestType } from '../utils/nettest'
 
 const StyledButtonWidget = styled(Button)`
   padding-top: 5px;
@@ -27,10 +21,11 @@ const StyledButtonWidget = styled(Button)`
   padding-right: 20px;
 `
 
-const ButtonWidget = (props) => (
-  <a href={props.runLink} target='_parent'>
+const ButtonWidget = ({ runLink }: { runLink:string }) => (
+  <a href={runLink} target='_parent'>
     <StyledButtonWidget>
       <img
+        alt=''
         src='/static/images/ButtonOONI.png'
         srcSet='/static/images/ButtonOONI@2x.png 2x, /static/images/ButtonOONI@4x.png 4x'
       />
@@ -91,17 +86,17 @@ const PoweredBy = styled.div`
   }
 `
 
-const BannerWidget = (props) => (
+const BannerWidget = ({title, testType, runLink}: {title: string, testType: string, runLink: string}) => (
   <StyledBannerContainer>
     <Container maxWidth={350}>
-      <Heading h={2} center>{props.title}</Heading>
+      <Heading h={2} center>{title}</Heading>
     </Container>
     <Hr />
     <Container maxWidth={350}>
       <Text center>Help take a stance against internet censorship and test for</Text>
-      <Heading center h={5}>{props.testType}</Heading>
+      <Heading center h={5}>{testType}</Heading>
       <ButtonCenterContainer>
-        <a href={props.runLink} target='_parent'>
+        <a href={runLink} target='_parent'>
           <BannerButton>
           Run OONI
           </BannerButton>
@@ -120,13 +115,13 @@ const BannerWidget = (props) => (
   </StyledBannerContainer>
 )
 
-export const getServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const widgetType = query.type || 'banner'
   const title = query.title || 'Fight Censorship'
-  const runLink = query.link || 'https://run.ooni.io/'
+  const runLink = Array.isArray(query.link) ? query.link[0] : query.link || 'https://run.ooni.io/'
 
-  const u = url.parse(runLink, true)
-  const testName = u.query.tn || 'web_connectivity'
+  const u = new URL(runLink)
+  const testName = u.searchParams.get('tn') || 'web_connectivity'
   const testType = getTestType(testName)
 
   return {
@@ -140,23 +135,29 @@ export const getServerSideProps = async ({ query }) => {
   }
 }
 
+type Widget = {
+  widgetType: string;
+  title: string;
+  runLink: string;
+  testType: string;
+}
+
 const Widget = ({
   widgetType,
   title,
   runLink,
   testType,
-  testName
-}) => {
+}: Widget) => {
   if (widgetType === 'banner') {
     return (
       <Layout>
-        <BannerWidget testType={testType} title={title} runLink={runLink}/>
+        <BannerWidget testType={testType} title={title} runLink={runLink} />
       </Layout>
     )
   }
   return (
     <Layout>
-      <ButtonWidget title={title} runLink={runLink}/>
+      <ButtonWidget runLink={runLink}/>
     </Layout>
   )
 }

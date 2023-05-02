@@ -1,8 +1,3 @@
-import {
-  Text
-} from 'ooni-components'
-import { defineMessages, useIntl } from 'react-intl'
-
 export const censorshipTests = [
   {
     key: 'web_connectivity',
@@ -45,9 +40,9 @@ export const netNeutralityTests = [
 ]
 export const nnTestKeys = netNeutralityTests.map(d => d.key)
 
-export const isIn = (k, a) => a.indexOf(k) !== -1
+export const isIn = (k: string, a: string[]) => a.indexOf(k) !== -1
 
-export const getTestType = testName => {
+export const getTestType = (testName: string) => {
   if (isIn(testName, nnTestKeys)) {
     return 'Speed & Performance'
   }

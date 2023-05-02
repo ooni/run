@@ -20,9 +20,16 @@
     "@babel/core": "^7.21.3",
     "@formatjs/cli": "^6.0.4",
     "@svgr/webpack": "^7.0.0",
+    "@types/node": "^18.15.11",
+    "@types/react": "^18.0.37",
+    "@types/react-dom": "^18.0.11",
+    "@types/styled-components": "^5.1.26",
     "babelify": "^10.0.0",
     "browserify": "^17.0.0",
+    "eslint": "^8.38.0",
+    "eslint-config-next": "^13.3.0",
     "json2csv": "^6.0.0-alpha.2",
+    "typescript": "^5.0.4",
     "uglify-js": "^3.17.4"
   },
   "resolutions": {
