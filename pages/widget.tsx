@@ -1,11 +1,6 @@
 import { URL } from 'url'
 
-import {
-  Container,
-  Button,
-  Heading,
-  Text,
-} from 'ooni-components'
+import { Container, Button, Heading, Text } from 'ooni-components'
 
 import Layout from '../components/Layout'
 
@@ -20,14 +15,15 @@ const StyledButtonWidget = styled(Button)`
   padding-left: 5px;
   padding-right: 20px;
 `
+type ButtonWidgetProps = { runLink: string }
 
-const ButtonWidget = ({ runLink }: { runLink:string }) => (
-  <a href={runLink} target='_parent'>
+const ButtonWidget = ({ runLink }: ButtonWidgetProps) => (
+  <a href={runLink} target="_parent">
     <StyledButtonWidget>
       <img
-        alt=''
-        src='/static/images/ButtonOONI.png'
-        srcSet='/static/images/ButtonOONI@2x.png 2x, /static/images/ButtonOONI@4x.png 4x'
+        alt=""
+        src="/static/images/ButtonOONI.png"
+        srcSet="/static/images/ButtonOONI@2x.png 2x, /static/images/ButtonOONI@4x.png 4x"
       />
     </StyledButtonWidget>
   </a>
@@ -37,30 +33,29 @@ const StyledBannerContainer = styled.div`
   padding-top: 15px;
   padding-bottom: 15px;
   width: 400px;
-  background-color: ${props => props.theme.colors.base};
-  color: ${props => props.theme.colors.white};
+  background-color: ${(props) => props.theme.colors.base};
+  color: ${(props) => props.theme.colors.white};
 `
 
 const Hr = styled.hr`
   margin: 0;
-  border: 2px solid ${props => props.theme.colors.white};
+  border: 2px solid ${(props) => props.theme.colors.white};
   margin-bottom: 15px;
 `
 
 // XXX make this into the inverted class of the button
 const BannerButton = styled(Button)`
-  background-color: ${props => props.theme.colors.white};
-  color: ${props => props.theme.colors.base};
+  background-color: ${(props) => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.base};
 
   &:hover {
-    background-color: ${props => props.theme.colors.gray1};
+    background-color: ${(props) => props.theme.colors.gray1};
   }
 
   &:active {
-    transition: .2s ease-in;
-    background-color: ${props => props.theme.colors.gray2};
+    transition: 0.2s ease-in;
+    background-color: ${(props) => props.theme.colors.gray2};
   }
-
 `
 
 const ButtonCenterContainer = styled.div`
@@ -85,29 +80,38 @@ const PoweredBy = styled.div`
     padding-right: 10px;
   }
 `
+type BannerWidgetProps = {
+  title: string
+  testType: string
+  runLink: string
+}
 
-const BannerWidget = ({title, testType, runLink}: {title: string, testType: string, runLink: string}) => (
+const BannerWidget = ({ title, testType, runLink }: BannerWidgetProps) => (
   <StyledBannerContainer>
     <Container maxWidth={350}>
-      <Heading h={2} center>{title}</Heading>
+      <Heading h={2} center>
+        {title}
+      </Heading>
     </Container>
     <Hr />
     <Container maxWidth={350}>
-      <Text center>Help take a stance against internet censorship and test for</Text>
-      <Heading center h={5}>{testType}</Heading>
+      <Text center>
+        Help take a stance against internet censorship and test for
+      </Text>
+      <Heading center h={5}>
+        {testType}
+      </Heading>
       <ButtonCenterContainer>
-        <a href={runLink} target='_parent'>
-          <BannerButton>
-          Run OONI
-          </BannerButton>
+        <a href={runLink} target="_parent">
+          <BannerButton>Run OONI</BannerButton>
         </a>
       </ButtonCenterContainer>
       <PoweredBy>
         <Text>Powered By</Text>
-        <a href='https://ooni.io/' target='_parent'>
+        <a href="https://ooni.io/" target="_parent">
           <img
-            src='/static/images/ButtonOONI.png'
-            srcSet='/static/images/ButtonOONI@2x.png 2x, /static/images/ButtonOONI@4x.png 4x'
+            src="/static/images/ButtonOONI.png"
+            srcSet="/static/images/ButtonOONI@2x.png 2x, /static/images/ButtonOONI@4x.png 4x"
           />
         </a>
       </PoweredBy>
@@ -118,7 +122,9 @@ const BannerWidget = ({title, testType, runLink}: {title: string, testType: stri
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const widgetType = query.type || 'banner'
   const title = query.title || 'Fight Censorship'
-  const runLink = Array.isArray(query.link) ? query.link[0] : query.link || 'https://run.ooni.io/'
+  const runLink = Array.isArray(query.link)
+    ? query.link[0]
+    : query.link || 'https://run.ooni.io/'
 
   const u = new URL(runLink)
   const testName = u.searchParams.get('tn') || 'web_connectivity'
@@ -131,23 +137,18 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       runLink,
       testName,
       testType,
-    }
+    },
   }
 }
 
-type Widget = {
-  widgetType: string;
-  title: string;
-  runLink: string;
-  testType: string;
+type WidgetProps = {
+  widgetType: string
+  title: string
+  runLink: string
+  testType: string
 }
 
-const Widget = ({
-  widgetType,
-  title,
-  runLink,
-  testType,
-}: Widget) => {
+const Widget = ({ widgetType, title, runLink, testType }: WidgetProps) => {
   if (widgetType === 'banner') {
     return (
       <Layout>
@@ -157,7 +158,7 @@ const Widget = ({
   }
   return (
     <Layout>
-      <ButtonWidget runLink={runLink}/>
+      <ButtonWidget runLink={runLink} />
     </Layout>
   )
 }

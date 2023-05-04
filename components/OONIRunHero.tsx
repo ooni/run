@@ -1,11 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import {
-  Hero,
-  HeroLead,
-  LogoOONIRun,
-  Link
-} from 'ooni-components'
+import { Hero, HeroLead, LogoOONIRun, Link } from 'ooni-components'
 
 import styled from 'styled-components'
 import LocaleSwitcher from './LocaleSwitcher'
@@ -15,8 +10,10 @@ const BrandContainer = styled.div`
     max-width: 100%;
   }
 `
-const OONIRunHero = ({href}: {href: string}) => (
-  <Hero pb={4} pt={4} sx={{width: '100%', maxWidth: 'none !important'}}>
+
+type OONIRunHeroProps = { href: string }
+const OONIRunHero = ({ href }: OONIRunHeroProps) => (
+  <Hero pb={4} pt={4} sx={{ width: '100%', maxWidth: 'none !important' }}>
     <LocaleSwitcher />
     <BrandContainer>
       <Link href={href}>
@@ -25,7 +22,7 @@ const OONIRunHero = ({href}: {href: string}) => (
     </BrandContainer>
     <HeroLead>
       <FormattedMessage
-        id='Hero.SubTitle'
+        id="Hero.SubTitle"
         defaultMessage="Coordinate website censorship testing"
       />
     </HeroLead>

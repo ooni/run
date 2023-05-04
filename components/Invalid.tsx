@@ -1,13 +1,13 @@
 import React from 'react'
 import Layout from './Layout'
 
-import {
-  Container,
-  Heading,
-  Text
-} from 'rebass'
+import { Container, Heading, Text } from 'rebass'
 
-const Invalid = ({ reason }: {reason: string}) => (
+type Props = {
+  reason: string
+}
+
+const Invalid = ({ reason }: Props) => (
   <Layout>
     <Container>
       <Heading>Invalid request</Heading>
