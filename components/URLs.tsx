@@ -10,7 +10,14 @@ import {
   Label,
   Select,
 } from 'ooni-components'
-import { useForm, useFieldArray, Controller, Control } from 'react-hook-form'
+import {
+  useForm,
+  useFieldArray,
+  Controller,
+  Control,
+  FormProvider,
+  useFormContext,
+} from 'react-hook-form'
 import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -72,25 +79,33 @@ const StyledInputWrapper = styled.div`
 `
 
 const validationSchema = Yup.object().shape({
-  urls: Yup.array().of(
+  ooniRunLink: Yup.array().of(
     Yup.object().shape({
-      url: Yup.string()
-        .required('cannot be empty')
-        .test(
-          'is-valid-url',
-          'should be a valid URL format e.g "https://ooni.org/post/"',
-          (value) => {
-            try {
-              const url = new URL(value)
-              if (url.protocol != 'http:' && url.protocol != 'https:') {
-                return false
-              }
-              return true
-            } catch {
-              return false
-            }
-          }
-        ),
+      name: Yup.string().required('cannot be empty'),
+      nettests: Yup.array().of(
+        Yup.object().shape({
+          test_name: Yup.string().required('cannot be empty'),
+          inputs: Yup.array().of(
+            Yup.string()
+              .default('')
+              .test(
+                'is-valid-url',
+                'should be a valid URL format e.g "https://ooni.org/post/"',
+                (value: string) => {
+                  try {
+                    const url = new URL(value)
+                    if (url.protocol != 'http:' && url.protocol != 'https:') {
+                      return false
+                    }
+                    return true
+                  } catch {
+                    return false
+                  }
+                }
+              )
+          ),
+        })
+      ),
     })
   ),
 })
@@ -104,7 +119,7 @@ type URLsProps = {
 }
 
 const URLs = ({ onSubmit }: URLsProps) => {
-  const { control, formState, trigger, handleSubmit } = useForm({
+  const formMethods = useForm({
     mode: 'onTouched',
     defaultValues: {
       ooniRunLink: [
@@ -130,53 +145,14 @@ const URLs = ({ onSubmit }: URLsProps) => {
     },
     resolver: yupResolver(validationSchema),
   })
+  const { control, formState, handleSubmit } = formMethods
+
   const { errors } = formState
-  console.log('formStateformState', formState)
+
   const { fields, append, remove, insert, replace } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: 'ooniRunLink', // unique name for your Field Array
   })
-
-  const onKeyPress = useCallback(
-    (e: KeyboardEvent) => {
-      console.log('keypress')
-      // if (e.key === 'Enter') {
-      //   append({ url: '' }, { shouldFocus: true })
-      // }
-    },
-    [append]
-  )
-
-  const handlePaste = useCallback(
-    (
-      e: ClipboardEvent,
-      index: number,
-      onChange: (event: ClipboardEvent) => void
-    ) => {
-      console.log('paste')
-      // // block the usual paste action
-      // e.preventDefault()
-
-      // const pastedText = e.clipboardData.getData('Text')
-      // const newEntries = pastedText
-      //   .split('\n')
-      //   .filter((line: string) => line.length > 0)
-      //   .map((line: string) => ({ url: line }))
-
-      // // Place first pasted entry into event and trigger onChange
-      // // This updates the field being pasted into with the first entry
-      // const eventTarget = e.target as HTMLInputElement
-      // eventTarget.value = newEntries[0].url
-      // onChange(e)
-
-      // // Insert fields into the form using the rest of the entries
-      // insert(index + 1, newEntries.slice(1))
-
-      // // Trigger validation to show any errors in the new entries
-      // trigger()
-    },
-    [append, insert, replace]
-  )
 
   return (
     <Flex flexDirection="column">
@@ -194,145 +170,116 @@ const URLs = ({ onSubmit }: URLsProps) => {
         <option value="https://" />
         <option value="http://" />
       </datalist>
-      <form onSubmit={handleSubmit(subm)}>
-        <Flex flexDirection="column" my={3}>
-          {fields.map((item, index) => (
-            // <Controller
-            //   key={item.id}
-            //   render={({ field }) => (
-            //     <StyleFixIconButton className="input-with-button">
-            //       <InputWithIconButton
-            //         {...field}
-            //         className="url-input"
-            //         icon={<MdDelete size={30} />}
-            //         placeholder="https://twitter.com/"
-            //         list="url-prefixes"
-            //         error={errors?.['urls']?.[index]?.['url']?.message}
-            //         onKeyPress={onKeyPress}
-            //         onAction={() => remove(index)}
-            //         onPaste={(e: ClipboardEvent) =>
-            //           handlePaste(e, index, field.onChange)
-            //         }
-            //       />
-            //     </StyleFixIconButton>
-            //   )}
-            //   name={`urls.${index}.url`}
-            //   control={control}
-            // />
-            //     <Box my={2}>
-            //   <AddURLButton onClick={() => append({ url: '' })}>
-            //     + <FormattedMessage id="Button.AddUrl" defaultMessage="Add URL" />
-            //   </AddURLButton>
-            // </Box>
-            <Box key={`${item.id}-${index}`}>
-              <StyledInputWrapper>
-                <StyledLabel>Test list name</StyledLabel>
-                <Controller
-                  key={`name-${item.id}`}
-                  render={({ field }) => <Input {...field} placeholder="" />}
-                  name={`ooniRunLink.${index}.name`}
-                  control={control}
-                />
-                <IntlArray
-                  control={control}
-                  name={`ooniRunLink.${index}.name_intl`}
-                />
-              </StyledInputWrapper>
-              <StyledInputWrapper>
-                <StyledLabel>Short description</StyledLabel>
-                <Controller
-                  key={`short-desc-${item.id}`}
-                  render={({ field }) => <Input {...field} placeholder="" />}
-                  name={`ooniRunLink.${index}.short_description`}
-                  control={control}
-                />
-                <IntlArray
-                  control={control}
-                  name={`ooniRunLink.${index}.short_description_intl`}
-                />
-              </StyledInputWrapper>
-              <StyledInputWrapper>
-                <StyledLabel>Description</StyledLabel>
-                <Controller
-                  key={`desc-${item.id}`}
-                  render={({ field }) => <Input {...field} placeholder="" />}
-                  name={`ooniRunLink.${index}.description`}
-                  control={control}
-                />
-                <IntlArray
-                  control={control}
-                  name={`ooniRunLink.${index}.description_intl`}
-                />
-              </StyledInputWrapper>
-              <StyledInputWrapper>
-                <StyledLabel>Author</StyledLabel>
-                <Controller
-                  key={`author-${item.id}`}
-                  render={({ field }) => <Input {...field} placeholder="" />}
-                  name={`ooniRunLink.${index}.author`}
-                  control={control}
-                />
-              </StyledInputWrapper>
-              <Heading h={4} fontWeight={300} mt={4}>
-                Nettests
-              </Heading>
-              <NettestArray
-                control={control}
-                name={`ooniRunLink.${index}.nettests`}
+      <FormProvider {...formMethods}>
+        <form onSubmit={handleSubmit(subm)}>
+          <Flex flexDirection="column" my={3}>
+            {fields.map((item, index) => (
+              <Box key={item.id}>
+                <StyledInputWrapper>
+                  <StyledLabel>Test list name</StyledLabel>
+                  <Controller
+                    key={`name-${item.id}`}
+                    render={({ field }) => (
+                      <Input
+                        {...field}
+                        placeholder=""
+                        error={errors?.ooniRunLink?.[index]?.name?.message}
+                      />
+                    )}
+                    name={`ooniRunLink.${index}.name`}
+                    control={control}
+                  />
+                  <IntlArray name={`ooniRunLink.${index}.name_intl`} />
+                </StyledInputWrapper>
+                <StyledInputWrapper>
+                  <StyledLabel>Short description</StyledLabel>
+                  <Controller
+                    key={`short-desc-${item.id}`}
+                    render={({ field }) => <Input {...field} placeholder="" />}
+                    name={`ooniRunLink.${index}.short_description`}
+                    control={control}
+                  />
+                  <IntlArray
+                    name={`ooniRunLink.${index}.short_description_intl`}
+                  />
+                </StyledInputWrapper>
+                <StyledInputWrapper>
+                  <StyledLabel>Description</StyledLabel>
+                  <Controller
+                    key={`desc-${item.id}`}
+                    render={({ field }) => <Input {...field} placeholder="" />}
+                    name={`ooniRunLink.${index}.description`}
+                    control={control}
+                  />
+                  <IntlArray name={`ooniRunLink.${index}.description_intl`} />
+                </StyledInputWrapper>
+                <StyledInputWrapper>
+                  <StyledLabel>Author</StyledLabel>
+                  <Controller
+                    key={`author-${item.id}`}
+                    render={({ field }) => <Input {...field} placeholder="" />}
+                    name={`ooniRunLink.${index}.author`}
+                    control={control}
+                  />
+                </StyledInputWrapper>
+                <Heading h={4} fontWeight={300} mt={4}>
+                  Nettests
+                </Heading>
+                <NettestArray name={`ooniRunLink.${index}.nettests`} />
+              </Box>
+            ))}
+            <Button width={1 / 4} mx="auto" type="submit">
+              <FormattedMessage
+                id="Button.Generate"
+                defaultMessage="Generate"
               />
-            </Box>
-          ))}
-          <Button width={1 / 4} mx="auto" type="submit">
-            <FormattedMessage id="Button.Generate" defaultMessage="Generate" />
-          </Button>
-        </Flex>
-      </form>
+            </Button>
+          </Flex>
+        </form>
+      </FormProvider>
     </Flex>
   )
 }
 
 type PropTypes = {
-  control: Control<any>
   name: string
 }
 
-function NettestArray({ control, name }: PropTypes) {
+function NettestArray({ name }: PropTypes) {
+  const { control } = useFormContext()
   const { fields, append, remove } = useFieldArray({ name, control })
   return (
     <>
       <ul>
         {fields.map((item, index) => (
-          <li key={`${name}[${index}]-${item.id}`}>
+          <li key={item.id}>
             {index > 0 && <hr />}
             <StyledInputWrapper>
               <StyledLabel>Nettest name</StyledLabel>
               <Controller
                 key={`nettests-test_name-${item.id}`}
-                render={({ field }) => <Input {...field} placeholder="" />}
+                render={({ field, fieldState }) => (
+                  <Input
+                    {...field}
+                    error={fieldState?.error?.message}
+                    placeholder=""
+                  />
+                )}
                 name={`${name}[${index}].test_name`}
                 control={control}
               />
             </StyledInputWrapper>
             <StyledInputWrapper>
               <StyledLabel>Options</StyledLabel>
-              <OptionsArray
-                control={control}
-                name={`${name}[${index}].options`}
-              />
+              <OptionsArray name={`${name}[${index}].options`} />
             </StyledInputWrapper>
             <StyledInputWrapper>
               <StyledLabel>Backend options</StyledLabel>
-              <BackendOptionsArray
-                control={control}
-                name={`${name}[${index}].backend_options`}
-              />
+              <BackendOptionsArray name={`${name}[${index}].backend_options`} />
             </StyledInputWrapper>
             <StyledInputWrapper>
               <StyledLabel>Inputs</StyledLabel>
-              <InputsArray
-                control={control}
-                name={`${name}[${index}].inputs`}
-              />
+              <InputsArray name={`${name}[${index}].inputs`} />
             </StyledInputWrapper>
             <StyledInputWrapper>
               <StyledLabel>Background run</StyledLabel>
@@ -384,6 +331,7 @@ function NettestArray({ control, name }: PropTypes) {
         hollow
         mr="auto"
         my={3}
+        type="button"
         onClick={() => {
           append({ test_name: '', options: '' })
         }}
@@ -394,13 +342,14 @@ function NettestArray({ control, name }: PropTypes) {
   )
 }
 
-function IntlArray({ control, name }: PropTypes) {
+function IntlArray({ name }: PropTypes) {
+  const { control } = useFormContext()
   const { fields, append, remove } = useFieldArray({ name, control })
   return (
     <>
       <ul>
         {fields.map((item, index) => (
-          <li key={`${name}[${index}]-${item.id}`}>
+          <li key={item.id}>
             <Flex>
               <Box width={[1, 4 / 12]} mr={[0, 3]}>
                 <StyledLabel>Language</StyledLabel>
@@ -451,13 +400,14 @@ function IntlArray({ control, name }: PropTypes) {
   )
 }
 
-function OptionsArray({ control, name }: PropTypes) {
+function OptionsArray({ name }: PropTypes) {
+  const { control } = useFormContext()
   const { fields, append, remove } = useFieldArray({ name, control })
   return (
     <>
       <ul>
         {fields.map((item, index) => (
-          <li key={`${name}[${index}]-${item.id}`}>
+          <li key={item.id}>
             <Flex>
               <Box width={[1, 4 / 12]} mr={[0, 3]}>
                 <Controller
@@ -499,13 +449,14 @@ function OptionsArray({ control, name }: PropTypes) {
   )
 }
 
-function BackendOptionsArray({ control, name }: PropTypes) {
+function BackendOptionsArray({ name }: PropTypes) {
+  const { control } = useFormContext()
   const { fields, append, remove } = useFieldArray({ name, control })
   return (
     <>
       <ul>
         {fields.map((item, index) => (
-          <li key={`${name}[${index}]-${item.id}`}>
+          <li key={item.id}>
             <Flex>
               <Box width={[1, 4 / 12]} mr={[0, 3]}>
                 <Controller
@@ -547,19 +498,77 @@ function BackendOptionsArray({ control, name }: PropTypes) {
   )
 }
 
-function InputsArray({ control, name }: PropTypes) {
-  const { fields, append, remove } = useFieldArray({ name, control })
+const InputsArray = ({ name }: PropTypes) => {
+  const { trigger, control } = useFormContext()
+  const { fields, append, remove, insert, replace } = useFieldArray({
+    name,
+    control,
+  })
+
+  const onKeyPress = useCallback(
+    (e: KeyboardEvent, index: number) => {
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        append('', {
+          shouldFocus: true,
+          focusName: `${name}[${index + 1}]`,
+        })
+      }
+    },
+    [append]
+  )
+
+  const handlePaste = useCallback(
+    (
+      e: ClipboardEvent,
+      index: number,
+      onChange: (event: ClipboardEvent) => void
+    ) => {
+      // block the usual paste action
+      e.preventDefault()
+
+      const pastedText = e.clipboardData.getData('Text')
+      const newEntries = pastedText
+        .split('\n')
+        .filter((line: string) => line.length > 0)
+
+      // Place first pasted entry into event and trigger onChange
+      // This updates the field being pasted into with the first entry
+      const eventTarget = e.target as HTMLInputElement
+      eventTarget.value = newEntries[0]
+      onChange(e)
+
+      // Insert fields into the form using the rest of the entries
+      insert(index + 1, newEntries.slice(1))
+
+      // Trigger validation to show any errors in the new entries
+      trigger()
+    },
+    [append, insert, replace]
+  )
+
   return (
     <>
       <ul>
         {fields.map((item, index) => (
-          <li key={`${name}[${index}]-${item.id}`}>
+          <li key={item.id}>
             <Flex>
               <Box width={11 / 12}>
                 <Controller
                   key={`input-${item.id}`}
-                  render={({ field }) => (
-                    <Input {...field} placeholder="Input" />
+                  render={({ field, fieldState }) => (
+                    <Input
+                      {...field}
+                      placeholder="https://twitter.com/"
+                      list="url-prefixes"
+                      onKeyPress={(e: KeyboardEvent) => onKeyPress(e, index)}
+                      onPaste={(e: ClipboardEvent) =>
+                        handlePaste(e, index, field.onChange)
+                      }
+                      error={fieldState?.error?.message}
+                      // icon={<MdDelete size={30} />}
+                      // onAction={() => remove(index)}
+                    />
                   )}
                   name={`${name}[${index}]`}
                   control={control}
@@ -576,7 +585,7 @@ function InputsArray({ control, name }: PropTypes) {
       </ul>
       <StyledAddButton
         onClick={() => {
-          append('')
+          append('', { shouldFocus: true })
         }}
       >
         + Add input
