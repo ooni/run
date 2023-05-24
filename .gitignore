@@ -8,3 +8,4 @@ package-lock.json
 yarn-error.log
 lang/.messages
 next-env.d.ts
+.env*.local

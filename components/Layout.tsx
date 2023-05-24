@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { theme } from 'ooni-components'
 import { ThemeProvider } from 'styled-components'
 import GlobalStyle from './globalStyle'
+import { UserProvider } from 'hooks/useUser'
 
 import meta from '../config/meta'
 
@@ -19,7 +20,9 @@ const Layout = ({ title, children }: LayoutProps) => (
     </Head>
     <GlobalStyle />
     <ThemeProvider theme={theme}>
-      <div className="content">{children}</div>
+      <UserProvider>
+        <div className="content">{children}</div>
+      </UserProvider>
     </ThemeProvider>
   </div>
 )
