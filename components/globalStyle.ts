@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components"
+import { createGlobalStyle } from 'styled-components'
 
 /*
  * XXX these imports are currently broken
@@ -25,7 +25,6 @@ const FiraSansSemiBold = '/static/fonts/FiraSans-SemiBold.woff'
 const SourceCodeProBold = '/static/fonts/SourceCodePro-Bold.woff'
 const SourceCodeProRegular = '/static/fonts/SourceCodePro-Regular.woff'
 
-
 const GlobalStyle = createGlobalStyle`
 
 /* CSS reset */
@@ -45,10 +44,7 @@ time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
-  font-size: 100%;
-  font: inherit;
-  font-family: "Fira Sans", "Lucida", "Calibri", "Myriad", "Helvetica", "Arial", sans-serif;
-  vertical-align: baseline;
+  font-family: "Fira Sans";
 }
 
 /* HTML5 display-role reset for older browsers */

@@ -13,7 +13,13 @@ import { apiEndpoints, loginUser, refreshToken, getAPI } from 'lib/api'
 const TWELVE_HOURS = 1000 * 60 * 60 * 12
 const TEN_MINUTES = 1000 * 60 * 10
 
-const UserContext = createContext({})
+const UserContext = createContext({
+  user: null,
+  loading: false,
+  error: null,
+  logout: () => {},
+  login: () => {},
+})
 
 type UserProviderProps = {
   children: JSX.Element
@@ -32,14 +38,12 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const [loadingInitial, setLoadingInitial] = useState(true)
 
   const getUser = () => {
-    console.log('getuser')
     return getAPI(apiEndpoints.ACCOUNT_METADATA)
       .then((user) => {
         setUser(user)
-        console.log('SETUSER')
       })
       .catch((e) => {
-        console.log('NEXT_PUBLIC_OONI_API', e)
+        console.log('user not logged in')
         setUser(null)
       })
       .finally(() => setLoadingInitial(false))

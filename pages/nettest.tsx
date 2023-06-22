@@ -1,13 +1,6 @@
 import Head from 'next/head'
 import { FormattedMessage, useIntl } from 'react-intl'
-import {
-  Container,
-  Button,
-  Link,
-  Heading,
-  Text,
-  Box
-} from 'ooni-components'
+import { Container, Button, Link, Heading, Text, Box } from 'ooni-components'
 
 import { getIntentURI, getEncodedQuery } from 'utils/links'
 
@@ -20,7 +13,7 @@ import { GetServerSideProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 
 const StyledCode = styled.code`
-font-family: courier, monospace;
+  font-family: courier, monospace;
 `
 
 const useragent = require('useragent/index.js')
@@ -40,17 +33,20 @@ const getUniversalLink = (query: ParsedUrlQuery) => {
 }
 
 type Props = {
-  deepLink: string,
-  withWindowLocation: boolean,
-  storeLink: string,
-  installLink: string,
-  userAgent: string | undefined,
-  universalLink: string,
-  title: string,
-  description: string,
+  deepLink: string
+  withWindowLocation: boolean
+  storeLink: string
+  installLink: string
+  userAgent: string | undefined
+  universalLink: string
+  title: string
+  description: string
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({ req, query }) => {
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  req,
+  query,
+}) => {
   const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
   const ua = useragent.parse(userAgent)
 
@@ -60,7 +56,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({ req, query
       redirect: {
         destination: getIntentURI(query),
         permanent: false,
-      }
+      },
     }
   }
 
@@ -115,7 +111,7 @@ const Nettest = ({
   installLink,
   universalLink,
   title,
-  description
+  description,
 }: Props) => {
   const windowScript = `window.onload = function() {
     document.getElementById('l').src = '${deepLink}';
@@ -127,80 +123,99 @@ const Nettest = ({
   return (
     <Layout title={title}>
       <Head>
-        <meta name='twitter:card' content='app' />
-        <meta name='twitter:site' content='@OpenObservatory' />
+        <meta name="twitter:card" content="app" />
+        <meta name="twitter:site" content="@OpenObservatory" />
 
         {/* Open Graph meta tags. Shared by Twitter and Facebook */}
-        <meta name='og:type' content='website' />
-        {universalLink && <meta name='og:url' content={universalLink} />}
-        {title && <meta name='og:title' content={title} />}
-        <meta name='og:image' content='https://run.ooni.io/static/images/Run-VerticalColorW400px.png' />
-        {description && <meta name='og:description' content={description} />}
+        <meta name="og:type" content="website" />
+        {universalLink && <meta name="og:url" content={universalLink} />}
+        {title && <meta name="og:title" content={title} />}
+        <meta
+          name="og:image"
+          content="https://run.ooni.io/static/images/Run-VerticalColorW400px.png"
+        />
+        {description && <meta name="og:description" content={description} />}
 
         {/* This is Twitter specific stuff
-        * See: https://dev.twitter.com/cards/types/app */}
-        {deepLink && <meta name='twitter:app:url:iphone' content={deepLink} />}
-        {deepLink && <meta name='twitter:app:url:ipad' content={deepLink} />}
-        {universalLink && <meta name='twitter:app:url:googleplay' content={universalLink} />}
+         * See: https://dev.twitter.com/cards/types/app */}
+        {deepLink && <meta name="twitter:app:url:iphone" content={deepLink} />}
+        {deepLink && <meta name="twitter:app:url:ipad" content={deepLink} />}
+        {universalLink && (
+          <meta name="twitter:app:url:googleplay" content={universalLink} />
+        )}
 
-        <meta name='twitter:image' content='https://run.ooni.io/static/images/Run-VerticalColorW400px.png' />
-        <meta name='twitter:app:name:iphone' content={mobileApp.iPhoneName} />
-        <meta name='twitter:app:id:iphone' content={mobileApp.iPhoneID} />
-        <meta name='twitter:app:name:ipad' content={mobileApp.iPadName} />
-        <meta name='twitter:app:id:ipad' content={mobileApp.iPadID} />
-        <meta name='twitter:app:name:googleplay' content={mobileApp.googlePlayName} />
-        <meta name='twitter:app:id:googleplay' content={mobileApp.googlePlayID} />
+        <meta
+          name="twitter:image"
+          content="https://run.ooni.io/static/images/Run-VerticalColorW400px.png"
+        />
+        <meta name="twitter:app:name:iphone" content={mobileApp.iPhoneName} />
+        <meta name="twitter:app:id:iphone" content={mobileApp.iPhoneID} />
+        <meta name="twitter:app:name:ipad" content={mobileApp.iPadName} />
+        <meta name="twitter:app:id:ipad" content={mobileApp.iPadID} />
+        <meta
+          name="twitter:app:name:googleplay"
+          content={mobileApp.googlePlayName}
+        />
+        <meta
+          name="twitter:app:id:googleplay"
+          content={mobileApp.googlePlayID}
+        />
 
         {/* This is Facebook specific stuff
-          * See:
-          * * https://developers.facebook.com/docs/applinks/add-to-content/
-        * * https://blog.branch.io/how-to-deep-link-on-facebook/ */}
-        <meta property='al:android:package' content={mobileApp.googlePlayID} />
-        <meta property='al:android:app_name' content={mobileApp.googlePlayName} />
-        {deepLink && <meta property='al:android:url' content={deepLink} />}
+         * See:
+         * * https://developers.facebook.com/docs/applinks/add-to-content/
+         * * https://blog.branch.io/how-to-deep-link-on-facebook/ */}
+        <meta property="al:android:package" content={mobileApp.googlePlayID} />
+        <meta
+          property="al:android:app_name"
+          content={mobileApp.googlePlayName}
+        />
+        {deepLink && <meta property="al:android:url" content={deepLink} />}
 
-        <meta property='al:ios:app_store_id' content={mobileApp.iPhoneID} />
-        <meta property='al:ios:app_name' content={mobileApp.iPhoneName} />
-        {deepLink && <meta property='al:ios:url' content={deepLink} />}
+        <meta property="al:ios:app_store_id" content={mobileApp.iPhoneID} />
+        <meta property="al:ios:app_name" content={mobileApp.iPhoneName} />
+        {deepLink && <meta property="al:ios:url" content={deepLink} />}
       </Head>
       <OONIRunHero href={'https://run.ooni.io'} />
       <Container p={4}>
-
         <Heading pt={2} h={2}>
           <FormattedMessage
-            id='Nettest.Heading.HaveMobileApp'
-            defaultMessage='You already have the OONI Probe mobile app'
+            id="Nettest.Heading.HaveMobileApp"
+            defaultMessage="You already have the OONI Probe mobile app"
           />
         </Heading>
         <Text pt={2} pb={3}>
           <FormattedMessage
-            id='Nettest.Text.HaveMobileApp'
-            defaultMessage='Tap Run and open this link with your OONI Probe mobile app to start the test.'
+            id="Nettest.Text.HaveMobileApp"
+            defaultMessage="Tap Run and open this link with your OONI Probe mobile app to start the test."
           />
         </Text>
 
         <Link href={deepLink}>
           <Button>
-            <FormattedMessage id='Nettest.Button.Run' defaultMessage='Run' />
+            <FormattedMessage id="Nettest.Button.Run" defaultMessage="Run" />
           </Button>
         </Link>
 
         <Heading pt={4} h={2}>
           <FormattedMessage
-            id='Nettest.Heading.InstallApp'
-            defaultMessage='Install the OONI Probe mobile app'
+            id="Nettest.Heading.InstallApp"
+            defaultMessage="Install the OONI Probe mobile app"
           />
         </Heading>
         <Text pt={2} pb={3}>
           <FormattedMessage
-            id='Nettest.Text.InstallApp'
-            defaultMessage='Currently, OONI Run links only work with the OONI Probe mobile app.'
+            id="Nettest.Text.InstallApp"
+            defaultMessage="Currently, OONI Run links only work with the OONI Probe mobile app."
           />
         </Text>
 
         <Link href={installLink}>
           <Button>
-            <FormattedMessage id='Nettest.Button.Install' defaultMessage='Install' />
+            <FormattedMessage
+              id="Nettest.Button.Install"
+              defaultMessage="Install"
+            />
           </Button>
         </Link>
 
@@ -208,8 +223,24 @@ const Nettest = ({
           <StyledCode>{userAgent}</StyledCode>
         </Box>
       </Container>
-      <>{withWindowLocation && <script type='text/javascript' dangerouslySetInnerHTML={{__html: windowScript}} />}</>
-      <>{withWindowLocation && <iframe id='l' width='1' height='1' style={{visibility: 'hidden'}}></iframe>}</>
+      <>
+        {withWindowLocation && (
+          <script
+            type="text/javascript"
+            dangerouslySetInnerHTML={{ __html: windowScript }}
+          />
+        )}
+      </>
+      <>
+        {withWindowLocation && (
+          <iframe
+            id="l"
+            width="1"
+            height="1"
+            style={{ visibility: 'hidden' }}
+          ></iframe>
+        )}
+      </>
     </Layout>
   )
 }

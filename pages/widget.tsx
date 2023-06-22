@@ -2,8 +2,6 @@ import { URL } from 'url'
 
 import { Container, Button, Heading, Text } from 'ooni-components'
 
-import Layout from '../components/Layout'
-
 import styled from 'styled-components'
 import { GetServerSideProps } from 'next'
 
@@ -150,17 +148,9 @@ type WidgetProps = {
 
 const Widget = ({ widgetType, title, runLink, testType }: WidgetProps) => {
   if (widgetType === 'banner') {
-    return (
-      <Layout>
-        <BannerWidget testType={testType} title={title} runLink={runLink} />
-      </Layout>
-    )
+    return <BannerWidget testType={testType} title={title} runLink={runLink} />
   }
-  return (
-    <Layout>
-      <ButtonWidget runLink={runLink} />
-    </Layout>
-  )
+  return <ButtonWidget runLink={runLink} />
 }
 
 export default Widget

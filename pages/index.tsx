@@ -13,16 +13,19 @@ import {
   Flex,
   Box,
   Modal,
-  TwitterShareButton,
+  // TwitterShareButton,
 } from 'ooni-components'
 import { BsTwitter } from 'react-icons/bs'
+// import * as OONI from 'ooni-components'
+import Test from './test'
 
-import Layout from '../components/Layout'
+import { createRunLink } from 'lib/api'
 import { getUniversalLink } from '../utils/links'
 import GraphicsOctopusModal from '../components/svgs/GraphicsOctopusModal.svg'
 import OONIRunHero from '../components/OONIRunHero'
 
-import URLs from '../components/URLs'
+import { useRouter } from 'next/router'
+import TestListForm from 'components/form/TestListForm'
 
 const StyleLinkButton = styled(Button)`
   text-transform: none;
@@ -85,6 +88,32 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
   )
 }
 
+const transformKeyValue = ({ key, value }: any) => ({ [key]: value })
+
+const transformIntoObject = (arrObj: any) =>
+  arrObj.map(transformKeyValue).reduce((result: {}, current: {}) => {
+    return Object.assign(result, current)
+  }, {})
+
+const transformNettests = (nettest: any) => ({
+  ...nettest,
+  backend_options: transformIntoObject(nettest.backend_options),
+  options: transformIntoObject(nettest.options),
+})
+
+export const transformOutgoingData = (data: any) => {
+  const formData = data.ooniRunLink[0]
+  return {
+    ...formData,
+    name_intl: transformIntoObject(formData.name_intl),
+    description_intl: transformIntoObject(formData.description_intl),
+    short_description_intl: transformIntoObject(
+      formData.short_description_intl
+    ),
+    nettests: formData.nettests.map(transformNettests),
+  }
+}
+
 type Urls = Array<{ url: string }>
 
 type SubmitCallback = { urls: Urls }
@@ -92,14 +121,13 @@ type SubmitCallback = { urls: Urls }
 const Home: NextPage = () => {
   const [urls, setUrls] = useState<Urls>([])
   const [showModal, setShowModal] = useState(false)
+  const router = useRouter()
 
-  const onSubmitURLs = useCallback(({ urls }: SubmitCallback) => {
-    setUrls(
-      urls.map((url) => {
-        return { url: new URL(url.url).toString() }
-      })
-    )
-    setShowModal(true)
+  const onSubmitURLs = useCallback((data: any) => {
+    console.log('SUBMIT', data)
+    createRunLink(transformOutgoingData(data)).then((res) => {
+      router.push(`/view/${res.id}`)
+    })
   }, [])
 
   const [universalLink, embedCode] = useMemo(() => {
@@ -121,18 +149,18 @@ const Home: NextPage = () => {
   }, [urls])
 
   return (
-    <Layout>
+    <>
       <OONIRunHero href={'https://ooni.org'} />
 
       <Container pt={4} maxWidth={800}>
         <Flex justifyContent="center">
-          <Box width={[1, 1, 2 / 4]}>
+          <Box width={[1, 1, 3 / 4]}>
             <FormattedMessage
               tagName={Text}
               id="WhatCanYouDoText.WebCensorship"
               defaultMessage='Add websites below that you would like to test for censorship. Click "Generate" to create a link based on those websites. Share that link with OONI Probe mobile app users so that they can test the websites of your choice!'
             />
-            <URLs onSubmit={onSubmitURLs} />
+            <TestListForm onSubmit={onSubmitURLs} />
           </Box>
         </Flex>
 
@@ -209,7 +237,7 @@ const Home: NextPage = () => {
           </Flex>
         </Modal>
       </Container>
-    </Layout>
+    </>
   )
 }
 

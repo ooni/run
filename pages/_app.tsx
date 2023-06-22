@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 
 import type { AppProps } from 'next/app'
+import Layout from 'components/Layout'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const { locale = 'en', defaultLocale } = useRouter()
@@ -27,7 +28,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       defaultLocale={defaultLocale}
       messages={messages}
     >
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </IntlProvider>
   )
 }

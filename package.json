@@ -7,13 +7,16 @@
     "axios": "^1.4.0",
     "intl": "^1.2.5",
     "next": "12.3.1",
-    "ooni-components": "0.4.7",
+    "ooni-components": "file:.yalc/ooni-components",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-hook-form": "^7.43.8",
-    "react-icons": "4.4.0",
+    "react-icons": "^4.9.0",
     "react-intl": "^6.3.2",
-    "styled-components": "5.1.1",
+    "react-markdown": "^8.0.7",
+    "react-select": "^5.7.3",
+    "styled-components": "^6.0.0-rc.3",
+    "swr": "^2.1.5",
     "useragent": "^2.3.0",
     "yup": "^1.0.2"
   },
@@ -34,8 +37,6 @@
     "uglify-js": "^3.17.4"
   },
   "resolutions": {
-    "styled-components": "5.1.1",
-    "react-icons": "4.4.0",
     "minimist": "1.2.6"
   },
   "scripts": {

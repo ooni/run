@@ -2,25 +2,28 @@ import { useRouter } from 'next/router'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
-export const getLocalisedLanguageName = (regionCode: string, locale: string) => {
+export const getLocalisedLanguageName = (
+  regionCode: string,
+  locale: string
+) => {
   try {
-    return new Intl.DisplayNames([locale], { type: 'language' }).of(String(regionCode))
+    return new Intl.DisplayNames([locale], { type: 'language' }).of(
+      String(regionCode)
+    )
   } catch (e) {
     return regionCode
-  } 
+  }
 }
 
 const languages = process.env.LOCALES
 
-const LanguageSelect = styled.select<{ml: number[]}>`
-  color: ${props => props.theme.colors.white};
+const LanguageSelect = styled.select`
+  color: ${(props) => props.theme.colors.white};
   background: none;
   border: none;
   text-transform: capitalize;
   cursor: pointer;
-  position: absolute;
-  top: 10px;
-  right: 20px;
+  font-family: 'Fira Sans';
 `
 
 const LocaleSwitcher = () => {
@@ -33,10 +36,10 @@ const LocaleSwitcher = () => {
   }
 
   return (
-    <LanguageSelect ml={[0, 4]} onChange={handleLocaleChange} value={locale}>
+    <LanguageSelect onChange={handleLocaleChange} value={locale}>
       {languages.map((c) => (
         <option key={c} value={c}>
-          {getLocalisedLanguageName(c,c)}
+          {getLocalisedLanguageName(c, c)}
         </option>
       ))}
     </LanguageSelect>

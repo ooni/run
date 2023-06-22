@@ -6,6 +6,10 @@ export const apiEndpoints = {
   USER_REGISTER: '/api/v1/user_register',
   USER_LOGIN: '/api/v1/user_login',
   USER_LOGOUT: '/api/v1/user_logout',
+  CREATE_RUN_LINK: '/api/_/ooni_run/create',
+  ARCHIVE_RUN_LINK: '/api/_/ooni_run/archive/<int:oonirun_id>',
+  GET_RUN_LINK: '/api/_/ooni_run/fetch',
+  GET_LIST: '/api/_/ooni_run/list',
 }
 
 const getBearerToken = () => {
@@ -42,6 +46,7 @@ export const getAPI = async (
     .then((res) => res.data)
     .catch((e: Error | AxiosError) => {
       if (Axios.isAxiosError(e)) {
+        console.log('runLink', e)
         throw new Error(e?.response?.data?.error)
         // error.info = e?.response?.statusText
         // error.status = e?.response?.status
@@ -51,8 +56,20 @@ export const getAPI = async (
     })
 }
 
-const postAPI = async (endpoint: string, params = {}) => {
-  return await getAPI(endpoint, {}, { method: 'POST', data: params })
+const postAPI = async (endpoint: string, data = {}, params = {}) => {
+  return await getAPI(endpoint, params, { method: 'POST', data })
+}
+
+export const createRunLink = (data, params = {}) => {
+  return postAPI(apiEndpoints.CREATE_RUN_LINK, data, params)
+}
+
+export const getRunLink = (id) => {
+  return getAPI(`${apiEndpoints.GET_RUN_LINK}/${id}`)
+}
+
+export const getLinkList = () => {
+  return getAPI(apiEndpoints.GET_LIST)
 }
 
 export const registerUser = async (

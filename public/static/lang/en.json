@@ -22,5 +22,13 @@
   "Nettest.Text.InstallApp": "Currently, OONI Run links only work with the OONI Probe mobile app.",
   "Nettest.Button.Install": "Install",
   "Notice.Paste": "Note: If you have a long list of URLs to add, you can copy them and paste into one of the boxes below.",
-  "WhatCanYouDoText.WebCensorship": "Add websites below that you would like to test for censorship. Click \"Generate\" to create a link based on those websites. Share that link with OONI Probe mobile app users so that they can test the websites of your choice!"
+  "WhatCanYouDoText.WebCensorship": "Add websites below that you would like to test for censorship. Click \"Generate\" to create a link based on those websites. Share that link with OONI Probe mobile app users so that they can test the websites of your choice!",
+  "Navbar.Login": "Login",
+  "Navbar.Logout": "Logout",
+  "Navbar.List": "Link List",
+  "Login.EnterEmail": "Add your email address and click the link sent to your email to log in.\n\nWe do not store email addresses.",
+  "Login.Submitted": "Your login request has been submitted. Please check your email for a link to activate and log in to your account.",
+  "Login.LoggingIn": "Logging in...",
+  "Login.Failure": "Try logging in again",
+  "Login.Success": "Successfully logged in. Redirecting..."
 }
