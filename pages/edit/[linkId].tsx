@@ -6,6 +6,7 @@ import { GetServerSideProps } from 'next'
 import { useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { transformOutgoingData } from 'pages'
+import type { ParsedUrlQuery } from 'querystring'
 
 const transformIntoArray = (obj: object) =>
   Object.entries(obj).map(([k, v]) => ({
@@ -29,9 +30,14 @@ const transformIncomingData = (formData: any) => {
   }
 }
 
+interface QParams extends ParsedUrlQuery {
+  linkId: string
+}
+
 export const getServerSideProps: GetServerSideProps<{ runLink: {} }> = async ({
-  query: { linkId },
+  params,
 }) => {
+  const { linkId } = params as QParams
   const runLink = await getRunLink(linkId)
 
   return {

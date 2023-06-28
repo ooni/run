@@ -22,8 +22,12 @@ const StyledInputContainer = styled(Box).attrs({
     right: 0px;
   }
 `
+type LoginFormProps = {
+  onLogin: () => void
+  redirectTo?: string
+}
 
-export const LoginForm = ({ onLogin, redirectTo }) => {
+export const LoginForm = ({ onLogin, redirectTo }: LoginFormProps) => {
   const router = useRouter()
   const [submitting, setSubmitting] = useState(false)
   const [loginError, setError] = useState(null)
@@ -36,16 +40,14 @@ export const LoginForm = ({ onLogin, redirectTo }) => {
   const { errors, isValid, isDirty } = formState
 
   const onSubmit = useCallback(
-    (data) => {
+    (data: { email_address: string }) => {
       const { email_address } = data
-      const registerApi = async (email_address) => {
+      const registerApi = async (email_address: string) => {
         try {
           await registerUser(email_address, redirectTo)
-          if (typeof onLogin === 'function') {
-            onLogin()
-          }
-        } catch (e) {
-          setError(e.message)
+          onLogin()
+        } catch (e: any) {
+          setError(e?.message)
           // Reset form to mark `isDirty` as false
           reset({}, { keepValues: true })
         } finally {
@@ -74,6 +76,7 @@ export const LoginForm = ({ onLogin, redirectTo }) => {
             rules={{
               pattern: {
                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: 'Not valid email address',
               },
               required: true,
             }}
