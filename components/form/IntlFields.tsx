@@ -2,6 +2,14 @@ import { useFieldArray, Controller, useFormContext } from 'react-hook-form'
 import { Flex, Box, Input, Select, Button } from 'ooni-components'
 import { FieldsPropTypes } from './TestListForm'
 import { MdDelete } from 'react-icons/md'
+import supportedLanguages from '../../utils/supportedLanguages'
+
+const langOptions = supportedLanguages.map((lang) => ({
+  key: lang,
+  name: new Intl.DisplayNames(['en'], { type: 'language' }).of(
+    lang.replace('_', '-')
+  ),
+}))
 
 const IntlFields = ({ name }: FieldsPropTypes) => {
   const { control } = useFormContext()
@@ -16,9 +24,9 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
                 render={({ field }) => (
                   <Select {...field} label="Language" width={1}>
                     <option value=""></option>
-                    {['it', 'fr', 'de'].map((c, idx) => (
-                      <option key={idx} value={c}>
-                        {c}
+                    {langOptions.map(({ key, name }) => (
+                      <option key={key} value={key}>
+                        {name}
                       </option>
                     ))}
                   </Select>

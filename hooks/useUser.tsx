@@ -13,7 +13,20 @@ import { apiEndpoints, loginUser, refreshToken, getAPI } from 'lib/api'
 const TWELVE_HOURS = 1000 * 60 * 60 * 12
 const TEN_MINUTES = 1000 * 60 * 10
 
-const UserContext = createContext({
+type User = {
+  role: 'admin' | 'user'
+  logged_in: boolean
+}
+
+type UserContext = {
+  user: null | User
+  loading: boolean
+  error: null | string
+  logout: () => void
+  login: () => void
+}
+
+const UserContext = createContext<UserContext>({
   user: null,
   loading: false,
   error: null,
