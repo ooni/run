@@ -3,18 +3,7 @@ import { getRunLink } from 'lib/api'
 import { GetServerSideProps } from 'next'
 import { Container, Box, Heading } from 'ooni-components'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
-
-export const getServerSideProps: GetServerSideProps = async ({
-  query: { linkId },
-}) => {
-  const runLink = await getRunLink(linkId)
-
-  return {
-    props: {
-      descriptor: runLink.descriptor,
-    },
-  }
-}
+import type { ParsedUrlQuery } from 'querystring'
 
 type Nettest = {
   test_name: string
@@ -38,6 +27,22 @@ type Descriptor = {
     description: string | undefined
     description_intl: {}[]
     nettests: Nettest[]
+  }
+}
+interface QParams extends ParsedUrlQuery {
+  linkId: string
+}
+
+export const getServerSideProps: GetServerSideProps<Descriptor> = async ({
+  params,
+}) => {
+  const { linkId } = params as QParams
+  const runLink = await getRunLink(linkId)
+
+  return {
+    props: {
+      descriptor: runLink.descriptor,
+    },
   }
 }
 

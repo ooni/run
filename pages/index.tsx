@@ -21,7 +21,7 @@ import Test from './test'
 
 import { createRunLink } from 'lib/api'
 import { getUniversalLink } from '../utils/links'
-import GraphicsOctopusModal from '../components/svgs/GraphicsOctopusModal.svg'
+// import GraphicsOctopusModal from '../components/svgs/GraphicsOctopusModal.svg'
 import OONIRunHero from '../components/OONIRunHero'
 
 import { useRouter } from 'next/router'
@@ -173,9 +173,9 @@ const Home: NextPage = () => {
         >
           <Flex flexWrap="wrap" style={{ minHeight: '100%' }}>
             <Box width={[1, 1, 1 / 4]} style={{ backgroundColor: '#8ED8F8' }}>
-              <GraphicsWithGradient>
+              {/* <GraphicsWithGradient>
                 <GraphicsOctopusModal />
-              </GraphicsWithGradient>
+              </GraphicsWithGradient> */}
             </Box>
             <Box width={[1, 1, 3 / 4]} px={[3, 4]} pt={3} pb={3}>
               <Heading h={1} textAlign="center">

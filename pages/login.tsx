@@ -88,10 +88,8 @@ const Login = () => {
               <Box mb={3} p={4} bg="red1">
                 {error}
               </Box>
-              <NLink href="/login" passHref>
-                <a>
-                  <FormattedMessage id="Login.Failure" />
-                </a>
+              <NLink href="/login">
+                <FormattedMessage id="Login.Failure" />
               </NLink>
             </Box>
           )}

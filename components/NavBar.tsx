@@ -1,5 +1,5 @@
 import React from 'react'
-import { NextRouter, useRouter, withRouter } from 'next/router'
+import { NextRouter, useRouter } from 'next/router'
 import NLink from 'next/link'
 import styled from 'styled-components'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -14,7 +14,7 @@ type StyledNavItemProps = {
   children?: React.ReactNode
 }
 
-const StyledNavItem = styled.a<StyledNavItemProps>`
+const StyledNavItem = styled.div<StyledNavItemProps>`
   text-decoration: none;
   position: relative;
   display: inline;
@@ -61,23 +61,21 @@ const LanguageSelect = styled.select`
 type NavItemComponentProps = {
   href: string
   label: string | JSX.Element
-  router: NextRouter
 }
 
-const NavItemComponent = ({ router, label, href }: NavItemComponentProps) => {
-  const active = router.pathname === href
+const NavItem = ({ label, href }: NavItemComponentProps) => {
+  // const active = router.pathname === href
   return (
     <Box ml={[0, 4]} my={[2, 0]}>
-      <NLink href={href} passHref>
+      <NLink href={href}>
         <StyledNavItem>
           <NavItemLabel>{label}</NavItemLabel>
-          <Underline active={active} />
+          {/* <Underline active={active} /> */}
         </StyledNavItem>
       </NLink>
     </Box>
   )
 }
-const NavItem = withRouter(NavItemComponent)
 
 const StyledNavBar = styled.div`
   padding-top: 16px;
@@ -110,7 +108,7 @@ export const NavBar = () => {
                   <NavItemLabel>
                     <FormattedMessage id="Navbar.Logout" />
                   </NavItemLabel>
-                  <Underline />
+                  {/* <Underline /> */}
                 </StyledNavItem>
               </Box>
             </>

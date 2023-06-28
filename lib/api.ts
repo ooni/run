@@ -60,11 +60,11 @@ const postAPI = async (endpoint: string, data = {}, params = {}) => {
   return await getAPI(endpoint, params, { method: 'POST', data })
 }
 
-export const createRunLink = (data, params = {}) => {
+export const createRunLink = (data: any, params = {}) => {
   return postAPI(apiEndpoints.CREATE_RUN_LINK, data, params)
 }
 
-export const getRunLink = (id) => {
+export const getRunLink = (id: string) => {
   return getAPI(`${apiEndpoints.GET_RUN_LINK}/${id}`)
 }
 
