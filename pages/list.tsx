@@ -17,41 +17,51 @@ const StyledBox = styled(Box)`
   margin-bottom: ${(props) => props.theme.space[3]}px;
 `
 
+type Descriptor = {
+  id: string
+  author: string
+  archived: boolean
+  mine: boolean
+  name: string
+  description: string
+}
+
 const List = () => {
   const router = useRouter()
   const { user, loading } = useUser()
   const isAdmin = useMemo(() => user?.role === 'admin', [user])
 
-  const { data, error } = useSWR(apiEndpoints.GET_LIST, fetcher)
-  console.log('data', data)
+  const { data, error } = useSWR<{ descriptors: Descriptor[] }>(
+    apiEndpoints.GET_LIST,
+    fetcher
+  )
+
   return (
     <>
       <OONIRunHero href="/" />
       <Container my={5}>
         <ul>
           {data &&
-            data.descriptors.map(
-              (desc: { id: string; archived: boolean; mine: boolean }) => (
-                <li key={desc.id}>
-                  <StyledBox>
-                    <Heading h={4}>{desc.name}</Heading>
-                    <ReactMarkdown>{desc.description}</ReactMarkdown>
-                    <Text my={3}>created by {desc.author}</Text>
-                    <span>{!!desc.archived && <>Archived</>}</span>
-                    <Flex justifyContent="end" sx={{ gap: 3 }}>
-                      <NLink href={`/view/${desc.id}`}>
-                        <Button type="button">View</Button>
+            data.descriptors.map((desc) => (
+              <li key={desc.id}>
+                <StyledBox>
+                  <Heading h={4}>{desc.name}</Heading>
+                  <ReactMarkdown>{desc.description}</ReactMarkdown>
+                  <Text my={3}>created by {desc.author}</Text>
+                  <span>{!!desc.archived && <>Archived</>}</span>
+                  <Flex justifyContent="end" sx={{ gap: 3 }}>
+                    <NLink href={`/view/${desc.id}`}>
+                      <Button type="button">View</Button>
+                    </NLink>
+                    {(desc.mine || isAdmin) && (
+                      <NLink href={`/edit/${desc.id}`}>
+                        <Button type="button">Edit</Button>
                       </NLink>
-                      {(desc.mine || isAdmin) && (
-                        <NLink href={`/edit/${desc.id}`}>
-                          <Button type="button">Edit</Button>
-                        </NLink>
-                      )}
-                    </Flex>
-                  </StyledBox>
-                </li>
-              )
-            )}
+                    )}
+                  </Flex>
+                </StyledBox>
+              </li>
+            ))}
         </ul>
       </Container>
     </>

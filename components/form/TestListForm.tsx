@@ -31,44 +31,6 @@ export type FieldsPropTypes = {
   name: string
 }
 
-// const AddURLButton = styled(Button)`
-//   color: ${(props) => props.theme.colors.gray5};
-//   border-radius: 0;
-//   padding: 0;
-//   background-color: transparent;
-//   border-bottom: 1px solid ${(props) => props.theme.colors.gray1};
-//   text-align: left;
-//   text-transform: none;
-
-//   &:hover,
-//   &:hover:enabled {
-//     background-color: transparent;
-//     color: ${(props) => props.theme.colors.gray6};
-//     border-bottom: 1px solid ${(props) => props.theme.colors.gray3};
-//   }
-//   &:active,
-//   &:active:enabled {
-//     background-color: transparent;
-//     color: ${(props) => props.theme.colors.gray7};
-//     border-bottom: 2px solid ${(props) => props.theme.colors.gray4};
-//   }
-// `
-
-// const StyleFixIconButton = styled.div`
-//   & ${Flex} {
-//     align-items: center;
-//   }
-//   & p {
-//     margin-top: 8px;
-//   }
-//   & button:hover:enabled {
-//     background-color: transparent;
-//   }
-//   & button:active:enabled {
-//     background-color: transparent;
-//   }
-// `
-
 export const StyledLabel = styled(Text).attrs({
   // color: 'blue5',
   fontSize: 1,
@@ -80,10 +42,10 @@ export const StyledInputWrapper = styled.div`
 `
 
 type Nettest = {
-  test_name: null
+  test_name: string
   inputs: string[]
-  options: object[]
-  backend_options: object[]
+  options: { key?: string; value?: string }[]
+  backend_options: { key?: string; value?: string }[]
   is_background_run_enabled: boolean
   is_manual_run_enabled: boolean
 }
@@ -99,35 +61,63 @@ type TestList = {
   }>
 }
 
-const validationSchema = Yup.object().shape({
-  ooniRunLink: Yup.array().of(
-    Yup.object().shape({
-      name: Yup.string().required('cannot be empty'),
-      nettests: Yup.array().of(
-        Yup.object().shape({
-          test_name: Yup.string().required('cannot be empty'),
-          inputs: Yup.array().of(
-            Yup.string().test(
-              'is-valid-url',
-              'should be a valid URL format e.g "https://ooni.org/post/"',
-              (value) => {
-                if (value == null) return true
-                try {
-                  const url = new URL(value)
-                  if (url.protocol != 'http:' && url.protocol != 'https:') {
-                    return false
-                  }
-                  return true
-                } catch {
-                  return false
-                }
-              }
-            )
+const validationSchema = Yup.object({
+  ooniRunLink: Yup.array()
+    .required()
+    .min(0)
+    .of(
+      Yup.object({
+        name: Yup.string().required('cannot be empty'),
+        short_description: Yup.string().required().min(0),
+        description: Yup.string().required().min(0),
+        icon: Yup.string().required().min(0),
+        author: Yup.string().required().min(0),
+        nettests: Yup.array()
+          .required()
+          .of(
+            Yup.object({
+              test_name: Yup.string().required('cannot be empty'),
+              inputs: Yup.array()
+                .required()
+                .min(0)
+                .of(
+                  Yup.string()
+                    .required()
+                    .min(0)
+                    .test(
+                      'is-valid-url',
+                      'should be a valid URL format e.g "https://ooni.org/post/"',
+                      (value) => {
+                        if (value == null) return true
+                        try {
+                          const url = new URL(value)
+                          if (
+                            url.protocol != 'http:' &&
+                            url.protocol != 'https:'
+                          ) {
+                            return false
+                          }
+                          return true
+                        } catch {
+                          return false
+                        }
+                      }
+                    )
+                ),
+              options: Yup.array()
+                .required()
+                .min(0)
+                .of(Yup.object({ key: Yup.string(), value: Yup.string() })),
+              backend_options: Yup.array()
+                .required()
+                .min(0)
+                .of(Yup.object({ key: Yup.string(), value: Yup.string() })),
+              is_background_run_enabled: Yup.boolean().required(),
+              is_manual_run_enabled: Yup.boolean().required(),
+            })
           ),
-        })
-      ),
-    })
-  ),
+      })
+    ),
 })
 
 const initialValues = {
@@ -148,14 +138,14 @@ const initialValues = {
   ],
 }
 
-const selectIconOptions = Object.entries(reactCom).map(([name, icon]) => {
-  // const IconComponent = reactCom[name]
-  return {
-    value: name,
-    // label: <IconComponent />,
-    label: name,
-  }
-})
+// const selectIconOptions = Object.entries(reactCom).map(([name, icon]) => {
+//   // const IconComponent = reactCom[name]
+//   return {
+//     value: name,
+//     // label: <IconComponent />,
+//     label: name,
+//   }
+// })
 
 type TestListFormProps = {
   onSubmit: (data: {}) => void

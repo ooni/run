@@ -16,23 +16,66 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 }
 
-type ViewRunLinkProps = {
-  descriptor: {}
+type Nettest = {
+  test_name: string
+  inputs: string[]
+  options: {}[]
+  backend_options: {}[]
+  is_background_run_enabled: boolean
+  is_manual_run_enabled: boolean
 }
 
-const ViewRunLink = ({ descriptor }: ViewRunLinkProps) => {
+type Descriptor = {
+  descriptor: {
+    id: string
+    name: string
+    name_intl: {}[]
+    author: string | undefined
+    icon: string | undefined
+    short_description: string | undefined
+    short_description_intl: {}[]
+    archived: boolean
+    description: string | undefined
+    description_intl: {}[]
+    nettests: Nettest[]
+  }
+}
+
+const ViewRunLink = ({ descriptor }: Descriptor) => {
   return (
     <>
       <OONIRunHero href="/" />
       <Container>
         <Heading h={2}>{descriptor.name}</Heading>
-        {/* <p>{descriptor.name_intl}</p> */}
-        <ReactMarkdown>{descriptor.short_description}</ReactMarkdown>
-        {/* <p>{descriptor.short_description_intl}</p> */}
-        <p>created by {descriptor.author}</p>
-        <p>{descriptor.icon}</p>
-        <ReactMarkdown>{descriptor.description}</ReactMarkdown>
-        {/* <p>{descriptor.description_intl}</p> */}
+        {!!descriptor.name_intl?.length && (
+          <p>
+            {Object.entries(descriptor.name_intl).map(
+              ([key, value]) => `${key}: ${value}`
+            )}
+          </p>
+        )}
+        {descriptor.short_description && (
+          <ReactMarkdown>{descriptor.short_description}</ReactMarkdown>
+        )}
+        {!!descriptor.short_description_intl?.length && (
+          <p>
+            {Object.entries(descriptor.short_description_intl).map(
+              ([key, value]) => `${key}: ${value}`
+            )}
+          </p>
+        )}
+        {descriptor.author && <p>created by {descriptor.author}</p>}
+        {descriptor.icon && <p>{descriptor.icon}</p>}
+        {descriptor.description && (
+          <ReactMarkdown>{descriptor.description}</ReactMarkdown>
+        )}
+        {!!descriptor.description_intl?.length && (
+          <p>
+            {Object.entries(descriptor.description_intl).map(
+              ([key, value]) => `${key}: ${value}`
+            )}
+          </p>
+        )}
         <Heading h={4}>Nettests:</Heading>
         {descriptor.nettests.map((nettest) => (
           <>
@@ -46,12 +89,25 @@ const ViewRunLink = ({ descriptor }: ViewRunLinkProps) => {
               {nettest.is_manual_run_enabled ? 'true' : 'false'}
             </p>
             {!!nettest.inputs?.length &&
-              nettest.inputs.map((input: string) => <p>{input}</p>)}
-            {/* <p>{nettest.options}</p>
-            <p>{nettest.backend_options}</p> */}
+              nettest.inputs.map((input: string, i: number) => (
+                <p key={i}>{input}</p>
+              ))}
+            {!!nettest.options?.length && (
+              <p>
+                {Object.entries(nettest.options).map(
+                  ([key, value]) => `${key}: ${value}`
+                )}
+              </p>
+            )}
+            {!!nettest.backend_options?.length && (
+              <p>
+                {Object.entries(nettest.backend_options).map(
+                  ([key, value]) => `${key}: ${value}`
+                )}
+              </p>
+            )}
           </>
         ))}
-        {/* <Box mt={3}>{JSON.stringify(descriptor)}</Box> */}
       </Container>
     </>
   )
