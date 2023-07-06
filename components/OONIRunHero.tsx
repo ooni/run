@@ -1,6 +1,7 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { HeroLead, LogoOONIRun, Link, Box } from 'ooni-components'
+import { HeroLead, LogoOONIRun, Box } from 'ooni-components'
+import NLink from 'next/link'
 
 import styled from 'styled-components'
 import NavBar from 'components/NavBar'
@@ -19,9 +20,9 @@ const OONIRunHero = ({ href }: OONIRunHeroProps) => (
     </Box>
     <Box pb={4} bg="base" textAlign="center" color="white" fontSize={2}>
       <BrandContainer>
-        <Link href={href}>
+        <NLink href={href}>
           <LogoOONIRun />
-        </Link>
+        </NLink>
       </BrandContainer>
       <HeroLead>
         <FormattedMessage

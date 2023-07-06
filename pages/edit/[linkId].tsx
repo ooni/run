@@ -5,7 +5,7 @@ import { Container } from 'ooni-components'
 import { GetServerSideProps } from 'next'
 import { useCallback } from 'react'
 import { useRouter } from 'next/router'
-import { transformOutgoingData } from 'pages'
+import { transformOutgoingData } from 'pages/create'
 import type { ParsedUrlQuery } from 'querystring'
 
 const transformIntoArray = (obj: object) =>

@@ -10,7 +10,6 @@ import useUser from 'hooks/useUser'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 const Login = () => {
-  const intl = useIntl()
   const router = useRouter()
   const { token } = router.query
 
@@ -30,11 +29,7 @@ const Login = () => {
 
   return (
     <>
-      {/* <Head>
-        <title>{intl.formatMessage({ id: 'General.Login' })}</title>
-      </Head> */}
-
-      <OONIRunHero href={'https://ooni.org'} />
+      <OONIRunHero href={'/'} />
 
       <Container>
         <Flex alignItems="center" flexDirection="column">
@@ -67,7 +62,7 @@ const Login = () => {
           {token && !user && !error && (
             <>
               {/* <SpinLoader /> */}
-              <h2>LOADING</h2>
+              {/* <h2>LOADING</h2> */}
               <Heading h={2} my={2} mx="auto">
                 <FormattedMessage id="Login.LoggingIn" />
               </Heading>
