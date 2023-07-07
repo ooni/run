@@ -21,5 +21,5 @@
   "Nettest.Text.InstallApp": "目前 OONI Run 鏈接僅限於 OONI Probe 行動應用使用",
   "Nettest.Button.Install": "安裝",
   "Notice.Paste": "備註：如果有一長串網址清單待加入，可以下方方框來複製貼上",
-  "WhatCanYouDoText.WebCensorship": "在下方新增測試是否遭審之網址，點擊\"\\生成\\\" 來建立該網站的鏈接，透過 OONI Probe 行動應用來分享該鏈接，讓其它用戶可以測試您所選的網站。"
+  "WhatCanYouDoText.WebCensorship": "在下方新增測試是否遭審之網址，點擊\"生成\" 來建立該網站的鏈接，透過 OONI Probe 行動應用來分享該鏈接，讓其它用戶可以測試您所選的網站。"
 }

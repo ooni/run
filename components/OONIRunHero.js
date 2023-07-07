@@ -16,7 +16,7 @@ const BrandContainer = styled.div`
   }
 `
 const OONIRunHero = (props) => (
-  <Hero pb={4} pt={4} sx={{width: '100%', maxWidth: 'none !important'}}>
+  <Hero pb={4} pt={2} sx={{width: '100%', maxWidth: 'none !important'}}>
     <LocaleSwitcher />
     <BrandContainer>
       <Link href={props.href}>

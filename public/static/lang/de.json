@@ -21,5 +21,5 @@
   "Nettest.Text.InstallApp": "Derzeit funktionieren die OONI Run Links nur mit der OONI Probe Mobile App.",
   "Nettest.Button.Install": "Installiere",
   "Notice.Paste": "Hinweis: Wenn du eine lange Liste von URLs hast, die du hinzufügen möchtest, kannst du sie kopieren und in eines der Felder unten einfügen.",
-  "WhatCanYouDoText.WebCensorship": "Füge unten Websites hinzu, die du auf Zensur testen möchtest. Klicke auf \\\"Erzeugen\\\", um einen Link zu erstellen, der auf diesen Websites basiert. Teile diesen Link mit den Nutzern der OONI Probe Mobile App, damit diese die Websites ihrer Wahl testen können!"
+  "WhatCanYouDoText.WebCensorship": "Füge unten Websites hinzu, die du auf Zensur testen möchtest. Klicke auf \"Erzeugen\", um einen Link zu erstellen, der auf diesen Websites basiert. Teile diesen Link mit den Nutzern der OONI Probe Mobile App, damit diese die Websites ihrer Wahl testen können!"
 }

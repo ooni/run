@@ -57,6 +57,7 @@ footer, header, hgroup, menu, nav, section {
   display: block;
 }
 body {
+  direction: ${props => props.direction};
   line-height: 1;
 }
 ol, ul {

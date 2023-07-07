@@ -21,5 +21,5 @@
   "Nettest.Text.InstallApp": "Şu anda OONI Run bağlantıları yalnızca OONI Probe mobil uygulaması ile çalışır.",
   "Nettest.Button.Install": "Kur",
   "Notice.Paste": "Not: Eklenecek uzun bir adres listeniz varsa, bunları kopyalayıp aşağıdaki kutulardan birine yapıştırabilirsiniz.",
-  "WhatCanYouDoText.WebCensorship": "Sansür durumunu sınamak istediğiniz siteleri aşağıya ekleyin. Bu siteleri temel alan bir bağlantı oluşturmak için \\\"Oluştur\\\" düğmesine tıklayın. Seçtiğiniz siteleri sınayabilmeleri için bu bağlantıyı OONI Probe mobil uygulaması kullanıcılarıyla paylaşın!"
+  "WhatCanYouDoText.WebCensorship": "Sansür durumunu sınamak istediğiniz siteleri aşağıya ekleyin. Bu siteleri temel alan bir bağlantı oluşturmak için \"Oluştur\" düğmesine tıklayın. Seçtiğiniz siteleri sınayabilmeleri için bu bağlantıyı OONI Probe mobil uygulaması kullanıcılarıyla paylaşın!"
 }
