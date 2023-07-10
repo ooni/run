@@ -41,10 +41,8 @@ const List = () => {
           data.descriptors.map((desc) => (
             <li key={desc.id}>
               <StyledBox>
-                <NLink href={`/view/${desc.id}`} passHref legacyBehavior>
-                  <Link>
-                    <Heading h={4}>{desc.name}</Heading>
-                  </Link>
+                <NLink href={`/view/${desc.id}`}>
+                  <Heading h={4}>{desc.name}</Heading>
                 </NLink>
                 <ReactMarkdown>{desc.description}</ReactMarkdown>
                 <Text my={3}>created by {desc.author}</Text>

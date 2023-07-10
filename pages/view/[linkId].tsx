@@ -1,6 +1,7 @@
 import OONIRunHero from 'components/OONIRunHero'
 import { getRunLink } from 'lib/api'
 import { GetServerSideProps } from 'next'
+import NLink from 'next/link'
 import {
   Container,
   Box,
@@ -14,10 +15,8 @@ import {
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import type { ParsedUrlQuery } from 'querystring'
 import { FormattedMessage, useIntl } from 'react-intl'
-import { getUniversalLink } from 'utils/links'
 import { BsTwitter } from 'react-icons/bs'
 import { styled } from 'styled-components'
-import { useMemo } from 'react'
 
 type Nettest = {
   test_name: string
@@ -110,13 +109,37 @@ type ViewRunLinkProps = {
 }
 
 const ViewRunLink = ({ descriptor, linkId }: ViewRunLinkProps) => {
-  const runLink = `https://run.ooni.io/v2/${linkId}`
+  const baseUrl = typeof window !== 'undefined' ? window.location.origin : undefined
+  const runLink = `${baseUrl}/v2/${linkId}`
 
   return (
     <>
       <OONIRunHero href="/" />
-      <Container>
-        <Heading h={1}>{descriptor.name}</Heading>
+      <Container py={4}>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Box><Heading h={1}>{descriptor.name}</Heading></Box>
+          <Flex>
+            <Box pr={2}>
+              <NLink href={runLink}>
+                <StyleLinkButton>
+                  <FormattedMessage
+                    id="Modal.Button.Link"
+                    defaultMessage="Link"
+                  />
+                </StyleLinkButton>
+              </NLink>
+            </Box>
+            <Box>
+              <TwitterButton universalLink={runLink} />
+            </Box>
+          </Flex>
+        </Flex>
+        {descriptor.author && (
+          <p>
+            created by <strong>{descriptor.author}</strong>
+          </p>
+        )}
+        
         {!!descriptor.name_intl?.length && (
           <p>
             {Object.entries(descriptor.name_intl).map(
@@ -125,7 +148,7 @@ const ViewRunLink = ({ descriptor, linkId }: ViewRunLinkProps) => {
           </p>
         )}
         {descriptor.short_description && (
-          <Heading h={4}>
+          <Heading h={5}>
             <ReactMarkdown>{descriptor.short_description}</ReactMarkdown>
           </Heading>
         )}
@@ -136,22 +159,11 @@ const ViewRunLink = ({ descriptor, linkId }: ViewRunLinkProps) => {
             )}
           </p>
         )}
+        
+        {descriptor.description && (
+          <ReactMarkdown>{descriptor.description}</ReactMarkdown>
+        )}
 
-        <Flex alignItems="center" justifyContent="center">
-          <Box pr={2}>
-            <TwitterButton universalLink={runLink} />
-          </Box>
-          <Box pr={2}>
-            <Link href={runLink}>
-              <StyleLinkButton>
-                <FormattedMessage
-                  id="Modal.Button.Link"
-                  defaultMessage="Link"
-                />
-              </StyleLinkButton>
-            </Link>
-          </Box>
-        </Flex>
         <Heading pt={4} pb={2} h={3}>
           <FormattedMessage
             id="Modal.Heading.ShareThisURL"
@@ -160,15 +172,9 @@ const ViewRunLink = ({ descriptor, linkId }: ViewRunLinkProps) => {
         </Heading>
         <StyledCode>{runLink}</StyledCode>
 
-        {descriptor.author && (
-          <p>
-            created by <strong>{descriptor.author}</strong>
-          </p>
-        )}
-        {descriptor.icon && <p>{descriptor.icon}</p>}
-        {descriptor.description && (
-          <ReactMarkdown>{descriptor.description}</ReactMarkdown>
-        )}
+        
+        {/* {descriptor.icon && <p>{descriptor.icon}</p>} */}
+        
         {!!descriptor.description_intl?.length && (
           <p>
             {Object.entries(descriptor.description_intl).map(
@@ -214,55 +220,3 @@ const ViewRunLink = ({ descriptor, linkId }: ViewRunLinkProps) => {
 }
 
 export default ViewRunLink
-
-// <Flex flexWrap="wrap" style={{ minHeight: '100%' }}>
-//   <Box width={[1, 1, 1 / 4]} style={{ backgroundColor: '#8ED8F8' }}>
-//     {/* <GraphicsWithGradient>
-//       <GraphicsOctopusModal />
-//     </GraphicsWithGradient> */}
-//   </Box>
-//   <Box width={[1, 1, 3 / 4]} px={[3, 4]} pt={3} pb={3}>
-//     <Heading h={1} textAlign="center">
-//       <FormattedMessage
-//         id="Modal.Heading.LinkReady"
-//         defaultMessage="Your link is ready!"
-//       />
-//     </Heading>
-
-//     <Heading pt={4} pb={2} h={3} textAlign="center">
-//       <FormattedMessage
-//         id="Modal.Heading.ShareIt"
-//         defaultMessage="Share it on social media"
-//       />
-//     </Heading>
-//     <Flex alignItems="center" justifyContent="center">
-//       <Box pr={2}>
-//         <TwitterButton universalLink={universalLink} />
-//       </Box>
-//       <Box pr={2}>
-//         <Link href={universalLink}>
-//           <StyleLinkButton>
-//             <FormattedMessage
-//               id="Modal.Button.Link"
-//               defaultMessage="Link"
-//             />
-//           </StyleLinkButton>
-//         </Link>
-//       </Box>
-//     </Flex>
-
-// <Heading pt={4} pb={2} h={3}>
-//   <FormattedMessage
-//     id="Modal.Heading.ShareThisURL"
-//     defaultMessage="Share this link with OONI Probe mobile app users"
-//   />
-// </Heading>
-// {/* <Input value={universalLink} /> */}
-
-// <Heading pt={4} pb={2} h={3}>
-//   <FormattedMessage
-//     id="Modal.Heading.EmbedThisCode"
-//     defaultMessage="Or embed this code on your website"
-//   />
-// </Heading>
-// {/* <Input type="textarea" rows={6} value={embedCode} /> */}

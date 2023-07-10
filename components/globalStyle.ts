@@ -70,6 +70,13 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+a {
+  text-decoration: none;
+  color: ${(props) => props.theme.colors.blue6};
+  &:hover {
+    color: ${(props) => props.theme.colors.blue9};
+  }
+}
 
 @font-face {
   font-family: "Fira Sans";

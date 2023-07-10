@@ -18,8 +18,9 @@ const Layout = ({ title, children }: LayoutProps) => (
       <meta httpEquiv="Content-Type" content={meta.contentType} />
       <meta name="viewport" content={meta.viewport} />
     </Head>
-    <GlobalStyle />
+    
     <ThemeProvider theme={theme}>
+      <GlobalStyle />
       <UserProvider>
         <div className="content">{children}</div>
       </UserProvider>
