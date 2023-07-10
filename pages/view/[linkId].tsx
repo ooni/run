@@ -111,19 +111,6 @@ type ViewRunLinkProps = {
 
 const ViewRunLink = ({ descriptor, linkId }: ViewRunLinkProps) => {
   const runLink = `https://run.ooni.io/v2/${linkId}`
-  const embedCode = useMemo(() => {
-    const embedCode = `/* For a simple button */
-<a href='${runLink}' class='ooni-run-button'>Run OONI!</a>
-
-/* For a tall banner */
-<div data-link='${runLink}' class='ooni-run-banner'>
-  Fight Censorship
-</div>
-
-/* If you have not already included the OONI widget code */
-<script src='https://cdn.jsdelivr.net/npm/ooni-run/dist/widgets.js'></script>`
-    return embedCode
-  }, [])
 
   return (
     <>
@@ -172,14 +159,6 @@ const ViewRunLink = ({ descriptor, linkId }: ViewRunLinkProps) => {
           />
         </Heading>
         <StyledCode>{runLink}</StyledCode>
-
-        <Heading pt={4} pb={2} h={3}>
-          <FormattedMessage
-            id="Modal.Heading.EmbedThisCode"
-            defaultMessage="Or embed this code on your website"
-          />
-        </Heading>
-        <StyledCode>{embedCode}</StyledCode>
 
         {descriptor.author && (
           <p>
