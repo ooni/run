@@ -2,11 +2,12 @@ import OONIRunHero from 'components/OONIRunHero'
 import { createRunLink, getRunLink } from 'lib/api'
 import TestListForm from 'components/form/TestListForm'
 import { Container } from 'ooni-components'
-import { GetServerSideProps } from 'next'
-import { useCallback } from 'react'
+import { GetServerSidePropsContext } from 'next'
+import { useCallback, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { transformOutgoingData } from 'pages/create'
 import type { ParsedUrlQuery } from 'querystring'
+import useUser from 'hooks/useUser'
 
 const transformIntoArray = (obj: object) =>
   Object.entries(obj).map(([k, v]) => ({
@@ -34,16 +35,26 @@ interface QParams extends ParsedUrlQuery {
   linkId: string
 }
 
-export const getServerSideProps: GetServerSideProps<{ runLink: {} }> = async ({
+export const getServerSideProps = async ({
   params,
-}) => {
+}: GetServerSidePropsContext) => {
   const { linkId } = params as QParams
-  const runLink = await getRunLink(linkId)
+  
+  try {
+    const runLink = await getRunLink(linkId)
+    const descriptor = runLink.descriptor
 
-  return {
-    props: {
-      runLink: transformIncomingData(runLink.descriptor),
-    },
+    return {
+      props: {
+        runLink: transformIncomingData(descriptor),
+      },
+    }
+  } catch(e) {
+    return {
+      redirect: {
+        destination: '/',
+      },
+    }
   }
 }
 
@@ -52,11 +63,16 @@ type EditRunLinkProps = {
 }
 
 const EditRunLink = ({ runLink }: EditRunLinkProps) => {
-  console.log('transformOutgoingData', runLink)
   const {
     push,
     query: { linkId },
   } = useRouter()
+
+  const { loading, user } = useUser()
+
+  useEffect(() => {
+    if (!user && !loading) push('/')
+  }, [user, loading])
 
   const onSubmit = useCallback((data: any) => {
     console.log('SUBMIT', data)

@@ -46,7 +46,7 @@ export const getAPI = async (
     .then((res) => res.data)
     .catch((e: Error | AxiosError) => {
       if (Axios.isAxiosError(e)) {
-        console.log('runLink', e)
+        console.log('err', e)
         throw new Error(e?.response?.data?.error)
         // error.info = e?.response?.statusText
         // error.status = e?.response?.status

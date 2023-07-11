@@ -23,7 +23,7 @@ type UserContext = {
   loading: boolean
   error: null | string
   logout: () => void
-  login: () => void
+  // login: () => void
 }
 
 const UserContext = createContext<UserContext>({
@@ -31,7 +31,7 @@ const UserContext = createContext<UserContext>({
   loading: false,
   error: null,
   logout: () => {},
-  login: () => {},
+  // login: () => {},
 })
 
 type UserProviderProps = {
@@ -47,10 +47,11 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     : null
   const [user, setUser] = useState(null)
   const [error, setError] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [loadingInitial, setLoadingInitial] = useState(true)
+  const [loading, setLoading] = useState(true)
+  // const [loadingInitial, setLoadingInitial] = useState(true)
 
   const getUser = () => {
+    // setLoading(true)
     return getAPI(apiEndpoints.ACCOUNT_METADATA)
       .then((user) => {
         setUser(user)
@@ -59,7 +60,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         console.log('user not logged in')
         setUser(null)
       })
-      .finally(() => setLoadingInitial(false))
+      .finally(() => setLoading(false))
   }
 
   const afterLogin = useCallback(
@@ -88,6 +89,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     }
   }, [afterLogin, token, router.pathname])
 
+  useEffect(() => {
+    getUser()
+  }, [])
+
   // periodically check if the token need to be refreshed and request a
   // new one if needed
   useEffect(() => {
@@ -112,27 +117,23 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     return () => clearInterval(interval)
   }, [])
 
-  useEffect(() => {
-    getUser()
-  }, [])
+  // const login = () => {
+  //   if (token) {
+  //     // setLoading(true)
+  //     loginUser(token)
+  //       .then((data) => {
+  //         setUser(data)
+  //         if (data?.redirect_to) afterLogin(data.redirect_to)
+  //       })
+  //       .catch((e: Error) => {
+  //         console.log(e)
+  //         setError(error)
+  //       })
+  //       .finally(() => setLoading(false))
+  //   }
+  // }
 
-  function login() {
-    if (token) {
-      setLoading(true)
-      loginUser(token)
-        .then((data) => {
-          setUser(data)
-          if (data?.redirect_to) afterLogin(data.redirect_to)
-        })
-        .catch((e: Error) => {
-          console.log(e)
-          setError(error)
-        })
-        .finally(() => setLoading(false))
-    }
-  }
-
-  function logout() {
+  const logout = () => {
     localStorage.removeItem('bearer')
     getUser()
   }
@@ -142,7 +143,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       user,
       loading,
       error,
-      login,
+      // login,
       logout,
     }),
     [user, loading, error]

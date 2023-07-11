@@ -11,6 +11,8 @@ import mobileApp from 'config/mobileApp'
 import styled from 'styled-components'
 import { GetServerSideProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
+import DescriptorDetails from 'components/DescriptorDetails'
+import { getRunLink } from 'lib/api'
 
 const StyledCode = styled.code`
   font-family: courier, monospace;
@@ -29,6 +31,7 @@ type Props = {
   universalLink: string
   title: string
   description: string
+  descriptor: Descriptor | null
 }
 
 interface QParams extends ParsedUrlQuery {
@@ -58,6 +61,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const description = 'Run OONI Probe'
   const title = 'OONI Run | Coordinate website censorship testing'
   const universalLink = `https://run.ooni.io/v2/${linkId}`
+  let descriptor = null
+
+  try {
+    const runLink = await getRunLink(linkId)
+    descriptor = runLink?.descriptor
+  } catch (e) {}
 
   let storeLink,
     withWindowLocation = false
@@ -92,6 +101,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     universalLink,
     title,
     description,
+    descriptor,
   }
 
   return { props }
@@ -106,6 +116,7 @@ const Nettest = ({
   universalLink,
   title,
   description,
+  descriptor,
 }: Props) => {
   const windowScript = `window.onload = function() {
     document.getElementById('l').src = '${deepLink}';
@@ -170,9 +181,12 @@ const Nettest = ({
         <meta property="al:ios:app_name" content={mobileApp.iPhoneName} />
         {deepLink && <meta property="al:ios:url" content={deepLink} />}
       </Head>
-      <OONIRunHero href={'https://run.ooni.io'} />
+      <OONIRunHero href="/" />
       <Container p={4}>
-        <Heading pt={2} h={2}>
+        {descriptor && (
+          <DescriptorDetails descriptor={descriptor} runLink={deepLink} />
+        )}
+        {/* <Heading pt={2} h={2}>
           <FormattedMessage
             id="Nettest.Heading.HaveMobileApp"
             defaultMessage="You already have the OONI Probe mobile app"
@@ -189,7 +203,7 @@ const Nettest = ({
           <Button>
             <FormattedMessage id="Nettest.Button.Run" defaultMessage="Run" />
           </Button>
-        </Link>
+        </Link> */}
 
         <Heading pt={4} h={2}>
           <FormattedMessage
