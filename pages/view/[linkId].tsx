@@ -42,13 +42,18 @@ const ViewRunLink = ({ descriptor, linkId }: ViewRunLinkProps) => {
   const baseUrl =
     typeof window !== 'undefined' ? window.location.origin : undefined
   const runLink = `${baseUrl}/v2/${linkId}`
+  const deepLink = `ooni://runv2/${linkId}`
 
   return (
     <>
       <OONIRunHero href="/" />
       {descriptor && (
         <Container p={4}>
-          <DescriptorDetails descriptor={descriptor} runLink={runLink} />
+          <DescriptorDetails
+            descriptor={descriptor}
+            runLink={runLink}
+            deepLink={deepLink}
+          />
         </Container>
       )}
     </>

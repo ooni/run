@@ -24,6 +24,7 @@ const installLink = 'https://ooni.org/install'
 
 type Props = {
   deepLink: string
+  runLink: string
   withWindowLocation: boolean
   storeLink: string
   installLink: string
@@ -92,8 +93,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     withWindowLocation = true
   }
 
+  const runLink = `${req.headers.host}${req.url}`
+
   const props: Props = {
     deepLink,
+    runLink,
     withWindowLocation,
     storeLink,
     installLink,
@@ -110,6 +114,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 const Nettest = ({
   userAgent,
   deepLink,
+  runLink,
   withWindowLocation,
   storeLink,
   installLink,
@@ -184,7 +189,11 @@ const Nettest = ({
       <OONIRunHero href="/" />
       <Container p={4}>
         {descriptor && (
-          <DescriptorDetails descriptor={descriptor} runLink={deepLink} />
+          <DescriptorDetails
+            descriptor={descriptor}
+            deepLink={deepLink}
+            runLink={runLink}
+          />
         )}
         {/* <Heading pt={2} h={2}>
           <FormattedMessage

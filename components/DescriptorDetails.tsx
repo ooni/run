@@ -52,9 +52,14 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
 type DescriptorDetailsProps = {
   descriptor: Descriptor
   runLink: string
+  deepLink: string
 }
 
-const DescriptorDetails = ({ descriptor, runLink }: DescriptorDetailsProps) => {
+const DescriptorDetails = ({
+  descriptor,
+  runLink,
+  deepLink,
+}: DescriptorDetailsProps) => {
   return (
     <>
       <Flex justifyContent="space-between" alignItems="center">
@@ -63,7 +68,7 @@ const DescriptorDetails = ({ descriptor, runLink }: DescriptorDetailsProps) => {
         </Box>
         <Flex>
           <Box pr={2}>
-            <NLink href={runLink}>
+            <NLink href={deepLink}>
               <StyleLinkButton>
                 <FormattedMessage
                   id="Modal.Button.Link"
