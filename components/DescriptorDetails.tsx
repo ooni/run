@@ -33,9 +33,9 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
   const tweetUrl = `https://twitter.com/intent/tweet?text=${message}&url=${url}`
 
   return (
-    <a href={tweetUrl} target="_blank">
+    <a href={tweetUrl} target='_blank'>
       <Button>
-        <Flex alignContent="center">
+        <Flex alignContent='center'>
           <Text mr={2}>
             {intl.formatMessage({
               id: 'Share.Twitter.Button',
@@ -55,14 +55,10 @@ type DescriptorDetailsProps = {
   deepLink: string
 }
 
-const DescriptorDetails = ({
-  descriptor,
-  runLink,
-  deepLink,
-}: DescriptorDetailsProps) => {
+const DescriptorDetails = ({ descriptor, runLink, deepLink }: DescriptorDetailsProps) => {
   return (
     <>
-      <Flex justifyContent="space-between" alignItems="center">
+      <Flex justifyContent='space-between' flexDirection={['column-reverse', 'column-reverse', 'row']}>
         <Box>
           <Heading h={1}>{descriptor.name}</Heading>
         </Box>
@@ -70,10 +66,7 @@ const DescriptorDetails = ({
           <Box pr={2}>
             <NLink href={deepLink}>
               <StyleLinkButton>
-                <FormattedMessage
-                  id="Modal.Button.Link"
-                  defaultMessage="Link"
-                />
+                <FormattedMessage id='Modal.Button.Link' defaultMessage='Link' />
               </StyleLinkButton>
             </NLink>
           </Box>
@@ -108,14 +101,12 @@ const DescriptorDetails = ({
         </p>
       )} */}
 
-      {descriptor.description && (
-        <ReactMarkdown>{descriptor.description}</ReactMarkdown>
-      )}
+      {descriptor.description && <ReactMarkdown>{descriptor.description}</ReactMarkdown>}
 
       <Heading pt={4} pb={2} h={3}>
         <FormattedMessage
-          id="Modal.Heading.ShareThisURL"
-          defaultMessage="Share this link with OONI Probe mobile app users"
+          id='Modal.Heading.ShareThisURL'
+          defaultMessage='Share this link with OONI Probe mobile app users'
         />
       </Heading>
       <StyledCode>{runLink}</StyledCode>
@@ -133,14 +124,8 @@ const DescriptorDetails = ({
       {descriptor.nettests.map((nettest) => (
         <>
           <p>Test name: {nettest.test_name}</p>
-          <p>
-            is_background_run_enabled:{' '}
-            {nettest.is_background_run_enabled ? 'true' : 'false'}
-          </p>
-          <p>
-            is_manual_run_enabled:{' '}
-            {nettest.is_manual_run_enabled ? 'true' : 'false'}
-          </p>
+          <p>is_background_run_enabled: {nettest.is_background_run_enabled ? 'true' : 'false'}</p>
+          <p>is_manual_run_enabled: {nettest.is_manual_run_enabled ? 'true' : 'false'}</p>
           {!!nettest.inputs?.length && (
             <>
               Inputs:
