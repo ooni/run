@@ -56,7 +56,6 @@ const NettestFields = ({ name }: FieldsPropTypes) => {
                     label="Enable background run"
                     {...field}
                     id="backgroundRun"
-                    type="checkbox"
                     checked={field.value}
                   />
                 )}
@@ -72,7 +71,6 @@ const NettestFields = ({ name }: FieldsPropTypes) => {
                     label="Enable manual run"
                     {...field}
                     id="manualRun"
-                    type="checkbox"
                     checked={field.value}
                   />
                 )}

@@ -55,23 +55,22 @@ const Create: NextPage = () => {
     <>
       <OONIRunHero href={'/'} />
 
-      {!user || loading ? 
-        (<></>) :
-        (
-          <Container pt={4} maxWidth={800}>
-            <Flex justifyContent="center">
-              <Box width={[1, 1, 3 / 4]}>
-                <FormattedMessage
-                  tagName={Text}
-                  id="WhatCanYouDoText.WebCensorship"
-                  defaultMessage='Add websites below that you would like to test for censorship. Click "Generate" to create a link based on those websites. Share that link with OONI Probe mobile app users so that they can test the websites of your choice!'
-                />
-                <TestListForm onSubmit={onSubmit} />
-              </Box>
-            </Flex>
+      {!user || loading ? (
+        <></>
+      ) : (
+        <Container pt={4} maxWidth={800}>
+          <Flex justifyContent="center">
+            <Box width={[1, 1, 3 / 4]}>
+              <FormattedMessage
+                tagName={Text}
+                id="WhatCanYouDoText.WebCensorship"
+                defaultMessage='Add websites below that you would like to test for censorship. Click "Generate" to create a link based on those websites. Share that link with OONI Probe mobile app users so that they can test the websites of your choice!'
+              />
+              <TestListForm onSubmit={onSubmit} />
+            </Box>
+          </Flex>
         </Container>
       )}
-      
     </>
   )
 }

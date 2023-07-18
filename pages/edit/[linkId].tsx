@@ -39,7 +39,7 @@ export const getServerSideProps = async ({
   params,
 }: GetServerSidePropsContext) => {
   const { linkId } = params as QParams
-  
+
   try {
     const runLink = await getRunLink(linkId)
     const descriptor = runLink.descriptor
@@ -49,7 +49,7 @@ export const getServerSideProps = async ({
         runLink: transformIncomingData(descriptor),
       },
     }
-  } catch(e) {
+  } catch (e) {
     return {
       redirect: {
         destination: '/',

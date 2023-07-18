@@ -1,22 +1,10 @@
 import { useCallback, ClipboardEvent } from 'react'
-import {
-  Flex,
-  Box,
-  Button,
-  Heading,
-  // InputWithIconButton,
-  Text,
-  Input,
-  // Label,
-  // Select,
-} from 'ooni-components'
+import { Flex, Box, Button, Heading, Text, Input } from 'ooni-components'
 import {
   useForm,
   useFieldArray,
   Controller,
-  Control,
   FormProvider,
-  useFormContext,
 } from 'react-hook-form'
 import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
@@ -67,23 +55,22 @@ const validationSchema = Yup.object({
     .min(0)
     .of(
       Yup.object({
-        name: Yup.string().required('cannot be empty'),
-        short_description: Yup.string().required().min(0),
-        description: Yup.string().required().min(0),
-        icon: Yup.string().required().min(0),
-        author: Yup.string().required().min(0),
+        name: Yup.string().required('Cannot be empty'),
+        short_description: Yup.string().defined(),
+        description: Yup.string().defined(),
+        icon: Yup.string().defined(),
+        author: Yup.string().defined(),
         nettests: Yup.array()
           .required()
           .of(
             Yup.object({
-              test_name: Yup.string().required('cannot be empty'),
+              test_name: Yup.string().required('Cannot be empty'),
               inputs: Yup.array()
                 .required()
                 .min(0)
                 .of(
                   Yup.string()
-                    .required()
-                    .min(0)
+                    .defined()
                     .test(
                       'is-valid-url',
                       'should be a valid URL format e.g "https://ooni.org/post/"',
@@ -112,8 +99,8 @@ const validationSchema = Yup.object({
                 .required()
                 .min(0)
                 .of(Yup.object({ key: Yup.string(), value: Yup.string() })),
-              is_background_run_enabled: Yup.boolean(),
-              is_manual_run_enabled: Yup.boolean(),
+              is_background_run_enabled: Yup.boolean().defined(),
+              is_manual_run_enabled: Yup.boolean().defined(),
             })
           ),
       })
@@ -180,6 +167,7 @@ const TestListForm = ({ onSubmit, defaultValues }: TestListFormProps) => {
           defaultMessage="Note: If you have a long list of URLs to add, you can copy them and paste into one of the boxes below."
         />
       </Text> */}
+      {/* {JSON.stringify(errors)} */}
       <datalist id="url-prefixes">
         <option value="https://" />
         <option value="http://" />
