@@ -112,8 +112,8 @@ const validationSchema = Yup.object({
                 .required()
                 .min(0)
                 .of(Yup.object({ key: Yup.string(), value: Yup.string() })),
-              is_background_run_enabled: Yup.boolean().required(),
-              is_manual_run_enabled: Yup.boolean().required(),
+              is_background_run_enabled: Yup.boolean(),
+              is_manual_run_enabled: Yup.boolean(),
             })
           ),
       })
