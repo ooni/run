@@ -8,6 +8,8 @@ import { useRouter } from 'next/router'
 import { transformOutgoingData } from 'pages/create'
 import type { ParsedUrlQuery } from 'querystring'
 import useUser from 'hooks/useUser'
+import { Box } from 'ooni-components'
+import { Button } from 'ooni-components'
 
 const transformIntoArray = (obj: object) =>
   Object.entries(obj).map(([k, v]) => ({
@@ -85,7 +87,11 @@ const EditRunLink = ({ runLink }: EditRunLinkProps) => {
     <>
       <OONIRunHero href="/" />
       <Container>
-        <TestListForm onSubmit={onSubmit} defaultValues={runLink} />
+        <TestListForm
+          onSubmit={onSubmit}
+          defaultValues={runLink}
+          linkId={linkId as string}
+        />
       </Container>
     </>
   )

@@ -7,6 +7,7 @@ import {
   FormProvider,
 } from 'react-hook-form'
 import { FormattedMessage } from 'react-intl'
+import useSWRMutation from 'swr/mutation'
 import styled from 'styled-components'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
@@ -14,6 +15,7 @@ import * as reactCom from 'react-icons/md'
 import IconSelect from 'react-select'
 import IntlFields from './IntlFields'
 import NettestFields from './NettestFields'
+import { apiEndpoints, fetcher, postFetcher } from 'lib/api'
 
 export type FieldsPropTypes = {
   name: string
@@ -137,9 +139,14 @@ const initialValues = {
 type TestListFormProps = {
   onSubmit: (data: {}) => void
   defaultValues?: object
+  linkId?: string
 }
 
-const TestListForm = ({ onSubmit, defaultValues }: TestListFormProps) => {
+const TestListForm = ({
+  onSubmit,
+  defaultValues,
+  linkId,
+}: TestListFormProps) => {
   const values = defaultValues || initialValues
 
   const formMethods = useForm<TestList>({
@@ -155,6 +162,11 @@ const TestListForm = ({ onSubmit, defaultValues }: TestListFormProps) => {
     control, // control props comes from useForm (optional: if you are using FormContext)
     name: 'ooniRunLink', // unique name for your Field Array
   })
+
+  const { trigger, isMutating } = useSWRMutation(
+    linkId && apiEndpoints.ARCHIVE_RUN_LINK.replace(':oonirun_id', linkId),
+    postFetcher
+  )
 
   return (
     <Flex flexDirection="column">
@@ -175,6 +187,20 @@ const TestListForm = ({ onSubmit, defaultValues }: TestListFormProps) => {
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Flex flexDirection="column" my={3}>
+            <Box alignSelf="end" my={3}>
+              {linkId && (
+                <Button
+                  type="button"
+                  color="red"
+                  sx={{ borderColor: 'red' }}
+                  hollow
+                  onClick={() => trigger()}
+                >
+                  Archive
+                </Button>
+              )}
+              {isMutating && <>mutating</>}
+            </Box>
             {fields.map((item, index) => (
               <Box key={item.id}>
                 <StyledInputWrapper>
@@ -251,10 +277,11 @@ const TestListForm = ({ onSubmit, defaultValues }: TestListFormProps) => {
               </Box>
             ))}
             <Button width={1 / 4} mx="auto" type="submit">
-              <FormattedMessage
-                id="Button.Generate"
-                defaultMessage="Generate"
-              />
+              {linkId ? (
+                <FormattedMessage id="Button.Update" />
+              ) : (
+                <FormattedMessage id="Button.Generate" />
+              )}
             </Button>
           </Flex>
         </form>

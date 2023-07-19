@@ -7,7 +7,7 @@ export const apiEndpoints = {
   USER_LOGIN: '/api/v1/user_login',
   USER_LOGOUT: '/api/v1/user_logout',
   CREATE_RUN_LINK: '/api/_/ooni_run/create',
-  ARCHIVE_RUN_LINK: '/api/_/ooni_run/archive/<int:oonirun_id>',
+  ARCHIVE_RUN_LINK: '/api/_/ooni_run/archive/:oonirun_id',
   GET_RUN_LINK: '/api/_/ooni_run/fetch',
   GET_LIST: '/api/_/ooni_run/list',
 }
@@ -121,6 +121,20 @@ export const fetcher = async (url: string) => {
       throw new Error(e?.response?.data?.error)
       // error.info = e?.response?.statusText
       // error.status = e?.response?.status
+    } else {
+      const error = e as Error
+      throw new Error(error.message)
+    }
+  }
+}
+
+export const postFetcher = async (url: string) => {
+  try {
+    const res = await postAPI(url)
+    return res
+  } catch (e: unknown) {
+    if (Axios.isAxiosError(e)) {
+      throw new Error(e?.response?.data?.error)
     } else {
       const error = e as Error
       throw new Error(error.message)

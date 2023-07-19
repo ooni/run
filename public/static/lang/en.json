@@ -3,6 +3,7 @@
   "Title.URLs": "URLs",
   "Button.AddUrl": "Add URL",
   "Button.Generate": "Generate",
+  "Button.Update": "Update",
   "Share.Twitter.Button": "Tweet",
   "Share.Twitter.Tweet": "Run OONI Probe to test for censorship!",
   "Home.Heading.TestName": "Test Name",
