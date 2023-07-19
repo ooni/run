@@ -20,7 +20,9 @@ const OONIRunHero = (props) => (
     <LocaleSwitcher />
     <BrandContainer>
       <Link href={props.href}>
+        <Box display='inline-block'>
         <LogoOONIRun />
+        </Box>
       </Link>
     </BrandContainer>
     <HeroLead>
