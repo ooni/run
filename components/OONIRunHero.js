@@ -1,11 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import {
-  Hero,
-  HeroLead,
-  LogoOONIRun,
-  Link
-} from 'ooni-components'
+import { Hero, HeroLead, LogoOONIRun, Link, Box } from 'ooni-components'
 
 import styled from 'styled-components'
 import LocaleSwitcher from './LocaleSwitcher'
