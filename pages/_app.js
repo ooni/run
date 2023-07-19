@@ -2,6 +2,16 @@ import { IntlProvider } from 'react-intl'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 
+export const getDirection = locale => {
+  switch (locale) {
+    case 'fa':
+    case 'ar':
+      return 'rtl'
+    default:
+      return 'ltr'
+  }
+}
+
 export default function MyApp({ Component, pageProps }) {
   const { locale, defaultLocale } = useRouter()
 
