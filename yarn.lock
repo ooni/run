@@ -4637,13 +4637,15 @@ onetime@^6.0.0:
   dependencies:
     mimic-fn "^4.0.0"
 
-ooni-components@^1.0.0-alpha.1:
-  version "1.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/ooni-components/-/ooni-components-1.0.0-alpha.1.tgz#c4299fa5208e9daa605280e49eee922a4821e6b5"
-  integrity sha512-e/1Fht9N2G7QZQc5cwEdklRQDNMCSYcGbctsqFfL44ngqrHgEsfkWoz0+fWIqnD+ynm3AtV2QjXHpdoeRrYwpw==
+ooni-components@1.0.0-alpha.6:
+  version "1.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/ooni-components/-/ooni-components-1.0.0-alpha.6.tgz#9bc020d72b79c7c2537751afe78b716e2f83f97c"
+  integrity sha512-zo0UJlvDGLEspdC4VDKpRr2E764rbsLPk1qwMs/1ksyVr2SX8rkbkkQswHpB7RTQ7MAnk6mg93VhaTVY4zMQYA==
   dependencies:
     "@styled-system/css" "^5.1.5"
     "@styled-system/should-forward-prop" "^5.1.5"
+    react-select "^5.7.4"
+    react-tag-input-component "^2.0.2"
     styled-system "^5.1.5"
 
 open@^9.1.0:
@@ -5003,6 +5005,26 @@ react-select@^5.7.3:
     prop-types "^15.6.0"
     react-transition-group "^4.3.0"
     use-isomorphic-layout-effect "^1.1.2"
+
+react-select@^5.7.4:
+  version "5.7.4"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.7.4.tgz#d8cad96e7bc9d6c8e2709bdda8f4363c5dd7ea7d"
+  integrity sha512-NhuE56X+p9QDFh4BgeygHFIvJJszO1i1KSkg/JPcIJrbovyRtI+GuOEa4XzFCEpZRAEoEI8u/cAHK+jG/PgUzQ==
+  dependencies:
+    "@babel/runtime" "^7.12.0"
+    "@emotion/cache" "^11.4.0"
+    "@emotion/react" "^11.8.1"
+    "@floating-ui/dom" "^1.0.1"
+    "@types/react-transition-group" "^4.4.0"
+    memoize-one "^6.0.0"
+    prop-types "^15.6.0"
+    react-transition-group "^4.3.0"
+    use-isomorphic-layout-effect "^1.1.2"
+
+react-tag-input-component@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-tag-input-component/-/react-tag-input-component-2.0.2.tgz#f62f013c6a535141dd1c6c3a88858223170150f1"
+  integrity sha512-dydI9luVwwv9vrjE5u1TTnkcOVkOVL6mhFti8r6hLi78V2F2EKWQOLptURz79UYbDHLSk6tnbvGl8FE+sMpADg==
 
 react-transition-group@^4.3.0:
   version "4.4.5"

@@ -21,7 +21,7 @@ type Descriptor = {
   archived: boolean
   mine: boolean
   name: string
-  description: string
+  short_description: string
 }
 
 type ListProps = {
@@ -51,7 +51,7 @@ const List = ({ limit }: ListProps) => {
               <NLink href={`/view/${desc.id}`}>
                 <Heading h={4}>{desc.name}</Heading>
               </NLink>
-              <ReactMarkdown>{desc.description}</ReactMarkdown>
+              <ReactMarkdown>{desc.short_description}</ReactMarkdown>
               <Text my={3}>created by {desc.author}</Text>
               <span>{!!desc.archived && <>Archived</>}</span>
               <Flex justifyContent="end" sx={{ gap: 3 }}>

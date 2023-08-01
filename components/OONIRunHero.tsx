@@ -21,7 +21,7 @@ const OONIRunHero = ({ href }: OONIRunHeroProps) => (
     <Box pb={4} bg="base" textAlign="center" color="white" fontSize={2}>
       <BrandContainer>
         <NLink href={href}>
-          <LogoOONIRun />
+          <LogoOONIRun height="70px" />
         </NLink>
       </BrandContainer>
       <HeroLead>

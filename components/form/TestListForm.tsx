@@ -16,6 +16,7 @@ import IconSelect from 'react-select'
 import IntlFields from './IntlFields'
 import NettestFields from './NettestFields'
 import { apiEndpoints, fetcher, postFetcher } from 'lib/api'
+import ButtonSpinner from 'components/ButtonSpinner'
 
 export type FieldsPropTypes = {
   name: string
@@ -156,7 +157,7 @@ const TestListForm = ({
   })
   const { control, formState, handleSubmit } = formMethods
 
-  const { errors } = formState
+  const { errors, isSubmitting } = formState
 
   const { fields } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
@@ -276,7 +277,14 @@ const TestListForm = ({
                 <NettestFields name={`ooniRunLink.${index}.nettests`} />
               </Box>
             ))}
-            <Button width={1 / 4} mx="auto" type="submit">
+            <Button
+              width={1 / 4}
+              mx="auto"
+              type="submit"
+              loading={isSubmitting}
+              disabled={isSubmitting}
+              spinner={<ButtonSpinner />}
+            >
               {linkId ? (
                 <FormattedMessage id="Button.Update" />
               ) : (
