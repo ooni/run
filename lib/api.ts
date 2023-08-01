@@ -112,9 +112,9 @@ export const refreshToken = () => {
   })
 }
 
-export const fetcher = async (url: string) => {
+export const fetcher = async (url: string, params?: object) => {
   try {
-    const res = await getAPI(url)
+    const res = await getAPI(url, params)
     return res
   } catch (e: unknown) {
     if (Axios.isAxiosError(e)) {
