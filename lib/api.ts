@@ -1,4 +1,5 @@
 import Axios, { AxiosError } from 'axios'
+import { generateRandomString } from 'utils'
 
 export const apiEndpoints = {
   ACCOUNT_METADATA: '/api/_/account_metadata',
@@ -65,7 +66,9 @@ export const createRunLink = (data: any, params = {}) => {
 }
 
 export const getRunLink = (id: string) => {
-  return getAPI(`${apiEndpoints.GET_RUN_LINK}/${id}`)
+  return getAPI(
+    `${apiEndpoints.GET_RUN_LINK}/${id}?nocache=${generateRandomString()}`
+  )
 }
 
 export const getLinkList = () => {
