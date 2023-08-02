@@ -33,9 +33,9 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
   const tweetUrl = `https://twitter.com/intent/tweet?text=${message}&url=${url}`
 
   return (
-    <a href={tweetUrl} target='_blank'>
+    <a href={tweetUrl} target="_blank">
       <Button>
-        <Flex alignContent='center'>
+        <Flex alignContent="center">
           <Text mr={2}>
             {intl.formatMessage({
               id: 'Share.Twitter.Button',
@@ -49,31 +49,64 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
   )
 }
 
+const StyledArchivedTag = styled(Box)`
+display: inline-block;
+border-radius: 4px;
+text-transform: uppercase;
+letter-spacing: 1.25px;
+}`
+
 type DescriptorDetailsProps = {
   descriptor: Descriptor
   runLink: string
   deepLink: string
+  archived: boolean
 }
 
-const DescriptorDetails = ({ descriptor, runLink, deepLink }: DescriptorDetailsProps) => {
+const DescriptorDetails = ({
+  descriptor,
+  archived,
+  runLink,
+  deepLink,
+}: DescriptorDetailsProps) => {
   return (
     <>
-      <Flex justifyContent='space-between' flexDirection={['column-reverse', 'column-reverse', 'row']}>
+      {archived && (
+        <StyledArchivedTag
+          bg="red6"
+          color="white"
+          fontSize={14}
+          fontWeight="bold"
+          px={2}
+          py={1}
+        >
+          ARCHIVED
+        </StyledArchivedTag>
+      )}
+      <Flex
+        justifyContent="space-between"
+        flexDirection={['column-reverse', 'column-reverse', 'row']}
+      >
         <Box>
           <Heading h={1}>{descriptor.name}</Heading>
         </Box>
-        <Flex>
-          <Box pr={2}>
-            <NLink href={deepLink}>
-              <StyleLinkButton>
-                <FormattedMessage id='Modal.Button.Link' defaultMessage='Link' />
-              </StyleLinkButton>
-            </NLink>
-          </Box>
-          <Box>
-            <TwitterButton universalLink={runLink} />
-          </Box>
-        </Flex>
+        {!archived && (
+          <Flex alignItems="center">
+            <Box pr={2}>
+              <NLink href={deepLink}>
+                <StyleLinkButton>
+                  <FormattedMessage
+                    id="Modal.Button.Link"
+                    defaultMessage="Link"
+                  />
+                </StyleLinkButton>
+              </NLink>
+            </Box>
+            <Box>
+              <TwitterButton universalLink={runLink} />
+            </Box>
+          </Flex>
+        )}
       </Flex>
       {descriptor.author && (
         <p>
@@ -101,15 +134,21 @@ const DescriptorDetails = ({ descriptor, runLink, deepLink }: DescriptorDetailsP
         </p>
       )} */}
 
-      {descriptor.description && <ReactMarkdown>{descriptor.description}</ReactMarkdown>}
+      {descriptor.description && (
+        <ReactMarkdown>{descriptor.description}</ReactMarkdown>
+      )}
 
-      <Heading pt={4} pb={2} h={3}>
-        <FormattedMessage
-          id='Modal.Heading.ShareThisURL'
-          defaultMessage='Share this link with OONI Probe mobile app users'
-        />
-      </Heading>
-      <StyledCode>{runLink}</StyledCode>
+      {!archived && (
+        <>
+          <Heading pt={4} pb={2} h={3}>
+            <FormattedMessage
+              id="Modal.Heading.ShareThisURL"
+              defaultMessage="Share this link with OONI Probe mobile app users"
+            />
+          </Heading>
+          <StyledCode>{runLink}</StyledCode>
+        </>
+      )}
 
       {/* {descriptor.icon && <p>{descriptor.icon}</p>} */}
 
@@ -124,8 +163,14 @@ const DescriptorDetails = ({ descriptor, runLink, deepLink }: DescriptorDetailsP
       {descriptor.nettests.map((nettest) => (
         <>
           <p>Test name: {nettest.test_name}</p>
-          <p>is_background_run_enabled: {nettest.is_background_run_enabled ? 'true' : 'false'}</p>
-          <p>is_manual_run_enabled: {nettest.is_manual_run_enabled ? 'true' : 'false'}</p>
+          <p>
+            is_background_run_enabled:{' '}
+            {nettest.is_background_run_enabled ? 'true' : 'false'}
+          </p>
+          <p>
+            is_manual_run_enabled:{' '}
+            {nettest.is_manual_run_enabled ? 'true' : 'false'}
+          </p>
           {!!nettest.inputs?.length && (
             <>
               Inputs:
