@@ -17,6 +17,7 @@ import IntlFields from './IntlFields'
 import NettestFields from './NettestFields'
 import { apiEndpoints, fetcher, postFetcher } from 'lib/api'
 import ButtonSpinner from 'components/ButtonSpinner'
+import { useRouter } from 'next/router'
 
 export type FieldsPropTypes = {
   name: string
@@ -148,6 +149,7 @@ const TestListForm = ({
   defaultValues,
   linkId,
 }: TestListFormProps) => {
+  const { push } = useRouter()
   const values = defaultValues || initialValues
 
   const formMethods = useForm<TestList>({
@@ -166,7 +168,12 @@ const TestListForm = ({
 
   const { trigger, isMutating } = useSWRMutation(
     linkId && apiEndpoints.ARCHIVE_RUN_LINK.replace(':oonirun_id', linkId),
-    postFetcher
+    postFetcher,
+    {
+      onSuccess: () => {
+        push(`/view/${linkId}`)
+      },
+    }
   )
 
   return (
@@ -180,7 +187,6 @@ const TestListForm = ({
           defaultMessage="Note: If you have a long list of URLs to add, you can copy them and paste into one of the boxes below."
         />
       </Text> */}
-      {/* {JSON.stringify(errors)} */}
       <datalist id="url-prefixes">
         <option value="https://" />
         <option value="http://" />
@@ -196,11 +202,13 @@ const TestListForm = ({
                   sx={{ borderColor: 'red' }}
                   hollow
                   onClick={() => trigger()}
+                  loading={isMutating}
+                  disabled={isMutating}
+                  spinner={<ButtonSpinner />}
                 >
                   Archive
                 </Button>
               )}
-              {isMutating && <>mutating</>}
             </Box>
             {fields.map((item, index) => (
               <Box key={item.id}>
