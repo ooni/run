@@ -33,6 +33,7 @@ type Props = {
   title: string
   description: string
   descriptor: Descriptor | null
+  archived: boolean | null
 }
 
 interface QParams extends ParsedUrlQuery {
@@ -63,10 +64,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const title = 'OONI Run | Coordinate website censorship testing'
   const universalLink = `https://run.ooni.io/v2/${linkId}`
   let descriptor = null
+  let archived = null
 
   try {
     const runLink = await getRunLink(linkId)
     descriptor = runLink?.descriptor
+    archived = !!runLink?.archived
   } catch (e) {}
 
   let storeLink,
@@ -106,6 +109,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     title,
     description,
     descriptor,
+    archived,
   }
 
   return { props }
@@ -122,6 +126,7 @@ const Nettest = ({
   title,
   description,
   descriptor,
+  archived,
 }: Props) => {
   const windowScript = `window.onload = function() {
     document.getElementById('l').src = '${deepLink}';
@@ -191,6 +196,7 @@ const Nettest = ({
         {descriptor && (
           <DescriptorDetails
             descriptor={descriptor}
+            archived={archived}
             deepLink={deepLink}
             runLink={runLink}
           />

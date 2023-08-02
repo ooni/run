@@ -60,7 +60,7 @@ type DescriptorDetailsProps = {
   descriptor: Descriptor
   runLink: string
   deepLink: string
-  archived: boolean
+  archived: boolean | null
 }
 
 const DescriptorDetails = ({
