@@ -288,7 +288,10 @@ const TestListForm = ({
                   <Modal
                     show={showIconModal}
                     p={4}
-                    onHideClick={() => setShowIconModal(false)}
+                    onHideClick={(e: Event) => {
+                      e.preventDefault()
+                      setShowIconModal(false)
+                    }}
                   >
                     <Flex flexWrap="wrap" sx={{ gap: '4px' }}>
                       {Object.entries(FAIcons).map(([name, icon], i) => {

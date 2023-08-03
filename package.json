@@ -8,7 +8,7 @@
     "intl": "^1.2.5",
     "markdown-to-jsx": "^7.2.1",
     "next": "^13.4.7",
-    "ooni-components": "1.0.0-alpha.6",
+    "ooni-components": "1.0.0-alpha.7",
     "react": "^18.2.0",
     "react-content-loader": "^6.2.1",
     "react-dom": "^18.2.0",
