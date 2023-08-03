@@ -58,6 +58,19 @@ text-transform: uppercase;
 letter-spacing: 1.25px;
 }`
 
+const StyledRow = styled(Flex)`
+  padding: 8px 0px;
+  &:nth-child(odd) {
+    background: ${(props) => props.theme.colors.gray0};
+  }
+  border-bottom: 1px solid ${(props) => props.theme.colors.gray2};
+`
+
+const StyledRowName = styled(Box).attrs({
+  fontWeight: '600',
+  width: [1, 1 / 3],
+})``
+
 type DescriptorDetailsProps = {
   descriptor: Descriptor
   runLink: string
@@ -150,7 +163,7 @@ const DescriptorDetails = ({
       )}
 
       {!archived && (
-        <>
+        <Box mb={4}>
           <Heading pt={4} pb={2} h={3}>
             <FormattedMessage
               id="Modal.Heading.ShareThisURL"
@@ -158,10 +171,8 @@ const DescriptorDetails = ({
             />
           </Heading>
           <StyledCode>{runLink}</StyledCode>
-        </>
+        </Box>
       )}
-
-      {/* {descriptor.icon && <p>{descriptor.icon}</p>} */}
 
       {/* {!!descriptor.description_intl?.length && (
         <p>
@@ -171,43 +182,54 @@ const DescriptorDetails = ({
         </p>
       )} */}
       <Heading h={4}>Nettests:</Heading>
-      {descriptor.nettests.map((nettest) => (
-        <>
-          <p>Test name: {nettest.test_name}</p>
-          <p>
-            is_background_run_enabled:{' '}
-            {nettest.is_background_run_enabled ? 'true' : 'false'}
-          </p>
-          <p>
-            is_manual_run_enabled:{' '}
-            {nettest.is_manual_run_enabled ? 'true' : 'false'}
-          </p>
+
+      {descriptor.nettests.map((nettest, i) => (
+        <Flex flexDirection="column" key={`${nettest.test_name}-${i}`} mb={4}>
+          <StyledRow>
+            <StyledRowName>Test name:</StyledRowName>
+            <Box>{nettest.test_name}</Box>
+          </StyledRow>
+          <StyledRow>
+            <StyledRowName>is_background_run_enabled:</StyledRowName>
+            <Box>{nettest.is_background_run_enabled ? 'true' : 'false'}</Box>
+          </StyledRow>
+          <StyledRow>
+            <StyledRowName>is_manual_run_enabled:</StyledRowName>
+            <Box>{nettest.is_manual_run_enabled ? 'true' : 'false'}</Box>
+          </StyledRow>
+
           {!!nettest.inputs?.length && (
-            <>
-              Inputs:
-              {nettest.inputs.map((input: string, i: number) => (
-                <p key={i}>{input}</p>
-              ))}
-            </>
+            <StyledRow>
+              <StyledRowName>Inputs:</StyledRowName>
+              <Box>
+                {nettest.inputs.map((input: string, i: number) => (
+                  <p key={i}>{input}</p>
+                ))}
+              </Box>
+            </StyledRow>
           )}
 
           {!!nettest.options?.length && (
-            <>
-              Options:
-              {Object.entries(nettest.options).map(([key, value]) => (
-                <p key={key}>{`${key}: ${value}`}</p>
-              ))}
-            </>
+            <StyledRow>
+              <StyledRowName>Options:</StyledRowName>
+              <Box>
+                {Object.entries(nettest.options).map(([key, value]) => (
+                  <p key={key}>{`${key}: ${value}`}</p>
+                ))}
+              </Box>
+            </StyledRow>
           )}
           {!!nettest.backend_options?.length && (
-            <>
-              Backend options:
-              {Object.entries(nettest.backend_options).map(([key, value]) => (
-                <p key={key}>{`${key}: ${value}`}</p>
-              ))}
-            </>
+            <StyledRow>
+              <StyledRowName>Backend options:</StyledRowName>
+              <Box>
+                {Object.entries(nettest.backend_options).map(([key, value]) => (
+                  <p key={key}>{`${key}: ${value}`}</p>
+                ))}
+              </Box>
+            </StyledRow>
           )}
-        </>
+        </Flex>
       ))}
     </>
   )
