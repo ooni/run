@@ -1,5 +1,5 @@
-import { useCallback, ClipboardEvent } from 'react'
-import { Flex, Box, Button, Heading, Text, Input } from 'ooni-components'
+import { useCallback, ClipboardEvent, useMemo, useState } from 'react'
+import { Flex, Box, Button, Heading, Text, Input, Modal } from 'ooni-components'
 import {
   useForm,
   useFieldArray,
@@ -11,8 +11,7 @@ import useSWRMutation from 'swr/mutation'
 import styled from 'styled-components'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import * as reactCom from 'react-icons/md'
-import IconSelect from 'react-select'
+import * as FAIcons from 'react-icons/fa6'
 import IntlFields from './IntlFields'
 import NettestFields from './NettestFields'
 import { apiEndpoints, fetcher, postFetcher } from 'lib/api'
@@ -129,15 +128,6 @@ const initialValues = {
   ],
 }
 
-// const selectIconOptions = Object.entries(reactCom).map(([name, icon]) => {
-//   // const IconComponent = reactCom[name]
-//   return {
-//     value: name,
-//     // label: <IconComponent />,
-//     label: name,
-//   }
-// })
-
 type TestListFormProps = {
   onSubmit: (data: {}) => void
   defaultValues?: object
@@ -157,8 +147,15 @@ const TestListForm = ({
     defaultValues: { ooniRunLink: [values] },
     resolver: yupResolver(validationSchema),
   })
-  const { control, formState, handleSubmit } = formMethods
+  const { control, formState, handleSubmit, setValue, watch } = formMethods
+  const iconValue = watch('ooniRunLink.0.icon')
 
+  const selectedIcon = useMemo(() => {
+    if (FAIcons[iconValue as keyof typeof FAIcons]) {
+      const Icon = FAIcons[iconValue as keyof typeof FAIcons]
+      return <Icon />
+    }
+  }, [iconValue])
   const { errors, isSubmitting } = formState
 
   const { fields } = useFieldArray({
@@ -175,6 +172,8 @@ const TestListForm = ({
       },
     }
   )
+
+  const [showIconModal, setShowIconModal] = useState(false)
 
   return (
     <Flex flexDirection="column">
@@ -273,11 +272,55 @@ const TestListForm = ({
                       //     onChange(selectedOption?.value)
                       //   }}
                       // />
-                      <Input {...field} label="Icon" placeholder="" />
+                      <Input type="hidden" {...field} label="Icon" />
                     )}
                     name={`ooniRunLink.${index}.icon`}
                     control={control}
                   />
+                  <Box fontSize={3}>{selectedIcon}</Box>
+                  <Button
+                    type="button"
+                    variant="link"
+                    onClick={() => setShowIconModal(true)}
+                  >
+                    Select icon
+                  </Button>
+                  <Modal
+                    show={showIconModal}
+                    p={4}
+                    onHideClick={() => setShowIconModal(false)}
+                  >
+                    <Flex flexWrap="wrap" sx={{ gap: '4px' }}>
+                      {Object.entries(FAIcons).map(([name, icon], i) => {
+                        const IconComponent = icon
+                        return (
+                          <Box
+                            key={name}
+                            sx={{
+                              width: '10%',
+                              border: '1px solid black',
+                              borderRadius: '2px',
+                              cursor: 'pointer',
+                              textAlign: 'center',
+                              '&:hover': {
+                                bg: 'gray2',
+                              },
+                            }}
+                            p={2}
+                            fontSize={3}
+                            onClick={() => {
+                              setValue(`ooniRunLink.${index}.icon`, name, {
+                                shouldValidate: false,
+                              })
+                              setShowIconModal(false)
+                            }}
+                          >
+                            <IconComponent />
+                          </Box>
+                        )
+                      })}
+                    </Flex>
+                  </Modal>
                 </StyledInputWrapper>
                 <Heading h={4} fontWeight={300} mt={4}>
                   Nettests

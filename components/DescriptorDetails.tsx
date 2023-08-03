@@ -4,6 +4,8 @@ import { styled } from 'styled-components'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { BsTwitter } from 'react-icons/bs'
+import * as FAIcons from 'react-icons/fa6'
+import { useMemo } from 'react'
 
 const StyledCode = styled.code`
   background-color: #eee;
@@ -69,6 +71,13 @@ const DescriptorDetails = ({
   runLink,
   deepLink,
 }: DescriptorDetailsProps) => {
+  const icon = useMemo(() => {
+    if (!!descriptor.icon && FAIcons[descriptor.icon as keyof typeof FAIcons]) {
+      const Icon = FAIcons[descriptor.icon as keyof typeof FAIcons]
+      return <Icon style={{ marginRight: '10px' }} />
+    }
+  }, [descriptor])
+
   return (
     <>
       {archived && (
@@ -88,7 +97,9 @@ const DescriptorDetails = ({
         flexDirection={['column-reverse', 'column-reverse', 'row']}
       >
         <Box>
-          <Heading h={1}>{descriptor.name}</Heading>
+          <Heading h={1} sx={{ display: 'flex', alignItems: 'center' }}>
+            {icon} {descriptor.name}
+          </Heading>
         </Box>
         {!archived && (
           <Flex alignItems="center">
