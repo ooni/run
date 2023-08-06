@@ -1,4 +1,10 @@
-import { useCallback, ClipboardEvent, useMemo, useState } from 'react'
+import {
+  useCallback,
+  ClipboardEvent,
+  useMemo,
+  useState,
+  ComponentType,
+} from 'react'
 import { Flex, Box, Button, Heading, Text, Input, Modal } from 'ooni-components'
 import {
   useForm,
@@ -11,12 +17,23 @@ import useSWRMutation from 'swr/mutation'
 import styled from 'styled-components'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import * as FAIcons from 'react-icons/fa6'
 import IntlFields from './IntlFields'
 import NettestFields from './NettestFields'
 import { apiEndpoints, fetcher, postFetcher } from 'lib/api'
 import ButtonSpinner from 'components/ButtonSpinner'
 import { useRouter } from 'next/router'
+import IconModal from './IconModal'
+
+import * as FAIcons from 'react-icons/fa6'
+import * as MDIcons from 'react-icons/md'
+
+const icons = [...Object.entries(FAIcons), ...Object.entries(MDIcons)].reduce(
+  (previous, current) => {
+    const [name, icon] = current
+    return { ...previous, ...{ [name]: icon } }
+  },
+  {}
+)
 
 export type FieldsPropTypes = {
   name: string
@@ -41,7 +58,7 @@ type Nettest = {
   is_manual_run_enabled: boolean
 }
 
-type TestList = {
+export type TestList = {
   ooniRunLink: Array<{
     name: string
     short_description: string
@@ -151,8 +168,8 @@ const TestListForm = ({
   const iconValue = watch('ooniRunLink.0.icon')
 
   const selectedIcon = useMemo(() => {
-    if (FAIcons[iconValue as keyof typeof FAIcons]) {
-      const Icon = FAIcons[iconValue as keyof typeof FAIcons]
+    if (icons[iconValue as keyof typeof icons]) {
+      const Icon = icons[iconValue as keyof typeof icons] as ComponentType
       return <Icon />
     }
   }, [iconValue])
@@ -172,8 +189,6 @@ const TestListForm = ({
       },
     }
   )
-
-  const [showIconModal, setShowIconModal] = useState(false)
 
   return (
     <Flex flexDirection="column">
@@ -278,52 +293,7 @@ const TestListForm = ({
                     control={control}
                   />
                   <Box fontSize={3}>{selectedIcon}</Box>
-                  <Button
-                    type="button"
-                    variant="link"
-                    onClick={() => setShowIconModal(true)}
-                  >
-                    Select icon
-                  </Button>
-                  <Modal
-                    show={showIconModal}
-                    p={4}
-                    onHideClick={(e: Event) => {
-                      e.preventDefault()
-                      setShowIconModal(false)
-                    }}
-                  >
-                    <Flex flexWrap="wrap" sx={{ gap: '4px' }}>
-                      {Object.entries(FAIcons).map(([name, icon], i) => {
-                        const IconComponent = icon
-                        return (
-                          <Box
-                            key={name}
-                            sx={{
-                              width: '10%',
-                              border: '1px solid black',
-                              borderRadius: '2px',
-                              cursor: 'pointer',
-                              textAlign: 'center',
-                              '&:hover': {
-                                bg: 'gray2',
-                              },
-                            }}
-                            p={2}
-                            fontSize={3}
-                            onClick={() => {
-                              setValue(`ooniRunLink.${index}.icon`, name, {
-                                shouldValidate: false,
-                              })
-                              setShowIconModal(false)
-                            }}
-                          >
-                            <IconComponent />
-                          </Box>
-                        )
-                      })}
-                    </Flex>
-                  </Modal>
+                  <IconModal setValue={setValue} />
                 </StyledInputWrapper>
                 <Heading h={4} fontWeight={300} mt={4}>
                   Nettests
