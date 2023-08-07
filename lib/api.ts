@@ -65,14 +65,12 @@ export const createRunLink = (data: any, params = {}) => {
   return postAPI(apiEndpoints.CREATE_RUN_LINK, data, params)
 }
 
-export const getRunLink = (id: string) => {
-  return getAPI(
-    `${apiEndpoints.GET_RUN_LINK}/${id}?nocache=${generateRandomString()}`
-  )
+export const getRunLink = (id: string, params = {}) => {
+  return getAPI(`${apiEndpoints.GET_RUN_LINK}/${id}`, params)
 }
 
-export const getLinkList = () => {
-  return getAPI(apiEndpoints.GET_LIST)
+export const getList = (params = {}) => {
+  return getAPI(apiEndpoints.GET_LIST, params)
 }
 
 export const registerUser = async (

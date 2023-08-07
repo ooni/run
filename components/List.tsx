@@ -1,4 +1,4 @@
-import { apiEndpoints, fetcher } from 'lib/api'
+import { apiEndpoints, fetcher, getList } from 'lib/api'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import { Button, Box, Text, Heading, Flex } from 'ooni-components'
@@ -32,8 +32,8 @@ const List = ({ limit }: ListProps) => {
   const isAdmin = useMemo(() => user?.role === 'admin', [user])
 
   const { data, error, isLoading } = useSWR<{ descriptors: Descriptor[] }>(
-    apiEndpoints.GET_LIST,
-    (url) => fetcher(url, { only_latest: true })
+    { only_latest: true },
+    (props) => getList(props)
   )
 
   const descriptors = useMemo(

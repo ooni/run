@@ -10,6 +10,7 @@ import type { ParsedUrlQuery } from 'querystring'
 import useUser from 'hooks/useUser'
 import { Box } from 'ooni-components'
 import { Button } from 'ooni-components'
+import { generateRandomString } from 'utils'
 
 const transformIntoArray = (obj: object) =>
   Object.entries(obj).map(([k, v]) => ({
@@ -43,7 +44,9 @@ export const getServerSideProps = async ({
   const { linkId } = params as QParams
 
   try {
-    const runLink = await getRunLink(linkId)
+    const runLink = await getRunLink(linkId, {
+      nocache: generateRandomString(),
+    })
     const descriptor = runLink.descriptor
 
     return {

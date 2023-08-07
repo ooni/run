@@ -13,6 +13,7 @@ import { GetServerSideProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
 import DescriptorDetails from 'components/DescriptorDetails'
 import { getRunLink } from 'lib/api'
+import { generateRandomString } from 'utils'
 
 const StyledCode = styled.code`
   font-family: courier, monospace;
@@ -67,7 +68,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   let archived = null
 
   try {
-    const runLink = await getRunLink(linkId)
+    const runLink = await getRunLink(linkId, {
+      nocache: generateRandomString(),
+    })
     descriptor = runLink?.descriptor
     archived = !!runLink?.archived
   } catch (e) {}
