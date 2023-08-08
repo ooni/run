@@ -50,9 +50,7 @@ type ViewRunLinkProps = {
   linkId: string
 }
 
-const ViewRunLink = ({ descriptor, linkId }: ViewRunLinkProps) => {
-  const { user } = useUser()
-  const isAdmin = useMemo(() => user?.role === 'admin', [user])
+const ViewRunLink = ({ linkId }: ViewRunLinkProps) => {
   const [randString] = useState(generateRandomString())
 
   const [isClient, setIsClient] = useState(false)
@@ -92,7 +90,7 @@ const ViewRunLink = ({ descriptor, linkId }: ViewRunLinkProps) => {
         <>
           <Container p={4}>
             <Flex justifyContent="end">
-              {(data?.mine || isAdmin) && !data?.archived && (
+              {!!data?.mine && !data?.archived && (
                 <NLink href={`/edit/${linkId}`}>
                   <Button type="button" hollow>
                     Edit

@@ -1,8 +1,7 @@
-import { apiEndpoints, fetcher, getList } from 'lib/api'
+import { getList } from 'lib/api'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import { Button, Box, Text, Heading, Flex } from 'ooni-components'
-import useUser from 'hooks/useUser'
 import NLink from 'next/link'
 import styled from 'styled-components'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
@@ -26,13 +25,11 @@ type Descriptor = {
 
 type ListProps = {
   limit?: number
+  queryParams?: {}
 }
-const List = ({ limit }: ListProps) => {
-  const { user } = useUser()
-  const isAdmin = useMemo(() => user?.role === 'admin', [user])
-
+const List = ({ limit, queryParams }: ListProps) => {
   const { data, error, isLoading } = useSWR<{ descriptors: Descriptor[] }>(
-    { only_latest: true },
+    { only_latest: true, ...queryParams },
     (props) => getList(props)
   )
 
@@ -60,7 +57,7 @@ const List = ({ limit }: ListProps) => {
                     View
                   </Button>
                 </NLink>
-                {(desc.mine || isAdmin) && (
+                {!!desc.mine && (
                   <NLink href={`/edit/${desc.id}`}>
                     <Button type="button" hollow>
                       Edit
