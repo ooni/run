@@ -8,8 +8,6 @@ import { useRouter } from 'next/router'
 import { transformOutgoingData } from 'pages/create'
 import type { ParsedUrlQuery } from 'querystring'
 import useUser from 'hooks/useUser'
-import { Box } from 'ooni-components'
-import { Button } from 'ooni-components'
 import { generateRandomString } from 'utils'
 
 const transformIntoArray = (obj: object) =>
@@ -80,7 +78,6 @@ const EditRunLink = ({ runLink }: EditRunLinkProps) => {
   }, [user, loading])
 
   const onSubmit = useCallback((data: any) => {
-    console.log('SUBMIT', data)
     createRunLink(transformOutgoingData(data), { id: linkId }).then((res) => {
       push(`/view/${res.id}`)
     })
