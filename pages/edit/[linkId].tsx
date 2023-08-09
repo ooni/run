@@ -3,12 +3,13 @@ import { createRunLink, getRunLink } from 'lib/api'
 import TestListForm from 'components/form/TestListForm'
 import { Container } from 'ooni-components'
 import { GetServerSidePropsContext } from 'next'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import { transformOutgoingData } from 'pages/create'
 import type { ParsedUrlQuery } from 'querystring'
 import useUser from 'hooks/useUser'
 import { generateRandomString } from 'utils'
+import useSWR from 'swr'
 
 const transformIntoArray = (obj: object) =>
   Object.entries(obj).map(([k, v]) => ({
@@ -32,44 +33,55 @@ const transformIncomingData = (formData: any) => {
   }
 }
 
-interface QParams extends ParsedUrlQuery {
-  linkId: string
-}
+// interface QParams extends ParsedUrlQuery {
+//   linkId: string
+// }
 
-export const getServerSideProps = async ({
-  params,
-}: GetServerSidePropsContext) => {
-  const { linkId } = params as QParams
+// export const getServerSideProps = async ({
+//   params,
+// }: GetServerSidePropsContext) => {
+//   const { linkId } = params as QParams
 
-  try {
-    const runLink = await getRunLink(linkId, {
-      nocache: generateRandomString(),
-    })
-    const descriptor = runLink.descriptor
+//   try {
+//     const runLink = await getRunLink(linkId, {
+//       nocache: generateRandomString(),
+//     })
+//     const descriptor = runLink.descriptor
 
-    return {
-      props: {
-        runLink: transformIncomingData(descriptor),
-      },
-    }
-  } catch (e) {
-    return {
-      redirect: {
-        destination: '/',
-      },
-    }
-  }
-}
+//     return {
+//       props: {
+//         runLink: transformIncomingData(descriptor),
+//       },
+//     }
+//   } catch (e) {
+//     return {
+//       redirect: {
+//         destination: '/',
+//       },
+//     }
+//   }
+// }
 
-type EditRunLinkProps = {
-  runLink: {}
-}
+// type EditRunLinkProps = {
+//   runLink: {}
+// }
 
-const EditRunLink = ({ runLink }: EditRunLinkProps) => {
+const EditRunLink = () => {
   const {
     push,
     query: { linkId },
   } = useRouter()
+
+  const [randString] = useState(generateRandomString())
+
+  const { data, error, isLoading } = useSWR(
+    [linkId, { nocache: randString }],
+    ([linkId, params]) => getRunLink(linkId as string, params)
+  )
+
+  const runLink = useMemo(() => {
+    return data?.descriptor ? transformIncomingData(data?.descriptor) : null
+  }, [data])
 
   const { loading, user } = useUser()
 
@@ -87,11 +99,13 @@ const EditRunLink = ({ runLink }: EditRunLinkProps) => {
     <>
       <OONIRunHero href="/" />
       <Container>
-        <TestListForm
-          onSubmit={onSubmit}
-          defaultValues={runLink}
-          linkId={linkId as string}
-        />
+        {runLink && (
+          <TestListForm
+            onSubmit={onSubmit}
+            defaultValues={runLink}
+            linkId={linkId as string}
+          />
+        )}
       </Container>
     </>
   )
