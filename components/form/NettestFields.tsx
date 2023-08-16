@@ -78,7 +78,7 @@ const NettestFields = ({ name }: FieldsPropTypes) => {
                 control={control}
               />
             </StyledInputWrapper>
-            {index > 0 && (
+            {fields.length > 1 && (
               <Button
                 variant="unstyled"
                 type="button"
