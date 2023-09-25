@@ -1,5 +1,5 @@
 import { useFieldArray, Controller, useFormContext } from 'react-hook-form'
-import { Flex, Box, Label, Input, Button, Checkbox } from 'ooni-components'
+import { Input, Button, Checkbox } from 'ooni-components'
 import {
   FieldsPropTypes,
   StyledInputWrapper,
@@ -35,6 +35,10 @@ const NettestFields = ({ name }: FieldsPropTypes) => {
               />
             </StyledInputWrapper>
             <StyledInputWrapper>
+              <StyledLabel>Inputs</StyledLabel>
+              <InputsFields name={`${name}[${index}].inputs`} />
+            </StyledInputWrapper>
+            <StyledInputWrapper>
               <StyledLabel>Options</StyledLabel>
               <OptionsFields name={`${name}[${index}].options`} />
             </StyledInputWrapper>
@@ -43,10 +47,6 @@ const NettestFields = ({ name }: FieldsPropTypes) => {
               <BackendOptionsFields
                 name={`${name}[${index}].backend_options`}
               />
-            </StyledInputWrapper>
-            <StyledInputWrapper>
-              <StyledLabel>Inputs</StyledLabel>
-              <InputsFields name={`${name}[${index}].inputs`} />
             </StyledInputWrapper>
             <StyledInputWrapper>
               <Controller

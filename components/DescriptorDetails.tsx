@@ -1,11 +1,11 @@
-import { Container, Flex, Heading, Box, Button, Text } from 'ooni-components'
+import { Flex, Heading, Box, Button, Text } from 'ooni-components'
 import NLink from 'next/link'
 import { styled } from 'styled-components'
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
+import Markdown from 'markdown-to-jsx'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { BsTwitter } from 'react-icons/bs'
-import * as FAIcons from 'react-icons/fa6'
-import { useMemo } from 'react'
+import useIcon from 'hooks/useIcon'
+import ArchivedTag from './ArchivedTag'
 
 const StyledCode = styled.code`
   background-color: #eee;
@@ -51,13 +51,6 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
   )
 }
 
-const StyledArchivedTag = styled(Box)`
-display: inline-block;
-border-radius: 4px;
-text-transform: uppercase;
-letter-spacing: 1.25px;
-}`
-
 const StyledRow = styled(Flex)`
   padding: 8px 0px;
   &:nth-child(odd) {
@@ -71,40 +64,17 @@ const StyledRowName = styled(Box).attrs({
   width: [1, 1 / 3],
 })``
 
-type DescriptorDetailsProps = {
-  descriptor: Descriptor
-  runLink: string
-  deepLink: string
-  archived: boolean | null
-}
-
 const DescriptorDetails = ({
   descriptor,
   archived,
   runLink,
   deepLink,
-}: DescriptorDetailsProps) => {
-  const icon = useMemo(() => {
-    if (!!descriptor.icon && FAIcons[descriptor.icon as keyof typeof FAIcons]) {
-      const Icon = FAIcons[descriptor.icon as keyof typeof FAIcons]
-      return <Icon style={{ marginRight: '10px' }} />
-    }
-  }, [descriptor])
+}: DescriptorDetails) => {
+  const icon = useIcon(descriptor.icon)
 
   return (
     <>
-      {archived && (
-        <StyledArchivedTag
-          bg="red6"
-          color="white"
-          fontSize={14}
-          fontWeight="bold"
-          px={2}
-          py={1}
-        >
-          ARCHIVED
-        </StyledArchivedTag>
-      )}
+      {archived && <ArchivedTag />}
       <Flex
         justifyContent="space-between"
         flexDirection={['column-reverse', 'column-reverse', 'row']}
@@ -147,7 +117,7 @@ const DescriptorDetails = ({
       )} */}
       {descriptor.short_description && (
         <Heading h={5}>
-          <ReactMarkdown>{descriptor.short_description}</ReactMarkdown>
+          <Markdown>{descriptor.short_description}</Markdown>
         </Heading>
       )}
       {/* {!!descriptor.short_description_intl?.length && (
@@ -159,7 +129,7 @@ const DescriptorDetails = ({
       )} */}
 
       {descriptor.description && (
-        <ReactMarkdown>{descriptor.description}</ReactMarkdown>
+        <Markdown>{descriptor.description}</Markdown>
       )}
 
       {!archived && (

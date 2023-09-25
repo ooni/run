@@ -5,6 +5,7 @@ import { Container, Box, Checkbox } from 'ooni-components'
 import RunLinkList from 'components/List'
 import { useMemo } from 'react'
 import { Controller, useForm, useWatch } from 'react-hook-form'
+import { Heading } from 'ooni-components'
 
 const List = () => {
   const { control } = useForm({ defaultValues: { only_mine: false } })
@@ -21,8 +22,9 @@ const List = () => {
   return (
     <>
       <OONIRunHero href="/" />
-      <Container my={5}>
-        <Box mb={3}>
+      <Container my={4}>
+        <Heading h={2} mb={2}>OONI Run Links</Heading>
+        <Box mb={4}>
           <Controller
             render={({ field }) => (
               <Checkbox

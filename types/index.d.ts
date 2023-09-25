@@ -28,4 +28,21 @@ type Descriptor = {
   description: string | undefined
   description_intl: {}[]
   nettests: Nettest[]
+  mine?: boolean
+}
+
+type DescriptorDetails = {
+  descriptor: Descriptor
+  runLink: string
+  deepLink: string
+  archived: boolean | null
+}
+
+type DescriptorPreview = {
+  id: string
+  author: string
+  archived: boolean
+  mine: boolean
+  name: string
+  short_description: string
 }
