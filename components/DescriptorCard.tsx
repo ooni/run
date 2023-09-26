@@ -14,7 +14,7 @@ const StyledFlex = styled(Flex)`
   cursor: pointer;
   position: relative;
   &:hover {
-    .h4 {
+    h4 {
       color: ${(props) => props.theme.colors.blue5};
     }
   }
@@ -32,9 +32,8 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
   return (
     <StyledFlex alignItems='center' p={3}  flexDirection={['column', 'column', 'row']} lineHeight={1.3} onClick={redirectToViewPage}>
       <Box width={[1, 1, 3/5]}>
-        <Box mb={1} alignItems='center'>
-          <Box display='inline-block' fontSize={2} verticalAlign='middle'>{icon}</Box>
-          <Heading h={4} m={0} display='inline-block' mr={2}>{descriptor.name}</Heading>
+        <Box mb={1}>
+          <Heading h={4} m={0} display='inline' mr={2}><Box as='span' verticalAlign='text-top'>{icon}</Box>{descriptor.name}</Heading>
           {!!descriptor.archived && <Box as='span' verticalAlign='super'><ArchivedTag /></Box>}
         </Box>
         <Text mb={2}>Created by <Text as='span' fontWeight='bold'>{descriptor.author}</Text></Text>
