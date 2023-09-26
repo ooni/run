@@ -1,15 +1,22 @@
+import { useMemo } from 'react'
 import { Flex, Heading, Box, Button, Text } from 'ooni-components'
 import NLink from 'next/link'
 import { styled } from 'styled-components'
 import Markdown from 'markdown-to-jsx'
 import { FormattedMessage, useIntl } from 'react-intl'
+import useSWR from 'swr'
+import { MdOutlineContentCopy } from 'react-icons/md'
+import { getList } from 'lib/api'
 import { BsTwitter } from 'react-icons/bs'
 import useIcon from 'hooks/useIcon'
 import ArchivedTag from './ArchivedTag'
+import RunLinkRevision from './RunLinkRevisions'
 
-const StyledCode = styled.code`
-  background-color: #eee;
-  border-radius: 3px;
+export const formatMediumDateTime = (date: string, locale: string) => (
+  new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(date))
+)
+
+const StyledCode = styled(Box)`
   font-family: courier, monospace;
   padding: 14px;
   white-space: pre-wrap;
@@ -36,7 +43,7 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
 
   return (
     <a href={tweetUrl} target="_blank">
-      <Button>
+      <Button hollow btnSize='small'>
         <Flex alignContent="center">
           <Text mr={2}>
             {intl.formatMessage({
@@ -66,29 +73,51 @@ const StyledRowName = styled(Box).attrs({
 
 const DescriptorDetails = ({
   descriptor,
+  descriptorCreationTime,
   archived,
   runLink,
   deepLink,
+  linkId,
 }: DescriptorDetails) => {
   const icon = useIcon(descriptor.icon)
+  const { locale } = useIntl()
+
+  const { data: listData } = useSWR({ ids: linkId }, (props) => getList(props))
+
+  const revisionsList = useMemo(() => {
+    if (listData?.descriptors?.length > 1) {
+      const listCopy = [...listData?.descriptors]
+      listCopy.reverse().shift()
+      return listCopy
+    } else {
+      return []
+    }
+  }, [listData])
+
+  const [creationTime, lastEditTime] = useMemo(() => {
+    return revisionsList.length ?
+      [revisionsList[revisionsList.length - 1].descriptor_creation_time, descriptorCreationTime].map((r) => formatMediumDateTime(r, locale)) :
+      [formatMediumDateTime(descriptorCreationTime, locale), null]
+  }, [revisionsList, descriptorCreationTime])
 
   return (
     <>
-      {archived && <ArchivedTag />}
       <Flex
         justifyContent="space-between"
-        flexDirection={['column-reverse', 'column-reverse', 'row']}
+        // flexDirection={['column-reverse', 'column-reverse', 'row']}
       >
-        <Box>
-          <Heading h={1} sx={{ display: 'flex', alignItems: 'center' }}>
-            {icon} {descriptor.name}
+        <Box mb={3}>
+          <Heading h={1} lineHeight={1} display='inline' verticalAlign='middle' mr={3}>
+            <Box as='span' verticalAlign='middle'>{icon}</Box>
+            {descriptor.name}
           </Heading>
+          {archived && <ArchivedTag />}
         </Box>
         {!archived && (
-          <Flex alignItems="center">
+          <Flex alignItems="start">
             <Box pr={2}>
               <NLink href={deepLink}>
-                <StyleLinkButton>
+                <StyleLinkButton hollow btnSize='small'>
                   <FormattedMessage
                     id="Modal.Button.Link"
                     defaultMessage="Link"
@@ -103,9 +132,9 @@ const DescriptorDetails = ({
         )}
       </Flex>
       {descriptor.author && (
-        <p>
-          created by <strong>{descriptor.author}</strong>
-        </p>
+        <Text fontSize={14} mb={3}>
+          Created by <strong>{descriptor.author}</strong> on {creationTime}. {lastEditTime && <>Last updated {lastEditTime}.</>}
+        </Text>
       )}
 
       {/* {!!Object.entries(descriptor.name_intl).length && (
@@ -116,9 +145,9 @@ const DescriptorDetails = ({
         </>
       )} */}
       {descriptor.short_description && (
-        <Heading h={5}>
+        <Text mb={3}>
           <Markdown>{descriptor.short_description}</Markdown>
-        </Heading>
+        </Text>
       )}
       {/* {!!descriptor.short_description_intl?.length && (
         <p>
@@ -134,13 +163,13 @@ const DescriptorDetails = ({
 
       {!archived && (
         <Box mb={4}>
-          <Heading pt={4} pb={2} h={3}>
+          <Heading pt={3} pb={2} h={3}>
             <FormattedMessage
               id="Modal.Heading.ShareThisURL"
               defaultMessage="Share this link with OONI Probe mobile app users"
             />
           </Heading>
-          <StyledCode>{runLink}</StyledCode>
+          <StyledCode bg='gray2'>{runLink} <MdOutlineContentCopy style={{verticalAlign: 'middle'}} /></StyledCode>
         </Box>
       )}
 
@@ -151,34 +180,33 @@ const DescriptorDetails = ({
           )}
         </p>
       )} */}
-      <Heading h={4}>Nettests:</Heading>
+      <Heading h={4}>Tests</Heading>
 
       {descriptor.nettests.map((nettest, i) => (
-        <Flex flexDirection="column" key={`${nettest.test_name}-${i}`} mb={4}>
-          <StyledRow>
-            <StyledRowName>Test name:</StyledRowName>
-            <Box>{nettest.test_name}</Box>
-          </StyledRow>
-          <StyledRow>
+        <Flex flexDirection='column' key={`${nettest.test_name}-${i}`} mb={3} p={3} sx={{border: '1px solid', borderColor: 'gray3', borderRadius: 8}}>
+          <Text fontWeight={600}>{nettest.test_name}</Text>
+
+          {/* <StyledRow>
             <StyledRowName>is_background_run_enabled:</StyledRowName>
             <Box>{nettest.is_background_run_enabled ? 'true' : 'false'}</Box>
           </StyledRow>
           <StyledRow>
             <StyledRowName>is_manual_run_enabled:</StyledRowName>
             <Box>{nettest.is_manual_run_enabled ? 'true' : 'false'}</Box>
-          </StyledRow>
+          </StyledRow> */}
 
           {!!nettest.inputs?.length && (
-            <StyledRow>
-              <StyledRowName>Inputs:</StyledRowName>
-              <Box>
-                {nettest.inputs.map((input: string, i: number) => (
+            <>
+              <Text fontSize={0} fontWeight={600} mt={3} mb={2}>INPUTS ({nettest.inputs.length})</Text>
+              <Text fontSize={14}>
+                {/* {nettest.inputs.map((input: string, i: number) => (
                   <p key={i}>{input}</p>
-                ))}
-              </Box>
-            </StyledRow>
+                ))} */}
+                {nettest.inputs.join(', ')}
+              </Text>
+            </>
           )}
-
+{/* 
           {!!nettest.options?.length && (
             <StyledRow>
               <StyledRowName>Options:</StyledRowName>
@@ -198,9 +226,22 @@ const DescriptorDetails = ({
                 ))}
               </Box>
             </StyledRow>
-          )}
+          )} */}
+          
         </Flex>
       ))}
+      {!!revisionsList.length && (
+        <>
+          <Heading h={4}>Previous revisions</Heading>
+          {revisionsList.map((item: any) => (
+            <RunLinkRevision
+              key={item.descriptor_creation_time}
+              linkId={linkId}
+              creationTime={item.descriptor_creation_time}
+            />
+          ))}
+        </>
+      )}
     </>
   )
 }
