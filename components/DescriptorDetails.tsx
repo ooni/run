@@ -5,23 +5,16 @@ import { styled } from 'styled-components'
 import Markdown from 'markdown-to-jsx'
 import { FormattedMessage, useIntl } from 'react-intl'
 import useSWR from 'swr'
-import { MdOutlineContentCopy } from 'react-icons/md'
 import { getList } from 'lib/api'
 import { BsTwitter } from 'react-icons/bs'
 import useIcon from 'hooks/useIcon'
 import ArchivedTag from './ArchivedTag'
 import RunLinkRevision from './RunLinkRevisions'
+import Code from './Code'
 
 export const formatMediumDateTime = (date: string, locale: string) => (
   new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(date))
 )
-
-const StyledCode = styled(Box)`
-  font-family: courier, monospace;
-  padding: 14px;
-  white-space: pre-wrap;
-  display: block;
-`
 
 const StyleLinkButton = styled(Button)`
   text-transform: none;
@@ -169,7 +162,7 @@ const DescriptorDetails = ({
               defaultMessage="Share this link with OONI Probe mobile app users"
             />
           </Heading>
-          <StyledCode bg='gray2'>{runLink} <MdOutlineContentCopy style={{verticalAlign: 'middle'}} /></StyledCode>
+          <Code text={runLink} />
         </Box>
       )}
 
