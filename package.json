@@ -18,7 +18,7 @@
     "react-intl": "^6.4.7",
     "react-select": "^5.7.5",
     "styled-components": "^6.0.8",
-    "swr": "^2.2.2",
+    "swr": "^2.2.4",
     "useragent": "^2.3.0",
     "yup": "^1.2.0"
   },

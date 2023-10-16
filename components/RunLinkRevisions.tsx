@@ -9,9 +9,10 @@ type RunLinkRevisionProps = {
 }
 
 const RunLinkRevision = ({ creationTime, linkId }: RunLinkRevisionProps) => {
-  const { trigger, data } = useSWRMutation(
+  const { trigger, data, error, isMutating } = useSWRMutation(
     [linkId, { creation_time: creationTime }],
-    ([linkId, params]) => getRunLink(linkId, params)
+    ([linkId, params]) => getRunLink(linkId, params),
+    { throwOnError: false }
   )
   return (
     <Box mb={3}>
@@ -34,6 +35,11 @@ const RunLinkRevision = ({ creationTime, linkId }: RunLinkRevisionProps) => {
       {data && (
         <Box mb={3} bg="gray2" p={3}>
           <pre>{JSON.stringify(data, null, 2)}</pre>
+        </Box>
+      )}
+      {error && (
+        <Box mb={3} bg="gray2" p={3}>
+          <pre>{JSON.stringify(error)}</pre>
         </Box>
       )}
     </Box>

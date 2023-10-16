@@ -17,7 +17,7 @@ type Nettest = {
 }
 
 type Descriptor = {
-  id: string
+  ooni_run_link_id: string
   name: string
   name_intl: {}[]
   author: string | undefined
@@ -38,13 +38,4 @@ type DescriptorDetails = {
   deepLink: string
   archived: boolean | null
   linkId: string
-}
-
-type DescriptorPreview = {
-  id: string
-  author: string
-  archived: boolean
-  mine: boolean
-  name: string
-  short_description: string
 }

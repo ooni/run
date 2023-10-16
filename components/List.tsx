@@ -12,7 +12,7 @@ type ListProps = {
 const List = ({ limit, queryParams }: ListProps) => {
   const { data, error, isLoading } = useSWR<{ descriptors: Descriptor[] }>(
     { only_latest: true, ...queryParams },
-    (props) => getList(props)
+    (props: {}) => getList(props)
   )
 
   const descriptors = useMemo(
@@ -24,7 +24,7 @@ const List = ({ limit, queryParams }: ListProps) => {
     <>
       {isLoading && <ListLoader />}
       {descriptors?.map((desc) => (
-        <DescriptorCard descriptor={desc} key={desc.id} />
+        <DescriptorCard descriptor={desc} key={desc.ooni_run_link_id} />
       ))}
     </>
   )

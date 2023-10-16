@@ -19,6 +19,7 @@ const StyledFlex = styled(Flex)`
     }
   }
 `
+
 type DescriptorCard = {
   descriptor: Descriptor
 }
@@ -27,7 +28,7 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
   const router = useRouter()
   const icon = useIcon(descriptor.icon)
 
-  const redirectToViewPage = () => router.push(`/view/${descriptor.id}`)
+  const redirectToViewPage = () => router.push(`/view/${descriptor.ooni_run_link_id}`)
 
   return (
     <StyledFlex alignItems='center' p={3}  flexDirection={['column', 'column', 'row']} lineHeight={1.3} onClick={redirectToViewPage}>
@@ -44,13 +45,13 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
         }
       </Box>
       <Flex width={[1, 1, 2/5]} pr={[0, 4]}  mt={[3, 3, 0]} justifyContent={['start', 'start', 'end']} sx={{ gap: 3 }}>
-        <NLink href={`/view/${descriptor.id}`}>
+        <NLink onClick={(e) => e.stopPropagation()} href={`/view/${descriptor.ooni_run_link_id}`}>
           <Button type="button" hollow btnSize='small'>
             View
           </Button>
         </NLink>
         {!!descriptor.mine && (
-          <NLink href={`/edit/${descriptor.id}`}>
+          <NLink onClick={(e) => e.stopPropagation()} href={`/edit/${descriptor.ooni_run_link_id}`}>
             <Button type="button" hollow btnSize='small'>
               Edit
             </Button>

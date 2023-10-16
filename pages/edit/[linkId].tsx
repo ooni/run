@@ -74,8 +74,10 @@ const EditRunLink = () => {
 
   const [randString] = useState(generateRandomString())
 
+  const { loading, user } = useUser()
+
   const { data, error, isLoading } = useSWR(
-    [linkId, { nocache: randString }],
+    user ? [linkId, { nocache: randString }] : null,
     ([linkId, params]) => getRunLink(linkId as string, params)
   )
 
@@ -83,15 +85,13 @@ const EditRunLink = () => {
     return data?.descriptor ? transformIncomingData(data?.descriptor) : null
   }, [data])
 
-  const { loading, user } = useUser()
-
   useEffect(() => {
     if (!user && !loading) push('/')
-  }, [user, loading])
+  }, [user, loading, push])
 
   const onSubmit = useCallback((data: any) => {
-    createRunLink(transformOutgoingData(data), { id: linkId }).then((res) => {
-      push(`/view/${res.id}`)
+    createRunLink(transformOutgoingData(data), {ooni_run_link_id: linkId }).then((res) => {
+      push(`/view/${res.ooni_run_link_id}`)
     })
   }, [])
 
