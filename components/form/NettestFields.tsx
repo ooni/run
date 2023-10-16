@@ -96,7 +96,7 @@ const NettestFields = ({ name }: FieldsPropTypes) => {
         my={3}
         type="button"
         onClick={() => {
-          append({ test_name: '', options: '' })
+          append({ test_name: '', options: [], backend_options: [], is_background_run_enabled: false, is_manual_run_enabled: false })
         }}
       >
         + Add nettest

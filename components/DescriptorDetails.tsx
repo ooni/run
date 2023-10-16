@@ -75,7 +75,7 @@ const DescriptorDetails = ({
   const icon = useIcon(descriptor.icon)
   const { locale } = useIntl()
 
-  const { data: listData } = useSWR({ ids: linkId }, (props) => getList(props))
+  const { data: listData } = useSWR({ ooni_run_link_ids: linkId }, (props) => getList(props))
 
   const revisionsList = useMemo(() => {
     if (listData?.descriptors?.length > 1) {

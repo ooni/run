@@ -14,6 +14,7 @@ const RunLinkRevision = ({ creationTime, linkId }: RunLinkRevisionProps) => {
     ([linkId, params]) => getRunLink(linkId, params),
     { throwOnError: false }
   )
+
   return (
     <Box mb={3}>
       <Box mb={1}>
@@ -39,7 +40,7 @@ const RunLinkRevision = ({ creationTime, linkId }: RunLinkRevisionProps) => {
       )}
       {error && (
         <Box mb={3} bg="gray2" p={3}>
-          <pre>{JSON.stringify(error)}</pre>
+          <pre>Error: {error.message}</pre>
         </Box>
       )}
     </Box>

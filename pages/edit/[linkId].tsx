@@ -90,7 +90,7 @@ const EditRunLink = () => {
   }, [user, loading, push])
 
   const onSubmit = useCallback((data: any) => {
-    createRunLink(transformOutgoingData(data), {ooni_run_link_id: linkId }).then((res) => {
+    createRunLink(transformOutgoingData(data), { ooni_run_link_id: linkId }).then((res) => {
       push(`/view/${res.ooni_run_link_id}`)
     })
   }, [])
