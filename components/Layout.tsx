@@ -8,7 +8,7 @@ import meta from '../config/meta'
 
 type LayoutProps = {
   title?: string
-  children: JSX.Element | JSX.Element[]
+  children: React.ReactNode
 }
 
 const Layout = ({ title, children }: LayoutProps) => (
