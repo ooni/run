@@ -1,4 +1,3 @@
-import OONIRunHero from 'components/OONIRunHero'
 import { getRunLink } from 'lib/api'
 import { GetServerSidePropsContext } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
@@ -85,7 +84,6 @@ const ViewRunLink = ({ linkId }: ViewRunLinkProps) => {
 
   return (
     <>
-      <OONIRunHero href="/" />
       {data?.descriptor && (
         <>
           <Container p={4}>

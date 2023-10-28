@@ -5,7 +5,6 @@ import { FormattedMessage } from 'react-intl'
 import { Text, Container, Flex, Box } from 'ooni-components'
 
 import { createRunLink } from 'lib/api'
-import OONIRunHero from '../components/OONIRunHero'
 
 import { useRouter } from 'next/router'
 import TestListForm from 'components/form/TestListForm'
@@ -60,8 +59,6 @@ const Create: NextPage = () => {
 
   return (
     <>
-      <OONIRunHero href={'/'} />
-
       {!user || loading ? (
         <></>
       ) : (

@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Box, Flex, Heading, Text, Link, Container } from 'ooni-components'
 import { useRouter } from 'next/router'
 import NLink from 'next/link'
-
-import OONIRunHero from 'components/OONIRunHero'
 import LoginForm from 'components/login/LoginForm'
 // import SpinLoader from 'components/vendor/SpinLoader'
 import useUser from 'hooks/useUser'
@@ -29,8 +27,6 @@ const Login = () => {
 
   return (
     <>
-      <OONIRunHero href={'/'} />
-
       <Container>
         <Flex alignItems="center" flexDirection="column">
           <Heading h={1} mt={3} mb={1} fontSize={[3, 5]}>

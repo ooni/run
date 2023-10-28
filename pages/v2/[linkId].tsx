@@ -5,7 +5,6 @@ import { Container, Button, Link, Heading, Text, Box } from 'ooni-components'
 import { getIntentURI } from 'utils/links'
 
 import Layout from 'components/Layout'
-import OONIRunHero from 'components/OONIRunHero'
 
 import mobileApp from 'config/mobileApp'
 import styled from 'styled-components'
@@ -202,7 +201,6 @@ const Nettest = ({
         <meta property="al:ios:app_name" content={mobileApp.iPhoneName} />
         {deepLink && <meta property="al:ios:url" content={deepLink} />}
       </Head>
-      <OONIRunHero href="/" />
       <Container p={4}>
         {descriptor && (
           <DescriptorDetails

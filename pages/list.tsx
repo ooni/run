@@ -1,5 +1,3 @@
-import OONIRunHero from 'components/OONIRunHero'
-
 import { Container, Box, Checkbox } from 'ooni-components'
 
 import RunLinkList from 'components/List'
@@ -21,7 +19,6 @@ const List = () => {
 
   return (
     <>
-      <OONIRunHero href="/" />
       <Container my={4}>
         <Heading h={2} mb={2}>OONI Run Links</Heading>
         <Box mb={4}>

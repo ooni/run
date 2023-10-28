@@ -35,7 +35,7 @@ const UserContext = createContext<UserContext>({
 })
 
 type UserProviderProps = {
-  children: JSX.Element
+  children: React.ReactNode
 }
 
 export const UserProvider = ({ children }: UserProviderProps) => {

@@ -92,11 +92,6 @@ const NavItem = ({ label, href, onClick }: NavItemComponentProps) => {
   )
 }
 
-const StyledNavBar = styled.div`
-  padding-top: 16px;
-  padding-bottom: 28px;
-`
-
 export const NavBar = () => {
   const { user, logout } = useUser()
 
@@ -106,33 +101,26 @@ export const NavBar = () => {
   }
 
   return (
-    <StyledNavBar>
-      <Container>
-        <Flex flexDirection={['column', 'row']} justifyContent={'flex-end'}>
-          <NavItem label={<FormattedMessage id="Navbar.List" />} href="/list" />
-          {user?.logged_in ? (
-            <>
-              <NavItem
-                label={<FormattedMessage id="Navbar.Create" />}
-                href="/create"
-              />{' '}
-              <NavItem
-                label={<FormattedMessage id="Navbar.Logout" />}
-                onClick={logoutUser}
-              />
-            </>
-          ) : (
+    <Flex>
+      <Flex flexDirection={['column', 'row']} justifyContent={'flex-end'}>
+        {user?.logged_in && (
+          <>
+            <NavItem label={<FormattedMessage id="Navbar.List" />} href="/list" />
             <NavItem
-              label={<FormattedMessage id="Navbar.Login" />}
-              href="/login"
+              label={<FormattedMessage id="Navbar.Create" />}
+              href="/create"
             />
-          )}
-          <Box ml={[0, 4]} my={[2, 0]}>
-            <LocaleSwitcher />
-          </Box>
-        </Flex>
-      </Container>
-    </StyledNavBar>
+            <NavItem
+              label={<FormattedMessage id="Navbar.Logout" />}
+              onClick={logoutUser}
+            />
+          </>
+        )}
+        <Box ml={[0, 4]}>
+          <LocaleSwitcher />
+        </Box>
+      </Flex>
+    </Flex>
   )
 }
 

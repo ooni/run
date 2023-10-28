@@ -1,4 +1,3 @@
-import OONIRunHero from 'components/OONIRunHero'
 import { createRunLink, getRunLink } from 'lib/api'
 import TestListForm from 'components/form/TestListForm'
 import { Container } from 'ooni-components'
@@ -97,7 +96,6 @@ const EditRunLink = () => {
 
   return (
     <>
-      <OONIRunHero href="/" />
       <Container>
         {runLink && (
           <TestListForm

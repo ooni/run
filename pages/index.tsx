@@ -1,5 +1,3 @@
-import RunLinkList from 'components/List'
-import OONIRunHero from 'components/OONIRunHero'
 import useUser from 'hooks/useUser'
 import Markdown from 'markdown-to-jsx'
 import NLink from 'next/link'
@@ -10,15 +8,14 @@ import { useIntl } from 'react-intl'
 import { styled } from 'styled-components'
 
 const StyledCard = styled(Box)`
-  text-align: center;
-  border: 1px solid black;
-  border-radius: 12px;
+  border: 1px solid ${({theme}) => theme.colors.gray4};
+  border-radius: 8px;
   height: 100%;
-  padding: 20px;
+  padding: 24px;
 `
 
 const CardTitle = (props: any) => (
-  <Text fontSize={2} fontWeight="bold" mb={3} {...props} />
+  <Text fontSize={1} fontWeight="bold" mb={3} {...props} />
 )
 
 const CardText = (props: any) => <Text sx={{ lineHeight: '1.3' }} {...props} />
@@ -26,21 +23,18 @@ const CardText = (props: any) => <Text sx={{ lineHeight: '1.3' }} {...props} />
 const Home = () => {
   const intl = useIntl()
   const { user } = useUser()
-
+  
   return (
     <>
-      <OONIRunHero href="/" />
       <Container>
-        <Box my={5}>
-          <Text
-            maxWidth="860px"
-            fontSize={3}
-            textAlign="center"
-            margin="0 auto"
-          >
-            <Markdown>{intl.formatMessage({ id: 'Home.About' })}</Markdown>
-          </Text>
-        </Box>
+        <Text
+          maxWidth="572px"
+          fontSize={2}
+          mx="auto"
+          my={5}
+        >
+          <Markdown>{intl.formatMessage({ id: 'Home.About' })}</Markdown>
+        </Text>
         <Flex sx={{ gap: 3, flexDirection: ['column', 'column', 'row'] }}>
           <Box width={[1, 1, 1 / 3]}>
             <StyledCard>
@@ -87,30 +81,17 @@ const Home = () => {
         <Box textAlign="center" my={4}>
           {user?.logged_in ? (
             <NLink href="/create">
-              <Button type="button" btnSize="large" hollow>
+              <Button type="button" btnSize="large">
                 Create OONI Run Link
               </Button>
             </NLink>
           ) : (
             <NLink href="/login">
-              <Button type="button" btnSize="large" hollow>
+              <Button type="button" btnSize="large">
                 Login to create OONI Run Link
               </Button>
             </NLink>
           )}
-        </Box>
-        <Box>
-          <Heading textAlign="center" h={3} mt={5} mb={3}>
-            Recently created OONI Run links
-          </Heading>
-          <RunLinkList limit={3} />
-          <Box textAlign="center" my={4}>
-            <NLink href="/list">
-              <Button type="button" hollow>
-                View more
-              </Button>
-            </NLink>
-          </Box>
         </Box>
       </Container>
     </>

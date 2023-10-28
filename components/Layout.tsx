@@ -5,6 +5,9 @@ import GlobalStyle from './globalStyle'
 import { UserProvider } from 'hooks/useUser'
 
 import meta from '../config/meta'
+import OONIRunHero from './OONIRunHero'
+import Footer from './Footer'
+import { Box } from 'ooni-components'
 
 type LayoutProps = {
   title?: string
@@ -22,7 +25,11 @@ const Layout = ({ title, children }: LayoutProps) => (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <UserProvider>
-        <div className="content">{children}</div>
+        <Box sx={{minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>
+          <OONIRunHero href='/' />
+          <Box my={4} className="content">{children}</Box>
+          <Footer />
+        </Box>
       </UserProvider>
     </ThemeProvider>
   </div>
