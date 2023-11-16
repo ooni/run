@@ -70,7 +70,7 @@ const Footer = () => {
           <FooterBox width={[1, 2 / 5]}>
             <Flex flexWrap='wrap' alignItems='center'>
               <Box p={[1, 0]} mb={[0, 3]} width={[1 / 2, 1]}>
-                {/* <ExplorerLogo height='32px' from=" " /> */}
+                <ExplorerLogo height='32px' />
               </Box>
               <Box width={[1 / 2, 2 / 3]}>
                 {' '}
