@@ -1,43 +1,24 @@
-import { Container, Box, Checkbox } from 'ooni-components'
+import { Container } from 'ooni-components'
 
 import RunLinkList from 'components/List'
-import { useMemo } from 'react'
-import { Controller, useForm, useWatch } from 'react-hook-form'
 import { Heading } from 'ooni-components'
+import { Box } from 'ooni-components'
+import styled from 'styled-components'
+
+const StyledBox = styled(Box)`
+box-shadow: 0 50vh 0 50vh ${props => props.theme.colors.gray1};
+`
 
 const List = () => {
-  const { control } = useForm({ defaultValues: { only_mine: false } })
-  const onlyMineValue = useWatch({
-    control,
-    name: 'only_mine',
-    defaultValue: false,
-  })
-
-  const queryParams = useMemo(() => {
-    if (onlyMineValue) return { only_mine: true, include_archived: true }
-  }, [onlyMineValue])
+  const queryParams = { only_mine: true, include_archived: true }
 
   return (
-    <>
-      <Container my={4}>
-        <Heading h={2} mb={2}>OONI Run Links</Heading>
-        <Box mb={4}>
-          <Controller
-            render={({ field }) => (
-              <Checkbox
-                label="Show only mine"
-                {...field}
-                id="backgroundRun"
-                checked={field.value}
-              />
-            )}
-            name={`only_mine`}
-            control={control}
-          />
-        </Box>
+    <StyledBox bg='gray1'>
+      <Container py={4}>
+        <Heading h={2} mb={2}>My OONI Run Links</Heading>
         <RunLinkList queryParams={queryParams} />
       </Container>
-    </>
+    </StyledBox>
   )
 }
 
