@@ -1,7 +1,6 @@
 import { createRunLink, getRunLink } from 'lib/api'
 import TestListForm from 'components/form/TestListForm'
 import { Container } from 'ooni-components'
-import { GetServerSidePropsContext } from 'next'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
 import { transformOutgoingData } from 'pages/create'
@@ -90,7 +89,7 @@ const EditRunLink = () => {
 
   const onSubmit = useCallback((data: any) => {
     createRunLink(transformOutgoingData(data), { ooni_run_link_id: linkId }).then((res) => {
-      push(`/view/${res.ooni_run_link_id}`)
+      push(`/v2/${res.ooni_run_link_id}`)
     })
   }, [])
 

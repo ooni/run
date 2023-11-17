@@ -195,7 +195,7 @@ const TestListForm = ({
     postFetcher,
     {
       onSuccess: () => {
-        push(`/view/${linkId}`)
+        push(`/v2/${linkId}`)
       },
     }
   )

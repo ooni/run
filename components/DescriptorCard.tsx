@@ -26,7 +26,7 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
   const router = useRouter()
   const icon = useIcon(descriptor.icon)
 
-  const redirectToViewPage = () => router.push(`/view/${descriptor.ooni_run_link_id}`)
+  const redirectToViewPage = () => router.push(`/v2/${descriptor.ooni_run_link_id}`)
 
   return (
     <StyledFlex

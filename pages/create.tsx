@@ -49,7 +49,7 @@ const Create: NextPage = () => {
 
   const onSubmit = useCallback((data: any) => {
     createRunLink(transformOutgoingData(data)).then((res) => {
-      router.push(`/view/${res.ooni_run_link_id}`)
+      router.push(`/v2/${res.ooni_run_link_id}`)
     })
   }, [])
 
