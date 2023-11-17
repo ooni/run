@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Text, Container, Flex, Box } from 'ooni-components'
 
@@ -24,7 +24,7 @@ const transformNettests = (nettest: any) => ({
 })
 
 export const transformOutgoingData = (data: any) => {
-  const formData = data.ooniRunLink[0]
+  const { include_author, author, ...formData } = data.ooniRunLink[0]
   return {
     ...formData,
     name_intl: transformIntoObject(formData.name_intl),
@@ -33,12 +33,15 @@ export const transformOutgoingData = (data: any) => {
       formData.short_description_intl
     ),
     nettests: formData.nettests.map(transformNettests),
+    // only include author's email if they opted in
+    author: include_author ? author : null
   }
 }
 
 const Create: NextPage = () => {
   const router = useRouter()
   const { loading, user } = useUser()
+  const isAdmin = useMemo(() => (user?.role === 'admin'), [user])
 
   useEffect(() => {
     if (!user && !loading) router.push('/')
@@ -70,7 +73,7 @@ const Create: NextPage = () => {
                 id="WhatCanYouDoText.WebCensorship"
                 defaultMessage='Add websites below that you would like to test for censorship. Click "Generate" to create a link based on those websites. Share that link with OONI Probe mobile app users so that they can test the websites of your choice!'
               />
-              <TestListForm onSubmit={onSubmit} />
+              <TestListForm isAdmin={isAdmin} onSubmit={onSubmit} />
             </Box>
           </Flex>
         </Container>

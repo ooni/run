@@ -4,6 +4,7 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
+    "@uiw/react-color-compact": "^2.0.2",
     "axios": "^1.5.0",
     "intl": "^1.2.5",
     "markdown-to-jsx": "^7.3.2",

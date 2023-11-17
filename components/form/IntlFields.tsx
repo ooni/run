@@ -19,7 +19,7 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
       {fields.map((item, index) => (
         <Box key={item.id} mt={3}>
           <Flex>
-            <Box width={[1, 4 / 12]} mr={[0, 2]} ml={[0, 4]}>
+            <Box width={[1, 4 / 12]} mr={[0, 2]}>
               <Controller
                 render={({ field }) => (
                   <Select {...field} label="Language" width={1}>
@@ -35,25 +35,28 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
                 control={control}
               />
             </Box>
-            <Box width={[1, 7 / 12]}>
-              <Controller
-                render={({ field }) => (
-                  <Input label="Translation" {...field} placeholder="" />
-                )}
-                name={`${name}[${index}].value`}
-                control={control}
-              />
-            </Box>
-            <Box width={[1, 1 / 12]} alignSelf="end" mb={1}>
-              <Button
-                variant="link"
-                type="button"
-                color="black"
-                sx={{ float: 'right' }}
-                onClick={() => remove(index)}
-              >
-                <MdDelete size={30} />
-              </Button>
+            <Box width={[1, 8 / 12]}>
+              <Flex flexDirection='row'>
+                <Box width={1}>
+                  <Controller
+                    render={({ field }) => (
+                      <Input width={1} label="Translation" {...field} />
+                    )}
+                    name={`${name}[${index}].value`}
+                    control={control}
+                  />
+                </Box>
+                <Box alignSelf="end" mb={1}>
+                  <Button
+                    variant="link"
+                    color="black"
+                    sx={{ float: 'right' }}
+                    onClick={() => remove(index)}
+                  >
+                    <MdDelete size={30} />
+                  </Button>
+                </Box>
+              </Flex>
             </Box>
           </Flex>
         </Box>

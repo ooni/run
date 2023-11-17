@@ -1748,6 +1748,41 @@
     "@typescript-eslint/types" "6.9.0"
     eslint-visitor-keys "^3.4.1"
 
+"@uiw/color-convert@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@uiw/color-convert/-/color-convert-2.0.2.tgz#f771a5a3f136b86977a5b3e03b5ada2f53021e68"
+  integrity sha512-aN1YGzq/VViYoPCMZpLYXfOPacIqK6rEye0s6k2rJls62VXeNiJuOplammP6f1ul96HZ53PlK38/sl7KaP0DDg==
+
+"@uiw/react-color-compact@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@uiw/react-color-compact/-/react-color-compact-2.0.2.tgz#56ac1c34e54d8cf57e79d3a3e7eab156ad583247"
+  integrity sha512-GOfVU7Z4Dkr7umUWal1TG+nuI1PuCBnskisdvbCbGbLnJxFN1Wmlmw7l6SYVAW3p8uLzvywo30LjAtjkqF0cmQ==
+  dependencies:
+    "@uiw/color-convert" "2.0.2"
+    "@uiw/react-color-editable-input" "2.0.2"
+    "@uiw/react-color-editable-input-rgba" "2.0.2"
+    "@uiw/react-color-swatch" "2.0.2"
+
+"@uiw/react-color-editable-input-rgba@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@uiw/react-color-editable-input-rgba/-/react-color-editable-input-rgba-2.0.2.tgz#6708e661bc203076feb31acf435e73cec1783996"
+  integrity sha512-vZDAbw1s2i+05C9lc1dqyWkBFU+k6iDkgV67eHqEkhKER9NpurUIfWZ7LocRVAJKw90D2WGEI8ZN0TOtqX3iDg==
+  dependencies:
+    "@uiw/color-convert" "2.0.2"
+    "@uiw/react-color-editable-input" "2.0.2"
+
+"@uiw/react-color-editable-input@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@uiw/react-color-editable-input/-/react-color-editable-input-2.0.2.tgz#7aa3598a12638ee73d61de51a80afac7dfbb1474"
+  integrity sha512-3AAcNgVF/9W1Kd5abZofJBrOBd89YQPPsX2Z7ukr4q1mJZxsOHN1q9zhlMiXTffI7KoGNOjepyhHotGMpCP0PA==
+
+"@uiw/react-color-swatch@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@uiw/react-color-swatch/-/react-color-swatch-2.0.2.tgz#168c6af60f8da26788e34a243a29c024d7748747"
+  integrity sha512-7dX43Ze+NUwiIkCcH6GgN67+Ztv/Hqy0D0DLiGVU9WpBa5nO7mR20mhmYIg3J/2OUsB8pCFB0OIHpgNlK3xh/g==
+  dependencies:
+    "@uiw/color-convert" "2.0.2"
+
 "@ungap/structured-clone@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"

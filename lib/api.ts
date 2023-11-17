@@ -19,6 +19,12 @@ const getBearerToken = () => {
     : ''
 }
 
+export const getUserEmail = () => {
+  return typeof localStorage !== 'undefined'
+    ? JSON.parse(localStorage.getItem('bearer') || '{}')?.email_address
+    : ''
+}
+
 const axios = Axios.create({
   baseURL: process.env.NEXT_PUBLIC_OONI_API,
 })
@@ -98,17 +104,18 @@ export const loginUser = (token: string) => {
     .then(({ data }) => {
       localStorage.setItem(
         'bearer',
-        JSON.stringify({ token: data?.bearer, created_at: Date.now() })
+        JSON.stringify({ token: data?.bearer, email_address: data?.email_address, created_at: Date.now() })
       )
       return data
     })
 }
 
 export const refreshToken = () => {
+  const email_address = getUserEmail()
   return getAPI(apiEndpoints.TOKEN_REFRESH).then((data) => {
     localStorage.setItem(
       'bearer',
-      JSON.stringify({ token: data.bearer, created_at: Date.now() })
+      JSON.stringify({ token: data.bearer, email_address, created_at: Date.now() })
     )
   })
 }

@@ -1,31 +1,31 @@
 import {
-  useCallback,
-  ClipboardEvent,
   useMemo,
-  useState,
   ComponentType,
 } from 'react'
-import { Flex, Box, Button, Heading, Text, Input, Modal } from 'ooni-components'
+import { Flex, Box, Button, Text, Input } from 'ooni-components'
 import {
   useForm,
   useFieldArray,
   Controller,
   FormProvider,
 } from 'react-hook-form'
+import Compact from '@uiw/react-color-compact'
 import { FormattedMessage } from 'react-intl'
 import useSWRMutation from 'swr/mutation'
 import styled from 'styled-components'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
 import IntlFields from './IntlFields'
+import AdminNettestFields from './AdminNettestFields'
 import NettestFields from './NettestFields'
-import { apiEndpoints, fetcher, postFetcher } from 'lib/api'
+import { apiEndpoints, getUserEmail, postFetcher } from 'lib/api'
 import ButtonSpinner from 'components/ButtonSpinner'
 import { useRouter } from 'next/router'
 import IconModal from './IconModal'
 
 import * as FAIcons from 'react-icons/fa6'
 import * as MDIcons from 'react-icons/md'
+import { Checkbox } from 'ooni-components'
 
 const icons = [...Object.entries(FAIcons), ...Object.entries(MDIcons)].reduce(
   (previous, current) => {
@@ -64,7 +64,9 @@ export type TestList = {
     short_description: string
     description: string
     icon: string
+    color: string
     author: string
+    include_author: boolean
     nettests: Nettest[]
   }>
 }
@@ -79,7 +81,9 @@ const validationSchema = Yup.object({
         short_description: Yup.string().defined(),
         description: Yup.string().defined(),
         icon: Yup.string().defined(),
+        color: Yup.string().defined(),
         author: Yup.string().defined(),
+        include_author: Yup.boolean().defined(),
         nettests: Yup.array()
           .required()
           .of(
@@ -132,10 +136,12 @@ const initialValues = {
   short_description: '',
   description: '',
   icon: '',
-  author: '',
+  color: '#000000',
+  author: getUserEmail(),
+  include_author: true,
   nettests: [
     {
-      test_name: '',
+      test_name: 'web_connectivity',
       inputs: [],
       options: [],
       backend_options: [],
@@ -149,9 +155,11 @@ type TestListFormProps = {
   onSubmit: (data: {}) => void
   defaultValues?: object
   linkId?: string
+  isAdmin?: boolean
 }
 
 const TestListForm = ({
+  isAdmin = false,
   onSubmit,
   defaultValues,
   linkId,
@@ -174,6 +182,8 @@ const TestListForm = ({
     }
   }, [iconValue])
   const { errors, isSubmitting } = formState
+
+  // console.log("errors", errors)
 
   const { fields } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
@@ -229,6 +239,38 @@ const TestListForm = ({
                 <StyledInputWrapper>
                   <Controller
                     render={({ field }) => (
+                      <Input type="hidden" {...field} label="Icon" />
+                    )}
+                    name={`ooniRunLink.${index}.icon`}
+                    control={control}
+                  />
+                  <Box fontSize={3}>{selectedIcon}</Box>
+                  <IconModal 
+                    setValue={setValue}
+                    iconValue={iconValue}
+                  />
+                </StyledInputWrapper>
+                <StyledInputWrapper>
+                  <Controller
+                    render={({ field }) =>(
+                      <Compact
+                        {...field}
+                        color={field.value}
+                        style={{
+                          border: '1px solid gray',
+                        }}
+                        onChange={(color) => {
+                          field.onChange(color.hex);
+                        }}
+                      />
+                    )}
+                    name={`ooniRunLink.${index}.color`}
+                    control={control}
+                  />
+                </StyledInputWrapper>
+                <StyledInputWrapper>
+                  <Controller
+                    render={({ field }) => (
                       <Input
                         {...field}
                         label="Test list name"
@@ -270,35 +312,31 @@ const TestListForm = ({
                 <StyledInputWrapper>
                   <Controller
                     render={({ field }) => (
-                      <Input {...field} label="Author" placeholder="" />
+                      <Input {...field} disabled bg='gray3' label="Author's Email" />
                     )}
                     name={`ooniRunLink.${index}.author`}
                     control={control}
                   />
-                </StyledInputWrapper>
-                <StyledInputWrapper>
                   <Controller
                     render={({ field }) => (
-                      // render={({ field: { value, onChange } }) => (
-                      // <IconSelect
-                      //   options={selectIconOptions}
-                      //   value={selectIconOptions.find((c) => c.value === value)}
-                      //   onChange={(selectedOption) => {
-                      //     onChange(selectedOption?.value)
-                      //   }}
-                      // />
-                      <Input type="hidden" {...field} label="Icon" />
+                      <Box mt={2}>
+                        <Checkbox 
+                          {...field}
+                          checked={field.value}
+                          label='Show my email “email@domain.com” in the link info'
+                        />
+                      </Box>
                     )}
-                    name={`ooniRunLink.${index}.icon`}
+                    name={`ooniRunLink.${index}.include_author`}
                     control={control}
                   />
-                  <Box fontSize={3}>{selectedIcon}</Box>
-                  <IconModal setValue={setValue} />
                 </StyledInputWrapper>
-                <Heading h={4} fontWeight={300} mt={4}>
-                  Nettests
-                </Heading>
-                <NettestFields name={`ooniRunLink.${index}.nettests`} />
+                {isAdmin ? (
+                  <AdminNettestFields name={`ooniRunLink.${index}.nettests`} />
+                ) : (
+                  <NettestFields name={`ooniRunLink.${index}.nettests`} />
+                )}
+
               </Box>
             ))}
             <Button
