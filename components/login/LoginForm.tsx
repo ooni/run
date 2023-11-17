@@ -8,20 +8,6 @@ import { useRouter } from 'next/router'
 import { FormattedMessage } from 'react-intl'
 // import SpinLoader from 'components/vendor/SpinLoader'
 
-const StyledError = styled.small``
-// color: ${(props) => props.theme.colors.red5};
-
-const StyledInputContainer = styled(Box).attrs({
-  width: '100%',
-  mt: 3,
-})`
-  position: relative;
-  & ${StyledError} {
-    position: absolute;
-    top: -10px;
-    right: 0px;
-  }
-`
 type LoginFormProps = {
   onLogin: () => void
   redirectTo?: string
@@ -70,21 +56,23 @@ export const LoginForm = ({ onLogin, redirectTo }: LoginFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Flex flexDirection={['column']}>
-        <StyledInputContainer>
-          <Controller
-            render={({ field }) => <Input placeholder="Email *" {...field} />}
-            rules={{
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: 'Not valid email address',
-              },
-              required: true,
-            }}
-            name="email_address"
-            control={control}
-          />
-          <StyledError>{errors?.email_address?.message}</StyledError>
-        </StyledInputContainer>
+        <Controller
+          render={({ field }) => (
+            <Input 
+            placeholder="Email *"
+            error={errors?.email_address?.message}
+            {...field} />
+          )}
+          rules={{
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: 'Not valid email address',
+            },
+            required: true,
+          }}
+          name="email_address"
+          control={control}
+        />
         {loginError && (
           <Box mt={1}>
             <StyledError>{loginError}</StyledError>
@@ -93,7 +81,7 @@ export const LoginForm = ({ onLogin, redirectTo }: LoginFormProps) => {
         <Box mt={3} alignSelf="center">
           {!submitting ? (
             <Button disabled={!isValid} type="submit">
-              <FormattedMessage id="Navbar.Login" />
+              <FormattedMessage id="Login.Button" />
             </Button>
           ) : (
             // <SpinLoader size={3} margin='1px' />

@@ -48,10 +48,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState(null)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(true)
-  // const [loadingInitial, setLoadingInitial] = useState(true)
 
   const getUser = () => {
-    // setLoading(true)
     return getAPI(apiEndpoints.ACCOUNT_METADATA)
       .then((user) => {
         setUser(user)
@@ -64,11 +62,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   }
 
   const afterLogin = useCallback(
-    (redirectTo: string) => {
-      const { pathname, searchParams } = new URL(redirectTo)
+    () => {
       setTimeout(() => {
-        router.push({ pathname, query: Object.fromEntries([...searchParams]) })
-      }, 3000)
+        router.push('/create')
+      }, 2000)
     },
     [router]
   )
@@ -76,9 +73,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   useEffect(() => {
     if (token && router.pathname === '/login') {
       loginUser(token)
-        .then((data) => {
+        .then(() => {
           getUser()
-          if (data?.redirect_to) afterLogin(data.redirect_to)
+          afterLogin()
         })
         .catch((e) => {
           console.log(e)

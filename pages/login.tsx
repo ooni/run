@@ -6,6 +6,7 @@ import LoginForm from 'components/login/LoginForm'
 // import SpinLoader from 'components/vendor/SpinLoader'
 import useUser from 'hooks/useUser'
 import { FormattedMessage, useIntl } from 'react-intl'
+import OONIRunHero from 'components/OONIRunHero'
 
 const Login = () => {
   const router = useRouter()
@@ -27,17 +28,18 @@ const Login = () => {
 
   return (
     <>
-      <Container>
+      <OONIRunHero />
+      <Container my={4}>
         <Flex alignItems="center" flexDirection="column">
-          <Heading h={1} mt={3} mb={1} fontSize={[3, 5]}>
-            <FormattedMessage id="Navbar.Login" />
+          <Heading h={1} fontSize={[3, 5]}>
+            <FormattedMessage id="Login.Title" />
           </Heading>
         </Flex>
-        <Flex mt={4} flexDirection="column">
+        <Flex flexDirection="column">
           {/* Before logging In */}
           {!token && !submitted && (
             <>
-              <Text fontSize={1} mb={2} textAlign="center">
+              <Text fontSize={1} my={3} textAlign="center">
                 <FormattedMessage id="Login.EnterEmail" />
               </Text>
               <Box style={{ width: '300px' }} alignSelf="center">
