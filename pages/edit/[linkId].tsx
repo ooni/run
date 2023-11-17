@@ -8,6 +8,7 @@ import type { ParsedUrlQuery } from 'querystring'
 import useUser from 'hooks/useUser'
 import { generateRandomString } from 'utils'
 import useSWR from 'swr'
+import OONIRunHero from 'components/OONIRunHero'
 
 const transformIntoArray = (obj: object) =>
   Object.entries(obj).map(([k, v]) => ({
@@ -95,6 +96,7 @@ const EditRunLink = () => {
 
   return (
     <>
+      <OONIRunHero />
       <Container>
         {runLink && (
           <TestListForm

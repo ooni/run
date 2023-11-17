@@ -5,12 +5,13 @@ import { useState } from "react"
 
 
 const StyledCode = styled(Flex)`
-  font-family: courier, monospace;
-  padding: 14px;
-  white-space: pre-wrap;
+font-size: 14px;
+font-family: courier, monospace;
+white-space: pre-wrap;
 `
 
-const StyledIcon = styled.span`
+const StyledIcon = styled(Box)`
+cursor: pointer;
 `
 
 type Code = {
@@ -42,14 +43,14 @@ const Code = ({ text }: Code) => {
   }
   
   return (
-    <StyledCode bg='gray2'>
+    <StyledCode p={3} bg='blue1'>
       {text} 
-      <Box ml={2}>
+      <StyledIcon ml={2}>
         {isCopied ? 
           <MdOutlineCheckCircle color={theme.colors.green7} /> :
           <MdOutlineContentCopy onClick={handleCopyClick} />
         }
-      </Box>
+      </StyledIcon>
     </StyledCode>
   )
 }

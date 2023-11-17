@@ -13,14 +13,13 @@ const BrandContainer = styled.div`
   }
 `
 
-type OONIRunHeroProps = { href: string }
-const OONIRunHero = ({ href }: OONIRunHeroProps) => (
+const OONIRunHero = () => (
   <Box bg="base">
     <Container py='24px'>
       <Flex justifyContent='space-between'>
         <Box color="white" fontSize={1}>
           <BrandContainer>
-            <NLink href={href}>
+            <NLink href='/'>
               <LogoOONIRun height="48px" />
             </NLink>
           </BrandContainer>

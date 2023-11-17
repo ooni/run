@@ -4,8 +4,6 @@ import { Container, Button, Link, Heading, Text, Box } from 'ooni-components'
 
 import { getIntentURI } from 'utils/links'
 
-import Layout from 'components/Layout'
-
 import mobileApp from 'config/mobileApp'
 import styled from 'styled-components'
 import { GetServerSideProps } from 'next'
@@ -13,6 +11,7 @@ import type { ParsedUrlQuery } from 'querystring'
 import DescriptorDetails from 'components/DescriptorDetails'
 import { getRunLink } from 'lib/api'
 import { generateRandomString } from 'utils'
+import OONIRunHero from 'components/OONIRunHero'
 
 const StyledCode = styled.code`
   font-family: courier, monospace;
@@ -146,7 +145,7 @@ const Nettest = ({
   }`
 
   return (
-    <Layout title={title}>
+    <>
       <Head>
         <meta name="twitter:card" content="app" />
         <meta name="twitter:site" content="@OpenObservatory" />
@@ -201,6 +200,7 @@ const Nettest = ({
         <meta property="al:ios:app_name" content={mobileApp.iPhoneName} />
         {deepLink && <meta property="al:ios:url" content={deepLink} />}
       </Head>
+      <OONIRunHero />
       <Container p={4}>
         {descriptor && (
           <DescriptorDetails
@@ -212,7 +212,7 @@ const Nettest = ({
             linkId={linkId}
           />
         )}
-        {/* <Heading pt={2} h={2}>
+        <Heading pt={2} h={2}>
           <FormattedMessage
             id="Nettest.Heading.HaveMobileApp"
             defaultMessage="You already have the OONI Probe mobile app"
@@ -229,7 +229,7 @@ const Nettest = ({
           <Button>
             <FormattedMessage id="Nettest.Button.Run" defaultMessage="Run" />
           </Button>
-        </Link> */}
+        </Link>
 
         <Heading pt={4} h={2}>
           <FormattedMessage
@@ -275,7 +275,7 @@ const Nettest = ({
           ></iframe>
         )}
       </>
-    </Layout>
+    </>
   )
 }
 

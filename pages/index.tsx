@@ -1,3 +1,4 @@
+import OONIRunHero from 'components/OONIRunHero'
 import useUser from 'hooks/useUser'
 import Markdown from 'markdown-to-jsx'
 import NLink from 'next/link'
@@ -26,6 +27,7 @@ const Home = () => {
   
   return (
     <>
+      <OONIRunHero />
       <Container>
         <Text
           maxWidth="572px"
@@ -81,13 +83,13 @@ const Home = () => {
         <Box textAlign="center" my={4}>
           {user?.logged_in ? (
             <NLink href="/create">
-              <Button type="button" btnSize="large">
+              <Button type="button" size="large">
                 Create OONI Run Link
               </Button>
             </NLink>
           ) : (
             <NLink href="/login">
-              <Button type="button" btnSize="large">
+              <Button type="button" size="large">
                 Login to create OONI Run Link
               </Button>
             </NLink>

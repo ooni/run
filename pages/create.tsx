@@ -9,6 +9,7 @@ import { createRunLink } from 'lib/api'
 import { useRouter } from 'next/router'
 import TestListForm from 'components/form/TestListForm'
 import useUser from 'hooks/useUser'
+import OONIRunHero from 'components/OONIRunHero'
 
 const transformKeyValue = ({ key, value }: any) => ({ [key]: value })
 
@@ -62,6 +63,7 @@ const Create: NextPage = () => {
 
   return (
     <>
+      <OONIRunHero />
       {!user || loading ? (
         <></>
       ) : (

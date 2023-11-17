@@ -26,7 +26,6 @@ const Layout = ({ title, children }: LayoutProps) => (
       <GlobalStyle />
       <UserProvider>
         <Box sx={{minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>
-          <OONIRunHero href='/' />
           <Box className="content">{children}</Box>
           <Footer />
         </Box>

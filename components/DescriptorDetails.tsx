@@ -36,7 +36,7 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
 
   return (
     <a href={tweetUrl} target="_blank">
-      <Button hollow btnSize='small'>
+      <Button hollow size='small'>
         <Flex alignContent="center">
           <Text mr={2}>
             {intl.formatMessage({
@@ -51,19 +51,6 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
   )
 }
 
-const StyledRow = styled(Flex)`
-  padding: 8px 0px;
-  &:nth-child(odd) {
-    background: ${(props) => props.theme.colors.gray0};
-  }
-  border-bottom: 1px solid ${(props) => props.theme.colors.gray2};
-`
-
-const StyledRowName = styled(Box).attrs({
-  fontWeight: '600',
-  width: [1, 1 / 3],
-})``
-
 const DescriptorDetails = ({
   descriptor,
   descriptorCreationTime,
@@ -75,7 +62,7 @@ const DescriptorDetails = ({
   const icon = useIcon(descriptor.icon)
   const { locale } = useIntl()
 
-  const { data: listData } = useSWR({ ooni_run_link_ids: linkId }, (props) => getList(props))
+  const { data: listData } = useSWR({ ooni_run_link_id: linkId }, (props) => getList(props))
 
   const revisionsList = useMemo(() => {
     if (listData?.descriptors?.length > 1) {
@@ -97,9 +84,10 @@ const DescriptorDetails = ({
     <>
       <Flex
         justifyContent="space-between"
-        // flexDirection={['column-reverse', 'column-reverse', 'row']}
+        flexDirection={['column-reverse', 'column-reverse', 'row']}
       >
         <Box mb={3}>
+          <Heading h={4}>Link Info</Heading>
           <Heading h={1} lineHeight={1} display='inline' verticalAlign='middle' mr={3}>
             <Box as='span' verticalAlign='middle'>{icon}</Box>
             {descriptor.name}
@@ -109,8 +97,13 @@ const DescriptorDetails = ({
         {!archived && (
           <Flex alignItems="start">
             <Box pr={2}>
+              <NLink href={`/edit/${linkId}`}>
+                <StyleLinkButton hollow size='small'>
+                  Edit
+                </StyleLinkButton>
+              </NLink>
               <NLink href={deepLink}>
-                <StyleLinkButton hollow btnSize='small'>
+                <StyleLinkButton hollow size='small'>
                   <FormattedMessage
                     id="Modal.Button.Link"
                     defaultMessage="Link"
@@ -130,99 +123,43 @@ const DescriptorDetails = ({
         </Text>
       )}
 
-      {/* {!!Object.entries(descriptor.name_intl).length && (
-        <>
-          {Object.entries(descriptor.name_intl).map(
-            ([key, value]) => <p key={key}>{`${key}: ${value}`}</p>
-          )}
-        </>
-      )} */}
       {descriptor.short_description && (
         <Text mb={3}>
           <Markdown>{descriptor.short_description}</Markdown>
         </Text>
       )}
-      {/* {!!descriptor.short_description_intl?.length && (
-        <p>
-          {Object.entries(descriptor.short_description_intl).map(
-            ([key, value]) => `${key}: ${value}`
-          )}
-        </p>
-      )} */}
 
       {descriptor.description && (
         <Markdown>{descriptor.description}</Markdown>
       )}
 
       {!archived && (
-        <Box mb={4}>
-          <Heading pt={3} pb={2} h={3}>
-            <FormattedMessage
-              id="Modal.Heading.ShareThisURL"
-              defaultMessage="Share this link with OONI Probe mobile app users"
-            />
+        <Box p={3} my={4} sx={{border: '1px solid', borderColor: 'blue5'}}>
+          <Heading mb={2} mt={0} h={3}>
+            <FormattedMessage id="Modal.Heading.ShareThisURL" />
           </Heading>
           <Code text={runLink} />
         </Box>
       )}
 
-      {/* {!!descriptor.description_intl?.length && (
-        <p>
-          {Object.entries(descriptor.description_intl).map(
-            ([key, value]) => `${key}: ${value}`
-          )}
-        </p>
-      )} */}
-      <Heading h={4}>Tests</Heading>
+      <Box p={3} sx={{border: '1px solid', borderColor: 'gray3', borderRadius: 8}}>
+        <Heading h={4}>Tests</Heading>
+        {descriptor.nettests.map((nettest, i) => (
+          <Flex flexDirection='column' key={`${nettest.test_name}-${i}`} mb={3}>
+            <Text fontWeight={600}>{nettest.test_name}</Text>
 
-      {descriptor.nettests.map((nettest, i) => (
-        <Flex flexDirection='column' key={`${nettest.test_name}-${i}`} mb={3} p={3} sx={{border: '1px solid', borderColor: 'gray3', borderRadius: 8}}>
-          <Text fontWeight={600}>{nettest.test_name}</Text>
-
-          {/* <StyledRow>
-            <StyledRowName>is_background_run_enabled:</StyledRowName>
-            <Box>{nettest.is_background_run_enabled ? 'true' : 'false'}</Box>
-          </StyledRow>
-          <StyledRow>
-            <StyledRowName>is_manual_run_enabled:</StyledRowName>
-            <Box>{nettest.is_manual_run_enabled ? 'true' : 'false'}</Box>
-          </StyledRow> */}
-
-          {!!nettest.inputs?.length && (
-            <>
-              <Text fontSize={0} fontWeight={600} mt={3} mb={2}>INPUTS ({nettest.inputs.length})</Text>
-              <Text fontSize={14}>
-                {/* {nettest.inputs.map((input: string, i: number) => (
-                  <p key={i}>{input}</p>
-                ))} */}
-                {nettest.inputs.join(', ')}
-              </Text>
-            </>
-          )}
-{/* 
-          {!!nettest.options?.length && (
-            <StyledRow>
-              <StyledRowName>Options:</StyledRowName>
-              <Box>
-                {Object.entries(nettest.options).map(([key, value]) => (
-                  <p key={key}>{`${key}: ${value}`}</p>
-                ))}
-              </Box>
-            </StyledRow>
-          )}
-          {!!nettest.backend_options?.length && (
-            <StyledRow>
-              <StyledRowName>Backend options:</StyledRowName>
-              <Box>
-                {Object.entries(nettest.backend_options).map(([key, value]) => (
-                  <p key={key}>{`${key}: ${value}`}</p>
-                ))}
-              </Box>
-            </StyledRow>
-          )} */}
-          
-        </Flex>
-      ))}
+            {!!nettest.inputs?.length && (
+              <>
+                <Text fontSize={0} fontWeight={600} mt={3} mb={2}>INPUTS ({nettest.inputs.length})</Text>
+                <Text fontSize={14}>
+                  {nettest.inputs.join(', ')}
+                </Text>
+              </>
+            )}
+            
+          </Flex>
+        ))}
+      </Box>
       {!!revisionsList.length && (
         <>
           <Heading h={4}>Previous revisions</Heading>

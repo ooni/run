@@ -2,7 +2,6 @@ import Head from 'next/head'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { Container, Button, Link, Heading, Text, Box } from 'ooni-components'
 import { getIntentURI, getEncodedQuery } from 'utils/links'
-import Layout from '../components/Layout'
 import mobileApp from '../config/mobileApp'
 import styled from 'styled-components'
 import { GetServerSideProps } from 'next'
@@ -117,7 +116,7 @@ const Nettest = ({
   }`
 
   return (
-    <Layout title={title}>
+    <>
       <Head>
         <meta name="twitter:card" content="app" />
         <meta name="twitter:site" content="@OpenObservatory" />
@@ -236,7 +235,7 @@ const Nettest = ({
           ></iframe>
         )}
       </>
-    </Layout>
+    </>
   )
 }
 
