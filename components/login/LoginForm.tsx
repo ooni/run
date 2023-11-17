@@ -75,7 +75,7 @@ export const LoginForm = ({ onLogin, redirectTo }: LoginFormProps) => {
         />
         {loginError && (
           <Box mt={1}>
-            <StyledError>{loginError}</StyledError>
+            {loginError}
           </Box>
         )}
         <Box mt={3} alignSelf="center">
