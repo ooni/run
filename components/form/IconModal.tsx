@@ -5,6 +5,7 @@ import * as FAIcons from 'react-icons/fa6'
 import * as MDIcons from 'react-icons/md'
 import { styled } from 'styled-components'
 import { TestList } from './TestListForm'
+import { Box } from 'ooni-components'
 
 const icons = [...Object.entries(FAIcons), ...Object.entries(MDIcons)].reduce(
   (previous, current) => {
@@ -17,38 +18,46 @@ const icons = [...Object.entries(FAIcons), ...Object.entries(MDIcons)].reduce(
 const StyledIconButton = styled.button`
   font-size: 10px;
   min-width: 50px;
+  background: none;
+  border: none;
+  &:hover {
+    cursor: pointer;
+    color: gray;
+  }
 `
 type IconModal = {
   setValue: UseFormSetValue<TestList>
+  iconValue?: string | undefined | null
 }
 
-const IconModal = ({ setValue }: IconModal) => {
+const IconModal = ({ setValue, iconValue }: IconModal) => {
   const [showIconModal, setShowIconModal] = useState(false)
 
   return (
     <>
-      <Button
-        type="button"
-        variant="link"
-        onClick={() => setShowIconModal(true)}
-      >
-        Select icon
-      </Button>
-
+      {iconValue ? 
+        <Button size='small' variant='link' endIcon={<MDIcons.MdRefresh />} onClick={() => setShowIconModal(true)}>
+          Replace icon
+        </Button> : 
+        <Button size='small' endIcon={<MDIcons.MdAdd />} onClick={() => setShowIconModal(true)}>
+          Select icon
+        </Button>
+      }
       <Modal
         show={showIconModal}
-        p={4}
+        py={4}
+        px={3}
         width={1000}
         onHideClick={(e: Event) => {
           e.preventDefault()
           setShowIconModal(false)
         }}
       >
-        <div
-          style={{
+        <Box
+          sx={{
             display: 'grid',
-            gap: '4px',
-            gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
+            gap: '16px',
+            gridTemplateColumns: ['1fr 1fr 1fr 1fr', '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr'],
           }}
         >
           {Object.entries(icons).map(([name, icon], i) => {
@@ -70,7 +79,7 @@ const IconModal = ({ setValue }: IconModal) => {
               </StyledIconButton>
             )
           })}
-        </div>
+        </Box>
       </Modal>
     </>
   )
