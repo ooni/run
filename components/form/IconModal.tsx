@@ -1,19 +1,11 @@
 import { Modal, Button } from 'ooni-components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { UseFormSetValue } from 'react-hook-form'
 import * as FAIcons from 'react-icons/fa6'
 import * as MDIcons from 'react-icons/md'
 import { styled } from 'styled-components'
 import { TestList } from './TestListForm'
 import { Box } from 'ooni-components'
-
-const icons = [...Object.entries(FAIcons), ...Object.entries(MDIcons)].reduce(
-  (previous, current) => {
-    const [name, icon] = current
-    return { ...previous, ...{ [name]: icon } }
-  },
-  {}
-)
 
 const StyledIconButton = styled.button`
   font-size: 10px;
@@ -32,6 +24,20 @@ type IconModal = {
 
 const IconModal = ({ setValue, iconValue }: IconModal) => {
   const [showIconModal, setShowIconModal] = useState(false)
+
+  const [icons, setIcons] = useState({})
+    
+  useEffect(() => {
+    setIcons(
+      [...Object.entries(FAIcons), ...Object.entries(MDIcons)].reduce(
+        (previous, current) => {
+          const [name, icon] = current
+          return { ...previous, ...{ [name]: icon } }
+        },
+        {}
+      )
+    )
+  }, [])
 
   return (
     <>

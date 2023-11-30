@@ -23,17 +23,8 @@ import ButtonSpinner from 'components/ButtonSpinner'
 import { useRouter } from 'next/router'
 import IconModal from './IconModal'
 
-import * as FAIcons from 'react-icons/fa6'
-import * as MDIcons from 'react-icons/md'
 import { Checkbox } from 'ooni-components'
-
-const icons = [...Object.entries(FAIcons), ...Object.entries(MDIcons)].reduce(
-  (previous, current) => {
-    const [name, icon] = current
-    return { ...previous, ...{ [name]: icon } }
-  },
-  {}
-)
+import useIcon from 'hooks/useIcon'
 
 export type FieldsPropTypes = {
   name: string
@@ -154,12 +145,7 @@ const TestListForm = ({
   const { control, formState, handleSubmit, setValue, watch } = formMethods
   const iconValue = watch('ooniRunLink.0.icon')
 
-  const selectedIcon = useMemo(() => {
-    if (icons[iconValue as keyof typeof icons]) {
-      const Icon = icons[iconValue as keyof typeof icons] as ComponentType
-      return <Icon />
-    }
-  }, [iconValue])
+  const selectedIcon = useIcon(iconValue)
   const { errors, isSubmitting } = formState
 
   // console.log("errors", errors)
