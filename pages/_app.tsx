@@ -7,6 +7,16 @@ import '../public/static/nprogress.css'
 import type { AppProps } from 'next/app'
 import Layout from 'components/Layout'
 
+export const getDirection = (locale: string) => {
+  switch (locale) {
+    case 'fa':
+    case 'ar':
+      return 'rtl'
+    default:
+      return 'ltr'
+  }
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
   const { locale = 'en', defaultLocale } = router

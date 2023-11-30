@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import { Flex, Box, Container } from 'ooni-components'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components'
 
@@ -36,13 +37,19 @@ const LocaleSwitcher = () => {
   }
 
   return (
-    <LanguageSelect onChange={handleLocaleChange} value={locale}>
-      {languages.map((c) => (
-        <option key={c} value={c}>
-          {getLocalisedLanguageName(c, c)}
-        </option>
-      ))}
-    </LanguageSelect>
+    <Container>
+      <Flex justifyContent='flex-end'>
+        <Box>
+          <LanguageSelect onChange={handleLocaleChange} value={locale}>
+            {languages.map((c) => (
+              <option key={c} value={c}>
+                {getLocalisedLanguageName(c,c)}
+              </option>
+            ))}
+          </LanguageSelect>
+        </Box>
+      </Flex>
+    </Container>
   )
 }
 

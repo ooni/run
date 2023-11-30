@@ -52,6 +52,7 @@
     "debug:widgets": "yarn run build:widgets && cp dist/widgets.js static/widgets.js",
     "extract": "node ./scripts/extract '{pages,components,utils}/*.{js,ts,tsx}'",
     "release": "yarn run build && yarn publish --new-version $(jq -r .version package.json)",
-    "genurl": "babel-node scripts/genurl.js"
+    "genurl": "babel-node scripts/genurl.js",
+    "script:build-translations": "node ./scripts/build-translations.js"
   }
 }

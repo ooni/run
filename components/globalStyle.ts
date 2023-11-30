@@ -1,5 +1,9 @@
 import { createGlobalStyle } from 'styled-components'
 
+type GlobalStyleProps = {
+  direction: 'rtl' | 'ltr'
+}
+
 /*
  * XXX these imports are currently broken
 import CharterRegular from 'ooni-components/dist/fonts/Charter-Regular.woff'
@@ -25,7 +29,7 @@ const FiraSansSemiBold = '/static/fonts/FiraSans-SemiBold.woff'
 const SourceCodeProBold = '/static/fonts/SourceCodePro-Bold.woff'
 const SourceCodeProRegular = '/static/fonts/SourceCodePro-Regular.woff'
 
-const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle<GlobalStyleProps>`
 
 /* CSS reset */
 html, body, div, span, applet, object, iframe,
@@ -53,6 +57,7 @@ footer, header, hgroup, menu, nav, section {
   display: block;
 }
 body {
+  direction: ${props => props.direction};
   line-height: 1;
 }
 ol, ul {

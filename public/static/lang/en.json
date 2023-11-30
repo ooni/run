@@ -53,5 +53,7 @@
   "Footer.Link.MailingList": "Mailing list",
   "Footer.Link.Slack": "Slack",
   "Footer.Text.Copyright": "\u00a9 {currentYear} Open Observatory of Network Interference (OONI)",
-  "Footer.Text.CCommons": "Content available under a Creative Commons license."
+  "Footer.Text.CCommons": "Content available under a Creative Commons license.",
+  "Error.Empty": "Cannot be empty",
+  "Error.UrlFormat": "Should be a valid URL format e.g \"https://ooni.org/post/\""
 }

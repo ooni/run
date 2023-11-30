@@ -11,3 +11,4 @@ next-env.d.ts
 .env*.local
 .yalc
 yalc.lock
+.env.local
