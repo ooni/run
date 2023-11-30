@@ -29,6 +29,7 @@ type Descriptor = {
   description_intl: {}[]
   nettests: Nettest[]
   mine?: boolean
+  descriptor_creation_time: string
 }
 
 type DescriptorDetails = {

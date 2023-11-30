@@ -8,14 +8,13 @@ import mobileApp from 'config/mobileApp'
 import styled from 'styled-components'
 import { GetServerSideProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
-import DescriptorDetails from 'components/DescriptorDetails'
+import DescriptorDetails from 'components/v2/DescriptorDetails'
 import { getRunLink } from 'lib/api'
 import { generateRandomString } from 'utils'
 import OONIRunHero from 'components/OONIRunHero'
-
-const StyledCode = styled.code`
-  font-family: courier, monospace;
-`
+import OONIRunHeroMinimal from 'components/OONIRunHeroMinimal'
+import CTA from 'components/v2/CTA'
+import PublicDescriptorDetails from 'components/v2/PublicDescriptorDetails'
 
 const useragent = require('useragent/index.js')
 
@@ -31,9 +30,12 @@ type Props = {
   universalLink: string
   title: string
   description: string
-  descriptor: Descriptor | null
-  descriptorCreationTime: string
-  archived: boolean | null
+  runLinkDescriptor: {
+    descriptor: Descriptor
+    mine: boolean
+    archived: boolean
+    descriptor_creation_time: string
+  } | null
   linkId: string
 }
 
@@ -44,12 +46,14 @@ interface QParams extends ParsedUrlQuery {
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   req,
   query,
-  params,
+  params
 }) => {
+  console.log("req", req)
   const { linkId } = params as QParams
   const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
   const ua = useragent.parse(userAgent)
-
+  const authToken = req?.cookies?.token ? JSON.parse(req?.cookies?.token).token : null
+  console.log("authToken", authToken)
   // redirect - previously handled with custom server
   if (ua.family === 'Chrome Mobile' && Number(ua.major) >= 25) {
     return {
@@ -64,17 +68,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const description = 'Run OONI Probe'
   const title = 'OONI Run | Coordinate website censorship testing'
   const universalLink = `https://run.ooni.io/v2/${linkId}`
-  let descriptor = null
-  let archived = null
-  let descriptorCreationTime = null
+  let runLinkDescriptor = null
 
   try {
-    const runLink = await getRunLink(linkId, {
-      nocache: generateRandomString(),
-    })
-    descriptor = runLink?.descriptor
-    descriptorCreationTime = runLink?.descriptor_creation_time
-    archived = !!runLink?.archived
+    runLinkDescriptor = await getRunLink(
+      linkId, 
+      { nocache: generateRandomString() },
+      {...(authToken && {
+        headers: { Authorization: `Bearer ${authToken}` },
+      })}
+    )
   } catch (e) {}
 
   let storeLink,
@@ -113,10 +116,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     universalLink,
     title,
     description,
-    descriptor,
-    descriptorCreationTime,
-    archived,
     linkId,
+    runLinkDescriptor
   }
 
   return { props }
@@ -132,9 +133,7 @@ const Nettest = ({
   universalLink,
   title,
   description,
-  descriptor,
-  descriptorCreationTime,
-  archived,
+  runLinkDescriptor,
   linkId
 }: Props) => {
   const windowScript = `window.onload = function() {
@@ -143,6 +142,11 @@ const Nettest = ({
       window.location = '${storeLink}';
     }, 500)
   }`
+
+  const descriptor = runLinkDescriptor?.descriptor
+  const descriptorCreationTime = runLinkDescriptor?.descriptor_creation_time || ''
+  const archived = !!runLinkDescriptor?.archived
+  const isMine = !!runLinkDescriptor?.mine
 
   return (
     <>
@@ -200,81 +204,66 @@ const Nettest = ({
         <meta property="al:ios:app_name" content={mobileApp.iPhoneName} />
         {deepLink && <meta property="al:ios:url" content={deepLink} />}
       </Head>
-      <OONIRunHero />
-      <Container p={4}>
-        {descriptor && (
-          <DescriptorDetails
-            descriptor={descriptor}
-            descriptorCreationTime={descriptorCreationTime}
-            archived={archived}
-            deepLink={deepLink}
-            runLink={runLink}
-            linkId={linkId}
-          />
-        )}
-        <Heading pt={2} h={2}>
-          <FormattedMessage
-            id="Nettest.Heading.HaveMobileApp"
-            defaultMessage="You already have the OONI Probe mobile app"
-          />
-        </Heading>
-        <Text pt={2} pb={3}>
-          <FormattedMessage
-            id="Nettest.Text.HaveMobileApp"
-            defaultMessage="Tap Run and open this link with your OONI Probe mobile app to start the test."
-          />
-        </Text>
 
-        <Link href={deepLink}>
-          <Button>
-            <FormattedMessage id="Nettest.Button.Run" defaultMessage="Run" />
-          </Button>
-        </Link>
+      {descriptor && (
+        <>
+          {isMine ? (
+            <>
+              <OONIRunHero />
+              <Container p={4}>
+                <DescriptorDetails
+                  descriptor={descriptor}
+                  descriptorCreationTime={descriptorCreationTime}
+                  archived={archived}
+                  deepLink={deepLink}
+                  runLink={runLink}
+                  linkId={linkId}
+                />
+              </Container>
+            </>) : (
+              <>
+                <OONIRunHeroMinimal />
+                <Box bg='gray0'>
+                  <Container p={4}>
+                    <CTA linkTitle={descriptor?.name} deepLink={deepLink} installLink={installLink} />
+                    <Box mt={4}>
+                      <PublicDescriptorDetails
+                        descriptor={descriptor}
+                        descriptorCreationTime={descriptorCreationTime}
+                        archived={archived}
+                        deepLink={deepLink}
+                        runLink={"bla"}
+                        linkId={linkId}
+                      />
+                    </Box>
+                    
 
-        <Heading pt={4} h={2}>
-          <FormattedMessage
-            id="Nettest.Heading.InstallApp"
-            defaultMessage="Install the OONI Probe mobile app"
-          />
-        </Heading>
-        <Text pt={2} pb={3}>
-          <FormattedMessage
-            id="Nettest.Text.InstallApp"
-            defaultMessage="Currently, OONI Run links only work with the OONI Probe mobile app."
-          />
-        </Text>
-
-        <Link href={installLink}>
-          <Button>
-            <FormattedMessage
-              id="Nettest.Button.Install"
-              defaultMessage="Install"
-            />
-          </Button>
-        </Link>
-
-        <Box mt={5}>
-          <StyledCode>{userAgent}</StyledCode>
-        </Box>
-      </Container>
-      <>
-        {withWindowLocation && (
-          <script
-            type="text/javascript"
-            dangerouslySetInnerHTML={{ __html: windowScript }}
-          />
-        )}
-      </>
-      <>
-        {withWindowLocation && (
-          <iframe
-            id="l"
-            width="1"
-            height="1"
-            style={{ visibility: 'hidden' }}
-          ></iframe>
-        )}
-      </>
+                    {/* <Box mt={5}>
+                      <StyledCode>{userAgent}</StyledCode>
+                    </Box> */}
+                  </Container>
+                </Box>
+              </>
+            )
+          }
+          <>
+            {withWindowLocation && (
+              <>
+                <script
+                  type="text/javascript"
+                  dangerouslySetInnerHTML={{ __html: windowScript }}
+                />
+                <iframe
+                  id="l"
+                  width="1"
+                  height="1"
+                  style={{ visibility: 'hidden' }}
+                ></iframe>
+              </>
+            )}
+          </>
+        </>
+      )}
     </>
   )
 }

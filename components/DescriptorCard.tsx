@@ -41,7 +41,11 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
             <Heading h={4} m={0} display='inline' mr={2}><Box as='span' verticalAlign='text-top'>{icon}</Box>{descriptor.name}</Heading>
             {!!descriptor.archived && <Box as='span' verticalAlign='super'><ArchivedTag /></Box>}
           </Box>
-          <Text mb={2}>Created by <Text as='span' fontWeight='bold'>{descriptor.author}</Text></Text>
+          <Text mb={2}>
+            {descriptor.author && 
+              <Text as='span'>Created by <Text as='span' fontWeight='bold'>{descriptor.author}</Text> | </Text>
+            } Last updated {descriptor.descriptor_creation_time}
+          </Text>
           {descriptor.short_description && 
             <Text color='gray5'>
               <Markdown>{descriptor.short_description}</Markdown>
