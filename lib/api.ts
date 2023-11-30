@@ -1,5 +1,4 @@
 import Axios, { AxiosError } from 'axios'
-import { generateRandomString } from 'utils'
 
 export const apiEndpoints = {
   ACCOUNT_METADATA: '/api/_/account_metadata',
@@ -45,10 +44,10 @@ export const getAPI = async (
       method: config.method ?? 'GET',
       url: endpoint,
       params: params,
-      ...config,
       ...(bearerToken && {
         headers: { Authorization: `Bearer ${bearerToken}` },
       }),
+      ...config,
     })
     .then((res) => res.data)
     .catch((e: Error | AxiosError) => {
@@ -71,8 +70,8 @@ export const createRunLink = (data: any, params = {}) => {
   return postAPI(apiEndpoints.CREATE_RUN_LINK, data, params)
 }
 
-export const getRunLink = (id: string, params = {}) => {
-  return getAPI(`${apiEndpoints.GET_RUN_LINK}/${id}`, params)
+export const getRunLink = (id: string, params = {}, config = {}) => {
+  return getAPI(`${apiEndpoints.GET_RUN_LINK}/${id}`, params, config)
 }
 
 export const getList = (params = {}) => {
@@ -102,10 +101,12 @@ export const loginUser = (token: string) => {
   return axios
     .get(apiEndpoints.USER_LOGIN, { params: { k: token } })
     .then(({ data }) => {
+      const tokenDetails = JSON.stringify({ token: data?.bearer, email_address: data?.email_address, created_at: Date.now() })
       localStorage.setItem(
         'bearer',
-        JSON.stringify({ token: data?.bearer, email_address: data?.email_address, created_at: Date.now() })
+        tokenDetails
       )
+      document.cookie = `token=${tokenDetails}; path=/`
       return data
     })
 }
@@ -113,10 +114,12 @@ export const loginUser = (token: string) => {
 export const refreshToken = () => {
   const email_address = getUserEmail()
   return getAPI(apiEndpoints.TOKEN_REFRESH).then((data) => {
+    const tokenDetails = JSON.stringify({ token: data.bearer, email_address, created_at: Date.now() })
     localStorage.setItem(
       'bearer',
-      JSON.stringify({ token: data.bearer, email_address, created_at: Date.now() })
+      tokenDetails
     )
+    document.cookie = `token=${tokenDetails}; path=/`
   })
 }
 

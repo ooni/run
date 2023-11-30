@@ -131,29 +131,9 @@ const validationSchema = Yup.object({
     ),
 })
 
-const initialValues = {
-  name: '',
-  short_description: '',
-  description: '',
-  icon: '',
-  color: '#000000',
-  author: getUserEmail(),
-  include_author: true,
-  nettests: [
-    {
-      test_name: 'web_connectivity',
-      inputs: [],
-      options: [],
-      backend_options: [],
-      is_background_run_enabled: false,
-      is_manual_run_enabled: false,
-    },
-  ],
-}
-
 type TestListFormProps = {
   onSubmit: (data: {}) => void
-  defaultValues?: object
+  defaultValues: object
   linkId?: string
   isAdmin?: boolean
 }
@@ -165,11 +145,10 @@ const TestListForm = ({
   linkId,
 }: TestListFormProps) => {
   const { push } = useRouter()
-  const values = defaultValues || initialValues
 
   const formMethods = useForm<TestList>({
     mode: 'onTouched',
-    defaultValues: { ooniRunLink: [values] },
+    defaultValues: { ooniRunLink: [defaultValues] },
     resolver: yupResolver(validationSchema),
   })
   const { control, formState, handleSubmit, setValue, watch } = formMethods
@@ -323,7 +302,7 @@ const TestListForm = ({
                         <Checkbox 
                           {...field}
                           checked={field.value}
-                          label='Show my email “email@domain.com” in the link info'
+                          label={`Show my email “${getUserEmail()}” in the link info`}
                         />
                       </Box>
                     )}

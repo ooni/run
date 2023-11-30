@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Text, Container, Flex, Box } from 'ooni-components'
 
-import { createRunLink } from 'lib/api'
+import { createRunLink, getUserEmail } from 'lib/api'
 
 import { useRouter } from 'next/router'
 import TestListForm from 'components/form/TestListForm'
@@ -35,8 +35,28 @@ export const transformOutgoingData = (data: any) => {
     ),
     nettests: formData.nettests.map(transformNettests),
     // only include author's email if they opted in
-    author: include_author ? author : null
+    author: include_author ? author : ''
   }
+}
+
+const defaultValues = {
+  name: '',
+  short_description: '',
+  description: '',
+  icon: '',
+  color: '#000000',
+  author: getUserEmail(),
+  include_author: true,
+  nettests: [
+    {
+      test_name: 'web_connectivity',
+      inputs: [],
+      options: [],
+      backend_options: [],
+      is_background_run_enabled: false,
+      is_manual_run_enabled: false,
+    },
+  ],
 }
 
 const Create: NextPage = () => {
@@ -49,8 +69,9 @@ const Create: NextPage = () => {
   }, [user, loading])
 
   const onSubmit = useCallback((data: any) => {
+    // console.log("transformOutgoingData(data)", transformOutgoingData(data))
     createRunLink(transformOutgoingData(data)).then((res) => {
-      router.push(`/v2/${res.ooni_run_link_id}`)
+     router.push(`/v2/${res.ooni_run_link_id}`)
     })
   }, [])
 
@@ -75,7 +96,7 @@ const Create: NextPage = () => {
                 id="WhatCanYouDoText.WebCensorship"
                 defaultMessage='Add websites below that you would like to test for censorship. Click "Generate" to create a link based on those websites. Share that link with OONI Probe mobile app users so that they can test the websites of your choice!'
               />
-              <TestListForm isAdmin={isAdmin} onSubmit={onSubmit} />
+              <TestListForm isAdmin={isAdmin} defaultValues={defaultValues} onSubmit={onSubmit} />
             </Box>
           </Flex>
         </Container>

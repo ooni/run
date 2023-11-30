@@ -1,4 +1,4 @@
-import { createRunLink, getRunLink } from 'lib/api'
+import { createRunLink, getRunLink, getUserEmail } from 'lib/api'
 import TestListForm from 'components/form/TestListForm'
 import { Container } from 'ooni-components'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -25,6 +25,9 @@ const transformNettests = (nettest: any) => ({
 const transformIncomingData = (formData: any) => {
   return {
     ...formData,
+    color: formData?.color ? formData.color :  '#000000',
+    author: formData?.author || getUserEmail(),
+    include_author: formData?.author ? true : false,
     name_intl: transformIntoArray(formData.name_intl),
     description_intl: transformIntoArray(formData.description_intl),
     short_description_intl: transformIntoArray(formData.short_description_intl),
