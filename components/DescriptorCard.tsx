@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import ArchivedTag from './ArchivedTag'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 import NLink from 'next/link'
+import { useIntl } from 'react-intl'
 
 const StyledFlex = styled(Flex)`
   border: 1px solid ${(props) => props.theme.colors.gray3};
@@ -24,6 +25,7 @@ type DescriptorCard = {
 }
 
 const DescriptorCard = ({ descriptor }: DescriptorCard) => {
+  const intl = useIntl()
   const icon = useIcon(descriptor.icon)
 
   return (
@@ -44,7 +46,7 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
           <Text mb={2}>
             {descriptor.author && 
               <Text as='span'>Created by <Text as='span' fontWeight='bold'>{descriptor.author}</Text> | </Text>
-            } Last updated {descriptor.descriptor_creation_time}
+            } Last updated {new Intl.DateTimeFormat(intl.locale, { dateStyle: 'medium' }).format(new Date(descriptor.descriptor_creation_time))}
           </Text>
           {descriptor.short_description && 
             <Text color='gray5'>

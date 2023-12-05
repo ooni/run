@@ -1,7 +1,14 @@
 import { useFieldArray, Controller, useFormContext } from 'react-hook-form'
 import { Flex, Box, Input, Button } from 'ooni-components'
-import { MdDelete } from 'react-icons/md'
+import { FaRegTrashCan } from 'react-icons/fa6'
 import { FieldsPropTypes } from './TestListForm'
+import styled from 'styled-components'
+
+const StyledLabel = styled.div`
+label {
+  font-size: 12px;
+}
+`
 
 const OptionsFields = ({ name }: FieldsPropTypes) => {
   const { control } = useFormContext()
@@ -15,32 +22,36 @@ const OptionsFields = ({ name }: FieldsPropTypes) => {
               <Controller
                 key={`${name}[${index}]-${item.id}-key`}
                 render={({ field }) => (
-                  <Input {...field} label="Key" placeholder="" />
+                  <StyledLabel>
+                    <Input {...field} label="Key" />
+                  </StyledLabel>
                 )}
                 name={`${name}[${index}].key`}
                 control={control}
               />
             </Box>
-            <Box width={[1, 7 / 12]} mr={[0, 0]}>
-              <Controller
-                key={`${name}[${index}]-${item.id}-value`}
-                render={({ field }) => (
-                  <Input {...field} label="Value" placeholder="" />
-                )}
-                name={`${name}[${index}].value`}
-                control={control}
-              />
-            </Box>
-            <Box width={[1, 1 / 12]} alignSelf="end">
+            <Flex width={[1, 8 / 12]} alignItems='end'>
+              <Box width={1}>
+                <Controller
+                  key={`${name}[${index}]-${item.id}-value`}
+                  render={({ field }) => (
+                    <StyledLabel>
+                      <Input {...field} label="Value" />
+                    </StyledLabel>
+                  )}
+                  name={`${name}[${index}].value`}
+                  control={control}
+                />
+              </Box>
               <Button
-                variant="unstyled"
-                type="button"
-                sx={{ float: 'right' }}
+                mb={12}
+                ml={2}
+                variant="iconButton"
                 onClick={() => remove(index)}
               >
-                <MdDelete size={30} />
+                <FaRegTrashCan size={20} />
               </Button>
-            </Box>
+            </Flex>
           </Flex>
         </Box>
       ))}

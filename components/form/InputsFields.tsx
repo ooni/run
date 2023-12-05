@@ -1,7 +1,7 @@
 import { useFieldArray, Controller, useFormContext } from 'react-hook-form'
 import { Flex, Box, Input, Button } from 'ooni-components'
 import { FieldsPropTypes } from './TestListForm'
-import { MdDelete } from 'react-icons/md'
+import { FaRegTrashCan } from "react-icons/fa6";
 import { useCallback } from 'react'
 
 const InputsFields = ({ name }: FieldsPropTypes) => {
@@ -59,8 +59,8 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
     <>
       {fields.map((item, index) => (
         <Box key={item.id} mt={3}>
-          <Flex>
-            <Box width={11 / 12}>
+          <Flex alignItems="center">
+            <Box width="100%">
               <Controller
                 key={`input-${item.id}`}
                 render={({ field, fieldState }) => (
@@ -73,22 +73,19 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
                       handlePaste(e, index, field.onChange)
                     }
                     error={fieldState?.error?.message}
-                    // icon={<MdDelete size={30} />}
-                    // onAction={() => remove(index)}
                   />
                 )}
                 name={`${name}[${index}]`}
                 control={control}
               />
             </Box>
-            <Box width={1 / 12}>
+            <Box ml={2}>
               <Button
-                variant="unstyled"
+                variant="iconButton"
                 type="button"
-                sx={{ float: 'right' }}
                 onClick={() => remove(index)}
               >
-                <MdDelete size={30} />
+                <FaRegTrashCan size={20} />
               </Button>
             </Box>
           </Flex>

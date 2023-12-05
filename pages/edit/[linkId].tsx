@@ -77,6 +77,7 @@ const EditRunLink = () => {
   const [randString] = useState(generateRandomString())
 
   const { loading, user } = useUser()
+  const isAdmin = useMemo(() => (user?.role === 'admin'), [user])
 
   const { data, error, isLoading } = useSWR(
     user ? [linkId, { nocache: randString }] : null,
@@ -103,6 +104,7 @@ const EditRunLink = () => {
       <Container>
         {runLink && (
           <TestListForm
+            isAdmin={isAdmin}
             onSubmit={onSubmit}
             defaultValues={runLink}
             linkId={linkId as string}

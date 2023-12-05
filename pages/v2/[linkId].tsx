@@ -232,7 +232,7 @@ const Nettest = ({
                         descriptorCreationTime={descriptorCreationTime}
                         archived={archived}
                         deepLink={deepLink}
-                        runLink={"bla"}
+                        runLink={runLink}
                         linkId={linkId}
                       />
                     </Box>

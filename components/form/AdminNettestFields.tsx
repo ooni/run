@@ -7,7 +7,6 @@ import {
 } from './TestListForm'
 import { MdDelete } from 'react-icons/md'
 import OptionsFields from './OptionsFields'
-import BackendOptionsFields from './BackendOptionsFields'
 import InputsFields from './InputsFields'
 import { Heading } from 'ooni-components'
 
@@ -48,7 +47,7 @@ const AdminNettestFields = ({ name }: FieldsPropTypes) => {
             </StyledInputWrapper>
             <StyledInputWrapper>
               <StyledLabel>Backend options</StyledLabel>
-              <BackendOptionsFields
+              <OptionsFields
                 name={`${name}[${index}].backend_options`}
               />
             </StyledInputWrapper>

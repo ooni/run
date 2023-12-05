@@ -1,8 +1,15 @@
 import { useFieldArray, Controller, useFormContext } from 'react-hook-form'
 import { Flex, Box, Input, Select, Button } from 'ooni-components'
 import { FieldsPropTypes } from './TestListForm'
-import { MdDelete } from 'react-icons/md'
 import supportedLanguages from '../../utils/supportedLanguages'
+import { FaRegTrashCan } from 'react-icons/fa6'
+import styled from 'styled-components'
+
+const StyledLabel = styled.div`
+label {
+  font-size: 12px;
+}
+`
 
 const langOptions = supportedLanguages.map((lang) => ({
   key: lang,
@@ -18,44 +25,46 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
     <>
       {fields.map((item, index) => (
         <Box key={item.id} mt={3}>
-          <Flex>
-            <Box width={[1, 4 / 12]} mr={[0, 2]}>
+          <Flex flexDirection={['column', 'row']}>
+            <Box width={[1, 4 / 12]} mr={[0, 2]} pr={[28, 0]}>
               <Controller
                 render={({ field }) => (
-                  <Select {...field} label="Language" width={1}>
-                    <option value=""></option>
-                    {langOptions.map(({ key, name }) => (
-                      <option key={key} value={key}>
-                        {name}
-                      </option>
-                    ))}
-                  </Select>
+                  <StyledLabel>
+                    <Select {...field} label="Language" width={1}>
+                      <option value=""></option>
+                      {langOptions.map(({ key, name }) => (
+                        <option key={key} value={key}>
+                          {name}
+                        </option>
+                      ))}
+                    </Select>
+                  </StyledLabel>
                 )}
                 name={`${name}[${index}].key`}
                 control={control}
               />
             </Box>
             <Box width={[1, 8 / 12]}>
-              <Flex flexDirection='row'>
+              <Flex flexDirection='row' mt={[2, 0]} alignItems="end">
                 <Box width={1}>
                   <Controller
                     render={({ field }) => (
-                      <Input width={1} label="Translation" {...field} />
+                      <StyledLabel>
+                        <Input label="Translation" {...field} />
+                      </StyledLabel>
                     )}
                     name={`${name}[${index}].value`}
                     control={control}
                   />
                 </Box>
-                <Box alignSelf="end" mb={1}>
-                  <Button
-                    variant="link"
-                    color="black"
-                    sx={{ float: 'right' }}
-                    onClick={() => remove(index)}
-                  >
-                    <MdDelete size={30} />
-                  </Button>
-                </Box>
+                <Button
+                  mb={12}
+                  ml={2}
+                  variant="iconButton"
+                  onClick={() => remove(index)}
+                >
+                  <FaRegTrashCan size={20} />
+                </Button>
               </Flex>
             </Box>
           </Flex>
