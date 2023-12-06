@@ -17,6 +17,7 @@ import * as Yup from 'yup'
 import IntlFields from './IntlFields'
 import AdminNettestFields from './AdminNettestFields'
 import NettestFields from './NettestFields'
+import IconModal from './IconModal'
 import { apiEndpoints, getUserEmail, postFetcher } from 'lib/api'
 import ButtonSpinner from 'components/ButtonSpinner'
 import { useRouter } from 'next/router'
@@ -24,8 +25,6 @@ import { useRouter } from 'next/router'
 import { Checkbox } from 'ooni-components'
 import useIcon from 'hooks/useIcon'
 import { FaCheck } from 'react-icons/fa6'
-
-const IconModal = lazy(() => import('./IconModal'))
 
 export type FieldsPropTypes = {
   name: string
