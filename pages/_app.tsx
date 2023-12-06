@@ -2,10 +2,16 @@ import { IntlProvider } from 'react-intl'
 import { useRouter } from 'next/router'
 import { useMemo, useEffect } from 'react'
 import NProgress from 'nprogress'
+import { Fira_Sans } from '@next/font/google'
 import '../public/static/nprogress.css'
 
 import type { AppProps } from 'next/app'
 import Layout from 'components/Layout'
+
+const firaSans = Fira_Sans({
+  weight: ['300', '400', '600'],
+  subsets: ['latin'],
+})
 
 export const getDirection = (locale: string) => {
   switch (locale) {
@@ -58,15 +64,22 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [locale, defaultLocale])
 
   return (
-    <IntlProvider
-      locale={locale}
-      defaultLocale={defaultLocale}
-      messages={messages}
-    >
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </IntlProvider>
+    <>
+      <style jsx global>{`
+        html {
+          font-family: ${firaSans.style.fontFamily};
+        }
+      `}</style>
+      <IntlProvider
+        locale={locale}
+        defaultLocale={defaultLocale}
+        messages={messages}
+      >
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </IntlProvider>
+    </>
   )
 }
 
