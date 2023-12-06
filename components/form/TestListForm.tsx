@@ -1,6 +1,5 @@
 import {
-  useMemo,
-  ComponentType,
+  lazy
 } from 'react'
 import { Flex, Box, Button, Text, Input } from 'ooni-components'
 import {
@@ -21,11 +20,12 @@ import NettestFields from './NettestFields'
 import { apiEndpoints, getUserEmail, postFetcher } from 'lib/api'
 import ButtonSpinner from 'components/ButtonSpinner'
 import { useRouter } from 'next/router'
-import IconModal from './IconModal'
 
 import { Checkbox } from 'ooni-components'
 import useIcon from 'hooks/useIcon'
 import { FaCheck } from 'react-icons/fa6'
+
+const IconModal = lazy(() => import('./IconModal'))
 
 export type FieldsPropTypes = {
   name: string
@@ -168,15 +168,6 @@ const TestListForm = ({
 
   return (
     <Flex flexDirection="column">
-      {/* <Heading h={2} mt={4}>
-        <FormattedMessage id="Title.URLs" defaultMessage="URLs" />
-      </Heading>
-      <Text fontWeight="lighter">
-        <FormattedMessage
-          id="Notice.Paste"
-          defaultMessage="Note: If you have a long list of URLs to add, you can copy them and paste into one of the boxes below."
-        />
-      </Text> */}
       <datalist id="url-prefixes">
         <option value="https://" />
         <option value="http://" />
@@ -217,6 +208,7 @@ const TestListForm = ({
                   />
                 </StyledInputWrapper>
                 <StyledInputWrapper>
+                  <StyledLabel mb={1}>Color</StyledLabel>
                   <Controller
                     render={({ field }) =>(
                       <Compact

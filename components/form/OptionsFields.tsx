@@ -31,7 +31,7 @@ const OptionsFields = ({ name }: FieldsPropTypes) => {
               />
             </Box>
             <Flex width={[1, 8 / 12]} alignItems='end'>
-              <Box width={1} mt={2}>
+              <Box width={1} mt={[2, 0]}>
                 <Controller
                   key={`${name}[${index}]-${item.id}-value`}
                   render={({ field }) => (

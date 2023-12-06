@@ -1,4 +1,5 @@
 declare module 'ooni-components'
+declare module 'ooni-components/icons'
 
 namespace NodeJS {
   interface ProcessEnv {

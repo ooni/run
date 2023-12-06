@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, cloneElement, ReactElement } from 'react'
 import { Flex, Heading, Box, Button, Text } from 'ooni-components'
 import NLink from 'next/link'
 import Markdown from 'markdown-to-jsx'
@@ -10,6 +10,7 @@ import useIcon from 'hooks/useIcon'
 import ArchivedTag from '../ArchivedTag'
 import RunLinkRevision from './RunLinkRevisions'
 import Code from '../Code'
+import { testGroups, testNames } from 'utils/test-info'
 
 export const formatMediumDateTime = (date: string, locale: string) => (
   new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(date))
@@ -74,6 +75,10 @@ const DescriptorDetails = ({
       [formatMediumDateTime(descriptorCreationTime, locale), null]
   }, [revisionsList, descriptorCreationTime])
 
+  const getIconComponent = (icon: ReactElement | undefined) => (
+    icon ? cloneElement(icon, {size: '20'}) : null
+  )
+
   return (
     <>
       <Flex
@@ -136,21 +141,24 @@ const DescriptorDetails = ({
         </Box>
       )}
 
-      <Box p={3} sx={{border: '1px solid', borderColor: 'gray3', borderRadius: 8}}>
-        <Heading h={4}>Tests</Heading>
+      <Box p={3} mt={3} sx={{border: '1px solid', borderColor: 'gray3', borderRadius: 8}}>
+        <Heading h={4} my={0}>Tests</Heading>
         {descriptor.nettests.map((nettest, i) => (
-          <Flex flexDirection='column' key={`${nettest.test_name}-${i}`} mb={3}>
-            <Text fontWeight={600}>{nettest.test_name}</Text>
-
+          <Flex key={`${nettest.test_name}-${i}`} flexDirection='column' pb={2} pt={2} sx={i > 0 ? {borderTop: '1px solid', borderColor: 'gray3'} : {}}>
+            <Flex alignItems="center">
+              <Box color={testGroups[testNames[nettest.test_name].group].color} mr={2}>
+                {getIconComponent(testGroups[testNames[nettest.test_name].group].icon)}
+              </Box>
+              <Text fontWeight={600}>{testNames[nettest.test_name].name}</Text>
+            </Flex>
             {!!nettest.inputs?.length && (
               <>
-                <Text fontSize={0} fontWeight={600} mt={3} mb={2}>INPUTS ({nettest.inputs.length})</Text>
+                <Text fontSize={0} fontWeight={600} mt={2} mb={2}>INPUTS ({nettest.inputs.length})</Text>
                 <Text fontSize={14}>
                   {nettest.inputs.join(', ')}
                 </Text>
               </>
             )}
-            
           </Flex>
         ))}
       </Box>
