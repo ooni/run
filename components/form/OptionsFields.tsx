@@ -17,8 +17,8 @@ const OptionsFields = ({ name }: FieldsPropTypes) => {
     <>
       {fields.map((item, index) => (
         <Box key={item.id} mt={3}>
-          <Flex>
-            <Box width={[1, 4 / 12]} mr={[0, 2]}>
+          <Flex flexDirection={['column', 'row']}>
+            <Box width={[1, 4 / 12]} mr={[0, 2]} pr={[28, 0]}>
               <Controller
                 key={`${name}[${index}]-${item.id}-key`}
                 render={({ field }) => (
@@ -31,7 +31,7 @@ const OptionsFields = ({ name }: FieldsPropTypes) => {
               />
             </Box>
             <Flex width={[1, 8 / 12]} alignItems='end'>
-              <Box width={1}>
+              <Box width={1} mt={2}>
                 <Controller
                   key={`${name}[${index}]-${item.id}-value`}
                   render={({ field }) => (

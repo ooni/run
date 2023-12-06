@@ -1,7 +1,7 @@
 import { useFieldArray, Controller, useFormContext } from 'react-hook-form'
 import { Flex, Box, Input, Button } from 'ooni-components'
 import { FieldsPropTypes } from './TestListForm'
-import { FaRegTrashCan } from "react-icons/fa6";
+import { FaRegTrashCan } from "react-icons/fa6"
 import { useCallback } from 'react'
 
 const InputsFields = ({ name }: FieldsPropTypes) => {

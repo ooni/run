@@ -2,7 +2,7 @@
   "Hero.SubTitle": "Coordinate website censorship testing",
   "Title.URLs": "URLs",
   "Button.AddUrl": "Add URL",
-  "Button.Generate": "Generate",
+  "Button.Generate": "Generate link",
   "Button.Update": "Update",
   "Share.Twitter.Button": "Tweet",
   "Share.Twitter.Tweet": "Run OONI Probe to test for censorship!",

@@ -25,6 +25,7 @@ import IconModal from './IconModal'
 
 import { Checkbox } from 'ooni-components'
 import useIcon from 'hooks/useIcon'
+import { FaCheck } from 'react-icons/fa6'
 
 export type FieldsPropTypes = {
   name: string
@@ -304,20 +305,21 @@ const TestListForm = ({
 
               </Box>
             ))}
-            <Button
-              width={1 / 4}
-              mx="auto"
-              type="submit"
-              loading={isSubmitting}
-              disabled={isSubmitting}
-              spinner={<ButtonSpinner />}
-            >
-              {linkId ? (
-                <FormattedMessage id="Button.Update" />
-              ) : (
-                <FormattedMessage id="Button.Generate" />
-              )}
-            </Button>
+            <Box textAlign="end" mb={4}>
+              <Button
+                type="submit"
+                endIcon={<FaCheck />}
+                loading={isSubmitting}
+                disabled={isSubmitting}
+                spinner={<ButtonSpinner />}
+              >
+                {linkId ? (
+                  <FormattedMessage id="Button.Update" />
+                ) : (
+                  <FormattedMessage id="Button.Generate" />
+                )}
+              </Button>
+            </Box>
           </Flex>
         </form>
       </FormProvider>
