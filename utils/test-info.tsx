@@ -19,7 +19,7 @@ type testGroups = {
   [key: string]: {
     color: string,
     id: string,
-    name: React.ReactElement
+    name: React.ReactElement | null
     icon: React.ReactElement
   }
 }
