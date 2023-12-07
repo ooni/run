@@ -36,8 +36,8 @@ type Descriptor = {
 type DescriptorDetails = {
   descriptor: Descriptor
   descriptorCreationTime: string
-  runLink: string
-  deepLink: string
+  runLink?: string
+  deepLink?: string
   archived: boolean | null
   linkId: string
 }

@@ -93,7 +93,7 @@ const DescriptorDetails = ({
           </Heading>
           {archived && <ArchivedTag />}
         </Box>
-        {!archived && (
+        {!archived && runLink && (
           <Flex alignItems="start">
             {/* <Box pr={2}> */}
               <NLink href={`/edit/${linkId}`}>
@@ -101,14 +101,14 @@ const DescriptorDetails = ({
                   Edit
                 </Button>
               </NLink>
-              <NLink href={deepLink}>
+              {deepLink && <NLink href={deepLink}>
                 <Button mr={2} hollow size='small'>
                   <FormattedMessage
                     id="Modal.Button.Link"
                     defaultMessage="Link"
                   />
                 </Button>
-              </NLink>
+              </NLink>}
             {/* </Box> */}
             {/* <Box> */}
               <TwitterButton universalLink={runLink} />
@@ -132,7 +132,7 @@ const DescriptorDetails = ({
         <Markdown>{descriptor.description}</Markdown>
       )}
 
-      {!archived && (
+      {!archived && runLink && (
         <Box p={3} my={4} sx={{border: '1px solid', borderColor: 'blue5'}}>
           <Heading mb={2} mt={0} h={3}>
             <FormattedMessage id="Modal.Heading.ShareThisURL" />
