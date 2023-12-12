@@ -3,7 +3,7 @@ import { ParsedUrlQuery } from 'querystring'
 
 // export const baseURL = 'https://run.ooni.io'
 
-export const baseURL = 'https://run.test.ooni.org/v2'
+export const baseURL = 'https://run.test.ooni.org'
 
 export const minimumVersion = '1.2.0'
 
@@ -62,7 +62,7 @@ export const getIntentURIv2 = (linkId: string) => {
   uri += '#Intent;'
   uri += `package=${mobileApp.googlePlayID};`
   uri += 'scheme=ooni;'
-  // uri += `S.browser_fallback_url=${baseURL}/${linkId};`
+  uri += `S.browser_fallback_url=${baseURL};`
   uri += 'end;'
   return uri
 }
