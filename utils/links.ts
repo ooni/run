@@ -62,7 +62,7 @@ export const getIntentURIv2 = (linkId: string) => {
   uri += '#Intent;'
   uri += `package=${mobileApp.googlePlayID};`
   uri += 'scheme=ooni;'
-  uri += `S.browser_fallback_url=${baseURL}/${linkId};`
+  // uri += `S.browser_fallback_url=${baseURL}/${linkId};`
   uri += 'end;'
   return uri
 }
