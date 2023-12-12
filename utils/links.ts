@@ -1,7 +1,9 @@
 import mobileApp from '../config/mobileApp'
 import { ParsedUrlQuery } from 'querystring'
 
-export const baseURL = 'https://run.ooni.io'
+// export const baseURL = 'https://run.ooni.io'
+
+export const baseURL = 'https://run.test.ooni.org/v2'
 
 export const minimumVersion = '1.2.0'
 
@@ -52,5 +54,15 @@ export const getIntentURI = (query: ParsedUrlQuery) => {
   uri += mobileApp.googlePlayID
   uri += ';scheme=ooni;end;S.browser_fallback_url='
   uri += mobileApp.googlePlayLink
+  return uri
+}
+
+export const getIntentURIv2 = (linkId: string) => {
+  let uri = `intent://runv2/${linkId}`
+  uri += '#Intent;'
+  uri += `package=${mobileApp.googlePlayID};`
+  uri += 'scheme=ooni;'
+  uri += `S.browser_fallback_url=${baseURL}/${linkId};`
+  uri += 'end;'
   return uri
 }

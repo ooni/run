@@ -1,20 +1,18 @@
 import Head from 'next/head'
-import { FormattedMessage } from 'react-intl'
-import { Container, Button, Link, Heading, Text, Box } from 'ooni-components'
+import { Container, Box } from 'ooni-components'
 
-import { getIntentURI } from 'utils/links'
+import { getIntentURIv2 } from 'utils/links'
 
 import mobileApp from 'config/mobileApp'
-import styled from 'styled-components'
 import { GetServerSideProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
-import DescriptorDetails from 'components/v2/DescriptorDetails'
+import DescriptorView from 'components/v2/DescriptorView'
 import { getRunLink } from 'lib/api'
 import { generateRandomString } from 'utils'
 import OONIRunHero from 'components/OONIRunHero'
 import OONIRunHeroMinimal from 'components/OONIRunHeroMinimal'
 import CTA from 'components/v2/CTA'
-import PublicDescriptorDetails from 'components/v2/PublicDescriptorDetails'
+import PublicDescriptorView from 'components/v2/PublicDescriptorView'
 
 const useragent = require('useragent/index.js')
 
@@ -45,7 +43,6 @@ interface QParams extends ParsedUrlQuery {
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   req,
-  query,
   params
 }) => {
   console.log("req", req)
@@ -53,16 +50,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
   const ua = useragent.parse(userAgent)
   const authToken = req?.cookies?.token ? JSON.parse(req?.cookies?.token).token : null
-  console.log("authToken", authToken)
-  // redirect - previously handled with custom server
-  if (ua.family === 'Chrome Mobile' && Number(ua.major) >= 25) {
-    return {
-      redirect: {
-        destination: getIntentURI(query),
-        permanent: false,
-      },
-    }
-  }
+  // console.log("authToken", authToken)
 
   const deepLink = `ooni://runv2/${linkId}`
   const description = 'Run OONI Probe'
@@ -90,11 +78,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   }
 
   if (ua.os.family == 'Android') {
+    if (Number(ua.major) >= 25) {
     // Accordingy to
     // https://developer.chrome.com/multidevice/android/intents
     // this is the preferred method for Chrome mobile >= 25
-    if (ua.family === 'Chrome Mobile' && Number(ua.major) >= 25) {
-      // This case is handled with a server-side redirect
+      return {
+        redirect: {
+          destination: getIntentURIv2(linkId),
+          permanent: false,
+        }
+      }
     } else {
       withWindowLocation = true
     }
@@ -211,7 +204,7 @@ const Nettest = ({
             <>
               <OONIRunHero />
               <Container p={4}>
-                <DescriptorDetails
+                <DescriptorView
                   descriptor={descriptor}
                   descriptorCreationTime={descriptorCreationTime}
                   archived={archived}
@@ -227,7 +220,7 @@ const Nettest = ({
                   <Container p={4}>
                     <CTA linkTitle={descriptor?.name} deepLink={deepLink} installLink={installLink} />
                     <Box mt={4}>
-                      <PublicDescriptorDetails
+                      <PublicDescriptorView
                         descriptor={descriptor}
                         descriptorCreationTime={descriptorCreationTime}
                         archived={archived}
@@ -246,7 +239,7 @@ const Nettest = ({
               </>
             )
           }
-          <>
+          {/* <>
             {withWindowLocation && (
               <>
                 <script
@@ -261,7 +254,7 @@ const Nettest = ({
                 ></iframe>
               </>
             )}
-          </>
+          </> */}
         </>
       )}
     </>

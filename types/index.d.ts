@@ -33,7 +33,7 @@ type Descriptor = {
   descriptor_creation_time: string
 }
 
-type DescriptorDetails = {
+type DescriptorView = {
   descriptor: Descriptor
   descriptorCreationTime: string
   runLink?: string

@@ -3,7 +3,7 @@ import { Container, Box } from 'ooni-components'
 
 import { GetServerSideProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
-import DescriptorDetails from 'components/v2/DescriptorDetails'
+import DescriptorView from 'components/v2/DescriptorView'
 import { getRunLink } from 'lib/api'
 import OONIRunHero from 'components/OONIRunHero'
 import NLink from 'next/link'
@@ -89,7 +89,7 @@ const Nettest = ({
             timeZone: 'UTC',
           }).format(new Date(descriptorCreationTime))}. Back to <NLink href={`/v2/${linkId}`}>current link</NLink>.</Box>
             <Container p={4}>
-              <DescriptorDetails
+              <DescriptorView
                 descriptor={descriptor}
                 descriptorCreationTime={descriptorCreationTime}
                 archived={archived}
