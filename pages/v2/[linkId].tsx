@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   req,
   params
 }) => {
-  console.log("req", req)
+  // console.log("req", req)
   const { linkId } = params as QParams
   const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
   const ua = useragent.parse(userAgent)
@@ -77,17 +77,18 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     storeLink = mobileApp.googlePlayLink
   }
 
+  // console.log("getIntentURIv2", getIntentURIv2(linkId))
   if (ua.os.family == 'Android') {
     if (Number(ua.major) >= 25) {
-    // Accordingy to
-    // https://developer.chrome.com/multidevice/android/intents
-    // this is the preferred method for Chrome mobile >= 25
-      return {
-        redirect: {
-          destination: getIntentURIv2(linkId),
-          permanent: false,
-        }
-      }
+      // Accordingy to
+      // https://developer.chrome.com/multidevice/android/intents
+      // this is the preferred method for Chrome mobile >= 25
+      // return {
+      //   redirect: {
+      //     destination: getIntentURIv2(linkId),
+      //     permanent: false,
+      //   }
+      // }
     } else {
       withWindowLocation = true
     }
