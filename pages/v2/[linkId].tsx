@@ -43,14 +43,17 @@ interface QParams extends ParsedUrlQuery {
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   req,
-  params
+  params,
+  query
 }) => {
-  // console.log("req", req)
+  const { fallback } = query
   const { linkId } = params as QParams
-  const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
+  const { cookies, headers: {'user-agent': userAgent, referer, host}} = req
+
+  const runLink = `${host}\\v2\\${linkId}`
+  const refererHost = referer ? new URL(referer).host : null
   const ua = useragent.parse(userAgent)
-  const authToken = req?.cookies?.token ? JSON.parse(req?.cookies?.token).token : null
-  // console.log("authToken", authToken)
+  const authToken = cookies?.token ? JSON.parse(cookies?.token).token : null
 
   const deepLink = `ooni://runv2/${linkId}`
   const description = 'Run OONI Probe'
@@ -77,28 +80,29 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     storeLink = mobileApp.googlePlayLink
   }
 
-  // console.log("getIntentURIv2", getIntentURIv2(linkId))
-  if (ua.os.family == 'Android') {
-    if (Number(ua.major) >= 25) {
-      // Accordingy to
-      // https://developer.chrome.com/multidevice/android/intents
-      // this is the preferred method for Chrome mobile >= 25
-      // return {
-      //   redirect: {
-      //     destination: getIntentURIv2(linkId),
-      //     permanent: false,
-      //   }
-      // }
-    } else {
+  if (
+    !fallback && 
+    (host !== refererHost) && 
+    !runLinkDescriptor?.archived
+  ) {
+    if (ua.os.family == 'Android') {
+      if (Number(ua.major) >= 25) {
+        // This is the preferred method for Chrome mobile >= 25
+        return {
+          redirect: {
+            destination: getIntentURIv2(linkId),
+            permanent: false,
+          }
+        }
+      } else {
+        withWindowLocation = true
+      }
+    } else if (ua.os.family == 'iOS' && Number(ua.os.major) >= 9) {
+      // Nothing special is needed as the universal link should just work
+    } else if (ua.os.family == 'iOS' && Number(ua.os.major) < 9) {
       withWindowLocation = true
     }
-  } else if (ua.os.family == 'iOS' && Number(ua.os.major) >= 9) {
-    // Nothing special is needed as the universal link should just work
-  } else if (ua.os.family == 'iOS' && Number(ua.os.major) < 9) {
-    withWindowLocation = true
   }
-
-  const runLink = `${req.headers.host}${req.url}`
 
   const props: Props = {
     deepLink,
@@ -240,7 +244,7 @@ const Nettest = ({
               </>
             )
           }
-          {/* <>
+          <>
             {withWindowLocation && (
               <>
                 <script
@@ -255,7 +259,7 @@ const Nettest = ({
                 ></iframe>
               </>
             )}
-          </> */}
+          </>
         </>
       )}
     </>
