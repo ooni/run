@@ -50,7 +50,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const { linkId } = params as QParams
   const { cookies, headers: {'user-agent': userAgent, referer, host}} = req
 
-  const runLink = `${host}\\v2\\${linkId}`
+  const runLink = `${host}/v2/${linkId}`
   const refererHost = referer ? new URL(referer).host : null
   const ua = useragent.parse(userAgent)
   const authToken = cookies?.token ? JSON.parse(cookies?.token).token : null
