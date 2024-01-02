@@ -1,8 +1,5 @@
-import Head from 'next/head'
 import { Container, Box } from 'ooni-components'
-
 import { getIntentURIv2 } from 'utils/links'
-
 import mobileApp from 'config/mobileApp'
 import { GetServerSideProps } from 'next'
 import type { ParsedUrlQuery } from 'querystring'
@@ -13,6 +10,7 @@ import OONIRunHero from 'components/OONIRunHero'
 import OONIRunHeroMinimal from 'components/OONIRunHeroMinimal'
 import CTA from 'components/v2/CTA'
 import PublicDescriptorView from 'components/v2/PublicDescriptorView'
+import MetaTags from 'components/v2/MetaTags'
 
 const useragent = require('useragent/index.js')
 
@@ -20,7 +18,6 @@ const installLink = 'https://ooni.org/install'
 
 type Props = {
   deepLink: string
-  runLink: string
   withWindowLocation: boolean
   storeLink: string
   installLink: string
@@ -50,7 +47,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const { linkId } = params as QParams
   const { cookies, headers: {'user-agent': userAgent, referer, host}} = req
 
-  const runLink = `${host}/v2/${linkId}`
   const refererHost = referer ? new URL(referer).host : null
   const ua = useragent.parse(userAgent)
   const authToken = cookies?.token ? JSON.parse(cookies?.token).token : null
@@ -58,7 +54,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const deepLink = `ooni://runv2/${linkId}`
   const description = 'Run OONI Probe'
   const title = 'OONI Run | Coordinate website censorship testing'
-  const universalLink = `https://run.ooni.io/v2/${linkId}`
+  const universalLink = `https://${host}/v2/${linkId}`
   let runLinkDescriptor = null
 
   try {
@@ -81,6 +77,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   }
 
   if (
+    runLinkDescriptor &&
     !fallback && 
     (host !== refererHost) && 
     !runLinkDescriptor?.archived
@@ -106,7 +103,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
   const props: Props = {
     deepLink,
-    runLink,
     withWindowLocation,
     storeLink,
     installLink,
@@ -124,7 +120,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 const Nettest = ({
   userAgent,
   deepLink,
-  runLink,
   withWindowLocation,
   storeLink,
   installLink,
@@ -148,63 +143,15 @@ const Nettest = ({
 
   return (
     <>
-      <Head>
-        <meta name="twitter:card" content="app" />
-        <meta name="twitter:site" content="@OpenObservatory" />
-
-        {/* Open Graph meta tags. Shared by Twitter and Facebook */}
-        <meta name="og:type" content="website" />
-        {universalLink && <meta name="og:url" content={universalLink} />}
-        {title && <meta name="og:title" content={title} />}
-        <meta
-          name="og:image"
-          content="https://run.ooni.io/static/images/Run-VerticalColorW400px.png"
-        />
-        {description && <meta name="og:description" content={description} />}
-
-        {/* This is Twitter specific stuff
-         * See: https://dev.twitter.com/cards/types/app */}
-        {deepLink && <meta name="twitter:app:url:iphone" content={deepLink} />}
-        {deepLink && <meta name="twitter:app:url:ipad" content={deepLink} />}
-        {universalLink && (
-          <meta name="twitter:app:url:googleplay" content={universalLink} />
-        )}
-
-        <meta
-          name="twitter:image"
-          content="https://run.ooni.io/static/images/Run-VerticalColorW400px.png"
-        />
-        <meta name="twitter:app:name:iphone" content={mobileApp.iPhoneName} />
-        <meta name="twitter:app:id:iphone" content={mobileApp.iPhoneID} />
-        <meta name="twitter:app:name:ipad" content={mobileApp.iPadName} />
-        <meta name="twitter:app:id:ipad" content={mobileApp.iPadID} />
-        <meta
-          name="twitter:app:name:googleplay"
-          content={mobileApp.googlePlayName}
-        />
-        <meta
-          name="twitter:app:id:googleplay"
-          content={mobileApp.googlePlayID}
-        />
-
-        {/* This is Facebook specific stuff
-         * See:
-         * * https://developers.facebook.com/docs/applinks/add-to-content/
-         * * https://blog.branch.io/how-to-deep-link-on-facebook/ */}
-        <meta property="al:android:package" content={mobileApp.googlePlayID} />
-        <meta
-          property="al:android:app_name"
-          content={mobileApp.googlePlayName}
-        />
-        {deepLink && <meta property="al:android:url" content={deepLink} />}
-
-        <meta property="al:ios:app_store_id" content={mobileApp.iPhoneID} />
-        <meta property="al:ios:app_name" content={mobileApp.iPhoneName} />
-        {deepLink && <meta property="al:ios:url" content={deepLink} />}
-      </Head>
-
       {descriptor && (
         <>
+          <MetaTags 
+            title={title}
+            description={description}
+            mobileApp={mobileApp}
+            deepLink={deepLink}
+            universalLink={universalLink}
+          />
           {isMine ? (
             <>
               <OONIRunHero />
@@ -214,7 +161,7 @@ const Nettest = ({
                   descriptorCreationTime={descriptorCreationTime}
                   archived={archived}
                   deepLink={deepLink}
-                  runLink={runLink}
+                  runLink={universalLink}
                   linkId={linkId}
                 />
               </Container>
@@ -230,15 +177,10 @@ const Nettest = ({
                         descriptorCreationTime={descriptorCreationTime}
                         archived={archived}
                         deepLink={deepLink}
-                        runLink={runLink}
+                        runLink={universalLink}
                         linkId={linkId}
                       />
                     </Box>
-                    
-
-                    {/* <Box mt={5}>
-                      <StyledCode>{userAgent}</StyledCode>
-                    </Box> */}
                   </Container>
                 </Box>
               </>
