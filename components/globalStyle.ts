@@ -32,7 +32,6 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
   direction: ${props => props.direction};
-  line-height: 1;
 }
 ol, ul {
   list-style: none;

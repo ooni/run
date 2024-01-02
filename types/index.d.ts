@@ -36,8 +36,15 @@ type Descriptor = {
 type DescriptorView = {
   descriptor: Descriptor
   descriptorCreationTime: string
-  runLink?: string
+  runLink: string
   deepLink?: string
+  archived: boolean | null
+  linkId: string
+}
+
+type RevisionView = {
+  descriptor: Descriptor
+  descriptorCreationTime: string
   archived: boolean | null
   linkId: string
 }

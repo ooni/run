@@ -5,16 +5,12 @@ import { FormattedMessage, useIntl } from 'react-intl'
 import useSWR from 'swr'
 import { getList } from 'lib/api'
 import { BsTwitter } from 'react-icons/bs'
-import useIcon from 'hooks/useIcon'
 
 import Code from '../Code'
 import NettestsBox from './NettestsBox'
 import Revisions from './Revisions'
 import DescriptorDetails from './DescriptorDetails'
-
-export const formatMediumDateTime = (date: string, locale: string) => (
-  new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(date))
-)
+import { formatMediumDateTime } from 'utils'
 
 type TwitterButtonProps = { universalLink: string }
 
@@ -53,8 +49,6 @@ const DescriptorView = ({
   deepLink,
   linkId,
 }: DescriptorView) => {
-  // console.log("descriptor", descriptor)
-  const icon = useIcon(descriptor.icon)
   const { locale } = useIntl()
 
   const { data: listData } = useSWR({ ooni_run_link_id: linkId }, (props) => getList(props))
@@ -83,7 +77,7 @@ const DescriptorView = ({
       >
         <Heading h={4}>Link Info</Heading>
           
-        {!archived && runLink && (
+        {!archived && (
           <Flex alignItems="start">
             <NLink href={`/edit/${linkId}`}>
               <Button mr={2} hollow size='small'>
@@ -106,7 +100,7 @@ const DescriptorView = ({
 
       <DescriptorDetails descriptor={descriptor} creationTime={creationTime} lastEditTime={lastEditTime} archived={archived} />
 
-      {!archived && runLink && (
+      {!archived  && (
         <Box p={3} my={4} sx={{border: '1px solid', borderColor: 'blue5'}}>
           <Heading mb={2} mt={0} h={3}>
             <FormattedMessage id="Modal.Heading.ShareThisURL" />

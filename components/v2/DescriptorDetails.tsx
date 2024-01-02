@@ -12,12 +12,20 @@ const DescriptorDetails = ({ descriptor, creationTime, lastEditTime, archived } 
         <Box as='span' verticalAlign='text-bottom'>{icon}</Box>
         {descriptor.name}
       </Heading>
+      
       {archived && <ArchivedTag />}
-      {descriptor.author && (
-        <Text fontSize={14} mb={3}>
-          Created by <strong>{descriptor.author}</strong> on {creationTime}. {lastEditTime && <>Last updated {lastEditTime}.</>}
-        </Text>
-      )}
+
+      <Text fontSize={14} my={3}>
+        {descriptor.author ? (
+          <>
+            Created by <strong>{descriptor.author}</strong> on {creationTime}. {lastEditTime && <>Last updated {lastEditTime}.</>}
+          </>
+        ) : (
+          <>
+            Created on {creationTime}. {lastEditTime && <>Last updated {lastEditTime}.</>}
+          </>
+        )}
+      </Text>
 
       {descriptor.short_description && (
         <Text mb={3}>
