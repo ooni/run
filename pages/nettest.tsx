@@ -1,11 +1,12 @@
 import Head from 'next/head'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import { Container, Button, Link, Heading, Text, Box } from 'ooni-components'
 import { getIntentURI, getEncodedQuery } from 'utils/links'
 import mobileApp from '../config/mobileApp'
 import styled from 'styled-components'
 import { GetServerSideProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
+import OONIRunHeroMinimal from 'components/OONIRunHeroMinimal'
 
 const StyledCode = styled.code`
   font-family: courier, monospace;
@@ -45,15 +46,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
   const ua = useragent.parse(userAgent)
 
-  // redirect - previously handled with custom server
-  if (ua.family === 'Chrome Mobile' && Number(ua.major) >= 25) {
-    return {
-      redirect: {
-        destination: getIntentURI(query),
-        permanent: false,
-      },
-    }
-  }
 
   const deepLink = getCustomURI(query)
   const description = 'Run OONI Probe'
@@ -74,7 +66,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     // https://developer.chrome.com/multidevice/android/intents
     // this is the preferred method for Chrome mobile >= 25
     if (ua.family === 'Chrome Mobile' && Number(ua.major) >= 25) {
-      // This case is handled with a server-side redirect
+      return {
+        redirect: {
+          destination: getIntentURI(query),
+          permanent: false,
+        },
+      }
     } else {
       withWindowLocation = true
     }
@@ -171,6 +168,7 @@ const Nettest = ({
         <meta property="al:ios:app_name" content={mobileApp.iPhoneName} />
         {deepLink && <meta property="al:ios:url" content={deepLink} />}
       </Head>
+      <OONIRunHeroMinimal />
       <Container p={4}>
         <Heading pt={2} h={2}>
           <FormattedMessage
