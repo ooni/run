@@ -37,16 +37,17 @@ const PublicDescriptorDetails = ({
   }, [revisionsList, descriptorCreationTime])
 
   return (
-    <Box bg='#FFF' p={4}>
+    <Box bg='#FFF' p={24}>
       <Heading h={4}>Link Content</Heading>
-      <Flex flexDirection={['column', 'column', 'row']}>
+      <Flex flexDirection={['column', 'column', 'row']} sx={{gap: 4}}>
         <Box width={[1, 1, 1/2]}>
           <DescriptorDetails descriptor={descriptor} creationTime={creationTime} lastEditTime={lastEditTime} archived={archived} />
-          <Revisions revisionsList={revisionsList} linkId={linkId} />
+          <Box display={['none', 'none', 'block']} mt={4}><Revisions revisionsList={revisionsList} linkId={linkId} /></Box>
         </Box>
         <Box width={[1, 1, 1/2]}>
           <NettestsBox nettests={descriptor.nettests} />
         </Box>
+        <Box display={['block', 'block', 'none']}><Revisions revisionsList={revisionsList} linkId={linkId} /></Box>
       </Flex>
     </Box>
   )

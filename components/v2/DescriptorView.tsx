@@ -78,21 +78,20 @@ const DescriptorView = ({
         <Heading h={4}>Link Info</Heading>
           
         {!archived && (
-          <Flex alignItems="start">
+          <Flex alignItems="start" justifyContent="end" sx={{gap: 2}} flexWrap="wrap">
             <NLink href={`/edit/${linkId}`}>
-              <Button mr={2} hollow size='small'>
+              <Button hollow size='small'>
                 Edit
               </Button>
             </NLink>
             {deepLink && <NLink href={deepLink}>
-              <Button mr={2} hollow size='small'>
+              <Button hollow size='small'>
                 <FormattedMessage
                   id="Modal.Button.Link"
                   defaultMessage="Link"
                 />
               </Button>
             </NLink>}
-    
             <TwitterButton universalLink={runLink} />
           </Flex>
         )}

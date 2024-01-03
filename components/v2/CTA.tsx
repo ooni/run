@@ -1,4 +1,4 @@
-import { Container, Button, Link, Heading, Text, Box, Flex } from 'ooni-components'
+import { Button, Link, Heading, Text, Box, Flex } from 'ooni-components'
 import { FormattedMessage } from 'react-intl'
 
 import Image from 'next/image'
@@ -11,7 +11,7 @@ type CTAProps = {
 
 const CTA = ({ linkTitle, deepLink, installLink } : CTAProps) => {
   return (
-    <Box bg='#FFF' p={4} sx={{border: '1px solid', borderColor: 'primary'}}>
+    <Box bg='#FFF' p={24} sx={{border: '1px solid', borderColor: 'primary'}}>
       <Heading h={2}>{linkTitle}</Heading>
       <Heading pt={2} h={3}>
         <FormattedMessage id="Nettest.Heading.HaveMobileApp" />

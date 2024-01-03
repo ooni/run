@@ -155,7 +155,7 @@ const Nettest = ({
           {isMine ? (
             <>
               <OONIRunHero />
-              <Container p={4}>
+              <Container px={[3, 3, 4]} py={4}>
                 <DescriptorView
                   descriptor={descriptor}
                   descriptorCreationTime={descriptorCreationTime}
@@ -169,7 +169,7 @@ const Nettest = ({
               <>
                 <OONIRunHeroMinimal />
                 <Box bg='gray0'>
-                  <Container p={4}>
+                  <Container px={[3, 3, 4]} py={4}>
                     <CTA linkTitle={descriptor?.name} deepLink={deepLink} installLink={installLink} />
                     <Box mt={4}>
                       <PublicDescriptorView

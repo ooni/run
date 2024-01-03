@@ -12,7 +12,7 @@ const NettestsBox = ({ nettests } : NettestsBoxProps ) => {
   )
 
   return (
-    <Box p={3} mt={3} sx={{border: '1px solid', borderColor: 'gray3', borderRadius: 8}}>
+    <Box p={3} sx={{border: '1px solid', borderColor: 'gray3', borderRadius: 8}}>
       <Heading h={4} my={0}>Tests</Heading>
       {nettests.map((nettest, i) => (
         <Flex key={`${nettest.test_name}-${i}`} flexDirection='column' pb={2} pt={2} sx={i > 0 ? {borderTop: '1px solid', borderColor: 'gray3'} : {}}>
