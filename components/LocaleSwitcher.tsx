@@ -24,7 +24,19 @@ const LanguageSelect = styled.select`
   border: none;
   text-transform: capitalize;
   cursor: pointer;
-  font-family: 'Fira Sans';
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+  padding-bottom: 6px;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  &:hover {
+    opacity: 1;
+  }
 `
 
 const LocaleSwitcher = () => {
@@ -37,19 +49,13 @@ const LocaleSwitcher = () => {
   }
 
   return (
-    <Container>
-      <Flex justifyContent='flex-end'>
-        <Box>
-          <LanguageSelect onChange={handleLocaleChange} value={locale}>
-            {languages.map((c) => (
-              <option key={c} value={c}>
-                {getLocalisedLanguageName(c,c)}
-              </option>
-            ))}
-          </LanguageSelect>
-        </Box>
-      </Flex>
-    </Container>
+    <LanguageSelect onChange={handleLocaleChange} value={locale}>
+      {languages.map((c) => (
+        <option key={c} value={c}>
+          {getLocalisedLanguageName(c,c)}
+        </option>
+      ))}
+    </LanguageSelect>
   )
 }
 

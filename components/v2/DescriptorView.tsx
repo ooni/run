@@ -110,7 +110,9 @@ const DescriptorView = ({
       )}
 
       <NettestsBox nettests={descriptor.nettests} />
-      <Revisions revisionsList={revisionsList} linkId={linkId} />
+      <Box mt={4}>
+        <Revisions revisionsList={revisionsList} linkId={linkId} />
+      </Box>
     </>
   )
 }
