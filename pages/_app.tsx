@@ -3,16 +3,6 @@ import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import type { AppProps } from 'next/app'
 
-export const getDirection = (locale: string) => {
-  switch (locale) {
-    case 'fa':
-    case 'ar':
-      return 'rtl'
-    default:
-      return 'ltr'
-  }
-}
-
 function MyApp({ Component, pageProps }: AppProps) {
   const { locale = 'en', defaultLocale } = useRouter()
 

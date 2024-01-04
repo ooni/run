@@ -6,6 +6,16 @@ import GlobalStyle from './globalStyle'
 import meta from '../config/meta'
 import { useIntl } from 'react-intl'
 
+export const getDirection = (locale: string) => {
+  switch (locale) {
+    case 'fa':
+    case 'ar':
+      return 'rtl'
+    default:
+      return 'ltr'
+  }
+}
+
 type LayoutProps = {
   title?: string
   children: JSX.Element | JSX.Element[]
