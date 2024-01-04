@@ -10,19 +10,21 @@ const BrandContainer = styled.div`
     max-width: 100%;
   }
 `
-const OONIRunHero = (props) => (
+
+type OONIRunHeroProps = { href: string }
+const OONIRunHero = ({ href }: OONIRunHeroProps) => (
   <Hero pb={4} pt={2} sx={{width: '100%', maxWidth: 'none !important'}}>
     <LocaleSwitcher />
     <BrandContainer>
-      <Link href={props.href}>
+      <Link href={href}>
         <Box display='inline-block'>
-        <LogoOONIRun />
+          <LogoOONIRun />
         </Box>
       </Link>
     </BrandContainer>
     <HeroLead>
       <FormattedMessage
-        id='Hero.SubTitle'
+        id="Hero.SubTitle"
         defaultMessage="Coordinate website censorship testing"
       />
     </HeroLead>

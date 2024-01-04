@@ -26,7 +26,7 @@ const SourceCodeProBold = '/static/fonts/SourceCodePro-Bold.woff'
 const SourceCodeProRegular = '/static/fonts/SourceCodePro-Regular.woff'
 
 
-const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle<{direction: 'rtl' | 'ltr'}>`
 
 /* CSS reset */
 html, body, div, span, applet, object, iframe,

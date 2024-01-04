@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, ClipboardEvent } from 'react'
 import {
   Flex,
   Box,
@@ -8,7 +8,7 @@ import {
   Text,
 } from 'ooni-components'
 import { useForm, useFieldArray, Controller } from 'react-hook-form'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import styled from 'styled-components'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
@@ -56,29 +56,35 @@ const validationSchema = Yup.object().shape({
   urls: Yup.array().of(
     Yup.object().shape({
       url: Yup.string()
-        .required('Error.Empty')
-        .test('is-valid-url', 'Error.UrlFormat', (value) => {
-          try {
-            const url = new URL(value)
-            if (url.protocol != 'http:' && url.protocol != 'https:') {
+        .required('cannot be empty')
+        .test(
+          'is-valid-url',
+          'should be a valid URL format e.g "https://ooni.org/post/"',
+          (value) => {
+            try {
+              const url = new URL(value)
+              if (url.protocol != 'http:' && url.protocol != 'https:') {
+                return false
+              }
+              return true
+            } catch {
               return false
             }
-            return true
-          } catch {
-            return false
           }
-        }),
+        ),
     })
   ),
 })
 
-const URLs = ({ onSubmit }) => {
+type URLsProps = {
+  onSubmit: ({ urls }: { urls: Array<{ url: string }> }) => void
+}
+const URLs = ({ onSubmit }: URLsProps) => {
   const { control, formState, trigger, handleSubmit } = useForm({
     mode: 'onTouched',
     defaultValues: { urls: [{ url: '' }] },
     resolver: yupResolver(validationSchema),
   })
-  const intl = useIntl()
   const { errors } = formState
 
   const { fields, append, remove, insert, replace } = useFieldArray({
@@ -87,7 +93,7 @@ const URLs = ({ onSubmit }) => {
   })
 
   const onKeyPress = useCallback(
-    (e) => {
+    (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
         append({ url: '' }, { shouldFocus: true })
       }
@@ -96,19 +102,24 @@ const URLs = ({ onSubmit }) => {
   )
 
   const handlePaste = useCallback(
-    (e, index, onChange) => {
+    (
+      e: ClipboardEvent,
+      index: number,
+      onChange: (event: ClipboardEvent) => void
+    ) => {
       // block the usual paste action
       e.preventDefault()
 
       const pastedText = e.clipboardData.getData('Text')
       const newEntries = pastedText
         .split('\n')
-        .filter((line) => String(line).length > 0)
-        .map((line) => ({ url: line }))
+        .filter((line: string) => line.length > 0)
+        .map((line: string) => ({ url: line }))
 
       // Place first pasted entry into event and trigger onChange
       // This updates the field being pasted into with the first entry
-      e.target.value = newEntries[0].url
+      const eventTarget = e.target as HTMLInputElement
+      eventTarget.value = newEntries[0].url
       onChange(e)
 
       // Insert fields into the form using the rest of the entries
@@ -147,15 +158,12 @@ const URLs = ({ onSubmit }) => {
                   icon={<MdDelete size={30} />}
                   placeholder="https://twitter.com/"
                   list="url-prefixes"
-                  error={
-                    errors?.['urls']?.[index]?.['url']?.message &&
-                    intl.formatMessage({
-                      id: errors?.['urls']?.[index]?.['url']?.message,
-                    })
-                  }
+                  error={errors?.['urls']?.[index]?.['url']?.message}
                   onKeyPress={onKeyPress}
                   onAction={() => remove(index)}
-                  onPaste={(e) => handlePaste(e, index, field.onChange)}
+                  onPaste={(e: ClipboardEvent) =>
+                    handlePaste(e, index, field.onChange)
+                  }
                 />
               </StyleFixIconButton>
             )}

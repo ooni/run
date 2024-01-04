@@ -1,3 +1,5 @@
+/** @type {import('next').NextConfig} */
+
 const webpack = require('webpack')
 const glob = require('glob')
 const { basename } = require('path')
@@ -16,6 +18,8 @@ function getSupportedLanguages() {
 
 module.exports = {
   output: 'standalone',
+  reactStrictMode: true,
+  swcMinify: true,
   i18n: {
     locales: getSupportedLanguages(),
     defaultLocale: DEFAULT_LOCALE,
@@ -54,7 +58,7 @@ module.exports = {
 
     config.module.rules.push({
       test: /\.svg$/,
-      issuer: /\.js?$/,
+      issuer: { and: [/\.(js|ts)x?$/] },
       include: [options.dir],
       use: [
         'next-swc-loader',
