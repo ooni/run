@@ -1,14 +1,12 @@
 [
-  {
-    "relation": [
-      "delegate_permission/common.handle_all_urls"
-    ],
-    "target": {
-      "namespace": "android_app",
-      "package_name": "org.openobservatory.ooniprobe",
-      "sha256_cert_fingerprints": [
-        "BF:7D:A8:2A:7C:77:87:EB:67:56:41:48:23:4B:6D:40:F0:EC:66:4B:F2:92:BC:7A:8F:15:47:FE:7F:E7:5E:84"
-      ]
-    }
-  }
+	{
+		"relation": ["delegate_permission/common.handle_all_urls"],
+		"target": {
+			"namespace": "android_app",
+			"package_name": "org.openobservatory.ooniprobe",
+			"sha256_cert_fingerprints": [
+				"BF:7D:A8:2A:7C:77:87:EB:67:56:41:48:23:4B:6D:40:F0:EC:66:4B:F2:92:BC:7A:8F:15:47:FE:7F:E7:5E:84"
+			]
+		}
+	}
 ]

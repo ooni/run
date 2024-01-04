@@ -1,7 +1,7 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from "styled-components"
 
 type GlobalStyleProps = {
-  direction: 'rtl' | 'ltr'
+	direction: "rtl" | "ltr"
 }
 
 const GlobalStyle = createGlobalStyle<GlobalStyleProps>`
@@ -31,7 +31,7 @@ footer, header, hgroup, menu, nav, section {
   display: block;
 }
 body {
-  direction: ${props => props.direction};
+  direction: ${(props) => props.direction};
 }
 ol, ul {
   list-style: none;

@@ -1,8 +1,7 @@
+import { theme } from "ooni-components"
+import PropTypes from "prop-types"
 // From: https://github.com/LucasBassetti/react-css-loaders/tree/master/lib/spin
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled, { css, keyframes } from 'styled-components'
-import { theme } from 'ooni-components'
+import styled, { css, keyframes } from "styled-components"
 
 const loading = keyframes`
   0% {
@@ -13,26 +12,29 @@ const loading = keyframes`
   }
 `
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const spinnerAnimation = (props: any) =>
-  css`
+	css`
     ${loading} ${props.$duration}s infinite linear;
   `
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const Spin = styled.div<any>`
   animation: ${spinnerAnimation};
-  background: ${props => props.$color};
-  background: ${props => `linear-gradient(to right, ${props.$color} 10%, rgba(255, 255, 255, 0) 42%);`};
+  background: ${(props) => props.$color};
+  background: ${(props) =>
+		`linear-gradient(to right, ${props.$color} 10%, rgba(255, 255, 255, 0) 42%);`};
   border-radius: 50%;
-  font-size: ${props => `${props.$size}px`};
+  font-size: ${(props) => `${props.$size}px`};
   height: 11em;
-  margin: ${props => props.$margin};
+  margin: ${(props) => props.$margin};
   position: relative;
   text-indent: -9999em;
   transform: translateZ(0);
   width: 11em;
 
   &:before {
-    background: ${props => props.$color};
+    background: ${(props) => props.$color};
     border-radius: 100% 0 0 0;
     content: '';
     height: 50%;
@@ -43,7 +45,7 @@ const Spin = styled.div<any>`
   }
 
   &:after {
-    background: ${props => props.$background};
+    background: ${(props) => props.$background};
     border-radius: 50%;
     bottom: 0;
     content: '';
@@ -57,24 +59,23 @@ const Spin = styled.div<any>`
   }
 `
 
-const SpinLoader = (props: any) => (
-  <Spin {...props} />
-)
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+const SpinLoader = (props: any) => <Spin {...props} />
 
 SpinLoader.propTypes = {
-  $background: PropTypes.string,
-  $color: PropTypes.string,
-  $duration: PropTypes.number,
-  $size: PropTypes.number,
-  $margin: PropTypes.string,
+	$background: PropTypes.string,
+	$color: PropTypes.string,
+	$duration: PropTypes.number,
+	$size: PropTypes.number,
+	$margin: PropTypes.string,
 }
 
 SpinLoader.defaultProps = {
-  $background: '#fff',
-  $color: theme.colors.blue5,
-  $duration: 1.4,
-  $size: 5,
-  $margin: '50px auto',
+	$background: "#fff",
+	$color: theme.colors.blue5,
+	$duration: 1.4,
+	$size: 5,
+	$margin: "50px auto",
 }
 
 export default SpinLoader

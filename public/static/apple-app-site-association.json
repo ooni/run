@@ -1,11 +1,11 @@
 {
-    "applinks": {
-        "apps": [],
-        "details": [
-            {
-                "appID": "MADPSAYN6T.org.openobservatory.ooniprobe",
-                "paths": [ "/nettest*"]
-            }
-        ]
-    }
+	"applinks": {
+		"apps": [],
+		"details": [
+			{
+				"appID": "MADPSAYN6T.org.openobservatory.ooniprobe",
+				"paths": ["/nettest*"]
+			}
+		]
+	}
 }
