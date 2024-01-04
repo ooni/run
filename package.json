@@ -33,8 +33,11 @@
 		"@types/react": "^18.2.33",
 		"@types/react-dom": "^18.2.14",
 		"@types/styled-components": "^5.1.27",
+		"babelify": "^10.0.0",
+		"browserify": "^17.0.0",
 		"json2csv": "^6.0.0-alpha.2",
-		"typescript": "^5.2.2"
+		"typescript": "^5.2.2",
+		"uglify-js": "^3.17.4"
 	},
 	"resolutions": {
 		"minimist": "1.2.6"
