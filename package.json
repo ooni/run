@@ -47,10 +47,7 @@
   "scripts": {
     "dev": "next dev -p 3100",
     "start": "next start -p 3100",
-    "build": "yarn run build:next && yarn run build:widgets",
-    "build:next": "next build",
-    "build:widgets": "browserify -t babelify widgets/index.js | uglifyjs > dist/widgets.js",
-    "debug:widgets": "yarn run build:widgets && cp dist/widgets.js static/widgets.js",
+    "build": "next build",
     "extract": "node ./scripts/extract '{pages,components,utils}/*.{js,ts,tsx}'",
     "release": "yarn run build && yarn publish --new-version $(jq -r .version package.json)",
     "genurl": "babel-node scripts/genurl.js",
