@@ -6,7 +6,6 @@
     "@hookform/resolvers": "^3.3.1",
     "@uiw/react-color-compact": "^2.0.2",
     "axios": "^1.6.2",
-    "intl": "^1.2.5",
     "markdown-to-jsx": "^7.3.2",
     "next": "^14.0.4",
     "nprogress": "^0.2.0",
@@ -33,13 +32,8 @@
     "@types/react": "^18.2.33",
     "@types/react-dom": "^18.2.14",
     "@types/styled-components": "^5.1.27",
-    "babelify": "^10.0.0",
-    "browserify": "^17.0.0",
-    "eslint": "^8.49.0",
-    "eslint-config-next": "^13.5.2",
     "json2csv": "^6.0.0-alpha.2",
-    "typescript": "^5.2.2",
-    "uglify-js": "^3.17.4"
+    "typescript": "^5.2.2"
   },
   "resolutions": {
     "minimist": "1.2.6"
@@ -49,7 +43,6 @@
     "start": "next start -p 3100",
     "build": "next build",
     "extract": "node ./scripts/extract '{pages,components,utils}/*.{js,ts,tsx}'",
-    "release": "yarn run build && yarn publish --new-version $(jq -r .version package.json)",
     "genurl": "babel-node scripts/genurl.js",
     "script:build-translations": "node ./scripts/build-translations.js"
   }
