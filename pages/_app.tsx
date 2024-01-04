@@ -2,7 +2,7 @@ import { IntlProvider } from 'react-intl'
 import { useRouter } from 'next/router'
 import { useMemo, useEffect } from 'react'
 import NProgress from 'nprogress'
-import { Fira_Sans } from '@next/font/google'
+import { Fira_Sans } from 'next/font/google'
 import '../public/static/nprogress.css'
 
 import type { AppProps } from 'next/app'

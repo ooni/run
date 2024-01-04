@@ -63,7 +63,7 @@ const OptionsFields = ({ name }: FieldsPropTypes) => {
           append({ key: '', value: '' })
         }}
       >
-        + Add option
+        Add option +
       </Button>
     </>
   )

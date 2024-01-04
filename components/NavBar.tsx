@@ -49,7 +49,7 @@ type StyledNavBarProps = {
 
 const StyledNavBar = styled.div<StyledNavBarProps>`
   background-color: ${(props) => props.$bgColor || props.theme.colors.blue5};
-  z-index: 9999;
+  z-index: 999;
 `
 
 const StyledResponsiveMenu = styled(Box)`
@@ -75,7 +75,7 @@ font-size: 14px;
     display: none;
 
     &.visible {
-      z-index: 999999;
+      z-index: 99999;
       display: block;
       overflow-y: scroll;
       max-height: 100%;

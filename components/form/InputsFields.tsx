@@ -100,7 +100,7 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
           append('', { shouldFocus: true })
         }}
       >
-        + Add input
+        Add input +
       </Button>
     </>
   )

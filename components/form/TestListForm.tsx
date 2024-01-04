@@ -1,6 +1,3 @@
-import {
-  lazy
-} from 'react'
 import { Flex, Box, Button, Text, Input } from 'ooni-components'
 import {
   useForm,
@@ -279,6 +276,7 @@ const TestListForm = ({
                       <Box mt={2}>
                         <Checkbox 
                           {...field}
+                          reverse
                           checked={field.value}
                           label={`Show my email “${getUserEmail()}” in the link info`}
                         />

@@ -34,7 +34,7 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
         alignItems='center'
         justifyContent='space-between'
         p={3}
-        bg='white'
+        bg='#FFF'
         lineHeight={1.3}
         color="black"
       >

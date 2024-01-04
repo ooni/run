@@ -78,7 +78,7 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
           append({ key: '', value: '' })
         }}
       >
-        + Add translation
+        Add translation +
       </Button>
     </>
   )
