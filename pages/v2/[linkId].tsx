@@ -1,6 +1,13 @@
+import OONIRunHero from "components/OONIRunHero"
+import OONIRunHeroMinimal from "components/OONIRunHeroMinimal"
+import CTA from "components/v2/CTA"
+import DescriptorView from "components/v2/DescriptorView"
+import MetaTags from "components/v2/MetaTags"
+import PublicDescriptorView from "components/v2/PublicDescriptorView"
 import mobileApp from "config/mobileApp"
 import { getRunLink } from "lib/api"
 import { GetServerSideProps } from "next"
+import { Box, Container } from "ooni-components"
 import type { ParsedUrlQuery } from "querystring"
 import { generateRandomString } from "utils"
 import { getIntentURIv2 } from "utils/links"
@@ -112,6 +119,104 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 	}
 
 	return { props }
+}
+
+const Nettest = ({
+	userAgent,
+	deepLink,
+	withWindowLocation,
+	storeLink,
+	installLink,
+	universalLink,
+	title,
+	description,
+	runLinkDescriptor,
+	linkId,
+}: Props) => {
+	const windowScript = `window.onload = function() {
+    document.getElementById('l').src = '${deepLink}';
+    setTimeout(function() {
+      window.location = '${storeLink}';
+    }, 500)
+  }`
+
+	const descriptor = runLinkDescriptor?.descriptor
+	const descriptorCreationTime =
+		runLinkDescriptor?.descriptor_creation_time || ""
+	const archived = !!runLinkDescriptor?.archived
+	const isMine = !!runLinkDescriptor?.mine
+
+	return (
+		<>
+			{descriptor && (
+				<>
+					<MetaTags
+						title={title}
+						description={description}
+						mobileApp={mobileApp}
+						deepLink={deepLink}
+						universalLink={universalLink}
+					/>
+					{isMine ? (
+						<>
+							<OONIRunHero />
+							<Container px={[3, 3, 4]} py={4}>
+								<DescriptorView
+									descriptor={descriptor}
+									descriptorCreationTime={descriptorCreationTime}
+									archived={archived}
+									deepLink={deepLink}
+									runLink={universalLink}
+									linkId={linkId}
+								/>
+							</Container>
+						</>
+					) : (
+						<>
+							<OONIRunHeroMinimal />
+							<Box bg="gray0">
+								<Container px={[3, 3, 4]} py={4}>
+									<CTA
+										linkTitle={descriptor?.name}
+										deepLink={deepLink}
+										installLink={installLink}
+									/>
+									<Box mt={4}>
+										<PublicDescriptorView
+											descriptor={descriptor}
+											descriptorCreationTime={descriptorCreationTime}
+											archived={archived}
+											deepLink={deepLink}
+											runLink={universalLink}
+											linkId={linkId}
+										/>
+									</Box>
+								</Container>
+							</Box>
+						</>
+					)}
+					<>
+						{withWindowLocation && (
+							<>
+								<script
+									type="text/javascript"
+									// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+									dangerouslySetInnerHTML={{ __html: windowScript }}
+								/>
+								<iframe
+									title="OONIProbe"
+									id="l"
+									width="1"
+									height="1"
+									style={{ visibility: "hidden" }}
+								/>
+							</>
+						)}
+					</>
+				</>
+			)}
+		</>
+	)
 }
 
 export default Nettest
