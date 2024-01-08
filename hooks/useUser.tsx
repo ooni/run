@@ -8,7 +8,13 @@ import {
 	useState,
 } from "react"
 
-import { apiEndpoints, getAPI, loginUser, refreshToken } from "lib/api"
+import {
+	apiEndpoints,
+	getAPI,
+	getTokenCreatedAt,
+	loginUser,
+	refreshToken,
+} from "lib/api"
 
 const TWELVE_HOURS = 1000 * 60 * 60 * 12
 const TEN_MINUTES = 1000 * 60 * 10
@@ -83,24 +89,23 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 		}
 	}, [afterLogin, token, router.pathname, getUser, afterLogin])
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		getUser()
-	}, [getUser])
+	}, [])
 
 	// periodically check if the token need to be refreshed and request a
 	// new one if needed
 	useEffect(() => {
 		const interval = setInterval(() => {
-			const tokenCreatedAt = JSON.parse(
-				localStorage.getItem("bearer") || "{}",
-			)?.created_at
+			const tokenCreatedAt = getTokenCreatedAt()
 			if (tokenCreatedAt) {
-				const tokenExpiry = tokenCreatedAt + TWELVE_HOURS
+				const tokenExpiry = Number(tokenCreatedAt) + TWELVE_HOURS
 				const now = Date.now()
 				if (now > tokenExpiry) {
 					refreshToken().catch((e) => {
 						if (e?.response?.status === 401) {
-							localStorage.removeItem("bearer")
+							// localStorage.removeItem("bearer")
 							getUser()
 						}
 					})
@@ -128,10 +133,11 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 	// }
 
 	const logout = () => {
-		localStorage.removeItem("bearer")
+		// localStorage.removeItem("bearer")
 		getUser()
 	}
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	const memoedValue = useMemo(
 		() => ({
 			user,
@@ -140,7 +146,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 			// login,
 			logout,
 		}),
-		[user, loading, error, logout],
+		[user, loading, error],
 	)
 
 	return (

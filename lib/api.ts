@@ -1,4 +1,5 @@
 import Axios, { AxiosError } from "axios"
+import cookie from "cookie"
 
 export const apiEndpoints = {
 	ACCOUNT_METADATA: "/api/_/account_metadata",
@@ -12,16 +13,27 @@ export const apiEndpoints = {
 	GET_LIST: "/api/_/ooni_run/list",
 }
 
+const SEVEN_DAYS_IN_SECONDS = 7 * 24 * 60 * 60
+const setCookie = (tokenDetails: string) => {
+	return `token=${tokenDetails}; Path=/; Max-Age=${SEVEN_DAYS_IN_SECONDS}; SameSite=Strict; Secure`
+}
+
 const getBearerToken = () => {
-	return typeof localStorage !== "undefined"
-		? JSON.parse(localStorage.getItem("bearer") || "{}")?.token
-		: ""
+	return typeof document !== "undefined"
+		? JSON.parse(cookie.parse(document.cookie)?.token)?.token
+		: null
+}
+
+export const getTokenCreatedAt = () => {
+	return typeof document !== "undefined"
+		? JSON.parse(cookie.parse(document.cookie)?.token)?.created_at
+		: null
 }
 
 export const getUserEmail = () => {
-	return typeof localStorage !== "undefined"
-		? JSON.parse(localStorage.getItem("bearer") || "{}")?.email_address
-		: ""
+	return typeof document !== "undefined"
+		? JSON.parse(cookie.parse(document.cookie)?.token)?.email_address
+		: null
 }
 
 const axios = Axios.create({
@@ -107,8 +119,7 @@ export const loginUser = (token: string) => {
 				email_address: data?.email_address,
 				created_at: Date.now(),
 			})
-			localStorage.setItem("bearer", tokenDetails)
-			document.cookie = `token=${tokenDetails}; path=/`
+			document.cookie = setCookie(tokenDetails)
 			return data
 		})
 }
@@ -121,8 +132,7 @@ export const refreshToken = () => {
 			email_address,
 			created_at: Date.now(),
 		})
-		localStorage.setItem("bearer", tokenDetails)
-		document.cookie = `token=${tokenDetails}; path=/`
+		document.cookie = setCookie(tokenDetails)
 	})
 }
 
