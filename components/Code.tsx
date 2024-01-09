@@ -14,44 +14,44 @@ cursor: pointer;
 `
 
 type Code = {
-	text: string
+  text: string
 }
 
 const Code = ({ text }: Code) => {
-	const [isCopied, setIsCopied] = useState(false)
+  const [isCopied, setIsCopied] = useState(false)
 
-	const copyTextToClipboard = async (text: string) => {
-		if ("clipboard" in navigator) {
-			return await navigator.clipboard.writeText(text)
-		}
-		return document.execCommand("copy", true, text)
-	}
+  const copyTextToClipboard = async (text: string) => {
+    if ("clipboard" in navigator) {
+      return await navigator.clipboard.writeText(text)
+    }
+    return document.execCommand("copy", true, text)
+  }
 
-	const handleCopyClick = () => {
-		copyTextToClipboard(text)
-			.then(() => {
-				setIsCopied(true)
-				setTimeout(() => {
-					setIsCopied(false)
-				}, 2000)
-			})
-			.catch((err) => {
-				console.log(err)
-			})
-	}
+  const handleCopyClick = () => {
+    copyTextToClipboard(text)
+      .then(() => {
+        setIsCopied(true)
+        setTimeout(() => {
+          setIsCopied(false)
+        }, 2000)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
-	return (
-		<StyledCode p={3} bg="blue1">
-			{text}
-			<StyledIcon ml={2}>
-				{isCopied ? (
-					<MdOutlineCheckCircle color={theme.colors.green7} />
-				) : (
-					<MdOutlineContentCopy onClick={handleCopyClick} />
-				)}
-			</StyledIcon>
-		</StyledCode>
-	)
+  return (
+    <StyledCode p={3} bg="blue1">
+      {text}
+      <StyledIcon ml={2}>
+        {isCopied ? (
+          <MdOutlineCheckCircle color={theme.colors.green7} />
+        ) : (
+          <MdOutlineContentCopy onClick={handleCopyClick} />
+        )}
+      </StyledIcon>
+    </StyledCode>
+  )
 }
 
 export default Code

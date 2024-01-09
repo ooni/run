@@ -11,37 +11,37 @@ import meta from "../config/meta"
 import Footer from "./Footer"
 
 type LayoutProps = {
-	title?: string
-	children: React.ReactNode
+  title?: string
+  children: React.ReactNode
 }
 
 const Layout = ({ title, children }: LayoutProps) => {
-	const { locale } = useIntl()
+  const { locale } = useIntl()
 
-	return (
-		<div>
-			<Head>
-				<title>{title || meta.defaultTitle}</title>
-				<meta httpEquiv="Content-Type" content={meta.contentType} />
-				<meta name="viewport" content={meta.viewport} />
-			</Head>
-			<ThemeProvider theme={theme}>
-				<GlobalStyle direction={getDirection(locale)} />
-				<UserProvider>
-					<Box
-						sx={{
-							minHeight: "100vh",
-							display: "flex",
-							flexDirection: "column",
-						}}
-					>
-						<Box className="content">{children}</Box>
-						<Footer />
-					</Box>
-				</UserProvider>
-			</ThemeProvider>
-		</div>
-	)
+  return (
+    <div>
+      <Head>
+        <title>{title || meta.defaultTitle}</title>
+        <meta httpEquiv="Content-Type" content={meta.contentType} />
+        <meta name="viewport" content={meta.viewport} />
+      </Head>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle direction={getDirection(locale)} />
+        <UserProvider>
+          <Box
+            sx={{
+              minHeight: "100vh",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Box className="content">{children}</Box>
+            <Footer />
+          </Box>
+        </UserProvider>
+      </ThemeProvider>
+    </div>
+  )
 }
 
 export default Layout

@@ -9,23 +9,23 @@ letter-spacing: 1.25px;
 }`
 
 const ArchivedTag = () => {
-	return (
-		<Box sx={{ display: "inline-block" }}>
-			<StyledArchivedTag
-				bg="gray6"
-				color="white"
-				fontSize={0}
-				lineHeight={1.2}
-				fontWeight="600"
-				px={2}
-				py={1}
-				alignItems="center"
-			>
-				<span>ARCHIVED</span>
-				<MdOutlineInventory2 />
-			</StyledArchivedTag>
-		</Box>
-	)
+  return (
+    <Box sx={{ display: "inline-block" }}>
+      <StyledArchivedTag
+        bg="gray6"
+        color="white"
+        fontSize={0}
+        lineHeight={1.2}
+        fontWeight="600"
+        px={2}
+        py={1}
+        alignItems="center"
+      >
+        <span>ARCHIVED</span>
+        <MdOutlineInventory2 />
+      </StyledArchivedTag>
+    </Box>
+  )
 }
 
 export default ArchivedTag

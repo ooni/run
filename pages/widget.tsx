@@ -1,13 +1,13 @@
-import { URL } from 'url'
+import { URL } from "url"
 
-import { Container, Button, Heading, Text } from 'ooni-components'
+import { Container, Button, Heading, Text } from "ooni-components"
 
-import Layout from '../components/Layout'
+import Layout from "../components/Layout"
 
-import styled from 'styled-components'
-import { GetServerSideProps } from 'next'
+import styled from "styled-components"
+import { GetServerSideProps } from "next"
 
-import { getTestType } from '../utils/nettest'
+import { getTestType } from "../utils/nettest"
 
 const StyledButtonWidget = styled(Button)`
   padding-top: 5px;
@@ -120,14 +120,14 @@ const BannerWidget = ({ title, testType, runLink }: BannerWidgetProps) => (
 )
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const widgetType = query.type || 'banner'
-  const title = query.title || 'Fight Censorship'
+  const widgetType = query.type || "banner"
+  const title = query.title || "Fight Censorship"
   const runLink = Array.isArray(query.link)
     ? query.link[0]
-    : query.link || 'https://run.ooni.io/'
+    : query.link || "https://run.ooni.io/"
 
   const u = new URL(runLink)
-  const testName = u.searchParams.get('tn') || 'web_connectivity'
+  const testName = u.searchParams.get("tn") || "web_connectivity"
   const testType = getTestType(testName)
 
   return {
@@ -149,7 +149,7 @@ type WidgetProps = {
 }
 
 const Widget = ({ widgetType, title, runLink, testType }: WidgetProps) => {
-  if (widgetType === 'banner') {
+  if (widgetType === "banner") {
     return (
       <Layout>
         <BannerWidget testType={testType} title={title} runLink={runLink} />

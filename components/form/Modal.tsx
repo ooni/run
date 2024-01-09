@@ -41,64 +41,64 @@ const StyledIconButton = styled.button`
 `
 
 type IModal = {
-	setValue: UseFormSetValue<TestList>
-	setShow: (value: boolean) => void
+  setValue: UseFormSetValue<TestList>
+  setShow: (value: boolean) => void
 }
 
 const IModal = ({ setShow, setValue }: IModal) => {
-	const [icons, setIcons] = useState({})
+  const [icons, setIcons] = useState({})
 
-	useEffect(() => {
-		setIcons(
-			[...Object.entries(FAIcons), ...Object.entries(MDIcons)].reduce(
-				(previous, current) => {
-					const [name, icon] = current
-					// biome-ignore lint/performance/noAccumulatingSpread: <explanation>
-					return { ...previous, ...{ [name]: icon } }
-				},
-				{},
-			),
-		)
-	}, [])
+  useEffect(() => {
+    setIcons(
+      [...Object.entries(FAIcons), ...Object.entries(MDIcons)].reduce(
+        (previous, current) => {
+          const [name, icon] = current
+          // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
+          return { ...previous, ...{ [name]: icon } }
+        },
+        {},
+      ),
+    )
+  }, [])
 
-	return (
-		<>
-			{!!Object.entries(icons).length && (
-				<VirtuosoGrid
-					style={{ height: 500 }}
-					totalCount={Object.entries(icons).length}
-					overscan={200}
-					components={{
-						Item: ItemContainer,
-						List: ListContainer,
-					}}
-					itemContent={(index) => {
-						const [name, icon] = Object.entries(icons)[index]
-						const IconComponent = icon as React.ElementType
+  return (
+    <>
+      {!!Object.entries(icons).length && (
+        <VirtuosoGrid
+          style={{ height: 500 }}
+          totalCount={Object.entries(icons).length}
+          overscan={200}
+          components={{
+            Item: ItemContainer,
+            List: ListContainer,
+          }}
+          itemContent={(index) => {
+            const [name, icon] = Object.entries(icons)[index]
+            const IconComponent = icon as React.ElementType
 
-						return (
-							<ItemWrapper>
-								<StyledIconButton
-									type="button"
-									key={name}
-									id={name}
-									onClick={() => {
-										setValue("ooniRunLink.0.icon", name, {
-											shouldValidate: false,
-										})
-										setShow(false)
-									}}
-								>
-									<IconComponent size="40" />
-									<div style={{ overflow: "hidden" }}>{name}</div>
-								</StyledIconButton>
-							</ItemWrapper>
-						)
-					}}
-				/>
-			)}
-		</>
-	)
+            return (
+              <ItemWrapper>
+                <StyledIconButton
+                  type="button"
+                  key={name}
+                  id={name}
+                  onClick={() => {
+                    setValue("ooniRunLink.0.icon", name, {
+                      shouldValidate: false,
+                    })
+                    setShow(false)
+                  }}
+                >
+                  <IconComponent size="40" />
+                  <div style={{ overflow: "hidden" }}>{name}</div>
+                </StyledIconButton>
+              </ItemWrapper>
+            )
+          }}
+        />
+      )}
+    </>
+  )
 }
 
 export default IModal

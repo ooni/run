@@ -14,7 +14,7 @@ const loading = keyframes`
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const spinnerAnimation = (props: any) =>
-	css`
+  css`
     ${loading} ${props.$duration}s infinite linear;
   `
 
@@ -23,7 +23,7 @@ const Spin = styled.div<any>`
   animation: ${spinnerAnimation};
   background: ${(props) => props.$color};
   background: ${(props) =>
-		`linear-gradient(to right, ${props.$color} 10%, rgba(255, 255, 255, 0) 42%);`};
+    `linear-gradient(to right, ${props.$color} 10%, rgba(255, 255, 255, 0) 42%);`};
   border-radius: 50%;
   font-size: ${(props) => `${props.$size}px`};
   height: 11em;
@@ -63,19 +63,19 @@ const Spin = styled.div<any>`
 const SpinLoader = (props: any) => <Spin {...props} />
 
 SpinLoader.propTypes = {
-	$background: PropTypes.string,
-	$color: PropTypes.string,
-	$duration: PropTypes.number,
-	$size: PropTypes.number,
-	$margin: PropTypes.string,
+  $background: PropTypes.string,
+  $color: PropTypes.string,
+  $duration: PropTypes.number,
+  $size: PropTypes.number,
+  $margin: PropTypes.string,
 }
 
 SpinLoader.defaultProps = {
-	$background: "#fff",
-	$color: theme.colors.blue5,
-	$duration: 1.4,
-	$size: 5,
-	$margin: "50px auto",
+  $background: "#fff",
+  $color: theme.colors.blue5,
+  $duration: 1.4,
+  $size: 5,
+  $margin: "50px auto",
 }
 
 export default SpinLoader

@@ -13,26 +13,26 @@ const BrandContainer = styled.div`
 `
 
 const OONIRunHero = () => (
-	<Box bg="base">
-		<Container py="24px">
-			<Flex justifyContent="space-between">
-				<Box color="white" fontSize={1}>
-					<BrandContainer>
-						<NLink href="/">
-							<LogoOONIRun height="48px" />
-						</NLink>
-					</BrandContainer>
-					<Box mt={2}>
-						<FormattedMessage
-							id="Hero.SubTitle"
-							defaultMessage="Coordinate website censorship testing"
-						/>
-					</Box>
-				</Box>
-				<NavBar />
-			</Flex>
-		</Container>
-	</Box>
+  <Box bg="base">
+    <Container py="24px">
+      <Flex justifyContent="space-between">
+        <Box color="white" fontSize={1}>
+          <BrandContainer>
+            <NLink href="/">
+              <LogoOONIRun height="48px" />
+            </NLink>
+          </BrandContainer>
+          <Box mt={2}>
+            <FormattedMessage
+              id="Hero.SubTitle"
+              defaultMessage="Coordinate website censorship testing"
+            />
+          </Box>
+        </Box>
+        <NavBar />
+      </Flex>
+    </Container>
+  </Box>
 )
 
 export default OONIRunHero

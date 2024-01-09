@@ -6,31 +6,31 @@ const LANG_DIR = "./public/static/lang/"
 const TRANSLATED_STRINGS_DIR = "../translations/run"
 
 const supportedLanguages = glob
-	.sync(`${TRANSLATED_STRINGS_DIR}/**/*.json`)
-	.map((f) => basename(dirname(f, ".json")))
+  .sync(`${TRANSLATED_STRINGS_DIR}/**/*.json`)
+  .map((f) => basename(dirname(f, ".json")))
 
 // Copy latest files from `translations`
 // biome-ignore lint/complexity/noForEach: <explanation>
 supportedLanguages.forEach((lang) => {
-	console.log("> Getting latest translations for:", lang)
-	const formattedLang = lang.toLowerCase().replace("_", "-")
-	writeFileSync(
-		`${LANG_DIR}/${formattedLang}.json`,
-		readFileSync(`${TRANSLATED_STRINGS_DIR}/${lang}/strings.json`),
-	)
+  console.log("> Getting latest translations for:", lang)
+  const formattedLang = lang.toLowerCase().replace("_", "-")
+  writeFileSync(
+    `${LANG_DIR}/${formattedLang}.json`,
+    readFileSync(`${TRANSLATED_STRINGS_DIR}/${lang}/strings.json`),
+  )
 })
 
 // Build the locale files to be sent to the browser
 const translationsMap = supportedLanguages.reduce((t, lang) => {
-	const formattedLang = lang.toLowerCase().replace("_", "-")
-	t[formattedLang] = JSON.parse(
-		readFileSync(`${LANG_DIR}/${formattedLang}.json`),
-	)
-	return t
+  const formattedLang = lang.toLowerCase().replace("_", "-")
+  t[formattedLang] = JSON.parse(
+    readFileSync(`${LANG_DIR}/${formattedLang}.json`),
+  )
+  return t
 }, {})
 
 const translationsContent = `window.OONITranslations = ${JSON.stringify(
-	translationsMap,
+  translationsMap,
 )}`
 writeFileSync(`${LANG_DIR}/translations.js`, translationsContent)
 console.log(`> Wrote translations to: ${LANG_DIR}/translations.js`)

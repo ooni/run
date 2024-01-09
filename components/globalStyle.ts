@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components"
 
 type GlobalStyleProps = {
-	direction: "rtl" | "ltr"
+  direction: "rtl" | "ltr"
 }
 
 const GlobalStyle = createGlobalStyle<GlobalStyleProps>`
