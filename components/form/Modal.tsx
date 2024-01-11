@@ -1,8 +1,6 @@
 import { Flex } from "ooni-components"
 import { useEffect, useState } from "react"
 import { UseFormSetValue } from "react-hook-form"
-import * as FAIcons from "react-icons/fa6"
-import * as MDIcons from "react-icons/md"
 import { GridComponents, VirtuosoGrid } from "react-virtuoso"
 import { styled } from "styled-components"
 import { TestList } from "./TestListForm"
@@ -46,6 +44,9 @@ type IModal = {
 }
 
 const IModal = ({ setShow, setValue }: IModal) => {
+  const FAIcons = require("react-icons/fa6")
+  const MDIcons = require("react-icons/md")
+
   const [icons, setIcons] = useState({})
 
   useEffect(() => {
@@ -59,7 +60,7 @@ const IModal = ({ setShow, setValue }: IModal) => {
         {},
       ),
     )
-  }, [])
+  }, [FAIcons, MDIcons])
 
   return (
     <>

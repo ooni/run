@@ -1,4 +1,4 @@
-import useIcon from "hooks/useIcon"
+import DescriptorIcon from "components/DescriptorIcon"
 import Markdown from "markdown-to-jsx"
 import { Box, Heading, Text } from "ooni-components"
 import ArchivedTag from "../ArchivedTag"
@@ -10,8 +10,6 @@ const DescriptorDetails = ({
   archived,
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 }: any) => {
-  const icon = useIcon(descriptor.icon)
-
   return (
     <>
       <Heading
@@ -21,9 +19,11 @@ const DescriptorDetails = ({
         verticalAlign="middle"
         mr={3}
       >
-        <Box as="span" verticalAlign="text-bottom">
-          {icon}
-        </Box>
+        {descriptor.icon && (
+          <Box as="span" verticalAlign="text-bottom">
+            <DescriptorIcon icon={descriptor.icon} />
+          </Box>
+        )}
         {descriptor.name}
       </Heading>
 

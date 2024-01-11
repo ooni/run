@@ -1,4 +1,3 @@
-import useIcon from "hooks/useIcon"
 import Markdown from "markdown-to-jsx"
 import NLink from "next/link"
 import { Box, Flex, Heading, Text } from "ooni-components"
@@ -6,6 +5,7 @@ import { MdKeyboardArrowRight } from "react-icons/md"
 import { useIntl } from "react-intl"
 import styled from "styled-components"
 import ArchivedTag from "./ArchivedTag"
+import DescriptorIcon from "./DescriptorIcon"
 
 const StyledFlex = styled(Flex)`
   border: 1px solid ${(props) => props.theme.colors.gray3};
@@ -25,7 +25,6 @@ type DescriptorCard = {
 
 const DescriptorCard = ({ descriptor }: DescriptorCard) => {
   const intl = useIntl()
-  const icon = useIcon(descriptor.icon)
 
   return (
     <NLink href={`/v2/${descriptor.ooni_run_link_id}`}>
@@ -40,9 +39,11 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
         <Box>
           <Box mb={1}>
             <Heading h={4} m={0} display="inline" mr={2}>
-              <Box as="span" verticalAlign="text-top">
-                {icon}
-              </Box>
+              {descriptor?.icon && (
+                <Box as="span" verticalAlign="text-top">
+                  <DescriptorIcon icon={descriptor.icon} />
+                </Box>
+              )}
               {descriptor.name}
             </Heading>
             {!!descriptor.archived && (

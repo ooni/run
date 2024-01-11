@@ -19,7 +19,7 @@ import IconModal from "./IconModal"
 import IntlFields from "./IntlFields"
 import NettestFields from "./NettestFields"
 
-import useIcon from "hooks/useIcon"
+import DescriptorIcon from "components/DescriptorIcon"
 import { Checkbox } from "ooni-components"
 import { FaCheck } from "react-icons/fa6"
 
@@ -142,7 +142,6 @@ const TestListForm = ({
   const { control, formState, handleSubmit, setValue, watch } = formMethods
   const iconValue = watch("ooniRunLink.0.icon")
 
-  const selectedIcon = useIcon(iconValue)
   const { errors, isSubmitting } = formState
 
   // console.log("errors", errors)
@@ -197,7 +196,11 @@ const TestListForm = ({
                     name={`ooniRunLink.${index}.icon`}
                     control={control}
                   />
-                  <Box fontSize={3}>{selectedIcon}</Box>
+                  {iconValue && (
+                    <Box fontSize={3}>
+                      <DescriptorIcon icon={iconValue} />
+                    </Box>
+                  )}
                   <IconModal setValue={setValue} iconValue={iconValue} />
                 </StyledInputWrapper>
                 <StyledInputWrapper>

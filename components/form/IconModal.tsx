@@ -1,11 +1,19 @@
 import SpinLoader from "components/vendor/SpinLoader"
+import dynamic from "next/dynamic"
 import { Button, Flex, Modal } from "ooni-components"
-import { Suspense, lazy, useState } from "react"
+import { useState } from "react"
 import { UseFormSetValue } from "react-hook-form"
 import { MdAdd, MdRefresh } from "react-icons/md"
 import { TestList } from "./TestListForm"
 
-const IModal = lazy(() => import("./Modal"))
+const IModal = dynamic(() => import("../form/Modal"), {
+  loading: () => (
+    <Flex height="500px" justifyItems="center" alignItems="center">
+      <SpinLoader />
+    </Flex>
+  ),
+  ssr: false,
+})
 
 type IconModal = {
   setValue: UseFormSetValue<TestList>
@@ -45,15 +53,7 @@ const IconModal = ({ setValue, iconValue }: IconModal) => {
         }}
       >
         {showIconModal && ( // extra condition so that icons are lazy loaded only when modal opens
-          <Suspense
-            fallback={
-              <Flex height="500px" justifyItems="center" alignItems="center">
-                <SpinLoader />
-              </Flex>
-            }
-          >
-            <IModal setShow={setShowIconModal} setValue={setValue} />
-          </Suspense>
+          <IModal setShow={setShowIconModal} setValue={setValue} />
         )}
       </Modal>
     </>

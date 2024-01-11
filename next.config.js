@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+})
+
 const webpack = require("webpack")
 const glob = require("glob")
 const { basename } = require("path")
@@ -17,7 +21,7 @@ function getSupportedLanguages() {
   return [...supportedLanguages]
 }
 
-module.exports = {
+module.exports = withBundleAnalyzer({
   output: "standalone",
   reactStrictMode: true,
   swcMinify: true,
@@ -76,4 +80,4 @@ module.exports = {
 
     return config
   },
-}
+})

@@ -1,4 +1,4 @@
-import useIcon from "hooks/useIcon"
+// import useIcon from "hooks/useIcon"
 import { getList } from "lib/api"
 import { Box, Flex, Heading } from "ooni-components"
 import { useMemo } from "react"
@@ -15,7 +15,7 @@ const PublicDescriptorDetails = ({
   archived,
   linkId,
 }: DescriptorView) => {
-  const icon = useIcon(descriptor.icon)
+  // const icon = useIcon(descriptor.icon)
   const { locale } = useIntl()
 
   const { data: listData } = useSWR({ ooni_run_link_id: linkId }, (props) =>
