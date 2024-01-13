@@ -1,13 +1,15 @@
-import OONIRunHero from "components/OONIRunHero"
 import TestListForm from "components/form/TestListForm"
 import useUser from "hooks/useUser"
 import { createRunLink, getRunLink, getUserEmail } from "lib/api"
+import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { Container } from "ooni-components"
 import { transformOutgoingData } from "pages/create"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import useSWR from "swr"
 import { generateRandomString } from "utils"
+
+const OONIRunHero = dynamic(() => import("components/OONIRunHero"))
 
 const transformIntoArray = (obj: object) =>
   Object.entries(obj).map(([k, v]) => ({

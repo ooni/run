@@ -4,12 +4,13 @@ import { Box, Container, Flex, Text } from "ooni-components"
 import { useCallback, useEffect, useMemo } from "react"
 import { FormattedMessage } from "react-intl"
 
-import { createRunLink, getUserEmail } from "lib/api"
-
-import OONIRunHero from "components/OONIRunHero"
 import TestListForm from "components/form/TestListForm"
 import useUser from "hooks/useUser"
+import { createRunLink, getUserEmail } from "lib/api"
+import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
+
+const OONIRunHero = dynamic(() => import("components/OONIRunHero"))
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const transformKeyValue = ({ key, value }: any) => ({ [key]: value })

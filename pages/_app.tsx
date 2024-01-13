@@ -2,11 +2,16 @@ import { Fira_Sans } from "next/font/google"
 import { useRouter } from "next/router"
 import NProgress from "nprogress"
 import { useEffect, useMemo } from "react"
-import { IntlProvider } from "react-intl"
 import "../public/static/nprogress.css"
 
-import Layout from "components/Layout"
 import type { AppProps } from "next/app"
+import dynamic from "next/dynamic"
+
+const IntlProvider = dynamic(() =>
+  import("react-intl").then((lib) => lib.IntlProvider),
+)
+
+const Layout = dynamic(() => import("components/Layout"))
 
 const firaSans = Fira_Sans({
   weight: ["300", "400", "600"],

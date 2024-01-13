@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import Compact from "@uiw/react-color-compact"
-import ButtonSpinner from "components/ButtonSpinner"
 import { apiEndpoints, getUserEmail, postFetcher } from "lib/api"
 import { useRouter } from "next/router"
 import { Box, Button, Flex, Input, Text } from "ooni-components"
@@ -14,14 +13,17 @@ import { FormattedMessage } from "react-intl"
 import styled from "styled-components"
 import useSWRMutation from "swr/mutation"
 import * as Yup from "yup"
-import AdminNettestFields from "./AdminNettestFields"
-import IconModal from "./IconModal"
-import IntlFields from "./IntlFields"
-import NettestFields from "./NettestFields"
 
 import DescriptorIcon from "components/DescriptorIcon"
+import dynamic from "next/dynamic"
 import { Checkbox } from "ooni-components"
 import { FaCheck } from "react-icons/fa6"
+
+const IconModal = dynamic(() => import("./IconModal"))
+const IntlFields = dynamic(() => import("./IntlFields"))
+const NettestFields = dynamic(() => import("./NettestFields"))
+const AdminNettestFields = dynamic(() => import("./AdminNettestFields"))
+const ButtonSpinner = dynamic(() => import("components/ButtonSpinner"))
 
 export type FieldsPropTypes = {
   name: string

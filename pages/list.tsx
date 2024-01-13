@@ -1,9 +1,11 @@
 import { Container } from "ooni-components"
 
-import RunLinkList from "components/List"
-import OONIRunHero from "components/OONIRunHero"
+import dynamic from "next/dynamic"
 import { Box, Heading } from "ooni-components"
 import styled from "styled-components"
+
+const RunLinkList = dynamic(() => import("components/List"))
+const OONIRunHero = dynamic(() => import("components/OONIRunHero"))
 
 const StyledBox = styled(Box)`
 box-shadow: 0 50vh 0 50vh ${(props) => props.theme.colors.gray1};
