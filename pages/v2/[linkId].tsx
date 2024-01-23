@@ -7,10 +7,11 @@ import PublicDescriptorView from "components/v2/PublicDescriptorView"
 import mobileApp from "config/mobileApp"
 import { getRunLink } from "lib/api"
 import { GetServerSideProps } from "next"
-import { Box, Container } from "ooni-components"
+import { Box, Container, Flex } from "ooni-components"
 import type { ParsedUrlQuery } from "querystring"
 import { generateRandomString } from "utils"
 import { getIntentURIv2 } from "utils/links"
+import OONI404 from "/public/static/images/OONI_404.svg"
 
 const useragent = require("useragent/index.js")
 
@@ -21,7 +22,7 @@ type Props = {
   withWindowLocation: boolean
   storeLink: string
   installLink: string
-  userAgent: string | undefined
+  userAgent?: string
   universalLink: string
   title: string
   description: string
@@ -148,7 +149,8 @@ const Nettest = ({
 
   return (
     <>
-      {descriptor && (
+      {isMine ? <OONIRunHero /> : <OONIRunHeroMinimal />}
+      {descriptor ? (
         <>
           <MetaTags
             title={title}
@@ -158,42 +160,37 @@ const Nettest = ({
             universalLink={universalLink}
           />
           {isMine ? (
-            <>
-              <OONIRunHero />
-              <Container px={[3, 3, 4]} py={4}>
-                <DescriptorView
-                  descriptor={descriptor}
-                  descriptorCreationTime={descriptorCreationTime}
-                  archived={archived}
-                  deepLink={deepLink}
-                  runLink={universalLink}
-                  linkId={linkId}
-                />
-              </Container>
-            </>
+            <Container px={[3, 3, 4]} py={4}>
+              <DescriptorView
+                descriptor={descriptor}
+                descriptorCreationTime={descriptorCreationTime}
+                archived={archived}
+                deepLink={deepLink}
+                runLink={universalLink}
+                linkId={linkId}
+              />
+            </Container>
           ) : (
-            <>
-              <OONIRunHeroMinimal />
-              <Box bg="gray0">
-                <Container px={[3, 3, 4]} py={4}>
-                  <CTA
-                    linkTitle={descriptor?.name}
+            <Box bg="gray0">
+              <Container px={[3, 3, 4]} py={4}>
+                <CTA
+                  linkTitle={descriptor?.name}
+                  deepLink={deepLink}
+                  installLink={installLink}
+                />
+                <Box mt={4}>
+                  <PublicDescriptorView
+                    descriptor={descriptor}
+                    descriptorCreationTime={descriptorCreationTime}
+                    archived={archived}
                     deepLink={deepLink}
-                    installLink={installLink}
+                    runLink={universalLink}
+                    linkId={linkId}
+                    userAgent={userAgent}
                   />
-                  <Box mt={4}>
-                    <PublicDescriptorView
-                      descriptor={descriptor}
-                      descriptorCreationTime={descriptorCreationTime}
-                      archived={archived}
-                      deepLink={deepLink}
-                      runLink={universalLink}
-                      linkId={linkId}
-                    />
-                  </Box>
-                </Container>
-              </Box>
-            </>
+                </Box>
+              </Container>
+            </Box>
           )}
           <>
             {withWindowLocation && (
@@ -214,6 +211,15 @@ const Nettest = ({
             )}
           </>
         </>
+      ) : (
+        <Container my={5}>
+          <Flex justifyContent="center" alignItems="center">
+            <Box>
+              <OONI404 height="200px" />
+            </Box>
+            <Box pl={5}>Run Link not found</Box>
+          </Flex>
+        </Container>
       )}
     </>
   )

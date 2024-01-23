@@ -9,12 +9,16 @@ import DescriptorDetails from "./DescriptorDetails"
 import NettestsBox from "./NettestsBox"
 import Revisions from "./Revisions"
 
+interface PublicDescriptorDetails extends DescriptorView {
+  userAgent?: string
+}
+
 const PublicDescriptorDetails = ({
   descriptor,
   descriptorCreationTime,
   archived,
   linkId,
-}: DescriptorView) => {
+}: PublicDescriptorDetails) => {
   // const icon = useIcon(descriptor.icon)
   const { locale } = useIntl()
 

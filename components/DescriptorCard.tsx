@@ -7,6 +7,11 @@ import styled from "styled-components"
 import ArchivedTag from "./ArchivedTag"
 import DescriptorIcon from "./DescriptorIcon"
 
+type Span = {
+  children: React.ReactNode
+}
+const Span = ({ children }: Span) => <span>{children}</span>
+
 const StyledFlex = styled(Flex)`
   border: 1px solid ${(props) => props.theme.colors.gray3};
   border-radius: 8px;
@@ -69,7 +74,17 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
           </Text>
           {descriptor.short_description && (
             <Text color="gray5">
-              <Markdown>{descriptor.short_description}</Markdown>
+              <Markdown
+                options={{
+                  overrides: {
+                    a: {
+                      component: Span,
+                    },
+                  },
+                }}
+              >
+                {descriptor.short_description}
+              </Markdown>
             </Text>
           )}
         </Box>

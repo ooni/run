@@ -1,12 +1,13 @@
 import TestListForm from "components/form/TestListForm"
 import useUser from "hooks/useUser"
 import { createRunLink, getRunLink, getUserEmail } from "lib/api"
+import { GetServerSidePropsContext } from "next"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { Container } from "ooni-components"
 import { transformOutgoingData } from "pages/create"
-import { useCallback, useEffect, useMemo, useState } from "react"
-import useSWR from "swr"
+import { ParsedUrlQuery } from "querystring"
+import { useCallback, useMemo } from "react"
 import { generateRandomString } from "utils"
 
 const OONIRunHero = dynamic(() => import("components/OONIRunHero"))
@@ -38,62 +39,62 @@ const transformIncomingData = (formData: any) => {
   }
 }
 
-// interface QParams extends ParsedUrlQuery {
-//   linkId: string
-// }
+interface QParams extends ParsedUrlQuery {
+  linkId: string
+}
 
-// export const getServerSideProps = async ({
-//   params,
-// }: GetServerSidePropsContext) => {
-//   const { linkId } = params as QParams
+export const getServerSideProps = async ({
+  req,
+  params,
+}: GetServerSidePropsContext) => {
+  const { linkId } = params as QParams
+  const { cookies } = req
+  const authToken = cookies?.token ? JSON.parse(cookies?.token).token : null
 
-//   try {
-//     const runLink = await getRunLink(linkId, {
-//       nocache: generateRandomString(),
-//     })
-//     const descriptor = runLink.descriptor
+  if (authToken) {
+    try {
+      const runLink = await getRunLink(
+        linkId,
+        { nocache: generateRandomString() },
+        {
+          ...(authToken && {
+            headers: { Authorization: `Bearer ${authToken}` },
+          }),
+        },
+      )
+      const descriptor = runLink.descriptor
+      if (runLink.mine) {
+        return {
+          props: {
+            descriptor,
+          },
+        }
+      }
+    } catch (e) {}
+  }
+  return {
+    redirect: {
+      destination: "/",
+    },
+  }
+}
 
-//     return {
-//       props: {
-//         runLink: transformIncomingData(descriptor),
-//       },
-//     }
-//   } catch (e) {
-//     return {
-//       redirect: {
-//         destination: '/',
-//       },
-//     }
-//   }
-// }
+type EditRunLinkProps = {
+  descriptor: Descriptor
+}
 
-// type EditRunLinkProps = {
-//   runLink: {}
-// }
-
-const EditRunLink = () => {
+const EditRunLink = ({ descriptor }: EditRunLinkProps) => {
+  const runLink = useMemo(
+    () => (descriptor ? transformIncomingData(descriptor) : null),
+    [descriptor],
+  )
   const {
     push,
     query: { linkId },
   } = useRouter()
 
-  const [randString] = useState(generateRandomString())
-
-  const { loading, user } = useUser()
+  const { user } = useUser()
   const isAdmin = useMemo(() => user?.role === "admin", [user])
-
-  const { data, error, isLoading } = useSWR(
-    user ? [linkId, { nocache: randString }] : null,
-    ([linkId, params]) => getRunLink(linkId as string, params),
-  )
-
-  const runLink = useMemo(() => {
-    return data?.descriptor ? transformIncomingData(data?.descriptor) : null
-  }, [data])
-
-  useEffect(() => {
-    if (!user && !loading) push("/")
-  }, [user, loading, push])
 
   const onSubmit = useCallback(
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>

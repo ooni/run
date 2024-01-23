@@ -95,7 +95,7 @@ const Create: NextPage = () => {
     <>
       <OONIRunHero />
       {!user || loading ? (
-        <></>
+        <>Loading</>
       ) : (
         <Container pt={4} maxWidth={800}>
           <Flex justifyContent="center">

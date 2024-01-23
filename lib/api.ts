@@ -87,8 +87,8 @@ export const getRunLink = (id: string, params = {}, config = {}) => {
   return getAPI(`${apiEndpoints.GET_RUN_LINK}/${id}`, params, config)
 }
 
-export const getList = (params = {}) => {
-  return getAPI(apiEndpoints.GET_LIST, params)
+export const getList = (params = {}, config = {}) => {
+  return getAPI(apiEndpoints.GET_LIST, params, config)
 }
 
 export const registerUser = async (

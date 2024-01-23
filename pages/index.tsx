@@ -29,7 +29,14 @@ const Home = () => {
     <>
       <OONIRunHero />
       <Container>
-        <Text maxWidth="572px" fontSize={2} mx="auto" my={5}>
+        <Text
+          maxWidth="572px"
+          fontSize={[1, 2]}
+          lineHeight="24px"
+          mx="auto"
+          mt="40px"
+          mb="24px"
+        >
           <Markdown>{intl.formatMessage({ id: "Home.About" })}</Markdown>
         </Text>
         <Flex sx={{ gap: 3, flexDirection: ["column", "column", "row"] }}>
@@ -78,13 +85,13 @@ const Home = () => {
         <Box textAlign="center" my={4}>
           {user?.logged_in ? (
             <NLink href="/create">
-              <Button type="button" size="large">
+              <Button type="button" fontSize={[1, 2]} size="large">
                 Create OONI Run Link
               </Button>
             </NLink>
           ) : (
             <NLink href="/login">
-              <Button type="button" size="large">
+              <Button type="button" fontSize={[1, 2]} size="large">
                 Login to create OONI Run Link
               </Button>
             </NLink>

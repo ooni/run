@@ -17,6 +17,7 @@ import * as Yup from "yup"
 import DescriptorIcon from "components/DescriptorIcon"
 import dynamic from "next/dynamic"
 import { Checkbox } from "ooni-components"
+import { useEffect, useState } from "react"
 import { FaCheck } from "react-icons/fa6"
 
 const IconModal = dynamic(() => import("./IconModal"))
@@ -57,6 +58,7 @@ export type TestList = {
     color: string
     author: string
     include_author: boolean
+    expiration_date: string
     nettests: Nettest[]
   }>
 }
@@ -74,6 +76,7 @@ const validationSchema = Yup.object({
         color: Yup.string().defined(),
         author: Yup.string().defined(),
         include_author: Yup.boolean().defined(),
+        expiration_date: Yup.string().required("Cannot be empty"),
         nettests: Yup.array()
           .required()
           .of(
@@ -134,6 +137,12 @@ const TestListForm = ({
   defaultValues,
   linkId,
 }: TestListFormProps) => {
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   const { push } = useRouter()
 
   const formMethods = useForm<TestList>({
@@ -145,8 +154,6 @@ const TestListForm = ({
   const iconValue = watch("ooniRunLink.0.icon")
 
   const { errors, isSubmitting } = formState
-
-  // console.log("errors", errors)
 
   const { fields } = useFieldArray({
     control, // control props comes from useForm (optional: if you are using FormContext)
@@ -265,31 +272,50 @@ const TestListForm = ({
                   />
                   <IntlFields name={`ooniRunLink.${index}.description_intl`} />
                 </StyledInputWrapper>
+                {isClient && (
+                  <StyledInputWrapper>
+                    <Controller
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          disabled
+                          bg="gray3"
+                          label="Author's Email"
+                        />
+                      )}
+                      name={`ooniRunLink.${index}.author`}
+                      control={control}
+                    />
+
+                    <Controller
+                      render={({ field }) => (
+                        <Box mt={2}>
+                          <Checkbox
+                            {...field}
+                            reverse
+                            checked={field.value}
+                            label={`Show my email “${getUserEmail()}” in the link info`}
+                          />
+                        </Box>
+                      )}
+                      name={`ooniRunLink.${index}.include_author`}
+                      control={control}
+                    />
+                  </StyledInputWrapper>
+                )}
+
                 <StyledInputWrapper>
                   <Controller
                     render={({ field }) => (
                       <Input
                         {...field}
-                        disabled
-                        bg="gray3"
-                        label="Author's Email"
+                        label="Expiration Date"
+                        error={
+                          errors?.ooniRunLink?.[index]?.expiration_date?.message
+                        }
                       />
                     )}
-                    name={`ooniRunLink.${index}.author`}
-                    control={control}
-                  />
-                  <Controller
-                    render={({ field }) => (
-                      <Box mt={2}>
-                        <Checkbox
-                          {...field}
-                          reverse
-                          checked={field.value}
-                          label={`Show my email “${getUserEmail()}” in the link info`}
-                        />
-                      </Box>
-                    )}
-                    name={`ooniRunLink.${index}.include_author`}
+                    name={`ooniRunLink.${index}.expiration_date`}
                     control={control}
                   />
                 </StyledInputWrapper>

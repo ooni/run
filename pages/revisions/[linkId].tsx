@@ -1,4 +1,5 @@
 import OONIRunHero from "components/OONIRunHero"
+import OONIRunHeroMinimal from "components/OONIRunHeroMinimal"
 import RevisionView from "components/revisions/RevisionView"
 import { getRunLink } from "lib/api"
 import { GetServerSideProps } from "next"
@@ -19,16 +20,27 @@ interface QParams extends ParsedUrlQuery {
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({
+  req,
   query,
   params,
 }) => {
+  const { cookies } = req
   const { linkId } = params as QParams
+  const authToken = cookies?.token ? JSON.parse(cookies?.token).token : null
   let runLinkDescriptor = null
 
   try {
-    runLinkDescriptor = await getRunLink(linkId, {
-      ...(query?.datetime && { creation_time: query?.datetime }),
-    })
+    runLinkDescriptor = await getRunLink(
+      linkId,
+      {
+        ...(query?.datetime && { creation_time: query?.datetime }),
+      },
+      {
+        ...(authToken && {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }),
+      },
+    )
   } catch (e) {}
 
   const props: Props = {
@@ -44,20 +56,18 @@ const Nettest = ({ runLinkDescriptor, linkId }: Props) => {
   const descriptorCreationTime =
     runLinkDescriptor?.descriptor_creation_time || ""
   const archived = !!runLinkDescriptor?.archived
+  const isMine = !!runLinkDescriptor?.mine
 
   return (
     <>
+      {isMine ? <OONIRunHero /> : <OONIRunHeroMinimal />}
       {descriptor && (
-        <>
-          <OONIRunHero />
-
-          <RevisionView
-            descriptor={descriptor}
-            descriptorCreationTime={descriptorCreationTime}
-            archived={archived}
-            linkId={linkId}
-          />
-        </>
+        <RevisionView
+          descriptor={descriptor}
+          descriptorCreationTime={descriptorCreationTime}
+          archived={archived}
+          linkId={linkId}
+        />
       )}
     </>
   )
