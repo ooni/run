@@ -4,6 +4,7 @@ import { Box, Flex, Heading, Text } from "ooni-components"
 import { MdKeyboardArrowRight } from "react-icons/md"
 import { useIntl } from "react-intl"
 import styled from "styled-components"
+import { icons } from "utils/icons"
 import ArchivedTag from "./ArchivedTag"
 import DescriptorIcon from "./DescriptorIcon"
 
@@ -46,7 +47,9 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
             <Heading h={4} m={0} display="inline" mr={2}>
               {descriptor?.icon && (
                 <Box as="span" verticalAlign="text-top">
-                  <DescriptorIcon icon={descriptor.icon} />
+                  <DescriptorIcon
+                    icon={descriptor.icon as keyof typeof icons}
+                  />
                 </Box>
               )}
               {descriptor.name}

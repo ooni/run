@@ -1,21 +1,15 @@
+import { icons } from "utils/icons"
+
 type DescriptorIconProps = {
-  icon: string
+  icon: keyof typeof icons
 }
 
 const DescriptorIcon = ({ icon }: DescriptorIconProps) => {
   if (!icon) return ""
 
-  const iconGroup = {
-    md: require("react-icons/md"),
-    fa: require("react-icons/fa"),
-  }
+  const IconComponent = icons[icon]
 
-  const selectedIconGroup = icon.slice(0, 2).toLowerCase()
-
-  if (selectedIconGroup !== "fa" && selectedIconGroup !== "md") return ""
-
-  const IconComponent = iconGroup[selectedIconGroup][icon]
-  return <IconComponent style={{ marginRight: "10px" }} />
+  return IconComponent ? <IconComponent style={{ marginRight: "10px" }} /> : ""
 }
 
 export default DescriptorIcon

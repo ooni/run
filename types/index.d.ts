@@ -22,7 +22,7 @@ type Descriptor = {
   name: string
   name_intl: object[]
   author: string | undefined
-  icon: string | undefined
+  icon: keyof typeof icons | undefined
   short_description: string | undefined
   short_description_intl: object[]
   archived: boolean

@@ -19,6 +19,7 @@ import dynamic from "next/dynamic"
 import { Checkbox } from "ooni-components"
 import { useEffect, useState } from "react"
 import { FaCheck } from "react-icons/fa6"
+import { icons } from "utils/icons"
 
 const IconModal = dynamic(() => import("./IconModal"))
 const IntlFields = dynamic(() => import("./IntlFields"))
@@ -151,7 +152,7 @@ const TestListForm = ({
     resolver: yupResolver(validationSchema),
   })
   const { control, formState, handleSubmit, setValue, watch } = formMethods
-  const iconValue = watch("ooniRunLink.0.icon")
+  const iconValue = watch("ooniRunLink.0.icon") as keyof typeof icons
 
   const { errors, isSubmitting } = formState
 
@@ -313,6 +314,7 @@ const TestListForm = ({
                         error={
                           errors?.ooniRunLink?.[index]?.expiration_date?.message
                         }
+                        placeholder="YYYY-MM-DD"
                       />
                     )}
                     name={`ooniRunLink.${index}.expiration_date`}

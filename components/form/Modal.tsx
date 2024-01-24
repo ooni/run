@@ -1,8 +1,7 @@
 import { Flex } from "ooni-components"
-import { useEffect, useState } from "react"
 import { UseFormSetValue } from "react-hook-form"
-import { GridComponents, VirtuosoGrid } from "react-virtuoso"
 import { styled } from "styled-components"
+import { icons } from "utils/icons"
 import { TestList } from "./TestListForm"
 
 const ItemContainer = styled.div`
@@ -24,7 +23,7 @@ const ItemWrapper = styled.div`
 const ListContainer = styled(Flex)`
   flex-wrap: wrap;
   justify-content: center;
-` as GridComponents["List"]
+`
 
 const StyledIconButton = styled.button`
   font-size: 10px;
@@ -44,61 +43,30 @@ type IModal = {
 }
 
 const IModal = ({ setShow, setValue }: IModal) => {
-  const FAIcons = require("react-icons/fa6")
-  const MDIcons = require("react-icons/md")
-
-  const [icons, setIcons] = useState({})
-
-  useEffect(() => {
-    setIcons(
-      [...Object.entries(FAIcons), ...Object.entries(MDIcons)].reduce(
-        (previous, current) => {
-          const [name, icon] = current
-          // biome-ignore lint/performance/noAccumulatingSpread: <explanation>
-          return { ...previous, ...{ [name]: icon } }
-        },
-        {},
-      ),
-    )
-  }, [FAIcons, MDIcons])
-
   return (
-    <>
-      {!!Object.entries(icons).length && (
-        <VirtuosoGrid
-          style={{ height: 500 }}
-          totalCount={Object.entries(icons).length}
-          overscan={200}
-          components={{
-            Item: ItemContainer,
-            List: ListContainer,
-          }}
-          itemContent={(index) => {
-            const [name, icon] = Object.entries(icons)[index]
-            const IconComponent = icon as React.ElementType
-
-            return (
-              <ItemWrapper>
-                <StyledIconButton
-                  type="button"
-                  key={name}
-                  id={name}
-                  onClick={() => {
-                    setValue("ooniRunLink.0.icon", name, {
-                      shouldValidate: false,
-                    })
-                    setShow(false)
-                  }}
-                >
-                  <IconComponent size="40" />
-                  <div style={{ overflow: "hidden" }}>{name}</div>
-                </StyledIconButton>
-              </ItemWrapper>
-            )
-          }}
-        />
-      )}
-    </>
+    <ListContainer>
+      {Object.entries(icons).map(([name, icon]) => {
+        const IconComponent = icon as React.ElementType
+        return (
+          <ItemContainer>
+            <StyledIconButton
+              type="button"
+              key={name}
+              id={name}
+              onClick={() => {
+                setValue("ooniRunLink.0.icon", name, {
+                  shouldValidate: false,
+                })
+                setShow(false)
+              }}
+            >
+              <IconComponent size="40" />
+              <div style={{ overflow: "hidden" }}>{name}</div>
+            </StyledIconButton>
+          </ItemContainer>
+        )
+      })}
+    </ListContainer>
   )
 }
 
