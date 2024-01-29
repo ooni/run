@@ -57,7 +57,8 @@ const StyledFooter = styled(Box).attrs({ mb: 3, mx: 3 })`
 display: flex;
 justify-content: space-between;
 `
-const getDateFnsLocale = (locale) => {
+
+const getDateFnsLocale = (locale: string) => {
   switch (locale) {
     case "de":
       return de
@@ -90,12 +91,24 @@ const getDateFnsLocale = (locale) => {
   }
 }
 
-const DatePicker = ({ handleRangeSelect, initialRange, close, ...props }) => {
+const ranges = ["OneWeek", "ThreeMonths", "SixMonths"]
+
+type DatePickerProps = {
+  handleRangeSelect: (date: Date) => void
+  initialDate: string
+  close: () => void
+}
+
+const DatePicker = ({
+  handleRangeSelect,
+  initialDate,
+  close,
+  ...props
+}: DatePickerProps) => {
   const intl = useIntl()
   const tomorrow = addDays(new Date(), 1)
-  const ranges = ["OneWeek", "ThreeMonths", "SixMonths"]
 
-  const selectRange = (range) => {
+  const selectRange = (range: (typeof ranges)[number]) => {
     switch (range) {
       case "OneWeek":
         handleRangeSelect(addDays(new Date(), 7))
@@ -115,7 +128,7 @@ const DatePicker = ({ handleRangeSelect, initialRange, close, ...props }) => {
       size="small"
       key={range}
       px={2}
-      onClick={(e) => {
+      onClick={(e: Event) => {
         e.preventDefault()
         selectRange(range)
       }}
@@ -125,15 +138,15 @@ const DatePicker = ({ handleRangeSelect, initialRange, close, ...props }) => {
     </Button>
   ))
 
-  const [range, setRange] = useState(
-    initialRange ? parse(initialRange, "yyyy-MM-dd", new Date()) : "",
+  const [range, setRange] = useState<Date | undefined>(
+    initialDate ? parse(initialDate, "yyyy-MM-dd", new Date()) : undefined,
   )
 
   const Footer = () => (
     <StyledFooter>
       <Button
         hollow
-        onClick={(e) => {
+        onClick={(e: Event) => {
           e.preventDefault()
           close()
         }}
@@ -142,19 +155,19 @@ const DatePicker = ({ handleRangeSelect, initialRange, close, ...props }) => {
       </Button>
       <Button
         id="apply-range"
-        onClick={(e) => {
+        onClick={(e: Event) => {
           e.preventDefault()
-          handleRangeSelect(range)
+          range && handleRangeSelect(range)
         }}
       >
         {intl.formatMessage({ id: "DateRange.Apply" })}
       </Button>
     </StyledFooter>
   )
-  const onSelect = (range) => {
-    console.log(range)
-    setRange(range)
-  }
+  // const onSelect = (range) => {
+  //   console.log(range)
+  //   setRange(range)
+  // }
 
   return (
     <Box sx={{ position: "relative" }}>
@@ -164,11 +177,11 @@ const DatePicker = ({ handleRangeSelect, initialRange, close, ...props }) => {
           <DayPicker
             {...props}
             dir={getDirection(intl.locale)}
-            locale={getDateFnsLocale(intl.locale)}
+            // locale={getDateFnsLocale(intl.locale)}
             mode="single"
             fromDate={tomorrow}
             selected={range}
-            onSelect={onSelect}
+            onSelect={setRange}
             // footer={}
           />
           <Footer />

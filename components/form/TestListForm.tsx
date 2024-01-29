@@ -334,7 +334,7 @@ const TestListForm = ({
                         {showDatePicker && (
                           <DatePicker
                             handleRangeSelect={handleRangeSelect}
-                            initialRange={getValues(
+                            initialDate={getValues(
                               `ooniRunLink.${index}.expiration_date`,
                             )}
                             close={() => setShowDatePicker(false)}
