@@ -1,7 +1,34 @@
 import DescriptorIcon from "components/DescriptorIcon"
+import { differenceInDays } from "date-fns"
 import Markdown from "markdown-to-jsx"
 import { Box, Heading, Text } from "ooni-components"
+import { useMemo } from "react"
+import { useIntl } from "react-intl"
+import { formatMediumDateTime } from "utils"
 import ArchivedTag from "../ArchivedTag"
+
+type ExpirationDateProps = {
+  expirationString: string
+}
+const ExpirationDate = ({ expirationString }: ExpirationDateProps) => {
+  const { locale } = useIntl()
+
+  const dateDifference = differenceInDays(
+    new Date(expirationString),
+    new Date(),
+  )
+  const warningColor = dateDifference < 7
+  const expirationDate = useMemo(
+    () => formatMediumDateTime(expirationString, locale),
+    [expirationString, locale],
+  )
+
+  return (
+    <Text as="span" color={warningColor && "red5"}>
+      Expiration date {expirationDate}
+    </Text>
+  )
+}
 
 const DescriptorDetails = ({
   descriptor,
@@ -10,6 +37,9 @@ const DescriptorDetails = ({
   archived,
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 }: any) => {
+  const { locale } = useIntl()
+  console.log("descriptor", descriptor)
+
   return (
     <>
       <Heading
@@ -32,14 +62,14 @@ const DescriptorDetails = ({
       <Text fontSize={14} my={3}>
         {descriptor.author ? (
           <>
-            Created by <strong>{descriptor.author}</strong> on {creationTime}.{" "}
-            {lastEditTime && <>Last updated {lastEditTime}.</>}
+            Created by <strong>{descriptor.author}</strong> on {creationTime}.
           </>
         ) : (
-          <>
-            Created on {creationTime}.{" "}
-            {lastEditTime && <>Last updated {lastEditTime}.</>}
-          </>
+          <>Created on {creationTime}. </>
+        )}
+        {lastEditTime && <>Last updated {lastEditTime}. </>}
+        {descriptor.expiration_date && (
+          <ExpirationDate expirationString={descriptor.expiration_date} />
         )}
       </Text>
 

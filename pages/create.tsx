@@ -52,6 +52,7 @@ const defaultValues = {
   color: "#000000",
   author: getUserEmail(),
   include_author: true,
+  expiration_date: "",
   nettests: [
     {
       test_name: "web_connectivity",

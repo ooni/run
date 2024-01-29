@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import Compact from "@uiw/react-color-compact"
-import { apiEndpoints, getUserEmail, postFetcher } from "lib/api"
+import { format } from "date-fns"
+import { getUserEmail } from "lib/api"
 import { useRouter } from "next/router"
 import { Box, Button, Flex, Input, Text } from "ooni-components"
 import {
@@ -11,7 +12,6 @@ import {
 } from "react-hook-form"
 import { FormattedMessage } from "react-intl"
 import styled from "styled-components"
-import useSWRMutation from "swr/mutation"
 import * as Yup from "yup"
 
 import DescriptorIcon from "components/DescriptorIcon"
@@ -20,6 +20,7 @@ import { Checkbox } from "ooni-components"
 import { useEffect, useState } from "react"
 import { FaCheck } from "react-icons/fa6"
 import { icons } from "utils/icons"
+import DatePicker from "./DatePicker"
 
 const IconModal = dynamic(() => import("./IconModal"))
 const IntlFields = dynamic(() => import("./IntlFields"))
@@ -151,7 +152,8 @@ const TestListForm = ({
     defaultValues: { ooniRunLink: [defaultValues] },
     resolver: yupResolver(validationSchema),
   })
-  const { control, formState, handleSubmit, setValue, watch } = formMethods
+  const { control, formState, handleSubmit, setValue, watch, getValues } =
+    formMethods
   const iconValue = watch("ooniRunLink.0.icon") as keyof typeof icons
 
   const { errors, isSubmitting } = formState
@@ -161,15 +163,21 @@ const TestListForm = ({
     name: "ooniRunLink", // unique name for your Field Array
   })
 
-  const { trigger, isMutating } = useSWRMutation(
-    linkId && apiEndpoints.ARCHIVE_RUN_LINK.replace(":oonirun_id", linkId),
-    postFetcher,
-    {
-      onSuccess: () => {
-        push(`/v2/${linkId}`)
-      },
-    },
-  )
+  // const { trigger, isMutating } = useSWRMutation(
+  //   linkId && apiEndpoints.ARCHIVE_RUN_LINK.replace(":oonirun_id", linkId),
+  //   postFetcher,
+  //   {
+  //     onSuccess: () => {
+  //       push(`/v2/${linkId}`)
+  //     },
+  //   },
+  // )
+
+  const [showDatePicker, setShowDatePicker] = useState(false)
+  const handleRangeSelect = (date: Date) => {
+    setValue("ooniRunLink.0.expiration_date", format(date, "y-MM-dd"))
+    setShowDatePicker(false)
+  }
 
   return (
     <Flex flexDirection="column">
@@ -179,8 +187,8 @@ const TestListForm = ({
       </datalist>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Flex flexDirection="column" my={3}>
-            <Box alignSelf="end" my={3}>
+          <Flex flexDirection="column" my={5}>
+            {/* <Box alignSelf="end" my={3}>
               {linkId && (
                 <Button
                   type="button"
@@ -195,7 +203,7 @@ const TestListForm = ({
                   Archive
                 </Button>
               )}
-            </Box>
+            </Box> */}
             {fields.map((item, index) => (
               <Box key={item.id}>
                 <StyledInputWrapper>
@@ -307,18 +315,33 @@ const TestListForm = ({
 
                 <StyledInputWrapper>
                   <Controller
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        label="Expiration Date"
-                        error={
-                          errors?.ooniRunLink?.[index]?.expiration_date?.message
-                        }
-                        placeholder="YYYY-MM-DD"
-                      />
-                    )}
                     name={`ooniRunLink.${index}.expiration_date`}
                     control={control}
+                    render={({ field }) => (
+                      <>
+                        <Input
+                          {...field}
+                          label="Expiration Date"
+                          error={
+                            errors?.ooniRunLink?.[index]?.expiration_date
+                              ?.message
+                          }
+                          placeholder="YYYY-MM-DD"
+                          onFocus={() => setShowDatePicker(true)}
+                          onKeyDown={() => setShowDatePicker(false)}
+                        />
+
+                        {showDatePicker && (
+                          <DatePicker
+                            handleRangeSelect={handleRangeSelect}
+                            initialRange={getValues(
+                              `ooniRunLink.${index}.expiration_date`,
+                            )}
+                            close={() => setShowDatePicker(false)}
+                          />
+                        )}
+                      </>
+                    )}
                   />
                 </StyledInputWrapper>
                 {isAdmin ? (

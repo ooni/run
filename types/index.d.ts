@@ -31,6 +31,7 @@ type Descriptor = {
   nettests: Nettest[]
   mine?: boolean
   descriptor_creation_time: string
+  expiration_date: string
 }
 
 type DescriptorView = {

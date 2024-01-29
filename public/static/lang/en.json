@@ -77,5 +77,10 @@
   "Tests.DNSCheck.Name": "DNS Check",
   "Tests.StunReachability.Name": "STUN Reachability",
   "Tests.URLGetter.Name": "URL Getter",
-  "Tests.ProbeWeb.Name": "OONI Probe Web"
+  "Tests.ProbeWeb.Name": "OONI Probe Web",
+  "DateRange.OneWeek": "One week",
+  "DateRange.ThreeMonths": "One month",
+  "DateRange.SixMonths": "Six months",
+  "DateRange.Apply": "Apply",
+  "DateRange.Cancel": "Cancel"
 }

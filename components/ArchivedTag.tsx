@@ -21,7 +21,7 @@ const ArchivedTag = () => {
         py={1}
         alignItems="center"
       >
-        <span>ARCHIVED</span>
+        <span>EXPIRED</span>
         <MdOutlineInventory2 />
       </StyledArchivedTag>
     </Box>

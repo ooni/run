@@ -70,7 +70,7 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
                 |{" "}
               </Text>
             )}{" "}
-            Last updated{" "}
+            Updated{" "}
             {new Intl.DateTimeFormat(intl.locale, {
               dateStyle: "medium",
             }).format(new Date(descriptor.descriptor_creation_time))}

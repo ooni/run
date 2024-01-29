@@ -1,3 +1,4 @@
+import { differenceInDays } from "date-fns"
 import { getList } from "lib/api"
 import NLink from "next/link"
 import { Box, Button, Flex, Heading, Text } from "ooni-components"
@@ -5,12 +6,54 @@ import { useMemo } from "react"
 import { BsTwitter } from "react-icons/bs"
 import { FormattedMessage, useIntl } from "react-intl"
 import useSWR from "swr"
-
 import { formatMediumDateTime } from "utils"
 import Code from "../Code"
 import DescriptorDetails from "./DescriptorDetails"
 import NettestsBox from "./NettestsBox"
 import Revisions from "./Revisions"
+
+type ExpirationBoxProps = {
+  expirationString: string
+}
+const ExpirationBox = ({ expirationString }: ExpirationBoxProps) => {
+  const { locale } = useIntl()
+  const dateDifference = differenceInDays(
+    new Date(expirationString),
+    new Date(),
+  )
+
+  const expirationDate = useMemo(
+    () => formatMediumDateTime(expirationString, locale),
+    [expirationString, locale],
+  )
+
+  return (
+    <Flex
+      p={4}
+      my={4}
+      sx={{
+        borderColor: "red9",
+        borderStyle: "solid",
+        borderWidth: "2px",
+        borderRadius: "8px",
+        color: "red9",
+        gap: 3,
+        alignItems: "center",
+        flexWrap: "wrap",
+      }}
+    >
+      <Box>
+        Your link expires on {expirationDate} (in {dateDifference} days)
+      </Box>
+      <Button
+        size="small"
+        sx={{ backgroundColor: "red9", borderColor: "red9" }}
+      >
+        Update now
+      </Button>
+    </Flex>
+  )
+}
 
 type TwitterButtonProps = { universalLink: string }
 
@@ -115,6 +158,10 @@ const DescriptorView = ({
         lastEditTime={lastEditTime}
         archived={archived}
       />
+
+      {descriptor?.expiration_date && (
+        <ExpirationBox expirationString={descriptor?.expiration_date} />
+      )}
 
       {!archived && (
         <Box p={3} my={4} sx={{ border: "1px solid", borderColor: "blue5" }}>
