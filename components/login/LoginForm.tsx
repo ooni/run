@@ -26,6 +26,7 @@ export const LoginForm = ({ onLogin, redirectTo }: LoginFormProps) => {
 
   const onSubmit = useCallback(
     (data: { email_address: string }) => {
+      console.log("data", data)
       const { email_address } = data
       const registerApi = async (email_address: string) => {
         try {
