@@ -1,6 +1,44 @@
 import { Box, Flex, Heading, Text } from "ooni-components"
-import { ReactElement, cloneElement } from "react"
+import { ReactElement, cloneElement, useState } from "react"
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md"
 import { testGroups, testNames } from "utils/test-info"
+
+type NettestsInputsProps = {
+  inputs: string[]
+}
+
+const NettestsInputs = ({ inputs }: NettestsInputsProps) => {
+  const [collapsed, setCollapsed] = useState(false)
+  return (
+    <>
+      <Text
+        fontSize={0}
+        fontWeight={600}
+        mt={2}
+        mb={2}
+        onClick={() => setCollapsed(!collapsed)}
+      >
+        INPUTS ({inputs.length}){" "}
+        <Box as="span" ml={3}>
+          {collapsed ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
+        </Box>
+      </Text>
+      <Text
+        fontSize={14}
+        sx={{
+          ...(!collapsed && {
+            textOverflow: "ellipsis",
+            height: "20px",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+          }),
+        }}
+      >
+        {inputs.join(", ")}
+      </Text>
+    </>
+  )
+}
 
 type NettestsBoxProps = {
   nettests: Nettest[]
@@ -38,12 +76,7 @@ const NettestsBox = ({ nettests }: NettestsBoxProps) => {
             <Text fontWeight={600}>{testNames[nettest.test_name].name}</Text>
           </Flex>
           {!!nettest.inputs?.length && (
-            <>
-              <Text fontSize={0} fontWeight={600} mt={2} mb={2}>
-                INPUTS ({nettest.inputs.length})
-              </Text>
-              <Text fontSize={14}>{nettest.inputs.join(", ")}</Text>
-            </>
+            <NettestsInputs inputs={nettest.inputs} />
           )}
         </Flex>
       ))}

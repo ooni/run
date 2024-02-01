@@ -164,7 +164,15 @@ const DescriptorView = ({
       )}
 
       {!archived && (
-        <Box p={3} my={4} sx={{ border: "1px solid", borderColor: "blue5" }}>
+        <Box
+          p={3}
+          my={4}
+          sx={{
+            border: "1px solid",
+            borderColor: "blue5",
+            borderRadius: "8px",
+          }}
+        >
           <Heading mb={2} mt={0} h={3}>
             <FormattedMessage id="Modal.Heading.ShareThisURL" />
           </Heading>
