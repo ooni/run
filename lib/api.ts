@@ -102,7 +102,7 @@ export const registerUser = async (
     process.env.NEXT_PUBLIC_IS_TEST_ENV
       ? "https://run.test.ooni.org/"
       : redirectUrl
-
+  console.log("redirectTo", redirectTo, email_address)
   const data = await postAPI(apiEndpoints.USER_REGISTER, {
     email_address,
     redirect_to: redirectTo,
