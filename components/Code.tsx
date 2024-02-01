@@ -7,6 +7,7 @@ const StyledCode = styled(Flex)`
 font-size: 14px;
 font-family: courier, monospace;
 white-space: pre-wrap;
+align-items: center;
 `
 
 const StyledIcon = styled(Box)`
@@ -45,9 +46,9 @@ const Code = ({ text }: Code) => {
       {text}
       <StyledIcon ml={2}>
         {isCopied ? (
-          <MdOutlineCheckCircle color={theme.colors.green7} />
+          <MdOutlineCheckCircle color={theme.colors.green7} size="24" />
         ) : (
-          <MdOutlineContentCopy onClick={handleCopyClick} />
+          <MdOutlineContentCopy onClick={handleCopyClick} size="24" />
         )}
       </StyledIcon>
     </StyledCode>

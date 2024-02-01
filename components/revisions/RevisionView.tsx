@@ -62,7 +62,7 @@ const RevisionView = ({
         }).format(new Date(descriptorCreationTime))}
         . Back to <NLink href={`/v2/${linkId}`}>current link</NLink>.
       </StyledToast>
-      <Container p={4}>
+      <Container p={[3, 4]}>
         <Heading h={4}>Link Info</Heading>
         <DescriptorDetails
           descriptor={descriptor}

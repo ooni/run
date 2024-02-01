@@ -50,9 +50,9 @@ table {
 }
 a {
   text-decoration: none;
-  color: ${(props) => props.theme.colors.blue6};
+  color: ${(props) => props.theme.colors.blue5};
   &:hover {
-    color: ${(props) => props.theme.colors.blue9};
+    color: ${(props) => props.theme.colors.blue8};
   }
 }
 `

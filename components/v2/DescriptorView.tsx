@@ -1,9 +1,10 @@
 import { differenceInDays } from "date-fns"
 import { getList } from "lib/api"
 import NLink from "next/link"
-import { Box, Button, Flex, Heading, Text } from "ooni-components"
+import { Box, Button, Flex, Heading } from "ooni-components"
 import { useMemo } from "react"
 import { BsTwitter } from "react-icons/bs"
+import { MdOpenInNew } from "react-icons/md"
 import { FormattedMessage, useIntl } from "react-intl"
 import useSWR from "swr"
 import { formatMediumDateTime } from "utils"
@@ -71,14 +72,11 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
 
   return (
     <a href={tweetUrl} target="_blank" rel="noreferrer">
-      <Button hollow size="small">
-        <Text mr={2}>
-          {intl.formatMessage({
-            id: "Share.Twitter.Button",
-            defaultMessage: "Tweet",
-          })}
-        </Text>
-        <BsTwitter />
+      <Button hollow size="small" endIcon={<BsTwitter />}>
+        {intl.formatMessage({
+          id: "Share.Twitter.Button",
+          defaultMessage: "Tweet",
+        })}
       </Button>
     </a>
   )
@@ -139,7 +137,7 @@ const DescriptorView = ({
             </NLink>
             {deepLink && (
               <NLink href={deepLink}>
-                <Button hollow size="small">
+                <Button hollow size="small" endIcon={<MdOpenInNew />}>
                   <FormattedMessage
                     id="Modal.Button.Link"
                     defaultMessage="Link"

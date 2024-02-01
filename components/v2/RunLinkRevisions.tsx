@@ -1,5 +1,10 @@
 import NLink from "next/link"
 import { Box } from "ooni-components"
+import styled from "styled-components"
+
+const StyledLink = styled(NLink)`
+text-decoration: underline;
+`
 
 type RunLinkRevisionProps = {
   creationTime: string
@@ -9,13 +14,13 @@ type RunLinkRevisionProps = {
 const RunLinkRevision = ({ creationTime, linkId }: RunLinkRevisionProps) => {
   return (
     <Box mb={3}>
-      <NLink href={`/revisions/${linkId}?datetime=${creationTime}`}>
+      <StyledLink href={`/revisions/${linkId}?datetime=${creationTime}`}>
         {new Intl.DateTimeFormat("en-US", {
           dateStyle: "long",
           timeStyle: "long",
           timeZone: "UTC",
         }).format(new Date(creationTime))}
-      </NLink>
+      </StyledLink>
     </Box>
   )
 }
