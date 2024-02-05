@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo } from "react"
 import { FormattedMessage } from "react-intl"
 
 import TestListForm from "components/form/TestListForm"
+import SpinLoader from "components/vendor/SpinLoader"
 import useUser from "hooks/useUser"
 import { createRunLink, getUserEmail } from "lib/api"
 import dynamic from "next/dynamic"
@@ -96,7 +97,9 @@ const Create: NextPage = () => {
     <>
       <OONIRunHero />
       {!user || loading ? (
-        <>Loading</>
+        <Flex p={6} justifyItems="center" alignItems="center">
+          <SpinLoader />
+        </Flex>
       ) : (
         <Container pt={4} maxWidth={800}>
           <Flex justifyContent="center">

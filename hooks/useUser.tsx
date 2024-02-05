@@ -73,6 +73,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     }, 2000)
   }, [router])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (token && router.pathname === "/login") {
       loginUser(token)
@@ -87,7 +88,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     } else {
       setError(null)
     }
-  }, [afterLogin, token, router.pathname, getUser, afterLogin])
+  }, [token, router.pathname])
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -133,8 +134,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   // }
 
   const logout = () => {
-    // localStorage.removeItem("bearer")
+    document.cookie = "token=; Path=/; Max-Age=-1; SameSite=Strict; Secure"
     getUser()
+    router.push("/")
   }
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
