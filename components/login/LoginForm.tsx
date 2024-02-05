@@ -1,11 +1,12 @@
+import { registerUser } from "lib/api"
+import dynamic from "next/dynamic"
+import { useRouter } from "next/router"
 import { Box, Button, Flex, Input } from "ooni-components"
 import { useCallback, useEffect, useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-
-import { registerUser } from "lib/api"
-import { useRouter } from "next/router"
 import { FormattedMessage } from "react-intl"
-// import SpinLoader from 'components/vendor/SpinLoader'
+
+const ButtonSpinner = dynamic(() => import("components/ButtonSpinner"))
 
 type LoginFormProps = {
   onLogin: () => void
@@ -77,14 +78,14 @@ export const LoginForm = ({ onLogin, redirectTo }: LoginFormProps) => {
         />
         {loginError && <Box mt={1}>{loginError}</Box>}
         <Box mt={3} alignSelf="center">
-          {!submitting ? (
-            <Button disabled={!isValid} type="submit">
-              <FormattedMessage id="Login.Button" />
-            </Button>
-          ) : (
-            // <SpinLoader size={3} margin='1px' />
-            <h3>LOADING</h3>
-          )}
+          <Button
+            loading={submitting}
+            disabled={submitting || !isValid}
+            spinner={<ButtonSpinner />}
+            type="submit"
+          >
+            <FormattedMessage id="Login.Button" />
+          </Button>
         </Box>
       </Flex>
     </form>
