@@ -27,11 +27,6 @@ Create a build:
 yarn run build
 ```
 
-This actually is running:
-
-```
-yarn run build:next && yarn run build:widgets
-```
 
 Upload a release:
 

@@ -1,6 +1,6 @@
+import type { NextApiRequest, NextApiResponse } from "next"
 import assetLinks from "public/static/assetlinks.json"
-import type { NextApiRequest, NextApiResponse } from 'next'
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default function handler(_: NextApiRequest, res: NextApiResponse) {
   res.status(200).json(assetLinks)
 }

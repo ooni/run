@@ -2,9 +2,6 @@
 FROM node:18-alpine AS base
 # Build: run ooni-sysadmin.git/scripts/docker-build from this directory
 
-# Note: node:16.3-alpine3.12 is chosen as a workaround to build issues on darwin/arm64
-# Based on this issue: https://github.com/docker/for-mac/issues/5831
-
 # Install dependencies only when needed
 FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.

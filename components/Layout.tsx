@@ -1,40 +1,44 @@
-import Head from 'next/head'
-import { theme } from 'ooni-components'
-import { ThemeProvider } from 'styled-components'
-import GlobalStyle from './globalStyle'
+import { UserProvider } from "hooks/useUser"
+import Head from "next/head"
+import { theme } from "ooni-components"
+import { ThemeProvider } from "styled-components"
+import GlobalStyle from "./globalStyle"
 
-import meta from '../config/meta'
-import { useIntl } from 'react-intl'
-
-export const getDirection = (locale: string) => {
-  switch (locale) {
-    case 'fa':
-    case 'ar':
-      return 'rtl'
-    default:
-      return 'ltr'
-  }
-}
+import { Box } from "ooni-components"
+import { getDirection } from "pages/_app"
+import { useIntl } from "react-intl"
+import meta from "../config/meta"
+import Footer from "./Footer"
 
 type LayoutProps = {
   title?: string
-  children: JSX.Element | JSX.Element[]
+  children: React.ReactNode
 }
 
 const Layout = ({ title, children }: LayoutProps) => {
   const { locale } = useIntl()
+
   return (
     <div>
       <Head>
         <title>{title || meta.defaultTitle}</title>
-        <meta httpEquiv='Content-Type' content={meta.contentType} />
-        <meta name='viewport' content={meta.viewport} />
+        <meta httpEquiv="Content-Type" content={meta.contentType} />
+        <meta name="viewport" content={meta.viewport} />
       </Head>
-      <GlobalStyle direction={getDirection(locale)} />
       <ThemeProvider theme={theme}>
-        <div className='content'>
-          { children }
-        </div>
+        <GlobalStyle direction={getDirection(locale)} />
+        <UserProvider>
+          <Box
+            sx={{
+              minHeight: "100vh",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Box className="content">{children}</Box>
+            <Footer />
+          </Box>
+        </UserProvider>
       </ThemeProvider>
     </div>
   )

@@ -1,4 +1,4 @@
-import assetlinks from "public/static/assetlinks.json";
+import assetlinks from "public/static/assetlinks.json"
 
 describe("assetlinks", () => {
   it("return correct json", () => {
@@ -6,8 +6,8 @@ describe("assetlinks", () => {
       method: "GET",
       url: "/.well-known/assetlinks.json",
     }).then((response) => {
-      expect(response.body.length).to.eq(1);
-      expect(response.body[0]).to.deep.include(assetlinks[0]);
-    });
-  });
-});
+      expect(response.body.length).to.eq(1)
+      expect(response.body[0]).to.deep.include(assetlinks[0])
+    })
+  })
+})
