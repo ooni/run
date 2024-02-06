@@ -25,15 +25,13 @@ const getBearerToken = () => {
 }
 
 export const getTokenCreatedAt = () => {
-  return typeof document !== "undefined" &&
-    JSON.parse(cookie.parse(document.cookie)?.token)
+  return typeof document !== "undefined" && cookie.parse(document.cookie)?.token
     ? JSON.parse(cookie.parse(document.cookie)?.token)?.created_at
     : null
 }
 
 export const getUserEmail = () => {
-  return typeof document !== "undefined" &&
-    JSON.parse(cookie.parse(document.cookie)?.token)
+  return typeof document !== "undefined" && cookie.parse(document.cookie)?.token
     ? JSON.parse(cookie.parse(document.cookie)?.token)?.email_address
     : null
 }
