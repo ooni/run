@@ -62,7 +62,7 @@ const DescriptorDetails = ({
       <Text fontSize={14} my={3}>
         {descriptor.author ? (
           <>
-            Created by <strong>{descriptor.author}</strong> on {creationTime}.
+            Created by <strong>{descriptor.author}</strong> on {creationTime}.{" "}
           </>
         ) : (
           <>Created on {creationTime}. </>
