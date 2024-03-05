@@ -16,7 +16,7 @@ import * as Yup from "yup"
 
 import DescriptorIcon from "components/DescriptorIcon"
 import dynamic from "next/dynamic"
-import { Checkbox } from "ooni-components"
+import { Checkbox, Textarea } from "ooni-components"
 import { useEffect, useState } from "react"
 import { FaCheck } from "react-icons/fa6"
 import { icons } from "utils/icons"
@@ -274,7 +274,12 @@ const TestListForm = ({
                 <StyledInputWrapper>
                   <Controller
                     render={({ field }) => (
-                      <Input {...field} label="Description" placeholder="" />
+                      <Textarea
+                        {...field}
+                        label="Description"
+                        placeholder=""
+                        minHeight="78px"
+                      />
                     )}
                     name={`ooniRunLink.${index}.description`}
                     control={control}
