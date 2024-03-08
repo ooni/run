@@ -9,7 +9,6 @@ import { getRunLink } from "lib/api"
 import { GetServerSideProps } from "next"
 import { Box, Container, Flex } from "ooni-components"
 import type { ParsedUrlQuery } from "querystring"
-import { generateRandomString } from "utils"
 import { getIntentURIv2 } from "utils/links"
 import OONI404 from "/public/static/images/OONI_404.svg"
 
@@ -26,12 +25,7 @@ type Props = {
   universalLink: string
   title: string
   description: string
-  runLinkDescriptor: {
-    descriptor: Descriptor
-    mine: boolean
-    archived: boolean
-    descriptor_creation_time: string
-  } | null
+  runLink: Descriptor
   linkId: string
 }
 
@@ -59,20 +53,21 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const description = "Run OONI Probe"
   const title = "OONI Run | Coordinate website censorship testing"
   const universalLink = `https://${host}/v2/${linkId}`
-  let runLinkDescriptor = null
+
+  let runLink = null
 
   try {
-    runLinkDescriptor = await getRunLink(
-      linkId,
-      { nocache: generateRandomString() },
-      {
-        ...(authToken && {
-          headers: { Authorization: `Bearer ${authToken}` },
-        }),
-      },
-    )
-  } catch (e) {}
+    runLink = await getRunLink(linkId, {
+      baseURL: process.env.NEXT_PUBLIC_OONI_API,
+      ...(authToken && {
+        headers: { Authorization: `Bearer ${authToken}` },
+      }),
+    })
+  } catch (e) {
+    console.log("error", e)
+  }
 
+  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
   let storeLink
   let withWindowLocation = false
 
@@ -82,12 +77,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     storeLink = mobileApp.googlePlayLink
   }
 
-  if (
-    runLinkDescriptor &&
-    !fallback &&
-    host !== refererHost &&
-    !runLinkDescriptor?.archived
-  ) {
+  if (runLink && !fallback && host !== refererHost && !runLink?.is_expired) {
     if (ua.os.family === "Android") {
       if (Number(ua.major) >= 25) {
         // This is the preferred method for Chrome mobile >= 25
@@ -116,7 +106,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     title,
     description,
     linkId,
-    runLinkDescriptor,
+    runLink,
   }
 
   return { props }
@@ -131,7 +121,7 @@ const Nettest = ({
   universalLink,
   title,
   description,
-  runLinkDescriptor,
+  runLink,
   linkId,
 }: Props) => {
   const windowScript = `window.onload = function() {
@@ -141,16 +131,12 @@ const Nettest = ({
     }, 500)
   }`
 
-  const descriptor = runLinkDescriptor?.descriptor
-  const descriptorCreationTime =
-    runLinkDescriptor?.descriptor_creation_time || ""
-  const archived = !!runLinkDescriptor?.archived
-  const isMine = !!runLinkDescriptor?.mine
+  const isMine = !!runLink?.is_mine
 
   return (
     <>
       {isMine ? <OONIRunHero /> : <OONIRunHeroMinimal />}
-      {descriptor ? (
+      {runLink ? (
         <>
           <MetaTags
             title={title}
@@ -162,9 +148,7 @@ const Nettest = ({
           {isMine ? (
             <Container px={[3, 3, 4]} py={4}>
               <DescriptorView
-                descriptor={descriptor}
-                descriptorCreationTime={descriptorCreationTime}
-                archived={archived}
+                descriptor={runLink}
                 deepLink={deepLink}
                 runLink={universalLink}
                 linkId={linkId}
@@ -174,15 +158,13 @@ const Nettest = ({
             <Box bg="gray0">
               <Container px={[3, 3, 4]} py={4}>
                 <CTA
-                  linkTitle={descriptor?.name}
+                  linkTitle={runLink?.name}
                   deepLink={deepLink}
                   installLink={installLink}
                 />
                 <Box mt={4}>
                   <PublicDescriptorView
-                    descriptor={descriptor}
-                    descriptorCreationTime={descriptorCreationTime}
-                    archived={archived}
+                    descriptor={runLink}
                     deepLink={deepLink}
                     runLink={universalLink}
                     linkId={linkId}

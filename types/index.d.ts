@@ -18,34 +18,33 @@ type Nettest = {
 }
 
 type Descriptor = {
-  ooni_run_link_id: string
+  oonirun_link_id: string
   name: string
   name_intl: object[]
   author: string | undefined
   icon: keyof typeof icons | undefined
   short_description: string | undefined
   short_description_intl: object[]
-  archived: boolean
+  is_expired: boolean
   description: string | undefined
   description_intl: object[]
   nettests: Nettest[]
-  mine?: boolean
-  descriptor_creation_time: string
+  is_mine?: boolean
+  date_updated: string
+  date_created: string
   expiration_date: string
+  revision: number
+  first_revision_date_created: string
 }
 
 type DescriptorView = {
   descriptor: Descriptor
-  descriptorCreationTime: string
   runLink: string
   deepLink?: string
-  archived: boolean | null
   linkId: string
 }
 
 type RevisionView = {
   descriptor: Descriptor
-  descriptorCreationTime: string
-  archived: boolean | null
   linkId: string
 }

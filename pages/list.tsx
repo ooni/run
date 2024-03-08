@@ -13,7 +13,7 @@ const StyledBox = styled(Box)`
 box-shadow: 0 50vh 0 50vh ${(props) => props.theme.colors.gray1};
 `
 
-export const getServerSideProps = (async ({ req }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { cookies } = req
   const authToken = cookies?.token ? JSON.parse(cookies?.token).token : null
 
@@ -25,29 +25,38 @@ export const getServerSideProps = (async ({ req }) => {
       },
     }
 
-  const response = await getList(
-    {
-      only_latest: true,
-      only_mine: true,
-      include_archived: true,
-    },
-    {
-      ...(authToken && {
-        headers: { Authorization: `Bearer ${authToken}` },
-      }),
-    },
-  )
-
-  const descriptors: Descriptor[] =
-    (await response.descriptors.sort(
+  try {
+    const response = await getList(
+      {
+        only_latest: true,
+        only_mine: true,
+      },
+      {
+        ...(authToken && {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }),
+        baseURL: process.env.NEXT_PUBLIC_OONI_API,
+      },
+    )
+    const runLinks = await response?.links?.sort(
       // archived links are shown at the end
-      (a: Descriptor, b: Descriptor) => Number(a.archived) - Number(b.archived),
-    )) || []
+      (a: Descriptor, b: Descriptor) =>
+        Number(a.is_expired) - Number(b.is_expired),
+    )
 
-  return { props: { descriptors } }
-}) satisfies GetServerSideProps<{ descriptors: Descriptor[] }>
+    return { props: { runLinks } }
+  } catch (error) {
+    return { props: { error: `Error: ${error}` } }
+  }
+}
 
-const List = ({ descriptors = [] }) => {
+type ListProps = {
+  runLinks?: Descriptor[]
+  error?: string
+}
+
+const List = ({ runLinks = [], error }: ListProps) => {
+  console.log("err", error)
   return (
     <>
       <OONIRunHero />
@@ -56,8 +65,8 @@ const List = ({ descriptors = [] }) => {
           <Heading h={2} mb={2}>
             My OONI Run Links
           </Heading>
-          {descriptors.length ? (
-            <RunLinkList descriptors={descriptors} />
+          {runLinks.length ? (
+            <RunLinkList runLinks={runLinks} />
           ) : (
             <Flex
               p="24px"

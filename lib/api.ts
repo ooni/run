@@ -7,10 +7,8 @@ export const apiEndpoints = {
   USER_REGISTER: "/api/v1/user_register",
   USER_LOGIN: "/api/v1/user_login",
   USER_LOGOUT: "/api/v1/user_logout",
-  CREATE_RUN_LINK: "/api/_/ooni_run/create",
-  ARCHIVE_RUN_LINK: "/api/_/ooni_run/archive/:oonirun_id",
-  GET_RUN_LINK: "/api/_/ooni_run/fetch",
-  GET_LIST: "/api/_/ooni_run/list",
+  RUN_LINK: "/api/v2/oonirun",
+  GET_LIST: "/api/v2/oonirun_links",
 }
 
 const SEVEN_DAYS_IN_SECONDS = 7 * 24 * 60 * 60
@@ -36,9 +34,7 @@ export const getUserEmail = () => {
     : null
 }
 
-const axios = Axios.create({
-  baseURL: process.env.NEXT_PUBLIC_OONI_API,
-})
+const axios = Axios.create({ withCredentials: false })
 
 type Config = {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -46,17 +42,12 @@ type Config = {
   method?: string
 }
 
-export const getAPI = async (
-  endpoint: string,
-  params = {},
-  config: Config = {},
-) => {
+export const getAPI = async (endpoint: string, config: Config = {}) => {
   const bearerToken = getBearerToken()
   return await axios
     .request({
       method: config.method ?? "GET",
       url: endpoint,
-      params: params,
       ...(bearerToken && {
         headers: { Authorization: `Bearer ${bearerToken}` },
       }),
@@ -65,30 +56,38 @@ export const getAPI = async (
     .then((res) => res.data)
     .catch((e: Error | AxiosError) => {
       if (Axios.isAxiosError(e)) {
-        console.log("err", e)
-        throw new Error(e?.response?.data?.error)
-        // error.info = e?.response?.statusText
-        // error.status = e?.response?.status
+        const error =
+          e?.response?.data?.error || e?.response?.data?.detail || e?.message
+        throw new Error(error)
       }
       throw new Error(e.message)
     })
 }
 
 const postAPI = async (endpoint: string, data = {}, params = {}) => {
-  return await getAPI(endpoint, params, { method: "POST", data })
+  return await getAPI(endpoint, { method: "POST", data, params })
+}
+
+const putAPI = async (endpoint: string, data = {}, params = {}) => {
+  return await getAPI(endpoint, { method: "PUT", data, params })
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const createRunLink = (data: any, params = {}) => {
-  return postAPI(apiEndpoints.CREATE_RUN_LINK, data, params)
+  return postAPI(apiEndpoints.RUN_LINK, data, params)
 }
 
-export const getRunLink = (id: string, params = {}, config = {}) => {
-  return getAPI(`${apiEndpoints.GET_RUN_LINK}/${id}`, params, config)
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const updateRunLink = (id: string, data: any) => {
+  return putAPI(`${apiEndpoints.RUN_LINK}/${id}`, data)
+}
+
+export const getRunLink = (id: string, config = {}) => {
+  return getAPI(`${apiEndpoints.RUN_LINK}/${id}`, config)
 }
 
 export const getList = (params = {}, config = {}) => {
-  return getAPI(apiEndpoints.GET_LIST, params, config)
+  return getAPI(apiEndpoints.GET_LIST, { ...config, params })
 }
 
 export const registerUser = async (
@@ -102,7 +101,7 @@ export const registerUser = async (
     process.env.NEXT_PUBLIC_IS_TEST_ENV
       ? "https://run.test.ooni.org/"
       : redirectUrl
-  console.log("redirectTo", redirectTo, email_address)
+
   const data = await postAPI(apiEndpoints.USER_REGISTER, {
     email_address,
     redirect_to: redirectTo,

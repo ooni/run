@@ -1,7 +1,7 @@
 import type { NextPage } from "next"
 
 import { Box, Container, Flex, Text } from "ooni-components"
-import { useCallback, useEffect, useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { FormattedMessage } from "react-intl"
 
 import TestListForm from "components/form/TestListForm"
@@ -10,6 +10,7 @@ import useUser from "hooks/useUser"
 import { createRunLink, getUserEmail } from "lib/api"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
+import useSWRMutation from "swr/mutation"
 
 const OONIRunHero = dynamic(() => import("components/OONIRunHero"))
 
@@ -39,6 +40,7 @@ export const transformOutgoingData = (data: any) => {
     short_description_intl: transformIntoObject(
       formData.short_description_intl,
     ),
+    expiration_date: `${formData.expiration_date}T00:00:00`,
     nettests: formData.nettests.map(transformNettests),
     // only include author's email if they opted in
     author: include_author ? author : "",
@@ -66,6 +68,11 @@ const defaultValues = {
   ],
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+const createLink = async (_: any, { arg }: any) => {
+  return await createRunLink(transformOutgoingData(arg))
+}
+
 const Create: NextPage = () => {
   const router = useRouter()
   const { loading, user } = useUser()
@@ -75,16 +82,19 @@ const Create: NextPage = () => {
     if (!user && !loading) router.push("/")
   }, [user, loading, router])
 
-  const onSubmit = useCallback(
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    (data: any) => {
-      // console.log("transformOutgoingData(data)", transformOutgoingData(data))
-      createRunLink(transformOutgoingData(data)).then((res) => {
-        router.push(`/v2/${res.ooni_run_link_id}`)
-      })
+  const {
+    trigger: onSubmit,
+    isMutating,
+    error,
+  } = useSWRMutation("createLink", createLink, {
+    onSuccess: (data) => {
+      router.push(`/v2/${data.oonirun_link_id}`)
     },
-    [router],
-  )
+    onError: (data) => {
+      console.log(data)
+    },
+    throwOnError: false,
+  })
 
   // const onSubmit = () =>
   //   new Promise((resolve) => {
@@ -114,6 +124,7 @@ const Create: NextPage = () => {
                 defaultValues={defaultValues}
                 onSubmit={onSubmit}
               />
+              <Box>{JSON.stringify(error?.message)}</Box>
             </Box>
           </Flex>
         </Container>

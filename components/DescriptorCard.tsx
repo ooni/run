@@ -4,6 +4,7 @@ import { Box, Heading, Text } from "ooni-components"
 import { MdKeyboardArrowRight } from "react-icons/md"
 import { useIntl } from "react-intl"
 import styled from "styled-components"
+import { formatMediumDateTime } from "utils"
 import { icons } from "utils/icons"
 import ArchivedTag from "./ArchivedTag"
 import DescriptorIcon from "./DescriptorIcon"
@@ -34,10 +35,10 @@ type DescriptorCard = {
 }
 
 const DescriptorCard = ({ descriptor }: DescriptorCard) => {
-  const intl = useIntl()
+  const { locale } = useIntl()
 
   return (
-    <StyledLink href={`/v2/${descriptor.ooni_run_link_id}`}>
+    <StyledLink href={`/v2/${descriptor.oonirun_link_id}`}>
       <Box alignSelf="start">
         <Box mb={1}>
           <Heading h={4} m={0} display="inline" mr={2}>
@@ -48,7 +49,7 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
             )}
             {descriptor.name}
           </Heading>
-          {!!descriptor.archived && (
+          {!!descriptor.is_expired && (
             <Box as="span" verticalAlign="super">
               <ArchivedTag />
             </Box>
@@ -64,10 +65,7 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
               |{" "}
             </Text>
           )}{" "}
-          Updated{" "}
-          {new Intl.DateTimeFormat(intl.locale, {
-            dateStyle: "medium",
-          }).format(new Date(descriptor.descriptor_creation_time))}
+          Updated {formatMediumDateTime(descriptor.date_updated, locale)}
         </Text>
         {descriptor.short_description && (
           <Text color="gray5">

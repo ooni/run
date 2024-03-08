@@ -17,7 +17,7 @@ const ExpirationDate = ({ expirationString }: ExpirationDateProps) => {
     new Date(expirationString),
     new Date(),
   )
-  const warningColor = dateDifference < 7
+  const warningColor = dateDifference < 14 && dateDifference > 0
   const expirationDate = useMemo(
     () => formatMediumDateTime(expirationString, locale),
     [expirationString, locale],
@@ -32,14 +32,9 @@ const ExpirationDate = ({ expirationString }: ExpirationDateProps) => {
 
 const DescriptorDetails = ({
   descriptor,
-  creationTime,
-  lastEditTime,
-  archived,
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 }: any) => {
   const { locale } = useIntl()
-  console.log("descriptor", descriptor)
-
   return (
     <>
       <Heading
@@ -57,17 +52,28 @@ const DescriptorDetails = ({
         {descriptor.name}
       </Heading>
 
-      {archived && <ArchivedTag />}
+      {descriptor.is_expired && <ArchivedTag />}
 
       <Text fontSize={14} my={3}>
         {descriptor.author ? (
           <>
-            Created by <strong>{descriptor.author}</strong> on {creationTime}.{" "}
+            Created by <strong>{descriptor.author}</strong> on{" "}
+            {/* {formatMediumDateTime(descriptor?.first_revision_date_created, locale)} */}
+            .{" "}
           </>
         ) : (
-          <>Created on {creationTime}. </>
+          <>
+            Created on{" "}
+            {/* {formatMediumDateTime(descriptor?.first_revision_date_created, locale)} */}
+            .{" "}
+          </>
         )}
-        {lastEditTime && <>Last updated {lastEditTime}. </>}
+        {descriptor.date_updated && (
+          <>
+            Last updated {formatMediumDateTime(descriptor.date_updated, locale)}
+            .{" "}
+          </>
+        )}
         {descriptor.expiration_date && (
           <ExpirationDate expirationString={descriptor.expiration_date} />
         )}

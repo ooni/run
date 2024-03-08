@@ -1,6 +1,6 @@
 import TestListForm from "components/form/TestListForm"
 import useUser from "hooks/useUser"
-import { createRunLink, getRunLink, getUserEmail } from "lib/api"
+import { getRunLink, getUserEmail, updateRunLink } from "lib/api"
 import { GetServerSidePropsContext } from "next"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
@@ -8,7 +8,6 @@ import { Container } from "ooni-components"
 import { transformOutgoingData } from "pages/create"
 import { ParsedUrlQuery } from "querystring"
 import { useCallback, useMemo } from "react"
-import { generateRandomString } from "utils"
 
 const OONIRunHero = dynamic(() => import("components/OONIRunHero"))
 
@@ -36,6 +35,7 @@ const transformIncomingData = (formData: any) => {
     description_intl: transformIntoArray(formData.description_intl),
     short_description_intl: transformIntoArray(formData.short_description_intl),
     nettests: formData.nettests.map(transformNettests),
+    expiration_date: formData.expiration_date.split("T")[0],
   }
 }
 
@@ -53,20 +53,17 @@ export const getServerSideProps = async ({
 
   if (authToken) {
     try {
-      const runLink = await getRunLink(
-        linkId,
-        { nocache: generateRandomString() },
-        {
-          ...(authToken && {
-            headers: { Authorization: `Bearer ${authToken}` },
-          }),
-        },
-      )
-      const descriptor = runLink.descriptor
-      if (runLink.mine) {
+      const runLink = await getRunLink(linkId, {
+        ...(authToken && {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }),
+        baseURL: process.env.NEXT_PUBLIC_OONI_API,
+      })
+
+      if (runLink.is_mine) {
         return {
           props: {
-            descriptor,
+            runLink,
           },
         }
       }
@@ -80,44 +77,40 @@ export const getServerSideProps = async ({
 }
 
 type EditRunLinkProps = {
-  descriptor: Descriptor
+  runLink: Descriptor
 }
 
-const EditRunLink = ({ descriptor }: EditRunLinkProps) => {
-  const runLink = useMemo(
-    () => (descriptor ? transformIncomingData(descriptor) : null),
-    [descriptor],
+const EditRunLink = ({ runLink }: EditRunLinkProps) => {
+  const transformedRunLink = useMemo(
+    () => (runLink ? transformIncomingData(runLink) : null),
+    [runLink],
   )
-  const {
-    push,
-    query: { linkId },
-  } = useRouter()
-
+  const { push } = useRouter()
   const { user } = useUser()
   const isAdmin = useMemo(() => user?.role === "admin", [user])
 
   const onSubmit = useCallback(
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     (data: any) => {
-      createRunLink(transformOutgoingData(data), {
-        ooni_run_link_id: linkId,
-      }).then((res) => {
-        push(`/v2/${res.ooni_run_link_id}`)
-      })
+      updateRunLink(runLink.oonirun_link_id, transformOutgoingData(data)).then(
+        (res) => {
+          push(`/v2/${res.oonirun_link_id}`)
+        },
+      )
     },
-    [push, linkId],
+    [push, runLink],
   )
 
   return (
     <>
       <OONIRunHero />
       <Container>
-        {runLink && (
+        {transformedRunLink && (
           <TestListForm
             isAdmin={isAdmin}
             onSubmit={onSubmit}
-            defaultValues={runLink}
-            linkId={linkId as string}
+            defaultValues={transformedRunLink}
+            linkId={runLink.oonirun_link_id}
           />
         )}
       </Container>

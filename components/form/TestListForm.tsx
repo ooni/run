@@ -2,7 +2,6 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import Compact from "@uiw/react-color-compact"
 import { format } from "date-fns"
 import { getUserEmail } from "lib/api"
-import { useRouter } from "next/router"
 import { Box, Button, Flex, Input, Text } from "ooni-components"
 import {
   Controller,
@@ -71,19 +70,27 @@ const validationSchema = Yup.object({
     .min(0)
     .of(
       Yup.object({
-        name: Yup.string().required("Cannot be empty"),
-        short_description: Yup.string().defined(),
-        description: Yup.string().defined(),
+        name: Yup.string()
+          .required("Required field.")
+          .min(2, "Must be at least 2 characters.")
+          .max(50, "Should be shorter that 50 characters."),
+        short_description: Yup.string()
+          .required("Required field.")
+          .min(2, "Must be at least 2 characters.")
+          .max(200, "Should be shorter that 50 characters."),
+        description: Yup.string()
+          .required("Required field.")
+          .min(2, "Must be at least 2 characters."),
         icon: Yup.string().defined(),
         color: Yup.string().defined(),
         author: Yup.string().defined(),
         include_author: Yup.boolean().defined(),
-        expiration_date: Yup.string().required("Cannot be empty"),
+        expiration_date: Yup.string().required("Required field."),
         nettests: Yup.array()
           .required()
           .of(
             Yup.object({
-              test_name: Yup.string().required("Cannot be empty"),
+              test_name: Yup.string().required("Required field."),
               inputs: Yup.array()
                 .required()
                 .min(0)
@@ -127,7 +134,8 @@ const validationSchema = Yup.object({
 })
 
 type TestListFormProps = {
-  onSubmit: (data: object) => void
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  onSubmit: any
   defaultValues: object
   linkId?: string
   isAdmin?: boolean
@@ -144,8 +152,6 @@ const TestListForm = ({
   useEffect(() => {
     setIsClient(true)
   }, [])
-
-  const { push } = useRouter()
 
   const formMethods = useForm<TestList>({
     mode: "onTouched",
@@ -262,6 +268,10 @@ const TestListForm = ({
                         {...field}
                         label="Short description"
                         placeholder=""
+                        error={
+                          errors?.ooniRunLink?.[index]?.short_description
+                            ?.message
+                        }
                       />
                     )}
                     name={`ooniRunLink.${index}.short_description`}
@@ -279,6 +289,9 @@ const TestListForm = ({
                         label="Description"
                         placeholder=""
                         minHeight="78px"
+                        error={
+                          errors?.ooniRunLink?.[index]?.description?.message
+                        }
                       />
                     )}
                     name={`ooniRunLink.${index}.description`}
