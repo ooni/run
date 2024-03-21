@@ -58,14 +58,11 @@ const DescriptorDetails = ({
         {descriptor.author ? (
           <>
             Created by <strong>{descriptor.author}</strong> on{" "}
-            {/* {formatMediumDateTime(descriptor?.first_revision_date_created, locale)} */}
-            .{" "}
+            {formatMediumDateTime(descriptor?.date_created, locale)}.{" "}
           </>
         ) : (
           <>
-            Created on{" "}
-            {/* {formatMediumDateTime(descriptor?.first_revision_date_created, locale)} */}
-            .{" "}
+            Created on {formatMediumDateTime(descriptor?.date_created, locale)}.{" "}
           </>
         )}
         {descriptor.date_updated && (

@@ -28,8 +28,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   try {
     const response = await getList(
       {
-        only_latest: true,
-        only_mine: true,
+        is_mine: true,
+        is_expired: true,
       },
       {
         ...(authToken && {
@@ -38,7 +38,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
         baseURL: process.env.NEXT_PUBLIC_OONI_API,
       },
     )
-    const runLinks = await response?.links?.sort(
+    const runLinks = await response?.oonirun_links?.sort(
       // archived links are shown at the end
       (a: Descriptor, b: Descriptor) =>
         Number(a.is_expired) - Number(b.is_expired),
@@ -56,7 +56,6 @@ type ListProps = {
 }
 
 const List = ({ runLinks = [], error }: ListProps) => {
-  console.log("err", error)
   return (
     <>
       <OONIRunHero />

@@ -2,13 +2,9 @@ import Axios, { AxiosError } from "axios"
 import cookie from "cookie"
 
 export const apiEndpoints = {
-  ACCOUNT_METADATA: "/api/_/account_metadata",
-  TOKEN_REFRESH: "/api/v1/user_refresh_token",
-  USER_REGISTER: "/api/v1/user_register",
-  USER_LOGIN: "/api/v1/user_login",
-  USER_LOGOUT: "/api/v1/user_logout",
-  RUN_LINK: "/api/v2/oonirun",
-  GET_LIST: "/api/v2/oonirun_links",
+  USER_SESSION: "/api/v2/ooniauth/user-session",
+  USER_LOGIN: "/api/v2/ooniauth/user-login",
+  RUN_LINK: "/api/v2/oonirun/links",
 }
 
 const SEVEN_DAYS_IN_SECONDS = 7 * 24 * 60 * 60
@@ -87,7 +83,7 @@ export const getRunLink = (id: string, config = {}) => {
 }
 
 export const getList = (params = {}, config = {}) => {
-  return getAPI(apiEndpoints.GET_LIST, { ...config, params })
+  return getAPI(apiEndpoints.RUN_LINK, { ...config, params })
 }
 
 export const registerUser = async (
@@ -101,33 +97,31 @@ export const registerUser = async (
     process.env.NEXT_PUBLIC_IS_TEST_ENV
       ? "https://run.test.ooni.org/"
       : redirectUrl
-
-  const data = await postAPI(apiEndpoints.USER_REGISTER, {
+  const data = await postAPI(apiEndpoints.USER_LOGIN, {
     email_address,
     redirect_to: redirectTo,
   })
   return data
 }
 
-export const loginUser = (token: string) => {
-  return axios
-    .get(apiEndpoints.USER_LOGIN, { params: { k: token } })
-    .then(({ data }) => {
-      const tokenDetails = JSON.stringify({
-        token: data?.bearer,
-        email_address: data?.email_address,
-        created_at: Date.now(),
-      })
-      document.cookie = setCookie(tokenDetails)
-      return data
+export const loginUser = (login_token: string) => {
+  return postAPI(apiEndpoints.USER_SESSION, { login_token }).then((data) => {
+    console.log("data", data)
+    const tokenDetails = JSON.stringify({
+      token: data?.session_token,
+      email_address: data?.email_address,
+      created_at: Date.now(),
     })
+    document.cookie = setCookie(tokenDetails)
+    return data
+  })
 }
 
 export const refreshToken = () => {
   const email_address = getUserEmail()
-  return getAPI(apiEndpoints.TOKEN_REFRESH).then((data) => {
+  return postAPI(apiEndpoints.USER_SESSION).then((data) => {
     const tokenDetails = JSON.stringify({
-      token: data.bearer,
+      token: data.login_token,
       email_address,
       created_at: Date.now(),
     })

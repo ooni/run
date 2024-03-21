@@ -46,8 +46,8 @@ type Nettest = {
   inputs: string[]
   options: { key?: string; value?: string }[]
   backend_options: { key?: string; value?: string }[]
-  is_background_run_enabled: boolean
-  is_manual_run_enabled: boolean
+  is_background_run_enabled_default: boolean
+  is_manual_run_enabled_default: boolean
 }
 
 export type TestList = {
@@ -125,8 +125,8 @@ const validationSchema = Yup.object({
                 .required()
                 .min(0)
                 .of(Yup.object({ key: Yup.string(), value: Yup.string() })),
-              is_background_run_enabled: Yup.boolean().defined(),
-              is_manual_run_enabled: Yup.boolean().defined(),
+              is_background_run_enabled_default: Yup.boolean().defined(),
+              is_manual_run_enabled_default: Yup.boolean().defined(),
             }),
           ),
       }),

@@ -41,15 +41,7 @@ module.exports = withBundleAnalyzer({
       },
       {
         source: "/api/v2/:path*",
-        destination: "https://dataapi.prod.ooni.io/api/v2/:path*",
-      },
-      {
-        source: "/api/v1/:path*",
-        destination: "https://api.ooni.io/api/v1/:path*",
-      },
-      {
-        source: "/api/_/:path*",
-        destination: "https://api.ooni.io/api/_/:path*",
+        destination: `${process.env.NEXT_PUBLIC_OONI_API}/api/v2/:path*`,
       },
     ]
   },

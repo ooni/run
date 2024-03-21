@@ -40,7 +40,7 @@ export const transformOutgoingData = (data: any) => {
     short_description_intl: transformIntoObject(
       formData.short_description_intl,
     ),
-    expiration_date: `${formData.expiration_date}T00:00:00`,
+    expiration_date: `${formData.expiration_date}T00:00:00Z`,
     nettests: formData.nettests.map(transformNettests),
     // only include author's email if they opted in
     author: include_author ? author : "",
@@ -62,8 +62,8 @@ const defaultValues = {
       inputs: [],
       options: [],
       backend_options: [],
-      is_background_run_enabled: false,
-      is_manual_run_enabled: false,
+      is_background_run_enabled_default: false,
+      is_manual_run_enabled_default: false,
     },
   ],
 }

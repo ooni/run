@@ -13,8 +13,8 @@ type Nettest = {
   inputs: string[]
   options: object[]
   backend_options: object[]
-  is_background_run_enabled: boolean
-  is_manual_run_enabled: boolean
+  is_background_run_enabled_default: boolean
+  is_manual_run_enabled_default: boolean
 }
 
 type Descriptor = {
@@ -34,7 +34,6 @@ type Descriptor = {
   date_created: string
   expiration_date: string
   revision: number
-  first_revision_date_created: string
 }
 
 type DescriptorView = {

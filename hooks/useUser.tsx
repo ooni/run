@@ -21,7 +21,7 @@ const TEN_MINUTES = 1000 * 60 * 10
 
 type User = {
   role: "admin" | "user"
-  logged_in: boolean
+  is_logged_in: boolean
 }
 
 type UserContext = {
@@ -56,9 +56,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const [loading, setLoading] = useState(true)
 
   const getUser = () => {
-    return getAPI(apiEndpoints.ACCOUNT_METADATA)
+    return getAPI(apiEndpoints.USER_SESSION)
       .then((user) => {
-        setUser(user)
+        if (user?.is_logged_in) setUser(user)
+        else setUser(null)
       })
       .catch((e) => {
         console.log("user not logged in")
