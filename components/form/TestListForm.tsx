@@ -180,9 +180,11 @@ const TestListForm = ({
   // )
 
   const [showDatePicker, setShowDatePicker] = useState(false)
-  const handleRangeSelect = (date: Date) => {
-    setValue("ooniRunLink.0.expiration_date", format(date, "y-MM-dd"))
-    setShowDatePicker(false)
+  const handleRangeSelect = (date: Date | undefined) => {
+    if (date) {
+      setValue("ooniRunLink.0.expiration_date", format(date, "y-MM-dd"))
+      setShowDatePicker(false)
+    }
   }
 
   return (
@@ -194,22 +196,6 @@ const TestListForm = ({
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Flex flexDirection="column" my={5}>
-            {/* <Box alignSelf="end" my={3}>
-              {linkId && (
-                <Button
-                  type="button"
-                  color="red"
-                  sx={{ borderColor: "red" }}
-                  hollow
-                  onClick={() => trigger()}
-                  loading={isMutating}
-                  disabled={isMutating}
-                  spinner={<ButtonSpinner />}
-                >
-                  Archive
-                </Button>
-              )}
-            </Box> */}
             {fields.map((item, index) => (
               <Box key={item.id}>
                 <StyledInputWrapper>
@@ -348,7 +334,6 @@ const TestListForm = ({
                           onFocus={() => setShowDatePicker(true)}
                           onKeyDown={() => setShowDatePicker(false)}
                         />
-
                         {showDatePicker && (
                           <DatePicker
                             handleRangeSelect={handleRangeSelect}
