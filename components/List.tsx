@@ -15,6 +15,7 @@ gap: 16px 24px;
 type ListProps = {
   runLinks: Descriptor[]
 }
+
 const List = ({ runLinks }: ListProps) => {
   return (
     <StyledGrid>

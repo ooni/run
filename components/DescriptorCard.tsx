@@ -65,7 +65,9 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
               |{" "}
             </Text>
           )}{" "}
-          Updated {formatMediumDateTime(descriptor.date_updated, locale)}
+          Updated {formatMediumDateTime(descriptor.date_updated, locale)} |{" "}
+          {descriptor.is_expired ? "Expired" : "Expiring"}{" "}
+          {formatMediumDateTime(descriptor.expiration_date, locale)}
         </Text>
         {descriptor.short_description && (
           <Text color="gray5">
