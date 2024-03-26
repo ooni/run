@@ -3,14 +3,7 @@ import DescriptorDetails from "./DescriptorDetails"
 import NettestsBox from "./NettestsBox"
 import Revisions from "./Revisions"
 
-interface PublicDescriptorDetails extends DescriptorView {
-  userAgent?: string
-}
-
-const PublicDescriptorDetails = ({
-  descriptor,
-  linkId,
-}: PublicDescriptorDetails) => {
+const PublicDescriptorDetails = ({ descriptor, linkId }: DescriptorView) => {
   return (
     <Box bg="#FFF" p={24}>
       <Heading h={4}>Link Content</Heading>

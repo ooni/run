@@ -89,7 +89,16 @@ const DescriptorView = ({
   runLink,
   deepLink,
   linkId,
+  userAgent,
 }: DescriptorView) => {
+  const isMobile = useMemo(() => {
+    if (userAgent) {
+      const uaFamily = JSON.parse(userAgent).family
+      return uaFamily === "iOS" || uaFamily === "Android"
+    }
+    return false
+  }, [userAgent])
+
   return (
     <>
       <Flex
@@ -110,7 +119,7 @@ const DescriptorView = ({
                 Edit
               </Button>
             </NLink>
-            {deepLink && (
+            {deepLink && isMobile && (
               <NLink href={deepLink}>
                 <Button hollow size="small" endIcon={<MdOpenInNew />}>
                   <FormattedMessage

@@ -101,7 +101,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     withWindowLocation,
     storeLink,
     installLink,
-    userAgent,
+    userAgent: JSON.stringify(ua),
     universalLink,
     title,
     description,
@@ -152,6 +152,7 @@ const Nettest = ({
                 deepLink={deepLink}
                 runLink={universalLink}
                 linkId={linkId}
+                userAgent={userAgent}
               />
             </Container>
           ) : (

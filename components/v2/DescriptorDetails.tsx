@@ -17,16 +17,15 @@ const ExpirationDate = ({ expirationString }: ExpirationDateProps) => {
     new Date(expirationString),
     new Date(),
   )
-  const warningColor = dateDifference < 14 && dateDifference > 0
+  // const warningColor = dateDifference < 14 && dateDifference > 0
   const expirationDate = useMemo(
     () => formatMediumDateTime(expirationString, locale),
     [expirationString, locale],
   )
 
   return (
-    <Text as="span" color={warningColor && "red5"}>
-      Expiration date {expirationDate}
-    </Text>
+    // <Text as="span" color={warningColor && "red5"}>
+    <Text as="span">Expiration date {expirationDate}</Text>
   )
 }
 
