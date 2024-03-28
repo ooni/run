@@ -2,15 +2,9 @@ import Axios, { AxiosError } from "axios"
 import cookie from "cookie"
 
 export const apiEndpoints = {
-  ACCOUNT_METADATA: "/api/_/account_metadata",
-  TOKEN_REFRESH: "/api/v1/user_refresh_token",
-  USER_REGISTER: "/api/v1/user_register",
-  USER_LOGIN: "/api/v1/user_login",
-  USER_LOGOUT: "/api/v1/user_logout",
-  CREATE_RUN_LINK: "/api/_/ooni_run/create",
-  ARCHIVE_RUN_LINK: "/api/_/ooni_run/archive/:oonirun_id",
-  GET_RUN_LINK: "/api/_/ooni_run/fetch",
-  GET_LIST: "/api/_/ooni_run/list",
+  USER_SESSION: "/api/v2/ooniauth/user-session",
+  USER_LOGIN: "/api/v2/ooniauth/user-login",
+  RUN_LINK: "/api/v2/oonirun/links",
 }
 
 const SEVEN_DAYS_IN_SECONDS = 7 * 24 * 60 * 60
@@ -25,22 +19,18 @@ const getBearerToken = () => {
 }
 
 export const getTokenCreatedAt = () => {
-  return typeof document !== "undefined" &&
-    JSON.parse(cookie.parse(document.cookie)?.token)
+  return typeof document !== "undefined" && cookie.parse(document.cookie)?.token
     ? JSON.parse(cookie.parse(document.cookie)?.token)?.created_at
     : null
 }
 
 export const getUserEmail = () => {
-  return typeof document !== "undefined" &&
-    JSON.parse(cookie.parse(document.cookie)?.token)
+  return typeof document !== "undefined" && cookie.parse(document.cookie)?.token
     ? JSON.parse(cookie.parse(document.cookie)?.token)?.email_address
     : null
 }
 
-const axios = Axios.create({
-  baseURL: process.env.NEXT_PUBLIC_OONI_API,
-})
+const axios = Axios.create({ withCredentials: false })
 
 type Config = {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -48,17 +38,12 @@ type Config = {
   method?: string
 }
 
-export const getAPI = async (
-  endpoint: string,
-  params = {},
-  config: Config = {},
-) => {
+export const getAPI = async (endpoint: string, config: Config = {}) => {
   const bearerToken = getBearerToken()
   return await axios
     .request({
       method: config.method ?? "GET",
       url: endpoint,
-      params: params,
       ...(bearerToken && {
         headers: { Authorization: `Bearer ${bearerToken}` },
       }),
@@ -67,30 +52,38 @@ export const getAPI = async (
     .then((res) => res.data)
     .catch((e: Error | AxiosError) => {
       if (Axios.isAxiosError(e)) {
-        console.log("err", e)
-        throw new Error(e?.response?.data?.error)
-        // error.info = e?.response?.statusText
-        // error.status = e?.response?.status
+        const error =
+          e?.response?.data?.error || e?.response?.data?.detail || e?.message
+        throw new Error(error)
       }
       throw new Error(e.message)
     })
 }
 
 const postAPI = async (endpoint: string, data = {}, params = {}) => {
-  return await getAPI(endpoint, params, { method: "POST", data })
+  return await getAPI(endpoint, { method: "POST", data, params })
+}
+
+const putAPI = async (endpoint: string, data = {}, params = {}) => {
+  return await getAPI(endpoint, { method: "PUT", data, params })
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const createRunLink = (data: any, params = {}) => {
-  return postAPI(apiEndpoints.CREATE_RUN_LINK, data, params)
+  return postAPI(apiEndpoints.RUN_LINK, data, params)
 }
 
-export const getRunLink = (id: string, params = {}, config = {}) => {
-  return getAPI(`${apiEndpoints.GET_RUN_LINK}/${id}`, params, config)
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const updateRunLink = (id: string, data: any) => {
+  return putAPI(`${apiEndpoints.RUN_LINK}/${id}`, data)
+}
+
+export const getRunLink = (id: string, config = {}) => {
+  return getAPI(`${apiEndpoints.RUN_LINK}/${id}`, config)
 }
 
 export const getList = (params = {}, config = {}) => {
-  return getAPI(apiEndpoints.GET_LIST, params, config)
+  return getAPI(apiEndpoints.RUN_LINK, { ...config, params })
 }
 
 export const registerUser = async (
@@ -104,33 +97,31 @@ export const registerUser = async (
     process.env.NEXT_PUBLIC_IS_TEST_ENV
       ? "https://run.test.ooni.org/"
       : redirectUrl
-  console.log("redirectTo", redirectTo, email_address)
-  const data = await postAPI(apiEndpoints.USER_REGISTER, {
+  const data = await postAPI(apiEndpoints.USER_LOGIN, {
     email_address,
     redirect_to: redirectTo,
   })
   return data
 }
 
-export const loginUser = (token: string) => {
-  return axios
-    .get(apiEndpoints.USER_LOGIN, { params: { k: token } })
-    .then(({ data }) => {
-      const tokenDetails = JSON.stringify({
-        token: data?.bearer,
-        email_address: data?.email_address,
-        created_at: Date.now(),
-      })
-      document.cookie = setCookie(tokenDetails)
-      return data
+export const loginUser = (login_token: string) => {
+  return postAPI(apiEndpoints.USER_SESSION, { login_token }).then((data) => {
+    console.log("data", data)
+    const tokenDetails = JSON.stringify({
+      token: data?.session_token,
+      email_address: data?.email_address,
+      created_at: Date.now(),
     })
+    document.cookie = setCookie(tokenDetails)
+    return data
+  })
 }
 
 export const refreshToken = () => {
   const email_address = getUserEmail()
-  return getAPI(apiEndpoints.TOKEN_REFRESH).then((data) => {
+  return postAPI(apiEndpoints.USER_SESSION).then((data) => {
     const tokenDetails = JSON.stringify({
-      token: data.bearer,
+      token: data.login_token,
       email_address,
       created_at: Date.now(),
     })

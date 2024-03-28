@@ -6,10 +6,7 @@ import "../public/static/nprogress.css"
 
 import type { AppProps } from "next/app"
 import dynamic from "next/dynamic"
-
-const IntlProvider = dynamic(() =>
-  import("react-intl").then((lib) => lib.IntlProvider),
-)
+import { IntlProvider } from "react-intl"
 
 const Layout = dynamic(() => import("components/Layout"))
 

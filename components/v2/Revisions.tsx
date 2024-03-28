@@ -1,20 +1,26 @@
-import { Heading } from "ooni-components"
-import RunLinkRevision from "./RunLinkRevisions"
+import NLink from "next/link"
+import { Box, Heading } from "ooni-components"
+import styled from "styled-components"
+
+const StyledLink = styled(NLink)`
+text-decoration: underline;
+`
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-const Revisions = ({ revisionsList, linkId }: any) => {
+const Revisions = ({ length, linkId }: any) => {
+  const revisionsLength = length - 1
+
   return (
     <>
-      {!!revisionsList.length && (
+      {!!revisionsLength && (
         <>
           <Heading h={4}>Previous revisions</Heading>
-          {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
-          {revisionsList.map((item: any) => (
-            <RunLinkRevision
-              key={item.descriptor_creation_time}
-              linkId={linkId}
-              creationTime={item.descriptor_creation_time}
-            />
+          {[...Array(revisionsLength).keys()].reverse().map((i) => (
+            <Box mb={3} key={i}>
+              <StyledLink href={`/revisions/${linkId}?revision=${i + 1}`}>
+                v{i + 1}
+              </StyledLink>
+            </Box>
           ))}
         </>
       )}

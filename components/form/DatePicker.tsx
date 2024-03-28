@@ -27,7 +27,6 @@ import { Box } from "ooni-components"
 const StyledDatetime = styled.div`
 z-index: 99999;
 position: absolute;
-width: 100%;
 background-color: #ffffff;
 border-radius: 8px;
 border-width: 0px 1px 1px 1px;
@@ -91,10 +90,10 @@ const getDateFnsLocale = (locale: string) => {
   }
 }
 
-const ranges = ["OneWeek", "ThreeMonths", "SixMonths"]
+const ranges = ["OneWeek", "OneMonth", "SixMonths"]
 
 type DatePickerProps = {
-  handleRangeSelect: (date: Date) => void
+  handleRangeSelect: (date: Date | undefined) => void
   initialDate: string
   close: () => void
 }
@@ -113,8 +112,8 @@ const DatePicker = ({
       case "OneWeek":
         handleRangeSelect(addDays(new Date(), 7))
         break
-      case "ThreeMonths":
-        handleRangeSelect(addMonths(new Date(), 3))
+      case "OneMonth":
+        handleRangeSelect(addMonths(new Date(), 1))
         break
       case "SixMonths":
         handleRangeSelect(addMonths(new Date(), 6))
@@ -142,33 +141,6 @@ const DatePicker = ({
     initialDate ? parse(initialDate, "yyyy-MM-dd", new Date()) : undefined,
   )
 
-  const Footer = () => (
-    <StyledFooter>
-      <Button
-        hollow
-        onClick={(e: Event) => {
-          e.preventDefault()
-          close()
-        }}
-      >
-        {intl.formatMessage({ id: "DateRange.Cancel" })}
-      </Button>
-      <Button
-        id="apply-range"
-        onClick={(e: Event) => {
-          e.preventDefault()
-          range && handleRangeSelect(range)
-        }}
-      >
-        {intl.formatMessage({ id: "DateRange.Apply" })}
-      </Button>
-    </StyledFooter>
-  )
-  // const onSelect = (range) => {
-  //   console.log(range)
-  //   setRange(range)
-  // }
-
   return (
     <Box sx={{ position: "relative" }}>
       <StyledDatetime>
@@ -181,10 +153,8 @@ const DatePicker = ({
             mode="single"
             fromDate={tomorrow}
             selected={range}
-            onSelect={setRange}
-            // footer={}
+            onSelect={handleRangeSelect}
           />
-          <Footer />
         </OutsideClickHandler>
       </StyledDatetime>
     </Box>

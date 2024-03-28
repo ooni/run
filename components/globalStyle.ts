@@ -55,6 +55,11 @@ a {
     color: ${(props) => props.theme.colors.blue8};
   }
 }
+p {
+  &:not(:last-child)  {
+    margin-bottom: 1rem;
+  }
+}
 `
 
 export default GlobalStyle

@@ -79,7 +79,7 @@
   "Tests.URLGetter.Name": "URL Getter",
   "Tests.ProbeWeb.Name": "OONI Probe Web",
   "DateRange.OneWeek": "One week",
-  "DateRange.ThreeMonths": "One month",
+  "DateRange.OneMonth": "One month",
   "DateRange.SixMonths": "Six months",
   "DateRange.Apply": "Apply",
   "DateRange.Cancel": "Cancel"

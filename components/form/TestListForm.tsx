@@ -2,7 +2,6 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import Compact from "@uiw/react-color-compact"
 import { format } from "date-fns"
 import { getUserEmail } from "lib/api"
-import { useRouter } from "next/router"
 import { Box, Button, Flex, Input, Text } from "ooni-components"
 import {
   Controller,
@@ -16,7 +15,7 @@ import * as Yup from "yup"
 
 import DescriptorIcon from "components/DescriptorIcon"
 import dynamic from "next/dynamic"
-import { Checkbox } from "ooni-components"
+import { Checkbox, Textarea } from "ooni-components"
 import { useEffect, useState } from "react"
 import { FaCheck } from "react-icons/fa6"
 import { icons } from "utils/icons"
@@ -47,8 +46,8 @@ type Nettest = {
   inputs: string[]
   options: { key?: string; value?: string }[]
   backend_options: { key?: string; value?: string }[]
-  is_background_run_enabled: boolean
-  is_manual_run_enabled: boolean
+  is_background_run_enabled_default: boolean
+  is_manual_run_enabled_default: boolean
 }
 
 export type TestList = {
@@ -71,19 +70,27 @@ const validationSchema = Yup.object({
     .min(0)
     .of(
       Yup.object({
-        name: Yup.string().required("Cannot be empty"),
-        short_description: Yup.string().defined(),
-        description: Yup.string().defined(),
+        name: Yup.string()
+          .required("Required field.")
+          .min(2, "Must be at least 2 characters.")
+          .max(50, "Should be shorter that 50 characters."),
+        short_description: Yup.string()
+          .required("Required field.")
+          .min(2, "Must be at least 2 characters.")
+          .max(200, "Should be shorter that 50 characters."),
+        description: Yup.string()
+          .required("Required field.")
+          .min(2, "Must be at least 2 characters."),
         icon: Yup.string().defined(),
         color: Yup.string().defined(),
         author: Yup.string().defined(),
         include_author: Yup.boolean().defined(),
-        expiration_date: Yup.string().required("Cannot be empty"),
+        expiration_date: Yup.string().required("Required field."),
         nettests: Yup.array()
           .required()
           .of(
             Yup.object({
-              test_name: Yup.string().required("Cannot be empty"),
+              test_name: Yup.string().required("Required field."),
               inputs: Yup.array()
                 .required()
                 .min(0)
@@ -118,8 +125,8 @@ const validationSchema = Yup.object({
                 .required()
                 .min(0)
                 .of(Yup.object({ key: Yup.string(), value: Yup.string() })),
-              is_background_run_enabled: Yup.boolean().defined(),
-              is_manual_run_enabled: Yup.boolean().defined(),
+              is_background_run_enabled_default: Yup.boolean().defined(),
+              is_manual_run_enabled_default: Yup.boolean().defined(),
             }),
           ),
       }),
@@ -127,7 +134,8 @@ const validationSchema = Yup.object({
 })
 
 type TestListFormProps = {
-  onSubmit: (data: object) => void
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  onSubmit: any
   defaultValues: object
   linkId?: string
   isAdmin?: boolean
@@ -144,8 +152,6 @@ const TestListForm = ({
   useEffect(() => {
     setIsClient(true)
   }, [])
-
-  const { push } = useRouter()
 
   const formMethods = useForm<TestList>({
     mode: "onTouched",
@@ -174,9 +180,11 @@ const TestListForm = ({
   // )
 
   const [showDatePicker, setShowDatePicker] = useState(false)
-  const handleRangeSelect = (date: Date) => {
-    setValue("ooniRunLink.0.expiration_date", format(date, "y-MM-dd"))
-    setShowDatePicker(false)
+  const handleRangeSelect = (date: Date | undefined) => {
+    if (date) {
+      setValue("ooniRunLink.0.expiration_date", format(date, "y-MM-dd"))
+      setShowDatePicker(false)
+    }
   }
 
   return (
@@ -188,22 +196,6 @@ const TestListForm = ({
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Flex flexDirection="column" my={5}>
-            {/* <Box alignSelf="end" my={3}>
-              {linkId && (
-                <Button
-                  type="button"
-                  color="red"
-                  sx={{ borderColor: "red" }}
-                  hollow
-                  onClick={() => trigger()}
-                  loading={isMutating}
-                  disabled={isMutating}
-                  spinner={<ButtonSpinner />}
-                >
-                  Archive
-                </Button>
-              )}
-            </Box> */}
             {fields.map((item, index) => (
               <Box key={item.id}>
                 <StyledInputWrapper>
@@ -262,6 +254,10 @@ const TestListForm = ({
                         {...field}
                         label="Short description"
                         placeholder=""
+                        error={
+                          errors?.ooniRunLink?.[index]?.short_description
+                            ?.message
+                        }
                       />
                     )}
                     name={`ooniRunLink.${index}.short_description`}
@@ -274,7 +270,15 @@ const TestListForm = ({
                 <StyledInputWrapper>
                   <Controller
                     render={({ field }) => (
-                      <Input {...field} label="Description" placeholder="" />
+                      <Textarea
+                        {...field}
+                        label="Description"
+                        placeholder=""
+                        minHeight="78px"
+                        error={
+                          errors?.ooniRunLink?.[index]?.description?.message
+                        }
+                      />
                     )}
                     name={`ooniRunLink.${index}.description`}
                     control={control}
@@ -330,7 +334,6 @@ const TestListForm = ({
                           onFocus={() => setShowDatePicker(true)}
                           onKeyDown={() => setShowDatePicker(false)}
                         />
-
                         {showDatePicker && (
                           <DatePicker
                             handleRangeSelect={handleRangeSelect}

@@ -138,7 +138,7 @@ export const NavBar = () => {
               </Flex>
             )}
             <Flex className="menuItems" alignItems="center" sx={{ gap: 4 }}>
-              {user?.logged_in && (
+              {user?.is_logged_in && (
                 <>
                   <NavItem
                     label={<FormattedMessage id="Navbar.List" />}

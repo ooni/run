@@ -13,13 +13,14 @@ gap: 16px 24px;
 `
 
 type ListProps = {
-  descriptors: Descriptor[]
+  runLinks: Descriptor[]
 }
-const List = ({ descriptors }: ListProps) => {
+
+const List = ({ runLinks }: ListProps) => {
   return (
     <StyledGrid>
-      {descriptors?.map((desc) => (
-        <DescriptorCard descriptor={desc} key={desc.ooni_run_link_id} />
+      {runLinks?.map((desc) => (
+        <DescriptorCard descriptor={desc} key={desc.oonirun_link_id} />
       ))}
     </StyledGrid>
   )

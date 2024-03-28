@@ -57,7 +57,7 @@ const AdminNettestFields = ({ name }: FieldsPropTypes) => {
               </StyledInputWrapper>
               <StyledInputWrapper>
                 <Controller
-                  key={`nettests-is_background_run_enabled-${item.id}`}
+                  key={`nettests-is_background_run_enabled_default-${item.id}`}
                   render={({ field }) => (
                     <Checkbox
                       label="Enable background run"
@@ -66,13 +66,13 @@ const AdminNettestFields = ({ name }: FieldsPropTypes) => {
                       checked={field.value}
                     />
                   )}
-                  name={`${name}[${index}].is_background_run_enabled`}
+                  name={`${name}[${index}].is_background_run_enabled_default`}
                   control={control}
                 />
               </StyledInputWrapper>
               <StyledInputWrapper>
                 <Controller
-                  key={`nettests-is_manual_run_enabled-${item.id}`}
+                  key={`nettests-is_manual_run_enabled_default-${item.id}`}
                   render={({ field }) => (
                     <Checkbox
                       label="Enable manual run"
@@ -81,7 +81,7 @@ const AdminNettestFields = ({ name }: FieldsPropTypes) => {
                       checked={field.value}
                     />
                   )}
-                  name={`${name}[${index}].is_manual_run_enabled`}
+                  name={`${name}[${index}].is_manual_run_enabled_default`}
                   control={control}
                 />
               </StyledInputWrapper>
@@ -110,8 +110,8 @@ const AdminNettestFields = ({ name }: FieldsPropTypes) => {
             test_name: "",
             options: [],
             backend_options: [],
-            is_background_run_enabled: false,
-            is_manual_run_enabled: false,
+            is_background_run_enabled_default: false,
+            is_manual_run_enabled_default: false,
           })
         }}
         endIcon={<FaPlus />}
