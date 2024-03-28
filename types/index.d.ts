@@ -41,6 +41,7 @@ type DescriptorView = {
   runLink: string
   deepLink?: string
   linkId: string
+  userAgent?: string
 }
 
 type RevisionView = {
