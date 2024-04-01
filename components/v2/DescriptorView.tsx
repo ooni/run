@@ -1,12 +1,10 @@
 import { differenceInDays } from "date-fns"
-import { getList } from "lib/api"
 import NLink from "next/link"
 import { Box, Button, Flex, Heading } from "ooni-components"
 import { useMemo } from "react"
 import { BsTwitter } from "react-icons/bs"
 import { MdOpenInNew } from "react-icons/md"
 import { FormattedMessage, useIntl } from "react-intl"
-import useSWR from "swr"
 import { formatMediumDateTime } from "utils"
 import Code from "../Code"
 import DescriptorDetails from "./DescriptorDetails"
@@ -15,8 +13,10 @@ import Revisions from "./Revisions"
 
 type ExpirationBoxProps = {
   expirationString: string
+  linkId: string
 }
-const ExpirationBox = ({ expirationString }: ExpirationBoxProps) => {
+
+const ExpirationBox = ({ expirationString, linkId }: ExpirationBoxProps) => {
   const { locale } = useIntl()
   const dateDifference = differenceInDays(
     new Date(expirationString),
@@ -46,12 +46,14 @@ const ExpirationBox = ({ expirationString }: ExpirationBoxProps) => {
       <Box>
         Your link expires on {expirationDate} (in {dateDifference} days)
       </Box>
-      <Button
-        size="small"
-        sx={{ backgroundColor: "red9", borderColor: "red9" }}
-      >
-        Update now
-      </Button>
+      <NLink href={`/edit/${linkId}`}>
+        <Button
+          size="small"
+          sx={{ backgroundColor: "red9", borderColor: "red9" }}
+        >
+          Update now
+        </Button>
+      </NLink>
     </Flex>
   )
 }
@@ -84,36 +86,18 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
 
 const DescriptorView = ({
   descriptor,
-  descriptorCreationTime,
-  archived,
   runLink,
   deepLink,
   linkId,
+  userAgent,
 }: DescriptorView) => {
-  const { locale } = useIntl()
-
-  const { data: listData } = useSWR({ ooni_run_link_id: linkId }, (props) =>
-    getList(props),
-  )
-
-  const revisionsList = useMemo(() => {
-    if (listData?.descriptors?.length > 1) {
-      // biome-ignore lint/correctness/noUnsafeOptionalChaining: <explanation>
-      const listCopy = [...listData?.descriptors]
-      listCopy.reverse().shift()
-      return listCopy
+  const isMobile = useMemo(() => {
+    if (userAgent) {
+      const uaFamily = JSON.parse(userAgent).family
+      return uaFamily === "iOS" || uaFamily === "Android"
     }
-    return []
-  }, [listData])
-
-  const [creationTime, lastEditTime] = useMemo(() => {
-    return revisionsList.length
-      ? [
-          revisionsList[revisionsList.length - 1].descriptor_creation_time,
-          descriptorCreationTime,
-        ].map((r) => formatMediumDateTime(r, locale))
-      : [formatMediumDateTime(descriptorCreationTime, locale), null]
-  }, [revisionsList, descriptorCreationTime, locale])
+    return false
+  }, [userAgent])
 
   return (
     <>
@@ -123,7 +107,7 @@ const DescriptorView = ({
       >
         <Heading h={4}>Link Info</Heading>
 
-        {!archived && (
+        {!descriptor.is_expired && (
           <Flex
             alignItems="start"
             justifyContent="end"
@@ -135,7 +119,7 @@ const DescriptorView = ({
                 Edit
               </Button>
             </NLink>
-            {deepLink && (
+            {deepLink && isMobile && (
               <NLink href={deepLink}>
                 <Button hollow size="small" endIcon={<MdOpenInNew />}>
                   <FormattedMessage
@@ -150,18 +134,16 @@ const DescriptorView = ({
         )}
       </Flex>
 
-      <DescriptorDetails
-        descriptor={descriptor}
-        creationTime={creationTime}
-        lastEditTime={lastEditTime}
-        archived={archived}
-      />
+      <DescriptorDetails descriptor={descriptor} />
 
-      {descriptor?.expiration_date && (
-        <ExpirationBox expirationString={descriptor?.expiration_date} />
+      {descriptor?.expiration_date && !descriptor.is_expired && (
+        <ExpirationBox
+          expirationString={descriptor?.expiration_date}
+          linkId={linkId}
+        />
       )}
 
-      {!archived && (
+      {!descriptor.is_expired && (
         <Box
           p={3}
           my={4}
@@ -183,7 +165,7 @@ const DescriptorView = ({
       </Box>
 
       <Box mt={4}>
-        <Revisions revisionsList={revisionsList} linkId={linkId} />
+        <Revisions length={descriptor.revision} linkId={linkId} />
       </Box>
     </>
   )

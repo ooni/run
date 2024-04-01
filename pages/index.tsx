@@ -83,7 +83,7 @@ const Home = () => {
           </Box>
         </Flex>
         <Box textAlign="center" my={4}>
-          {user?.logged_in ? (
+          {user?.is_logged_in ? (
             <NLink href="/create">
               <Button type="button" fontSize={[1, 2]} size="large">
                 Create OONI Run Link

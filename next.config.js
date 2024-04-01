@@ -39,6 +39,10 @@ module.exports = withBundleAnalyzer({
         source: "/.well-known/assetlinks.json",
         destination: "/api/assetlinks",
       },
+      {
+        source: "/api/v2/:path*",
+        destination: `${process.env.NEXT_PUBLIC_OONI_API}/api/v2/:path*`,
+      },
     ]
   },
   compiler: {

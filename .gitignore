@@ -12,3 +12,7 @@ next-env.d.ts
 .yalc
 yalc.lock
 .env.local
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
