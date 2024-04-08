@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test"
 
 // Use process.env.PORT by default and fallback to port 3100
-const PORT = process.env.PORT || 3100
+const PORT = process.env.PORT || 3000
 
 // Set webServer.url and use.baseURL with the location of the WebServer respecting the correct set port
 const baseURL = `http://localhost:${PORT}`
@@ -76,7 +76,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: "yarn run dev",
+    command: "next dev -p 3000",
     url: baseURL,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,

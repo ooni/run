@@ -1,12 +1,12 @@
 import TestListForm from "components/form/TestListForm"
 import useUser from "hooks/useUser"
 import { getRunLink, getUserEmail, updateRunLink } from "lib/api"
-import { GetServerSidePropsContext } from "next"
+import type { GetServerSidePropsContext } from "next"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
+import type { ParsedUrlQuery } from "node:querystring"
 import { Container } from "ooni-components"
 import { transformOutgoingData } from "pages/create"
-import { ParsedUrlQuery } from "querystring"
 import { useCallback, useMemo } from "react"
 
 const OONIRunHero = dynamic(() => import("components/OONIRunHero"))

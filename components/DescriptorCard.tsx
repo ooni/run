@@ -5,7 +5,7 @@ import { MdKeyboardArrowRight } from "react-icons/md"
 import { useIntl } from "react-intl"
 import styled from "styled-components"
 import { formatMediumDateTime } from "utils"
-import { icons } from "utils/icons"
+import type { icons } from "utils/icons"
 import ArchivedTag from "./ArchivedTag"
 import DescriptorIcon from "./DescriptorIcon"
 

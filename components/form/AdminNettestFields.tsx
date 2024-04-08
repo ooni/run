@@ -4,9 +4,9 @@ import { FaPlus, FaRegTrashCan } from "react-icons/fa6"
 import InputsFields from "./InputsFields"
 import OptionsFields from "./OptionsFields"
 import {
-  FieldsPropTypes,
   StyledInputWrapper,
   StyledLabel,
+  type FieldsPropTypes,
 } from "./TestListForm"
 
 const AdminNettestFields = ({ name }: FieldsPropTypes) => {

@@ -1,4 +1,4 @@
-import Axios, { AxiosError } from "axios"
+import Axios, { type AxiosError } from "axios"
 import cookie from "cookie"
 
 export const apiEndpoints = {

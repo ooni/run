@@ -18,7 +18,7 @@ import dynamic from "next/dynamic"
 import { Checkbox, Textarea } from "ooni-components"
 import { useEffect, useState } from "react"
 import { FaCheck } from "react-icons/fa6"
-import { icons } from "utils/icons"
+import type { icons } from "utils/icons"
 import DatePicker from "./DatePicker"
 
 const IconModal = dynamic(() => import("./IconModal"))
