@@ -82,7 +82,13 @@ const validationSchema = Yup.object({
         icon: Yup.string().defined(),
         color: Yup.string().defined(),
         author: Yup.string().defined(),
-        expiration_date: Yup.string().required("Required field."),
+        expiration_date: Yup.string()
+          .required("Required field.")
+          .test(
+            "is-future",
+            "Should be in the future.",
+            (value) => new Date(value) > new Date(),
+          ),
         nettests: Yup.array()
           .required()
           .of(
@@ -96,7 +102,7 @@ const validationSchema = Yup.object({
                     .defined()
                     .test(
                       "is-valid-url",
-                      'should be a valid URL format e.g "https://ooni.org/post/"',
+                      'Should be a valid URL format e.g "https://ooni.org/post/"',
                       (value) => {
                         if (value == null) return true
                         try {
