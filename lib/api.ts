@@ -5,6 +5,8 @@ export const apiEndpoints = {
   USER_SESSION: "/api/v2/ooniauth/user-session",
   USER_LOGIN: "/api/v2/ooniauth/user-login",
   RUN_LINK: "/api/v2/oonirun/links",
+  RUN_LINK_REVISION:
+    "/api/v2/oonirun/links/:linkId/full-descriptor/:revisionNr",
 }
 
 const SEVEN_DAYS_IN_SECONDS = 7 * 24 * 60 * 60
@@ -80,6 +82,20 @@ export const updateRunLink = (id: string, data: any) => {
 
 export const getRunLink = (id: string, config = {}) => {
   return getAPI(`${apiEndpoints.RUN_LINK}/${id}`, config)
+}
+
+export const getRunLinkRevision = (
+  id: string,
+  revision: string,
+  config = {},
+) => {
+  return getAPI(
+    apiEndpoints.RUN_LINK_REVISION.replace(":linkId", id).replace(
+      ":revisionNr",
+      revision,
+    ),
+    config,
+  )
 }
 
 export const getList = (params = {}, config = {}) => {
