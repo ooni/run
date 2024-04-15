@@ -1,5 +1,5 @@
 import { Box, Flex, Heading, Text } from "ooni-components"
-import { ReactElement, cloneElement, useState } from "react"
+import { cloneElement, useState, type ReactElement } from "react"
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md"
 import { testGroups, testNames } from "utils/test-info"
 
@@ -65,15 +65,21 @@ const NettestsBox = ({ nettests }: NettestsBoxProps) => {
           sx={i > 0 ? { borderTop: "1px solid", borderColor: "gray3" } : {}}
         >
           <Flex alignItems="center">
-            <Box
-              color={testGroups[testNames[nettest.test_name].group].color}
-              mr={2}
-            >
-              {getIconComponent(
-                testGroups[testNames[nettest.test_name].group].icon,
-              )}
-            </Box>
-            <Text fontWeight={600}>{testNames[nettest.test_name].name}</Text>
+            {testNames[nettest.test_name]?.group && (
+              <Box
+                color={testGroups[testNames[nettest.test_name].group].color}
+                mr={2}
+              >
+                {getIconComponent(
+                  testGroups[testNames[nettest.test_name].group].icon,
+                )}
+              </Box>
+            )}
+            {testNames[nettest.test_name]?.name ? (
+              <Text fontWeight={600}>{testNames[nettest.test_name].name}</Text>
+            ) : (
+              <Text fontWeight={600}>{nettest.test_name}</Text>
+            )}
           </Flex>
           {!!nettest.inputs?.length && (
             <NettestsInputs inputs={nettest.inputs} />
