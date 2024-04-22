@@ -21,7 +21,7 @@ type Descriptor = {
   oonirun_link_id: string
   name: string
   name_intl: object[]
-  author: string | undefined
+  author: string
   icon: keyof typeof icons | undefined
   short_description: string | undefined
   short_description_intl: object[]

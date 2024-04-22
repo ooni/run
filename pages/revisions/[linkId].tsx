@@ -1,9 +1,9 @@
 import OONIRunHero from "components/OONIRunHero"
 import OONIRunHeroMinimal from "components/OONIRunHeroMinimal"
 import RevisionView from "components/revisions/RevisionView"
-import { getRunLink } from "lib/api"
-import { GetServerSideProps } from "next"
-import type { ParsedUrlQuery } from "querystring"
+import { getRunLinkRevision } from "lib/api"
+import type { GetServerSideProps } from "next"
+import type { ParsedUrlQuery } from "node:querystring"
 
 type Props = {
   runLink: Descriptor
@@ -23,10 +23,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const { linkId } = params as QParams
   const authToken = cookies?.token ? JSON.parse(cookies?.token).token : null
   let runLink = null
+  const revision = Array.isArray(query?.revision)
+    ? query?.revision[0]
+    : query?.revision || "1"
 
   try {
-    runLink = await getRunLink(linkId, {
-      ...(query?.revision && { params: { revision: query?.revision } }),
+    runLink = await getRunLinkRevision(linkId, revision, {
       ...(authToken && {
         headers: { Authorization: `Bearer ${authToken}` },
       }),

@@ -1,7 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import Compact from "@uiw/react-color-compact"
 import { format } from "date-fns"
-import { getUserEmail } from "lib/api"
 import { Box, Button, Flex, Input, Text } from "ooni-components"
 import {
   Controller,
@@ -15,7 +14,7 @@ import * as Yup from "yup"
 
 import DescriptorIcon from "components/DescriptorIcon"
 import dynamic from "next/dynamic"
-import { Checkbox, Textarea } from "ooni-components"
+import { Textarea } from "ooni-components"
 import { useEffect, useState } from "react"
 import { FaCheck } from "react-icons/fa6"
 import type { icons } from "utils/icons"
@@ -58,7 +57,6 @@ export type TestList = {
     icon: string
     color: string
     author: string
-    include_author: boolean
     expiration_date: string
     nettests: Nettest[]
   }>
@@ -84,8 +82,13 @@ const validationSchema = Yup.object({
         icon: Yup.string().defined(),
         color: Yup.string().defined(),
         author: Yup.string().defined(),
-        include_author: Yup.boolean().defined(),
-        expiration_date: Yup.string().required("Required field."),
+        expiration_date: Yup.string()
+          .required("Required field.")
+          .test(
+            "is-future",
+            "Should be in the future.",
+            (value) => new Date(value) > new Date(),
+          ),
         nettests: Yup.array()
           .required()
           .of(
@@ -99,7 +102,7 @@ const validationSchema = Yup.object({
                     .defined()
                     .test(
                       "is-valid-url",
-                      'should be a valid URL format e.g "https://ooni.org/post/"',
+                      'Should be a valid URL format e.g "https://ooni.org/post/"',
                       (value) => {
                         if (value == null) return true
                         try {
@@ -154,7 +157,7 @@ const TestListForm = ({
   }, [])
 
   const formMethods = useForm<TestList>({
-    mode: "onTouched",
+    mode: "onSubmit",
     defaultValues: { ooniRunLink: [defaultValues] },
     resolver: yupResolver(validationSchema),
   })
@@ -237,7 +240,7 @@ const TestListForm = ({
                     render={({ field }) => (
                       <Input
                         {...field}
-                        label="Test list name"
+                        label="Test list name *"
                         placeholder=""
                         error={errors?.ooniRunLink?.[index]?.name?.message}
                       />
@@ -252,7 +255,7 @@ const TestListForm = ({
                     render={({ field }) => (
                       <Input
                         {...field}
-                        label="Short description"
+                        label="Short description *"
                         placeholder=""
                         error={
                           errors?.ooniRunLink?.[index]?.short_description
@@ -272,7 +275,7 @@ const TestListForm = ({
                     render={({ field }) => (
                       <Textarea
                         {...field}
-                        label="Description"
+                        label="Description *"
                         placeholder=""
                         minHeight="78px"
                         error={
@@ -293,25 +296,10 @@ const TestListForm = ({
                           {...field}
                           disabled
                           bg="gray3"
-                          label="Author's Email"
+                          label="Author's Email *"
                         />
                       )}
                       name={`ooniRunLink.${index}.author`}
-                      control={control}
-                    />
-
-                    <Controller
-                      render={({ field }) => (
-                        <Box mt={2}>
-                          <Checkbox
-                            {...field}
-                            reverse
-                            checked={field.value}
-                            label={`Show my email “${getUserEmail()}” in the link info`}
-                          />
-                        </Box>
-                      )}
-                      name={`ooniRunLink.${index}.include_author`}
                       control={control}
                     />
                   </StyledInputWrapper>
@@ -325,7 +313,7 @@ const TestListForm = ({
                       <>
                         <Input
                           {...field}
-                          label="Expiration Date"
+                          label="Expiration Date *"
                           error={
                             errors?.ooniRunLink?.[index]?.expiration_date
                               ?.message

@@ -32,7 +32,7 @@ const transformNettests = (nettest: any) => ({
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const transformOutgoingData = (data: any) => {
-  const { include_author, author, ...formData } = data.ooniRunLink[0]
+  const { ...formData } = data.ooniRunLink[0]
   return {
     ...formData,
     name_intl: transformIntoObject(formData.name_intl),
@@ -42,8 +42,6 @@ export const transformOutgoingData = (data: any) => {
     ),
     expiration_date: `${formData.expiration_date}T00:00:00Z`,
     nettests: formData.nettests.map(transformNettests),
-    // only include author's email if they opted in
-    author: include_author ? author : "",
   }
 }
 
@@ -54,7 +52,6 @@ const defaultValues = {
   icon: "",
   color: "#000000",
   author: getUserEmail(),
-  include_author: true,
   expiration_date: "",
   nettests: [
     {

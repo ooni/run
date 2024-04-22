@@ -30,7 +30,6 @@ const transformIncomingData = (formData: any) => {
     ...formData,
     color: formData?.color ? formData.color : "#000000",
     author: formData?.author || getUserEmail(),
-    include_author: formData?.author ? true : false,
     name_intl: transformIntoArray(formData.name_intl),
     description_intl: transformIntoArray(formData.description_intl),
     short_description_intl: transformIntoArray(formData.short_description_intl),
