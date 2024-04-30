@@ -32,16 +32,13 @@ const transformNettests = (nettest: any) => ({
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const transformOutgoingData = (data: any) => {
-  const { ...formData } = data.ooniRunLink[0]
   return {
-    ...formData,
-    name_intl: transformIntoObject(formData.name_intl),
-    description_intl: transformIntoObject(formData.description_intl),
-    short_description_intl: transformIntoObject(
-      formData.short_description_intl,
-    ),
-    expiration_date: `${formData.expiration_date}T00:00:00Z`,
-    nettests: formData.nettests.map(transformNettests),
+    ...data,
+    name_intl: transformIntoObject(data.name_intl),
+    description_intl: transformIntoObject(data.description_intl),
+    short_description_intl: transformIntoObject(data.short_description_intl),
+    expiration_date: `${data.expiration_date}T00:00:00Z`,
+    nettests: data.nettests.map(transformNettests),
   }
 }
 

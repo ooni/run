@@ -1,9 +1,9 @@
-import { Box, Button, Flex, Input, Select } from "ooni-components"
+import { Box, Button, Flex, Input, Select, Text } from "ooni-components"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
 import { FaRegTrashCan } from "react-icons/fa6"
 import styled from "styled-components"
 import supportedLanguages from "../../utils/supportedLanguages"
-import { FieldsPropTypes } from "./TestListForm"
+import type { FieldsPropTypes } from "./TestListForm"
 
 const StyledLabel = styled.div`
 label {
@@ -20,7 +20,11 @@ const langOptions = supportedLanguages.map((lang) => ({
 
 const IntlFields = ({ name }: FieldsPropTypes) => {
   const { control } = useFormContext()
-  const { fields, append, remove } = useFieldArray({ name, control })
+  const { fields, append, remove } = useFieldArray({
+    name,
+    control,
+  })
+
   return (
     <>
       {fields.map((item, index) => (
@@ -28,9 +32,14 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
           <Flex flexDirection={["column", "row"]}>
             <Box width={[1, 4 / 12]} mr={[0, 2]} pr={[28, 0]}>
               <Controller
-                render={({ field }) => (
+                render={({ field, fieldState }) => (
                   <StyledLabel>
-                    <Select {...field} label="Language" width={1}>
+                    <Select
+                      {...field}
+                      label="Language"
+                      width={1}
+                      error={fieldState?.error?.message}
+                    >
                       <option value="" />
                       {langOptions.map(({ key, name }) => (
                         <option key={key} value={key}>
@@ -38,6 +47,12 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
                         </option>
                       ))}
                     </Select>
+                    {/* TODO: fix this in ooni-components and remove from here */}
+                    {fieldState?.error?.message && (
+                      <Text color="red7" fontSize="12px" mt="2px">
+                        {fieldState?.error?.message}
+                      </Text>
+                    )}
                   </StyledLabel>
                 )}
                 name={`${name}[${index}].key`}
@@ -48,9 +63,13 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
               <Flex flexDirection="row" mt={[2, 0]} alignItems="end">
                 <Box width={1}>
                   <Controller
-                    render={({ field }) => (
+                    render={({ field, fieldState }) => (
                       <StyledLabel>
-                        <Input label="Translation" {...field} />
+                        <Input
+                          label="Translation"
+                          {...field}
+                          error={fieldState?.error?.message}
+                        />
                       </StyledLabel>
                     )}
                     name={`${name}[${index}].value`}

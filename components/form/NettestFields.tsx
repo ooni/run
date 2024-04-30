@@ -2,9 +2,9 @@ import { Heading, Input } from "ooni-components"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
 import InputsFields from "./InputsFields"
 import {
-  FieldsPropTypes,
   StyledInputWrapper,
   StyledLabel,
+  type FieldsPropTypes,
 } from "./TestListForm"
 
 const NettestFields = ({ name }: FieldsPropTypes) => {
