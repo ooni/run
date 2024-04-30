@@ -1,8 +1,8 @@
 import { Flex } from "ooni-components"
-import { UseFormSetValue } from "react-hook-form"
+import type { UseFormSetValue } from "react-hook-form"
 import { styled } from "styled-components"
 import { icons } from "utils/icons"
-import { TestList } from "./TestListForm"
+import type { TestList } from "./TestListForm"
 
 const ItemContainer = styled.div`
   padding: 8px;
@@ -54,7 +54,7 @@ const IModal = ({ setShow, setValue }: IModal) => {
               key={name}
               id={name}
               onClick={() => {
-                setValue("ooniRunLink.0.icon", name, {
+                setValue("icon", name, {
                   shouldValidate: false,
                 })
                 setShow(false)

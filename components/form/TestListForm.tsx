@@ -31,7 +31,6 @@ export type FieldsPropTypes = {
 }
 
 export const StyledLabel = styled(Text).attrs({
-  // color: 'blue5',
   fontSize: 1,
   fontWeight: 600,
 })``
@@ -50,88 +49,97 @@ type Nettest = {
 }
 
 export type TestList = {
-  ooniRunLink: Array<{
-    name: string
-    short_description: string
-    description: string
-    icon: string
-    color: string
-    author: string
-    expiration_date: string
-    nettests: Nettest[]
-  }>
+  name: string
+  name_intl?: { key: string; value: string }[]
+  short_description: string
+  short_description_intl?: { key: string; value: string }[]
+  description: string
+  description_intl?: { key: string; value: string }[]
+  icon: string
+  color: string
+  author: string
+  expiration_date: string
+  nettests: Nettest[]
 }
 
+const minmaxIntlValidation = Yup.string()
+  .required("Required field.")
+  .min(2, "Must be at least 2 characters.")
+  .max(50, "Should be shorter that 50 characters.")
+const minIntlValidation = Yup.string()
+  .required("Required field.")
+  .min(2, "Must be at least 2 characters.")
+
 const validationSchema = Yup.object({
-  ooniRunLink: Yup.array()
+  name: minmaxIntlValidation,
+  name_intl: Yup.array().of(
+    Yup.object({
+      key: Yup.string().required("Required field."),
+      value: minmaxIntlValidation,
+    }),
+  ),
+  short_description: minmaxIntlValidation,
+  short_description_intl: Yup.array().of(
+    Yup.object({
+      key: Yup.string().required("Required field."),
+      value: minmaxIntlValidation,
+    }),
+  ),
+  description: minIntlValidation,
+  description_intl: Yup.array().of(
+    Yup.object({
+      key: Yup.string().required("Required field."),
+      value: minIntlValidation,
+    }),
+  ),
+  icon: Yup.string().defined(),
+  color: Yup.string().defined(),
+  author: Yup.string().defined(),
+  expiration_date: Yup.string()
+    .required("Required field.")
+    .test(
+      "is-future",
+      "Should be in the future.",
+      (value) => new Date(value) > new Date(),
+    ),
+  nettests: Yup.array()
     .required()
-    .min(0)
     .of(
       Yup.object({
-        name: Yup.string()
-          .required("Required field.")
-          .min(2, "Must be at least 2 characters.")
-          .max(50, "Should be shorter that 50 characters."),
-        short_description: Yup.string()
-          .required("Required field.")
-          .min(2, "Must be at least 2 characters.")
-          .max(200, "Should be shorter that 50 characters."),
-        description: Yup.string()
-          .required("Required field.")
-          .min(2, "Must be at least 2 characters."),
-        icon: Yup.string().defined(),
-        color: Yup.string().defined(),
-        author: Yup.string().defined(),
-        expiration_date: Yup.string()
-          .required("Required field.")
-          .test(
-            "is-future",
-            "Should be in the future.",
-            (value) => new Date(value) > new Date(),
-          ),
-        nettests: Yup.array()
+        test_name: Yup.string().required("Required field."),
+        inputs: Yup.array()
           .required()
+          .min(0)
           .of(
-            Yup.object({
-              test_name: Yup.string().required("Required field."),
-              inputs: Yup.array()
-                .required()
-                .min(0)
-                .of(
-                  Yup.string()
-                    .defined()
-                    .test(
-                      "is-valid-url",
-                      'Should be a valid URL format e.g "https://ooni.org/post/"',
-                      (value) => {
-                        if (value == null) return true
-                        try {
-                          const url = new URL(value)
-                          if (
-                            url.protocol !== "http:" &&
-                            url.protocol !== "https:"
-                          ) {
-                            return false
-                          }
-                          return true
-                        } catch {
-                          return false
-                        }
-                      },
-                    ),
-                ),
-              options: Yup.array()
-                .required()
-                .min(0)
-                .of(Yup.object({ key: Yup.string(), value: Yup.string() })),
-              backend_options: Yup.array()
-                .required()
-                .min(0)
-                .of(Yup.object({ key: Yup.string(), value: Yup.string() })),
-              is_background_run_enabled_default: Yup.boolean().defined(),
-              is_manual_run_enabled_default: Yup.boolean().defined(),
-            }),
+            Yup.string()
+              .defined()
+              .test(
+                "is-valid-url",
+                'Should be a valid URL format e.g "https://ooni.org/post/"',
+                (value) => {
+                  if (value == null) return true
+                  try {
+                    const url = new URL(value)
+                    if (url.protocol !== "http:" && url.protocol !== "https:") {
+                      return false
+                    }
+                    return true
+                  } catch {
+                    return false
+                  }
+                },
+              ),
           ),
+        options: Yup.array()
+          .required()
+          .min(0)
+          .of(Yup.object({ key: Yup.string(), value: Yup.string() })),
+        backend_options: Yup.array()
+          .required()
+          .min(0)
+          .of(Yup.object({ key: Yup.string(), value: Yup.string() })),
+        is_background_run_enabled_default: Yup.boolean().defined(),
+        is_manual_run_enabled_default: Yup.boolean().defined(),
       }),
     ),
 })
@@ -158,19 +166,14 @@ const TestListForm = ({
 
   const formMethods = useForm<TestList>({
     mode: "onSubmit",
-    defaultValues: { ooniRunLink: [defaultValues] },
+    defaultValues,
     resolver: yupResolver(validationSchema),
   })
   const { control, formState, handleSubmit, setValue, watch, getValues } =
     formMethods
-  const iconValue = watch("ooniRunLink.0.icon") as keyof typeof icons
+  const iconValue = watch("icon") as keyof typeof icons
 
-  const { errors, isSubmitting } = formState
-
-  const { fields } = useFieldArray({
-    control, // control props comes from useForm (optional: if you are using FormContext)
-    name: "ooniRunLink", // unique name for your Field Array
-  })
+  const { isSubmitting } = formState
 
   // const { trigger, isMutating } = useSWRMutation(
   //   linkId && apiEndpoints.ARCHIVE_RUN_LINK.replace(":oonirun_id", linkId),
@@ -185,7 +188,7 @@ const TestListForm = ({
   const [showDatePicker, setShowDatePicker] = useState(false)
   const handleRangeSelect = (date: Date | undefined) => {
     if (date) {
-      setValue("ooniRunLink.0.expiration_date", format(date, "y-MM-dd"))
+      setValue("expiration_date", format(date, "y-MM-dd"))
       setShowDatePicker(false)
     }
   }
@@ -199,149 +202,135 @@ const TestListForm = ({
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Flex flexDirection="column" my={5}>
-            {fields.map((item, index) => (
-              <Box key={item.id}>
-                <StyledInputWrapper>
-                  <Controller
-                    render={({ field }) => (
-                      <Input type="hidden" {...field} label="Icon" />
-                    )}
-                    name={`ooniRunLink.${index}.icon`}
-                    control={control}
-                  />
-                  {iconValue && (
-                    <Box fontSize={3}>
-                      <DescriptorIcon icon={iconValue} />
-                    </Box>
+            <Box>
+              <StyledInputWrapper>
+                <Controller
+                  render={({ field }) => (
+                    <Input type="hidden" {...field} label="Icon" />
                   )}
-                  <IconModal setValue={setValue} iconValue={iconValue} />
-                </StyledInputWrapper>
-                <StyledInputWrapper>
-                  <StyledLabel mb={1}>Color</StyledLabel>
-                  <Controller
-                    render={({ field }) => (
-                      <Compact
-                        {...field}
-                        color={field.value}
-                        style={{
-                          border: "1px solid gray",
-                        }}
-                        onChange={(color) => {
-                          field.onChange(color.hex)
-                        }}
-                      />
-                    )}
-                    name={`ooniRunLink.${index}.color`}
-                    control={control}
-                  />
-                </StyledInputWrapper>
+                  name="icon"
+                  control={control}
+                />
+                {iconValue && (
+                  <Box fontSize={3}>
+                    <DescriptorIcon icon={iconValue} />
+                  </Box>
+                )}
+                <IconModal setValue={setValue} iconValue={iconValue} />
+              </StyledInputWrapper>
+              <StyledInputWrapper>
+                <StyledLabel mb={1}>Color</StyledLabel>
+                <Controller
+                  render={({ field }) => (
+                    <Compact
+                      {...field}
+                      color={field.value}
+                      style={{
+                        border: "1px solid gray",
+                      }}
+                      onChange={(color) => {
+                        field.onChange(color.hex)
+                      }}
+                    />
+                  )}
+                  name="color"
+                  control={control}
+                />
+              </StyledInputWrapper>
+              <StyledInputWrapper>
+                <Controller
+                  render={({ field, fieldState }) => (
+                    <Input
+                      {...field}
+                      label="Test list name *"
+                      placeholder=""
+                      error={fieldState?.error?.message}
+                    />
+                  )}
+                  name="name"
+                  control={control}
+                />
+                <IntlFields name="name_intl" />
+              </StyledInputWrapper>
+              <StyledInputWrapper>
+                <Controller
+                  render={({ field, fieldState }) => (
+                    <Input
+                      {...field}
+                      label="Short description *"
+                      placeholder=""
+                      error={fieldState?.error?.message}
+                    />
+                  )}
+                  name="short_description"
+                  control={control}
+                />
+                <IntlFields name="short_description_intl" />
+              </StyledInputWrapper>
+              <StyledInputWrapper>
+                <Controller
+                  render={({ field, fieldState }) => (
+                    <Textarea
+                      {...field}
+                      label="Description *"
+                      placeholder=""
+                      minHeight="78px"
+                      error={fieldState?.error?.message}
+                    />
+                  )}
+                  name="description"
+                  control={control}
+                />
+                <IntlFields name="description_intl" />
+              </StyledInputWrapper>
+              {isClient && (
                 <StyledInputWrapper>
                   <Controller
                     render={({ field }) => (
                       <Input
                         {...field}
-                        label="Test list name *"
-                        placeholder=""
-                        error={errors?.ooniRunLink?.[index]?.name?.message}
+                        disabled
+                        bg="gray3"
+                        label="Author's Email *"
                       />
                     )}
-                    name={`ooniRunLink.${index}.name`}
+                    name="author"
                     control={control}
                   />
-                  <IntlFields name={`ooniRunLink.${index}.name_intl`} />
                 </StyledInputWrapper>
-                <StyledInputWrapper>
-                  <Controller
-                    render={({ field }) => (
+              )}
+
+              <StyledInputWrapper>
+                <Controller
+                  name="expiration_date"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <>
                       <Input
                         {...field}
-                        label="Short description *"
-                        placeholder=""
-                        error={
-                          errors?.ooniRunLink?.[index]?.short_description
-                            ?.message
-                        }
+                        label="Expiration Date *"
+                        error={fieldState?.error?.message}
+                        placeholder="YYYY-MM-DD"
+                        onFocus={() => setShowDatePicker(true)}
+                        onKeyDown={() => setShowDatePicker(false)}
                       />
-                    )}
-                    name={`ooniRunLink.${index}.short_description`}
-                    control={control}
-                  />
-                  <IntlFields
-                    name={`ooniRunLink.${index}.short_description_intl`}
-                  />
-                </StyledInputWrapper>
-                <StyledInputWrapper>
-                  <Controller
-                    render={({ field }) => (
-                      <Textarea
-                        {...field}
-                        label="Description *"
-                        placeholder=""
-                        minHeight="78px"
-                        error={
-                          errors?.ooniRunLink?.[index]?.description?.message
-                        }
-                      />
-                    )}
-                    name={`ooniRunLink.${index}.description`}
-                    control={control}
-                  />
-                  <IntlFields name={`ooniRunLink.${index}.description_intl`} />
-                </StyledInputWrapper>
-                {isClient && (
-                  <StyledInputWrapper>
-                    <Controller
-                      render={({ field }) => (
-                        <Input
-                          {...field}
-                          disabled
-                          bg="gray3"
-                          label="Author's Email *"
+                      {showDatePicker && (
+                        <DatePicker
+                          handleRangeSelect={handleRangeSelect}
+                          initialDate={getValues("expiration_date")}
+                          close={() => setShowDatePicker(false)}
                         />
                       )}
-                      name={`ooniRunLink.${index}.author`}
-                      control={control}
-                    />
-                  </StyledInputWrapper>
-                )}
-
-                <StyledInputWrapper>
-                  <Controller
-                    name={`ooniRunLink.${index}.expiration_date`}
-                    control={control}
-                    render={({ field }) => (
-                      <>
-                        <Input
-                          {...field}
-                          label="Expiration Date *"
-                          error={
-                            errors?.ooniRunLink?.[index]?.expiration_date
-                              ?.message
-                          }
-                          placeholder="YYYY-MM-DD"
-                          onFocus={() => setShowDatePicker(true)}
-                          onKeyDown={() => setShowDatePicker(false)}
-                        />
-                        {showDatePicker && (
-                          <DatePicker
-                            handleRangeSelect={handleRangeSelect}
-                            initialDate={getValues(
-                              `ooniRunLink.${index}.expiration_date`,
-                            )}
-                            close={() => setShowDatePicker(false)}
-                          />
-                        )}
-                      </>
-                    )}
-                  />
-                </StyledInputWrapper>
-                {isAdmin ? (
-                  <AdminNettestFields name={`ooniRunLink.${index}.nettests`} />
-                ) : (
-                  <NettestFields name={`ooniRunLink.${index}.nettests`} />
-                )}
-              </Box>
-            ))}
+                    </>
+                  )}
+                />
+              </StyledInputWrapper>
+              {isAdmin ? (
+                <AdminNettestFields name="nettests" />
+              ) : (
+                <NettestFields name="nettests" />
+              )}
+            </Box>
             <Box textAlign="end" mb={4}>
               <Button
                 type="submit"
