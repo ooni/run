@@ -2,7 +2,7 @@ import { Box, Button, Flex, Input } from "ooni-components"
 import { useCallback } from "react"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
 import { FaRegTrashCan } from "react-icons/fa6"
-import { FieldsPropTypes } from "./TestListForm"
+import type { FieldsPropTypes } from "./TestListForm"
 
 const InputsFields = ({ name }: FieldsPropTypes) => {
   const { trigger, control } = useFormContext()
@@ -36,8 +36,9 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
       const pastedText = e.clipboardData?.getData("Text")
       if (pastedText) {
         const newEntries = pastedText
-          .split("\n")
-          .filter((line: string) => line.length > 0)
+          .replace(/\r?\n|\r/g, " ")
+          .split(" ")
+          .filter((line: string) => !!line.length)
 
         // Place first pasted entry into event and trigger onChange
         // This updates the field being pasted into with the first entry
