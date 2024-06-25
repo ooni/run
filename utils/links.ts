@@ -1,4 +1,4 @@
-import { ParsedUrlQuery } from "querystring"
+import type { ParsedUrlQuery } from "node:querystring"
 import mobileApp from "../config/mobileApp"
 
 // export const baseURL = 'https://run.ooni.io'
@@ -32,6 +32,10 @@ export const getEncodedQuery = (query: ParsedUrlQuery) => {
 }
 
 export const getUniversalLink = (urls: string[]) => {
+  return `${baseURL}/${getUniversalQuery(urls)}`
+}
+
+export const getUniversalQuery = (urls: string[]) => {
   const testName = "web_connectivity"
   const query: Query = {
     tn: testName,
@@ -43,7 +47,7 @@ export const getUniversalLink = (urls: string[]) => {
     })
   }
   const queryPart = getEncodedQuery(query)
-  return `${baseURL}/nettest?${queryPart}`
+  return `nettest?${queryPart}`
 }
 
 export const getIntentURI = (query: ParsedUrlQuery) => {

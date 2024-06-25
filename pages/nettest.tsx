@@ -1,8 +1,8 @@
 import OONIRunHeroMinimal from "components/OONIRunHeroMinimal"
 import MetaTags from "components/v2/MetaTags"
-import { GetServerSideProps } from "next"
+import type { GetServerSideProps } from "next"
+import type { ParsedUrlQuery } from "node:querystring"
 import { Box, Button, Container, Heading, Link, Text } from "ooni-components"
-import { ParsedUrlQuery } from "querystring"
 import { FormattedMessage } from "react-intl"
 import styled from "styled-components"
 import { getEncodedQuery, getIntentURI } from "utils/links"
@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const title = "OONI Run | Coordinate website censorship testing"
   const universalLink = getUniversalLink(query)
 
-  let storeLink
+  let storeLink = null
   let withWindowLocation = false
 
   if (ua.os.family === "iOS") {
