@@ -6,7 +6,7 @@ import type { FieldsPropTypes } from "./TestListForm"
 
 const InputsFields = ({ name }: FieldsPropTypes) => {
   const { trigger, control } = useFormContext()
-  const { fields, append, remove, insert, replace } = useFieldArray({
+  const { fields, append, remove, insert } = useFieldArray({
     name,
     control,
   })
@@ -35,10 +35,14 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
 
       const pastedText = e.clipboardData?.getData("Text")
       if (pastedText) {
-        const newEntries = pastedText
-          .replace(/\r?\n|\r/g, " ")
-          .split(" ")
-          .filter((line: string) => !!line.length)
+        const newEntries = [
+          ...new Set(
+            pastedText
+              .replace(/\r?\n|\r|\t/g, " ")
+              .split(" ")
+              .filter((line: string) => !!line.length),
+          ),
+        ]
 
         // Place first pasted entry into event and trigger onChange
         // This updates the field being pasted into with the first entry
