@@ -66,7 +66,6 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
   const message = encodeURIComponent(
     intl.formatMessage({
       id: "Share.Twitter.Tweet",
-      defaultMessage: "Run OONI Probe to test for censorship!",
     }),
   )
   const url = encodeURIComponent(universalLink)
@@ -77,7 +76,6 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
       <Button hollow size="small" endIcon={<BsTwitter />}>
         {intl.formatMessage({
           id: "Share.Twitter.Button",
-          defaultMessage: "Tweet",
         })}
       </Button>
     </a>
@@ -122,10 +120,7 @@ const DescriptorView = ({
             {deepLink && isMobile && (
               <NLink href={deepLink}>
                 <Button hollow size="small" endIcon={<MdOpenInNew />}>
-                  <FormattedMessage
-                    id="Modal.Button.Link"
-                    defaultMessage="Link"
-                  />
+                  <FormattedMessage id="Modal.Button.Link" />
                 </Button>
               </NLink>
             )}
