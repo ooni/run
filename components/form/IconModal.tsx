@@ -2,9 +2,9 @@ import SpinLoader from "components/vendor/SpinLoader"
 import dynamic from "next/dynamic"
 import { Button, Flex, Modal } from "ooni-components"
 import { useState } from "react"
-import { UseFormSetValue } from "react-hook-form"
+import type { UseFormSetValue } from "react-hook-form"
 import { MdAdd, MdRefresh } from "react-icons/md"
-import { TestList } from "./TestListForm"
+import type { TestList } from "./TestListForm"
 
 const IModal = dynamic(() => import("../form/Modal"), {
   loading: () => (

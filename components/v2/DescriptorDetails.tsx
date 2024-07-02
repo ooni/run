@@ -4,7 +4,7 @@ import Markdown from "markdown-to-jsx"
 import { Box, Heading, Text } from "ooni-components"
 import { useMemo } from "react"
 import { useIntl } from "react-intl"
-import { formatMediumDateTime } from "utils"
+import { formatMediumDate } from "utils"
 import ArchivedTag from "../ArchivedTag"
 
 type ExpirationDateProps = {
@@ -19,7 +19,7 @@ const ExpirationDate = ({ expirationString }: ExpirationDateProps) => {
   )
   // const warningColor = dateDifference < 14 && dateDifference > 0
   const expirationDate = useMemo(
-    () => formatMediumDateTime(expirationString, locale),
+    () => formatMediumDate(expirationString, locale),
     [expirationString, locale],
   )
 
@@ -57,17 +57,14 @@ const DescriptorDetails = ({
         {descriptor.author ? (
           <>
             Created by <strong>{descriptor.author}</strong> on{" "}
-            {formatMediumDateTime(descriptor?.date_created, locale)}.{" "}
+            {formatMediumDate(descriptor?.date_created, locale)}.{" "}
           </>
         ) : (
-          <>
-            Created on {formatMediumDateTime(descriptor?.date_created, locale)}.{" "}
-          </>
+          <>Created on {formatMediumDate(descriptor?.date_created, locale)}. </>
         )}
         {descriptor.date_updated && (
           <>
-            Last updated {formatMediumDateTime(descriptor.date_updated, locale)}
-            .{" "}
+            Last updated {formatMediumDate(descriptor.date_updated, locale)}.{" "}
           </>
         )}
         {descriptor.expiration_date && (

@@ -2,12 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import Compact from "@uiw/react-color-compact"
 import { format } from "date-fns"
 import { Box, Button, Flex, Input, Text } from "ooni-components"
-import {
-  Controller,
-  FormProvider,
-  useFieldArray,
-  useForm,
-} from "react-hook-form"
+import { Controller, FormProvider, useForm } from "react-hook-form"
 import { FormattedMessage } from "react-intl"
 import styled from "styled-components"
 import * as Yup from "yup"
@@ -19,6 +14,7 @@ import { useEffect, useState } from "react"
 import { FaCheck } from "react-icons/fa6"
 import type { icons } from "utils/icons"
 import DatePicker from "./DatePicker"
+import V1MigrationField from "./V1MigrationField"
 
 const IconModal = dynamic(() => import("./IconModal"))
 const IntlFields = dynamic(() => import("./IntlFields"))
@@ -175,16 +171,6 @@ const TestListForm = ({
 
   const { isSubmitting } = formState
 
-  // const { trigger, isMutating } = useSWRMutation(
-  //   linkId && apiEndpoints.ARCHIVE_RUN_LINK.replace(":oonirun_id", linkId),
-  //   postFetcher,
-  //   {
-  //     onSuccess: () => {
-  //       push(`/v2/${linkId}`)
-  //     },
-  //   },
-  // )
-
   const [showDatePicker, setShowDatePicker] = useState(false)
   const handleRangeSelect = (date: Date | undefined) => {
     if (date) {
@@ -193,14 +179,27 @@ const TestListForm = ({
     }
   }
 
+  const [showV1Modal, setShowV1Modal] = useState(false)
+
   return (
     <Flex flexDirection="column">
+      <Box mt={4}>
+        <Button variant="link" onClick={() => setShowV1Modal(true)}>
+          I'd like to migrate URLs from old OONI Run link
+        </Button>
+        <V1MigrationField
+          show={showV1Modal}
+          onClose={() => setShowV1Modal(false)}
+          nettests={getValues("nettests")}
+          setValue={setValue}
+        />
+      </Box>
       <datalist id="url-prefixes">
         <option value="https://" />
         <option value="http://" />
       </datalist>
       <FormProvider {...formMethods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
           <Flex flexDirection="column" my={5}>
             <Box>
               <StyledInputWrapper>

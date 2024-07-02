@@ -6,7 +6,7 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 const webpack = require("webpack")
 const glob = require("glob")
-const { basename } = require("path")
+const { basename } = require("node:path")
 
 const LANG_DIR = "./public/static/lang/"
 const DEFAULT_LOCALE = "en"

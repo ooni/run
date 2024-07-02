@@ -1,8 +1,9 @@
-import mobileApp from "config/mobileApp"
+import type mobileApp from "config/mobileApp"
 import Head from "next/head"
 
 type MetaTagsProps = {
   deepLink: string
+  iOSDeepLink?: string
   universalLink: string
   title: string
   description: string
@@ -11,11 +12,14 @@ type MetaTagsProps = {
 
 const MetaTags = ({
   deepLink,
+  iOSDeepLink,
   universalLink,
   title,
   description,
   mobileApp,
 }: MetaTagsProps) => {
+  const iOSLink = iOSDeepLink || deepLink
+
   return (
     <Head>
       <meta name="twitter:card" content="app" />
@@ -33,8 +37,12 @@ const MetaTags = ({
 
       {/* This is Twitter specific stuff
        * See: https://dev.twitter.com/cards/types/app */}
-      {deepLink && <meta name="twitter:app:url:iphone" content={deepLink} />}
-      {deepLink && <meta name="twitter:app:url:ipad" content={deepLink} />}
+      {deepLink && (
+        <meta name="twitter:app:url:iphone" content={iOSLink || deepLink} />
+      )}
+      {deepLink && (
+        <meta name="twitter:app:url:ipad" content={iOSLink || deepLink} />
+      )}
       {universalLink && (
         <meta name="twitter:app:url:googleplay" content={universalLink} />
       )}
@@ -63,7 +71,7 @@ const MetaTags = ({
 
       <meta property="al:ios:app_store_id" content={mobileApp.iPhoneID} />
       <meta property="al:ios:app_name" content={mobileApp.iPhoneName} />
-      {deepLink && <meta property="al:ios:url" content={deepLink} />}
+      {deepLink && <meta property="al:ios:url" content={iOSLink || deepLink} />}
     </Head>
   )
 }

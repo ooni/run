@@ -23,10 +23,7 @@ const OONIRunHero = () => (
             </NLink>
           </BrandContainer>
           <Box mt={2}>
-            <FormattedMessage
-              id="Hero.SubTitle"
-              defaultMessage="Coordinate website censorship testing"
-            />
+            <FormattedMessage id="Hero.SubTitle" />
           </Box>
         </Box>
         <NavBar />

@@ -111,7 +111,6 @@ const Create: NextPage = () => {
               <FormattedMessage
                 tagName={Text}
                 id="WhatCanYouDoText.WebCensorship"
-                defaultMessage='Add websites below that you would like to test for censorship. Click "Generate" to create a link based on those websites. Share that link with OONI Probe mobile app users so that they can test the websites of your choice!'
               />
               <TestListForm
                 isAdmin={isAdmin}
