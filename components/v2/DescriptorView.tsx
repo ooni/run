@@ -1,4 +1,4 @@
-import { differenceInDays } from "date-fns"
+import { formatDuration, intervalToDuration } from "date-fns"
 import NLink from "next/link"
 import { Box, Button, Flex, Heading } from "ooni-components"
 import { useMemo } from "react"
@@ -18,9 +18,16 @@ type ExpirationBoxProps = {
 
 const ExpirationBox = ({ expirationString, linkId }: ExpirationBoxProps) => {
   const { locale } = useIntl()
-  const dateDifference = differenceInDays(
-    new Date(expirationString),
-    new Date(),
+
+  const dateDifference = formatDuration(
+    intervalToDuration({
+      start: new Date(),
+      end: new Date(expirationString),
+    }),
+    {
+      format: ["years", "months", "days", "hours", "minutes"],
+      delimiter: ", ",
+    },
   )
 
   const expirationDate = useMemo(
@@ -43,8 +50,8 @@ const ExpirationBox = ({ expirationString, linkId }: ExpirationBoxProps) => {
         flexWrap: "wrap",
       }}
     >
-      <Box>
-        Your link expires on {expirationDate} (in {dateDifference} days)
+      <Box suppressHydrationWarning={true}>
+        Your link expires on {expirationDate} (in {dateDifference})
       </Box>
       <NLink href={`/edit/${linkId}`}>
         <Button

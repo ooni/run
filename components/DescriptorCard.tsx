@@ -4,7 +4,7 @@ import { Box, Heading, Text } from "ooni-components"
 import { MdKeyboardArrowRight } from "react-icons/md"
 import { useIntl } from "react-intl"
 import styled from "styled-components"
-import { formatMediumDateTime } from "utils"
+import { formatMediumDate } from "utils"
 import type { icons } from "utils/icons"
 import ArchivedTag from "./ArchivedTag"
 import DescriptorIcon from "./DescriptorIcon"
@@ -65,9 +65,9 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
               |{" "}
             </Text>
           )}{" "}
-          Updated {formatMediumDateTime(descriptor.date_updated, locale)} |{" "}
+          Updated {formatMediumDate(descriptor.date_updated, locale)} |{" "}
           {descriptor.is_expired ? "Expired" : "Expiring"}{" "}
-          {formatMediumDateTime(descriptor.expiration_date, locale)}
+          {formatMediumDate(descriptor.expiration_date, locale)}
         </Text>
         {descriptor.short_description && (
           <Text color="gray5">
