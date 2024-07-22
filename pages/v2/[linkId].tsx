@@ -135,7 +135,7 @@ const Nettest = ({
   linkId,
   error,
 }: Props) => {
-  const isIOS = JSON.parse(userAgent).family === "iOS"
+  const isIOS = JSON.parse(userAgent)?.os?.family === "iOS"
   const displayDeepLink = isIOS ? iOSDeepLink : deepLink
 
   const windowScript = `window.onload = function() {
