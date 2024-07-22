@@ -1,7 +1,7 @@
 import OONIRunHero from "components/OONIRunHero"
 import OONIRunHeroMinimal from "components/OONIRunHeroMinimal"
 import RevisionView from "components/revisions/RevisionView"
-import { getRunLinkRevision } from "lib/api"
+import { getRunLink, getRunLinkRevision } from "lib/api"
 import type { GetServerSideProps } from "next"
 import type { ParsedUrlQuery } from "node:querystring"
 
@@ -25,15 +25,24 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   let runLink = null
   const revision = Array.isArray(query?.revision)
     ? query?.revision[0]
-    : query?.revision || "1"
+    : query?.revision
 
   try {
-    runLink = await getRunLinkRevision(linkId, revision, {
-      ...(authToken && {
-        headers: { Authorization: `Bearer ${authToken}` },
-      }),
-      baseURL: process.env.NEXT_PUBLIC_OONI_API,
-    })
+    if (revision) {
+      runLink = await getRunLinkRevision(linkId, revision, {
+        ...(authToken && {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }),
+        baseURL: process.env.NEXT_PUBLIC_OONI_API,
+      })
+    } else {
+      runLink = await getRunLink(linkId, {
+        ...(authToken && {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }),
+        baseURL: process.env.NEXT_PUBLIC_OONI_API,
+      })
+    }
   } catch (e) {}
 
   const props: Props = {
