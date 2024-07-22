@@ -1,5 +1,6 @@
 import { Box, Container, Heading } from "ooni-components"
 
+import Revisions from "components/v2/Revisions"
 import NLink from "next/link"
 import styled from "styled-components"
 import DescriptorDetails from "../v2/DescriptorDetails"
@@ -32,6 +33,9 @@ const RevisionView = ({ descriptor, linkId }: RevisionView) => {
         <DescriptorDetails descriptor={descriptor} />
         <Box mt={4}>
           <NettestsBox nettests={descriptor.nettests} />
+        </Box>
+        <Box mt={4}>
+          <Revisions length={descriptor.revision} linkId={linkId} />
         </Box>
       </Container>
     </>
