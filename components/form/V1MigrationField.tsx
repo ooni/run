@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Input, Modal } from "ooni-components"
 import { useState } from "react"
 import type { UseFormSetValue } from "react-hook-form"
+import { useIntl } from "react-intl"
 import type { TestList } from "./TestListForm"
 
 const getInputsFromV1Link = (val: string) => {
@@ -25,6 +26,7 @@ const V1MigrationField = ({
   show,
   onClose,
 }: V1MigrationFieldProps) => {
+  const intl = useIntl()
   const [V1InputError, setV1InputError] = useState<null | string>(null)
   const migrateV1Link = (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -67,15 +69,17 @@ const V1MigrationField = ({
         <form onSubmit={migrateV1Link} autoComplete="off">
           <Input
             name="v1Link"
-            label="OONI Run Link"
+            label={intl.formatMessage({ id: "MigrationModal.RunLink" })}
             error={V1InputError}
             onChange={() => setV1InputError(null)}
             mb={3}
           />
           <Flex justifyContent="end" sx={{ gap: 3 }}>
-            <Button type="submit">Add URLs</Button>
+            <Button type="submit">
+              {intl.formatMessage({ id: "MigrationModal.AddUrls" })}
+            </Button>
             <Button hollow onClick={() => onClose()}>
-              Cancel
+              {intl.formatMessage({ id: "General.Cancel" })}
             </Button>
           </Flex>
         </form>

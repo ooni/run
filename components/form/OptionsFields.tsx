@@ -1,8 +1,9 @@
 import { Box, Button, Flex, Input } from "ooni-components"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
 import { FaRegTrashCan } from "react-icons/fa6"
+import { useIntl } from "react-intl"
 import styled from "styled-components"
-import { FieldsPropTypes } from "./TestListForm"
+import type { FieldsPropTypes } from "./TestListForm"
 
 const StyledLabel = styled.div`
 label {
@@ -11,6 +12,7 @@ label {
 `
 
 const OptionsFields = ({ name }: FieldsPropTypes) => {
+  const intl = useIntl()
   const { control } = useFormContext()
   const { fields, append, remove } = useFieldArray({ name, control })
   return (
@@ -23,7 +25,12 @@ const OptionsFields = ({ name }: FieldsPropTypes) => {
                 key={`${name}[${index}]-${item.id}-key`}
                 render={({ field }) => (
                   <StyledLabel>
-                    <Input {...field} label="Key" />
+                    <Input
+                      {...field}
+                      label={intl.formatMessage({
+                        id: "TestListForm.OptionsFields.Key",
+                      })}
+                    />
                   </StyledLabel>
                 )}
                 name={`${name}[${index}].key`}
@@ -36,7 +43,12 @@ const OptionsFields = ({ name }: FieldsPropTypes) => {
                   key={`${name}[${index}]-${item.id}-value`}
                   render={({ field }) => (
                     <StyledLabel>
-                      <Input {...field} label="Value" />
+                      <Input
+                        {...field}
+                        label={intl.formatMessage({
+                          id: "TestListForm.OptionsFields.Value",
+                        })}
+                      />
                     </StyledLabel>
                   )}
                   name={`${name}[${index}].value`}
@@ -63,7 +75,10 @@ const OptionsFields = ({ name }: FieldsPropTypes) => {
           append({ key: "", value: "" })
         }}
       >
-        Add option +
+        {intl.formatMessage({
+          id: "TestListForm.OptionsFields.AddOption",
+        })}{" "}
+        +
       </Button>
     </>
   )

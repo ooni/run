@@ -48,10 +48,9 @@ const IModal = ({ setShow, setValue }: IModal) => {
       {Object.entries(icons).map(([name, icon]) => {
         const IconComponent = icon as React.ElementType
         return (
-          <ItemContainer>
+          <ItemContainer key={name}>
             <StyledIconButton
               type="button"
-              key={name}
               id={name}
               onClick={() => {
                 setValue("icon", name, {

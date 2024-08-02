@@ -1,5 +1,6 @@
 import { Box, Flex } from "ooni-components"
 import { MdOutlineInventory2 } from "react-icons/md"
+import { useIntl } from "react-intl"
 import { styled } from "styled-components"
 
 const StyledArchivedTag = styled(Flex)`
@@ -9,6 +10,7 @@ letter-spacing: 1.25px;
 }`
 
 const ArchivedTag = () => {
+  const intl = useIntl()
   return (
     <Box sx={{ display: "inline-block" }}>
       <StyledArchivedTag
@@ -21,7 +23,7 @@ const ArchivedTag = () => {
         py={1}
         alignItems="center"
       >
-        <span>EXPIRED</span>
+        <span>{intl.formatMessage({ id: "ArchivedTag.Expired" })}</span>
         <MdOutlineInventory2 />
       </StyledArchivedTag>
     </Box>

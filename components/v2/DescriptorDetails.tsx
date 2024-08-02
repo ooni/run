@@ -1,5 +1,5 @@
 import DescriptorIcon from "components/DescriptorIcon"
-import { differenceInDays } from "date-fns"
+// import { differenceInDays } from "date-fns"
 import Markdown from "markdown-to-jsx"
 import { Box, Heading, Text } from "ooni-components"
 import { useMemo } from "react"
@@ -11,12 +11,12 @@ type ExpirationDateProps = {
   expirationString: string
 }
 const ExpirationDate = ({ expirationString }: ExpirationDateProps) => {
-  const { locale } = useIntl()
+  const { locale, formatMessage } = useIntl()
 
-  const dateDifference = differenceInDays(
-    new Date(expirationString),
-    new Date(),
-  )
+  // const dateDifference = differenceInDays(
+  //   new Date(expirationString),
+  //   new Date(),
+  // )
   // const warningColor = dateDifference < 14 && dateDifference > 0
   const expirationDate = useMemo(
     () => formatMediumDate(expirationString, locale),
@@ -25,7 +25,14 @@ const ExpirationDate = ({ expirationString }: ExpirationDateProps) => {
 
   return (
     // <Text as="span" color={warningColor && "red5"}>
-    <Text as="span">Expiration date {expirationDate}</Text>
+    <Text as="span">
+      {formatMessage(
+        { id: "DescriptorDetails.ExpirationDate" },
+        {
+          date: expirationDate,
+        },
+      )}{" "}
+    </Text>
   )
 }
 
@@ -33,7 +40,7 @@ const DescriptorDetails = ({
   descriptor,
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 }: any) => {
-  const { locale } = useIntl()
+  const { locale, formatMessage } = useIntl()
   return (
     <>
       <Heading
@@ -56,15 +63,32 @@ const DescriptorDetails = ({
       <Text fontSize={14} my={3}>
         {descriptor.author ? (
           <>
-            Created by <strong>{descriptor.author}</strong> on{" "}
-            {formatMediumDate(descriptor?.date_created, locale)}.{" "}
+            {formatMessage(
+              { id: "DescriptorDetails.CreatedByOn" },
+              {
+                author: <strong>{descriptor.author}</strong>,
+                date: formatMediumDate(descriptor?.date_created, locale),
+              },
+            )}{" "}
           </>
         ) : (
-          <>Created on {formatMediumDate(descriptor?.date_created, locale)}. </>
+          <>
+            {formatMessage(
+              { id: "DescriptorDetails.CreatedOn" },
+              {
+                date: formatMediumDate(descriptor?.date_created, locale),
+              },
+            )}{" "}
+          </>
         )}
         {descriptor.date_updated && (
           <>
-            Last updated {formatMediumDate(descriptor.date_updated, locale)}.{" "}
+            {formatMessage(
+              { id: "DescriptorDetails.LastUpdated" },
+              {
+                date: formatMediumDate(descriptor.date_updated, locale),
+              },
+            )}{" "}
           </>
         )}
         {descriptor.expiration_date && (

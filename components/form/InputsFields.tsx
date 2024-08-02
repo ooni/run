@@ -2,9 +2,11 @@ import { Box, Button, Flex, Input } from "ooni-components"
 import { useCallback } from "react"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
 import { FaRegTrashCan } from "react-icons/fa6"
+import { useIntl } from "react-intl"
 import type { FieldsPropTypes } from "./TestListForm"
 
 const InputsFields = ({ name }: FieldsPropTypes) => {
+  const intl = useIntl()
   const { trigger, control } = useFormContext()
   const { fields, append, remove, insert } = useFieldArray({
     name,
@@ -105,7 +107,7 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
           append("", { shouldFocus: true })
         }}
       >
-        Add input +
+        {intl.formatMessage({ id: "TestListForm.Inputs.AddInput" })} +
       </Button>
     </>
   )

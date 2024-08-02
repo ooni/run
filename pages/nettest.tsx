@@ -89,12 +89,13 @@ const Nettest = ({
           }}
         >
           <p>
-            <FaExclamationTriangle /> This version on OONI Run links will be
-            deprecated on Jan 1st 2025.
-          </p>
-          <p>
-            To migrate to the v2 version, <a href="/login">login</a> and create
-            a new one.
+            <FaExclamationTriangle />{" "}
+            <FormattedMessage
+              id="Nettest.DeprecationWarning"
+              values={{
+                login: (string) => <Link href="/login">{string}</Link>,
+              }}
+            />
           </p>
         </Box>
         <Heading pt={2} h={2}>

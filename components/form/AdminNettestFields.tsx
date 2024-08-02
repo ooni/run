@@ -1,6 +1,7 @@
 import { Box, Button, Checkbox, Heading, Input } from "ooni-components"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
 import { FaPlus, FaRegTrashCan } from "react-icons/fa6"
+import { useIntl } from "react-intl"
 import InputsFields from "./InputsFields"
 import OptionsFields from "./OptionsFields"
 import {
@@ -10,12 +11,13 @@ import {
 } from "./TestListForm"
 
 const AdminNettestFields = ({ name }: FieldsPropTypes) => {
+  const intl = useIntl()
   const { control } = useFormContext()
   const { fields, append, remove } = useFieldArray({ name, control })
   return (
     <>
       <Heading h={2} fontWeight={300} mt={4}>
-        Tests
+        {intl.formatMessage({ id: "TestListForm.AdminNettests.Tests" })}{" "}
       </Heading>
       <ul>
         {fields.map((item, index) => (
@@ -34,7 +36,7 @@ const AdminNettestFields = ({ name }: FieldsPropTypes) => {
                   render={({ field, fieldState }) => (
                     <Input
                       {...field}
-                      label={`${index + 1}. Test name`}
+                      label={`${index + 1}. ${intl.formatMessage({ id: "Home.Heading.TestName" })}`}
                       error={fieldState?.error?.message}
                       placeholder=""
                     />
@@ -44,15 +46,27 @@ const AdminNettestFields = ({ name }: FieldsPropTypes) => {
                 />
               </StyledInputWrapper>
               <StyledInputWrapper>
-                <StyledLabel>Inputs</StyledLabel>
+                <StyledLabel>
+                  {intl.formatMessage({
+                    id: "TestListForm.AdminNettests.Inputs",
+                  })}
+                </StyledLabel>
                 <InputsFields name={`${name}[${index}].inputs`} />
               </StyledInputWrapper>
               <StyledInputWrapper>
-                <StyledLabel>Options</StyledLabel>
+                <StyledLabel>
+                  {intl.formatMessage({
+                    id: "TestListForm.AdminNettests.Options",
+                  })}
+                </StyledLabel>
                 <OptionsFields name={`${name}[${index}].options`} />
               </StyledInputWrapper>
               <StyledInputWrapper>
-                <StyledLabel>Backend options</StyledLabel>
+                <StyledLabel>
+                  {intl.formatMessage({
+                    id: "TestListForm.AdminNettests.BackendOptions",
+                  })}
+                </StyledLabel>
                 <OptionsFields name={`${name}[${index}].backend_options`} />
               </StyledInputWrapper>
               <StyledInputWrapper>
@@ -60,7 +74,9 @@ const AdminNettestFields = ({ name }: FieldsPropTypes) => {
                   key={`nettests-is_background_run_enabled_default-${item.id}`}
                   render={({ field }) => (
                     <Checkbox
-                      label="Enable background run"
+                      label={intl.formatMessage({
+                        id: "TestListForm.AdminNettests.EnableBackgroundRun",
+                      })}
                       {...field}
                       id="backgroundRun"
                       checked={field.value}
@@ -75,7 +91,9 @@ const AdminNettestFields = ({ name }: FieldsPropTypes) => {
                   key={`nettests-is_manual_run_enabled_default-${item.id}`}
                   render={({ field }) => (
                     <Checkbox
-                      label="Enable manual run"
+                      label={intl.formatMessage({
+                        id: "TestListForm.AdminNettests.EnableManualRun",
+                      })}
                       {...field}
                       id="manualRun"
                       checked={field.value}
@@ -92,7 +110,9 @@ const AdminNettestFields = ({ name }: FieldsPropTypes) => {
                     onClick={() => remove(index)}
                     endIcon={<FaRegTrashCan size={18} />}
                   >
-                    Delete test
+                    {intl.formatMessage({
+                      id: "TestListForm.AdminNettests.DeleteTest",
+                    })}
                   </Button>
                 </Box>
               )}
@@ -116,7 +136,7 @@ const AdminNettestFields = ({ name }: FieldsPropTypes) => {
         }}
         endIcon={<FaPlus />}
       >
-        Add Test
+        {intl.formatMessage({ id: "TestListForm.AdminNettests.AddTest" })}
       </Button>
     </>
   )

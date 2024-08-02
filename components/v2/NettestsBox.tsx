@@ -1,6 +1,7 @@
 import { Box, Flex, Heading, Text } from "ooni-components"
 import { cloneElement, useState, type ReactElement } from "react"
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md"
+import { useIntl } from "react-intl"
 import { testGroups, testNames } from "utils/test-info"
 
 type NettestsInputsProps = {
@@ -45,6 +46,7 @@ type NettestsBoxProps = {
 }
 
 const NettestsBox = ({ nettests }: NettestsBoxProps) => {
+  const intl = useIntl()
   const getIconComponent = (icon: ReactElement | undefined) =>
     icon ? cloneElement(icon, { size: "20" }) : null
 
@@ -54,7 +56,7 @@ const NettestsBox = ({ nettests }: NettestsBoxProps) => {
       sx={{ border: "1px solid", borderColor: "gray3", borderRadius: 8 }}
     >
       <Heading h={4} my={0}>
-        Tests
+        {intl.formatMessage({ id: "TestListForm.AdminNettests.Tests" })}
       </Heading>
       {nettests.map((nettest, i) => (
         <Flex

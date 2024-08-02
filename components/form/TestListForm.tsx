@@ -3,7 +3,7 @@ import Compact from "@uiw/react-color-compact"
 import { format } from "date-fns"
 import { Box, Button, Flex, Input, Text } from "ooni-components"
 import { Controller, FormProvider, useForm } from "react-hook-form"
-import { FormattedMessage } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 import styled from "styled-components"
 import * as Yup from "yup"
 
@@ -154,6 +154,7 @@ const TestListForm = ({
   defaultValues,
   linkId,
 }: TestListFormProps) => {
+  const intl = useIntl()
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
@@ -185,7 +186,7 @@ const TestListForm = ({
     <Flex flexDirection="column">
       <Box mt={4}>
         <Button variant="link" onClick={() => setShowV1Modal(true)}>
-          I'd like to migrate URLs from old OONI Run link
+          {intl.formatMessage({ id: "TestListForm.MigrationModalLink" })}
         </Button>
         <V1MigrationField
           show={showV1Modal}
@@ -205,7 +206,13 @@ const TestListForm = ({
               <StyledInputWrapper>
                 <Controller
                   render={({ field }) => (
-                    <Input type="hidden" {...field} label="Icon" />
+                    <Input
+                      type="hidden"
+                      {...field}
+                      label={intl.formatMessage({
+                        id: "TestListForm.Label.Icon",
+                      })}
+                    />
                   )}
                   name="icon"
                   control={control}
@@ -218,7 +225,9 @@ const TestListForm = ({
                 <IconModal setValue={setValue} iconValue={iconValue} />
               </StyledInputWrapper>
               <StyledInputWrapper>
-                <StyledLabel mb={1}>Color</StyledLabel>
+                <StyledLabel mb={1}>
+                  {intl.formatMessage({ id: "TestListForm.Label.Color" })}
+                </StyledLabel>
                 <Controller
                   render={({ field }) => (
                     <Compact
@@ -241,7 +250,7 @@ const TestListForm = ({
                   render={({ field, fieldState }) => (
                     <Input
                       {...field}
-                      label="Test list name *"
+                      label={`${intl.formatMessage({ id: "TestListForm.Label.TestListName" })} *`}
                       placeholder=""
                       error={fieldState?.error?.message}
                     />
@@ -256,7 +265,7 @@ const TestListForm = ({
                   render={({ field, fieldState }) => (
                     <Input
                       {...field}
-                      label="Short description *"
+                      label={`${intl.formatMessage({ id: "TestListForm.Label.ShortDescription" })} *`}
                       placeholder=""
                       error={fieldState?.error?.message}
                     />
@@ -271,7 +280,7 @@ const TestListForm = ({
                   render={({ field, fieldState }) => (
                     <Textarea
                       {...field}
-                      label="Description *"
+                      label={`${intl.formatMessage({ id: "TestListForm.Label.Description" })} *`}
                       placeholder=""
                       minHeight="78px"
                       error={fieldState?.error?.message}
@@ -290,7 +299,7 @@ const TestListForm = ({
                         {...field}
                         disabled
                         bg="gray3"
-                        label="Author's Email *"
+                        label={`${intl.formatMessage({ id: "TestListForm.Label.Email" })} *`}
                       />
                     )}
                     name="author"
@@ -307,7 +316,7 @@ const TestListForm = ({
                     <>
                       <Input
                         {...field}
-                        label="Expiration Date *"
+                        label={`${intl.formatMessage({ id: "TestListForm.Label.ExpirationDate" })} *`}
                         error={fieldState?.error?.message}
                         placeholder="YYYY-MM-DD"
                         onFocus={() => setShowDatePicker(true)}

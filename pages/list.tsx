@@ -3,6 +3,7 @@ import type { GetServerSideProps } from "next"
 import dynamic from "next/dynamic"
 import NLink from "next/link"
 import { Box, Button, Container, Flex, Heading } from "ooni-components"
+import { useIntl } from "react-intl"
 import styled from "styled-components"
 import OONI404 from "/public/static/images/OONI_404.svg"
 
@@ -56,13 +57,15 @@ type ListProps = {
 }
 
 const List = ({ runLinks = [], error }: ListProps) => {
+  const intl = useIntl()
+
   return (
     <>
       <OONIRunHero />
       <StyledBox bg="gray1">
         <Container py={4}>
           <Heading h={2} mb={2}>
-            My OONI Run Links
+            {intl.formatMessage({ id: "List.Title" })}
           </Heading>
           {runLinks.length ? (
             <RunLinkList runLinks={runLinks} />
@@ -81,10 +84,12 @@ const List = ({ runLinks = [], error }: ListProps) => {
             >
               <Box>
                 <Heading h={3} mb={3}>
-                  You don’t have any OONI Run Links
+                  {intl.formatMessage({ id: "List.Empty" })}
                 </Heading>
                 <NLink href="/create">
-                  <Button>Create your first link</Button>
+                  <Button>
+                    {intl.formatMessage({ id: "List.Button.Create" })}
+                  </Button>
                 </NLink>
               </Box>
               <Box>

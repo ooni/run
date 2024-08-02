@@ -54,11 +54,14 @@ export const getAPI = async (endpoint: string, config: Config = {}) => {
     .then((res) => res.data)
     .catch((e: Error | AxiosError) => {
       if (Axios.isAxiosError(e)) {
-        const error =
-          e?.response?.data?.error || e?.response?.data?.detail || e?.message
-        throw new Error(error)
+        if (e.status && e.status >= 500) {
+          const error =
+            e?.response?.data?.error || e?.response?.data?.detail || e?.message
+          throw new Error(error)
+        }
+      } else {
+        throw new Error(e.message)
       }
-      throw new Error(e.message)
     })
 }
 

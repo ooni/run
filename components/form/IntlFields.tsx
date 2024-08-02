@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Input, Select, Text } from "ooni-components"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
 import { FaRegTrashCan } from "react-icons/fa6"
+import { useIntl } from "react-intl"
 import styled from "styled-components"
 import supportedLanguages from "../../utils/supportedLanguages"
 import type { FieldsPropTypes } from "./TestListForm"
@@ -19,6 +20,7 @@ const langOptions = supportedLanguages.map((lang) => ({
 }))
 
 const IntlFields = ({ name }: FieldsPropTypes) => {
+  const intl = useIntl()
   const { control } = useFormContext()
   const { fields, append, remove } = useFieldArray({
     name,
@@ -36,7 +38,9 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
                   <StyledLabel>
                     <Select
                       {...field}
-                      label="Language"
+                      label={intl.formatMessage({
+                        id: "TestListForm.IntlFields.Language",
+                      })}
                       width={1}
                       error={fieldState?.error?.message}
                     >
@@ -66,7 +70,9 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
                     render={({ field, fieldState }) => (
                       <StyledLabel>
                         <Input
-                          label="Translation"
+                          label={intl.formatMessage({
+                            id: "TestListForm.Intl.Translation",
+                          })}
                           {...field}
                           error={fieldState?.error?.message}
                         />
@@ -97,7 +103,7 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
           append({ key: "", value: "" })
         }}
       >
-        Add translation +
+        {intl.formatMessage({ id: "TestListForm.Intl.AddTranslation" })} +
       </Button>
     </>
   )

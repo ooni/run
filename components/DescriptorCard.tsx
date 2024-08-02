@@ -35,7 +35,7 @@ type DescriptorCard = {
 }
 
 const DescriptorCard = ({ descriptor }: DescriptorCard) => {
-  const { locale } = useIntl()
+  const { locale, formatMessage } = useIntl()
 
   return (
     <StyledLink href={`/v2/${descriptor.oonirun_link_id}`}>
@@ -58,16 +58,33 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
         <Text mb={2}>
           {descriptor.author && (
             <Text as="span">
-              Created by{" "}
-              <Text as="span" fontWeight="bold">
-                {descriptor.author}
-              </Text>{" "}
+              {formatMessage(
+                { id: "DescriptorCard.CreatedBy" },
+                {
+                  author: (
+                    <Text as="span" fontWeight="bold">
+                      {descriptor.author}
+                    </Text>
+                  ),
+                },
+              )}{" "}
               |{" "}
             </Text>
           )}{" "}
-          Updated {formatMediumDate(descriptor.date_updated, locale)} |{" "}
-          {descriptor.is_expired ? "Expired" : "Expiring"}{" "}
-          {formatMediumDate(descriptor.expiration_date, locale)}
+          {formatMessage(
+            { id: "DescriptorCard.Updated" },
+            { date: formatMediumDate(descriptor.date_updated, locale) },
+          )}{" "}
+          |{" "}
+          {descriptor.is_expired
+            ? formatMessage(
+                { id: "DescriptorCard.Expired" },
+                { date: formatMediumDate(descriptor.expiration_date, locale) },
+              )
+            : formatMessage(
+                { id: "DescriptorCard.Expiring" },
+                { date: formatMediumDate(descriptor.expiration_date, locale) },
+              )}
         </Text>
         {descriptor.short_description && (
           <Text color="gray5">
