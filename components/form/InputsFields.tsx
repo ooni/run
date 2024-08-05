@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Input } from "ooni-components"
+import { Box, Button, Flex, Input, Text } from "ooni-components"
 import { useCallback } from "react"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
 import { FaRegTrashCan } from "react-icons/fa6"
@@ -109,6 +109,15 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
       >
         {intl.formatMessage({ id: "TestListForm.Inputs.AddInput" })} +
       </Button>
+      <Controller
+        render={({ fieldState }) => (
+          <Text color="red7" fontSize={12} mt={1}>
+            {fieldState?.error?.message}
+          </Text>
+        )}
+        name={name}
+        control={control}
+      />
     </>
   )
 }

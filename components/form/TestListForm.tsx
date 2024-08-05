@@ -105,7 +105,12 @@ const validationSchema = Yup.object({
         test_name: Yup.string().required("Required field."),
         inputs: Yup.array()
           .required()
-          .min(0)
+          .when("test_name", {
+            is: "web_connectivity",
+            // biome-ignore lint/suspicious/noThenProperty: <explanation>
+            then: (schema) => schema.min(1, "At least 1 URL is required."),
+            otherwise: (schema) => schema.min(0),
+          })
           .of(
             Yup.string()
               .defined()

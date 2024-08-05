@@ -1,4 +1,4 @@
-import { Heading, Input } from "ooni-components"
+import { Input } from "ooni-components"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
 import { useIntl } from "react-intl"
 import InputsFields from "./InputsFields"
