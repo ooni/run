@@ -2,13 +2,8 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import Compact from "@uiw/react-color-compact"
 import { format } from "date-fns"
 import { Box, Button, Flex, Input, Text } from "ooni-components"
-import {
-  Controller,
-  FormProvider,
-  useFieldArray,
-  useForm,
-} from "react-hook-form"
-import { FormattedMessage } from "react-intl"
+import { Controller, FormProvider, useForm } from "react-hook-form"
+import { FormattedMessage, useIntl } from "react-intl"
 import styled from "styled-components"
 import * as Yup from "yup"
 
@@ -19,6 +14,7 @@ import { useEffect, useState } from "react"
 import { FaCheck } from "react-icons/fa6"
 import type { icons } from "utils/icons"
 import DatePicker from "./DatePicker"
+import V1MigrationField from "./V1MigrationField"
 
 const IconModal = dynamic(() => import("./IconModal"))
 const IntlFields = dynamic(() => import("./IntlFields"))
@@ -109,7 +105,12 @@ const validationSchema = Yup.object({
         test_name: Yup.string().required("Required field."),
         inputs: Yup.array()
           .required()
-          .min(0)
+          .when("test_name", {
+            is: "web_connectivity",
+            // biome-ignore lint/suspicious/noThenProperty: <explanation>
+            then: (schema) => schema.min(1, "At least 1 URL is required."),
+            otherwise: (schema) => schema.min(0),
+          })
           .of(
             Yup.string()
               .defined()
@@ -158,6 +159,7 @@ const TestListForm = ({
   defaultValues,
   linkId,
 }: TestListFormProps) => {
+  const intl = useIntl()
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
@@ -175,16 +177,6 @@ const TestListForm = ({
 
   const { isSubmitting } = formState
 
-  // const { trigger, isMutating } = useSWRMutation(
-  //   linkId && apiEndpoints.ARCHIVE_RUN_LINK.replace(":oonirun_id", linkId),
-  //   postFetcher,
-  //   {
-  //     onSuccess: () => {
-  //       push(`/v2/${linkId}`)
-  //     },
-  //   },
-  // )
-
   const [showDatePicker, setShowDatePicker] = useState(false)
   const handleRangeSelect = (date: Date | undefined) => {
     if (date) {
@@ -193,20 +185,39 @@ const TestListForm = ({
     }
   }
 
+  const [showV1Modal, setShowV1Modal] = useState(false)
+
   return (
     <Flex flexDirection="column">
+      <Box mt={4}>
+        <Button variant="link" onClick={() => setShowV1Modal(true)}>
+          {intl.formatMessage({ id: "TestListForm.MigrationModalLink" })}
+        </Button>
+        <V1MigrationField
+          show={showV1Modal}
+          onClose={() => setShowV1Modal(false)}
+          nettests={getValues("nettests")}
+          setValue={setValue}
+        />
+      </Box>
       <datalist id="url-prefixes">
         <option value="https://" />
         <option value="http://" />
       </datalist>
       <FormProvider {...formMethods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
           <Flex flexDirection="column" my={5}>
             <Box>
               <StyledInputWrapper>
                 <Controller
                   render={({ field }) => (
-                    <Input type="hidden" {...field} label="Icon" />
+                    <Input
+                      type="hidden"
+                      {...field}
+                      label={intl.formatMessage({
+                        id: "TestListForm.Label.Icon",
+                      })}
+                    />
                   )}
                   name="icon"
                   control={control}
@@ -219,7 +230,9 @@ const TestListForm = ({
                 <IconModal setValue={setValue} iconValue={iconValue} />
               </StyledInputWrapper>
               <StyledInputWrapper>
-                <StyledLabel mb={1}>Color</StyledLabel>
+                <StyledLabel mb={1}>
+                  {intl.formatMessage({ id: "TestListForm.Label.Color" })}
+                </StyledLabel>
                 <Controller
                   render={({ field }) => (
                     <Compact
@@ -242,7 +255,7 @@ const TestListForm = ({
                   render={({ field, fieldState }) => (
                     <Input
                       {...field}
-                      label="Test list name *"
+                      label={`${intl.formatMessage({ id: "TestListForm.Label.TestListName" })} *`}
                       placeholder=""
                       error={fieldState?.error?.message}
                     />
@@ -257,7 +270,7 @@ const TestListForm = ({
                   render={({ field, fieldState }) => (
                     <Input
                       {...field}
-                      label="Short description *"
+                      label={`${intl.formatMessage({ id: "TestListForm.Label.ShortDescription" })} *`}
                       placeholder=""
                       error={fieldState?.error?.message}
                     />
@@ -272,7 +285,7 @@ const TestListForm = ({
                   render={({ field, fieldState }) => (
                     <Textarea
                       {...field}
-                      label="Description *"
+                      label={`${intl.formatMessage({ id: "TestListForm.Label.Description" })} *`}
                       placeholder=""
                       minHeight="78px"
                       error={fieldState?.error?.message}
@@ -291,7 +304,7 @@ const TestListForm = ({
                         {...field}
                         disabled
                         bg="gray3"
-                        label="Author's Email *"
+                        label={`${intl.formatMessage({ id: "TestListForm.Label.Email" })} *`}
                       />
                     )}
                     name="author"
@@ -308,7 +321,7 @@ const TestListForm = ({
                     <>
                       <Input
                         {...field}
-                        label="Expiration Date *"
+                        label={`${intl.formatMessage({ id: "TestListForm.Label.ExpirationDate" })} *`}
                         error={fieldState?.error?.message}
                         placeholder="YYYY-MM-DD"
                         onFocus={() => setShowDatePicker(true)}

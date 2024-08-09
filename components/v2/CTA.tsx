@@ -1,15 +1,15 @@
 import { Box, Button, Heading, Link, Text } from "ooni-components"
-import { FormattedMessage } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 
 import Image from "next/image"
 
 type CTAProps = {
   linkTitle: string
   deepLink: string
-  installLink: string
 }
 
-const CTA = ({ linkTitle, deepLink, installLink }: CTAProps) => {
+const CTA = ({ linkTitle, deepLink }: CTAProps) => {
+  const intl = useIntl()
   return (
     <Box bg="#FFF" p={24} sx={{ border: "1px solid", borderColor: "primary" }}>
       <Heading h={2}>{linkTitle}</Heading>
@@ -17,15 +17,12 @@ const CTA = ({ linkTitle, deepLink, installLink }: CTAProps) => {
         <FormattedMessage id="Nettest.Heading.HaveMobileApp" />
       </Heading>
       <Text pt={2} pb={3}>
-        <FormattedMessage
-          id="Nettest.Text.HaveMobileApp"
-          defaultMessage="Tap Run and open this link with your OONI Probe mobile app to start the test."
-        />
+        <FormattedMessage id="Nettest.Text.HaveMobileApp" />
       </Text>
 
       <Link href={deepLink}>
         <Button>
-          <FormattedMessage id="Nettest.Button.Run" defaultMessage="Run" />
+          <FormattedMessage id="Nettest.Button.Run" />
         </Button>
       </Link>
 
@@ -33,10 +30,7 @@ const CTA = ({ linkTitle, deepLink, installLink }: CTAProps) => {
         <FormattedMessage id="Nettest.Heading.InstallApp" />
       </Heading>
       <Text pt={2} pb={3}>
-        <FormattedMessage
-          id="Nettest.Text.InstallApp"
-          defaultMessage="Currently, OONI Run links only work with the OONI Probe mobile app."
-        />
+        <FormattedMessage id="Nettest.Text.InstallApp" />
       </Text>
 
       <Box>
@@ -48,7 +42,7 @@ const CTA = ({ linkTitle, deepLink, installLink }: CTAProps) => {
           >
             <Image
               src="/static/images/google-play-badge.svg"
-              alt="Download ooniprobe for Android"
+              alt={intl.formatMessage({ id: "Nettest.DownloadAndroid" })}
               height="56"
               width="189"
             />
@@ -62,7 +56,7 @@ const CTA = ({ linkTitle, deepLink, installLink }: CTAProps) => {
           >
             <Image
               src="/static/images/apple-store-badge.svg"
-              alt="Download ooniprobe for iOS"
+              alt={intl.formatMessage({ id: "Nettest.DownloadIOS" })}
               height="56"
               width="168"
             />
@@ -76,7 +70,7 @@ const CTA = ({ linkTitle, deepLink, installLink }: CTAProps) => {
           >
             <Image
               src="/static/images/fdroid-badge.svg"
-              alt="Download ooniprobe for Android (F-Droid)"
+              alt={intl.formatMessage({ id: "Nettest.DownloadFdroid" })}
               height="56"
               width="189"
             />

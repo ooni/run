@@ -1,5 +1,6 @@
-import { Heading, Input } from "ooni-components"
+import { Input } from "ooni-components"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
+import { useIntl } from "react-intl"
 import InputsFields from "./InputsFields"
 import {
   StyledInputWrapper,
@@ -8,13 +9,11 @@ import {
 } from "./TestListForm"
 
 const NettestFields = ({ name }: FieldsPropTypes) => {
+  const intl = useIntl()
   const { control } = useFormContext()
   const { fields } = useFieldArray({ name, control })
   return (
     <>
-      <Heading h={4} fontWeight={300} mt={4}>
-        URLs
-      </Heading>
       <ul>
         {fields.map((item, index) => (
           <li key={item.id}>
@@ -30,7 +29,9 @@ const NettestFields = ({ name }: FieldsPropTypes) => {
               control={control}
             />
             <StyledInputWrapper>
-              <StyledLabel>URLs</StyledLabel>
+              <StyledLabel>
+                {intl.formatMessage({ id: "TestListForm.NettestFields.Urls" })}
+              </StyledLabel>
               <InputsFields name={`${name}[${index}].inputs`} />
             </StyledInputWrapper>
           </li>

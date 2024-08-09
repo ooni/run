@@ -1,7 +1,7 @@
-import { differenceInDays } from "date-fns"
+// import { formatDuration, intervalToDuration } from "date-fns"
 import NLink from "next/link"
 import { Box, Button, Flex, Heading } from "ooni-components"
-import { useMemo } from "react"
+import { useMemo, type ReactNode } from "react"
 import { BsTwitter } from "react-icons/bs"
 import { MdOpenInNew } from "react-icons/md"
 import { FormattedMessage, useIntl } from "react-intl"
@@ -17,11 +17,18 @@ type ExpirationBoxProps = {
 }
 
 const ExpirationBox = ({ expirationString, linkId }: ExpirationBoxProps) => {
-  const { locale } = useIntl()
-  const dateDifference = differenceInDays(
-    new Date(expirationString),
-    new Date(),
-  )
+  const { locale, formatMessage } = useIntl()
+
+  // const dateDifference = formatDuration(
+  //   intervalToDuration({
+  //     start: new Date(),
+  //     end: new Date(expirationString),
+  //   }),
+  //   {
+  //     format: ["years", "months", "days", "hours", "minutes"],
+  //     delimiter: ", ",
+  //   },
+  // )
 
   const expirationDate = useMemo(
     () => formatMediumDateTime(expirationString, locale),
@@ -43,17 +50,24 @@ const ExpirationBox = ({ expirationString, linkId }: ExpirationBoxProps) => {
         flexWrap: "wrap",
       }}
     >
-      <Box>
-        Your link expires on {expirationDate} (in {dateDifference} days)
+      <Box suppressHydrationWarning={true}>
+        {formatMessage(
+          { id: "DescriptorDetails.ExpirationNotice" },
+          {
+            date: expirationDate,
+            button: (str: ReactNode) => (
+              <NLink href={`/edit/${linkId}`}>
+                <Button
+                  size="small"
+                  sx={{ backgroundColor: "red9", borderColor: "red9" }}
+                >
+                  {str}
+                </Button>
+              </NLink>
+            ),
+          },
+        )}
       </Box>
-      <NLink href={`/edit/${linkId}`}>
-        <Button
-          size="small"
-          sx={{ backgroundColor: "red9", borderColor: "red9" }}
-        >
-          Update now
-        </Button>
-      </NLink>
     </Flex>
   )
 }
@@ -66,7 +80,6 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
   const message = encodeURIComponent(
     intl.formatMessage({
       id: "Share.Twitter.Tweet",
-      defaultMessage: "Run OONI Probe to test for censorship!",
     }),
   )
   const url = encodeURIComponent(universalLink)
@@ -77,7 +90,6 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
       <Button hollow size="small" endIcon={<BsTwitter />}>
         {intl.formatMessage({
           id: "Share.Twitter.Button",
-          defaultMessage: "Tweet",
         })}
       </Button>
     </a>
@@ -91,6 +103,7 @@ const DescriptorView = ({
   linkId,
   userAgent,
 }: DescriptorView) => {
+  const intl = useIntl()
   const isMobile = useMemo(() => {
     if (userAgent) {
       const uaFamily = JSON.parse(userAgent).family
@@ -105,7 +118,9 @@ const DescriptorView = ({
         justifyContent="space-between"
         flexDirection={["column-reverse", "column-reverse", "row"]}
       >
-        <Heading h={4}>Link Info</Heading>
+        <Heading h={4}>
+          {intl.formatMessage({ id: "RevisionView.LinkInfo" })}
+        </Heading>
 
         {!descriptor.is_expired && (
           <Flex
@@ -116,16 +131,13 @@ const DescriptorView = ({
           >
             <NLink href={`/edit/${linkId}`}>
               <Button hollow size="small">
-                Edit
+                {intl.formatMessage({ id: "General.Edit" })}
               </Button>
             </NLink>
             {deepLink && isMobile && (
               <NLink href={deepLink}>
                 <Button hollow size="small" endIcon={<MdOpenInNew />}>
-                  <FormattedMessage
-                    id="Modal.Button.Link"
-                    defaultMessage="Link"
-                  />
+                  <FormattedMessage id="Modal.Button.Link" />
                 </Button>
               </NLink>
             )}

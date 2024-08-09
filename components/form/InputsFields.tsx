@@ -1,12 +1,14 @@
-import { Box, Button, Flex, Input } from "ooni-components"
+import { Box, Button, Flex, Input, Text } from "ooni-components"
 import { useCallback } from "react"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
 import { FaRegTrashCan } from "react-icons/fa6"
+import { useIntl } from "react-intl"
 import type { FieldsPropTypes } from "./TestListForm"
 
 const InputsFields = ({ name }: FieldsPropTypes) => {
+  const intl = useIntl()
   const { trigger, control } = useFormContext()
-  const { fields, append, remove, insert, replace } = useFieldArray({
+  const { fields, append, remove, insert } = useFieldArray({
     name,
     control,
   })
@@ -35,10 +37,14 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
 
       const pastedText = e.clipboardData?.getData("Text")
       if (pastedText) {
-        const newEntries = pastedText
-          .replace(/\r?\n|\r/g, " ")
-          .split(" ")
-          .filter((line: string) => !!line.length)
+        const newEntries = [
+          ...new Set(
+            pastedText
+              .replace(/\r?\n|\r|\t/g, " ")
+              .split(" ")
+              .filter((line: string) => !!line.length),
+          ),
+        ]
 
         // Place first pasted entry into event and trigger onChange
         // This updates the field being pasted into with the first entry
@@ -101,8 +107,17 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
           append("", { shouldFocus: true })
         }}
       >
-        Add input +
+        {intl.formatMessage({ id: "TestListForm.Inputs.AddInput" })} +
       </Button>
+      <Controller
+        render={({ fieldState }) => (
+          <Text color="red7" fontSize={12} mt={1}>
+            {fieldState?.error?.message}
+          </Text>
+        )}
+        name={name}
+        control={control}
+      />
     </>
   )
 }

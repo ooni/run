@@ -8,8 +8,9 @@ import mobileApp from "config/mobileApp"
 import { getRunLink } from "lib/api"
 import type { GetServerSideProps } from "next"
 import type { ParsedUrlQuery } from "node:querystring"
-import { Box, Container, Flex } from "ooni-components"
-import { getIntentURIv2 } from "utils/links"
+import { Box, Container, Flex, Heading } from "ooni-components"
+import { useIntl } from "react-intl"
+import { getIntentURIv2, getUniversalQuery } from "utils/links"
 import OONI404 from "/public/static/images/OONI_404.svg"
 
 const useragent = require("useragent/index.js")
@@ -18,15 +19,17 @@ const installLink = "https://ooni.org/install"
 
 type Props = {
   deepLink: string
+  iOSDeepLink: string
   withWindowLocation: boolean
   storeLink: string
   installLink: string
-  userAgent?: string
+  userAgent: string
   universalLink: string
   title: string
   description: string
-  runLink: Descriptor
+  runLink: Descriptor | null
   linkId: string
+  error?: unknown
 }
 
 interface QParams extends ParsedUrlQuery {
@@ -49,33 +52,42 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const ua = useragent.parse(userAgent)
   const authToken = cookies?.token ? JSON.parse(cookies?.token).token : null
 
+  let runLink: Descriptor | null = null
+  let error = null
   const deepLink = `ooni://runv2/${linkId}`
+
   const description = "Run OONI Probe"
   const title = "OONI Run | Coordinate website censorship testing"
   const universalLink = `https://${host}/v2/${linkId}`
 
-  let runLink = null
-
   try {
-    runLink = await getRunLink(linkId, {
+    const link = await getRunLink(linkId, {
       baseURL: process.env.NEXT_PUBLIC_OONI_API,
       ...(authToken && {
         headers: { Authorization: `Bearer ${authToken}` },
       }),
     })
-  } catch (e) {
-    console.log("error", e)
+    if (link) runLink = link
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      error = e?.message
+    }
   }
 
-  // biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
-  let storeLink
+  const universalQuery = runLink
+    ? getUniversalQuery(
+        runLink?.nettests
+          ?.filter((n) => n.test_name === "web_connectivity")
+          .flatMap((n) => n.inputs),
+      )
+    : null
+
+  const iOSDeepLink = `ooni://${universalQuery}`
+
+  const storeLink =
+    ua.os.family === "iOS" ? mobileApp.appStoreLink : mobileApp.googlePlayLink
+
   let withWindowLocation = false
-
-  if (ua.os.family === "iOS") {
-    storeLink = mobileApp.appStoreLink
-  } else {
-    storeLink = mobileApp.googlePlayLink
-  }
 
   if (runLink && !fallback && host !== refererHost && !runLink?.is_expired) {
     if (ua.os.family === "Android") {
@@ -98,6 +110,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
   const props: Props = {
     deepLink,
+    iOSDeepLink,
     withWindowLocation,
     storeLink,
     installLink,
@@ -107,6 +120,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     description,
     linkId,
     runLink,
+    error,
   }
 
   return { props }
@@ -115,6 +129,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 const Nettest = ({
   userAgent,
   deepLink,
+  iOSDeepLink,
   withWindowLocation,
   storeLink,
   installLink,
@@ -123,9 +138,14 @@ const Nettest = ({
   description,
   runLink,
   linkId,
+  error,
 }: Props) => {
+  const intl = useIntl()
+  const isIOS = JSON.parse(userAgent)?.os?.family === "iOS"
+  const displayDeepLink = isIOS ? iOSDeepLink : deepLink
+
   const windowScript = `window.onload = function() {
-    document.getElementById('l').src = '${deepLink}';
+    document.getElementById('l').src = '${displayDeepLink}';
     setTimeout(function() {
       window.location = '${storeLink}';
     }, 500)
@@ -143,13 +163,14 @@ const Nettest = ({
             description={description}
             mobileApp={mobileApp}
             deepLink={deepLink}
+            iOSDeepLink={iOSDeepLink}
             universalLink={universalLink}
           />
           {isMine ? (
             <Container px={[3, 3, 4]} py={4}>
               <DescriptorView
                 descriptor={runLink}
-                deepLink={deepLink}
+                deepLink={displayDeepLink}
                 runLink={universalLink}
                 linkId={linkId}
                 userAgent={userAgent}
@@ -160,13 +181,13 @@ const Nettest = ({
               <Container px={[3, 3, 4]} py={4}>
                 <CTA
                   linkTitle={runLink?.name}
-                  deepLink={deepLink}
-                  installLink={installLink}
+                  deepLink={displayDeepLink}
+                  // installLink={installLink}
                 />
                 <Box mt={4}>
                   <PublicDescriptorView
                     descriptor={runLink}
-                    deepLink={deepLink}
+                    deepLink={displayDeepLink}
                     runLink={universalLink}
                     linkId={linkId}
                     userAgent={userAgent}
@@ -200,7 +221,26 @@ const Nettest = ({
             <Box>
               <OONI404 height="200px" />
             </Box>
-            <Box pl={5}>Run Link not found</Box>
+            <Box pl={5}>
+              <Heading h={4}>
+                {intl.formatMessage({ id: "LinkView.Error.DoesNotExist" })}
+              </Heading>
+            </Box>
+          </Flex>
+        </Container>
+      )}
+      {error && (
+        <Container my={5}>
+          <Flex justifyContent="center" alignItems="center">
+            <Box>
+              <OONI404 height="200px" />
+            </Box>
+            <Box pl={5}>
+              <Heading h={4}>
+                {intl.formatMessage({ id: "LinkView.Error.ServerError" })}
+              </Heading>
+              <p>{JSON.stringify(error)}</p>
+            </Box>
           </Flex>
         </Container>
       )}

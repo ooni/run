@@ -2,9 +2,10 @@ import SpinLoader from "components/vendor/SpinLoader"
 import dynamic from "next/dynamic"
 import { Button, Flex, Modal } from "ooni-components"
 import { useState } from "react"
-import { UseFormSetValue } from "react-hook-form"
+import type { UseFormSetValue } from "react-hook-form"
 import { MdAdd, MdRefresh } from "react-icons/md"
-import { TestList } from "./TestListForm"
+import { useIntl } from "react-intl"
+import type { TestList } from "./TestListForm"
 
 const IModal = dynamic(() => import("../form/Modal"), {
   loading: () => (
@@ -21,6 +22,7 @@ type IconModal = {
 }
 
 const IconModal = ({ setValue, iconValue }: IconModal) => {
+  const intl = useIntl()
   const [showIconModal, setShowIconModal] = useState(false)
 
   return (
@@ -32,7 +34,7 @@ const IconModal = ({ setValue, iconValue }: IconModal) => {
           endIcon={<MdRefresh />}
           onClick={() => setShowIconModal(true)}
         >
-          Replace icon
+          {intl.formatMessage({ id: "TestListForm.Icon.Replace" })}
         </Button>
       ) : (
         <Button
@@ -40,7 +42,7 @@ const IconModal = ({ setValue, iconValue }: IconModal) => {
           endIcon={<MdAdd />}
           onClick={() => setShowIconModal(true)}
         >
-          Select icon
+          {intl.formatMessage({ id: "TestListForm.Icon.Select" })}
         </Button>
       )}
       <Modal

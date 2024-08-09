@@ -1,8 +1,17 @@
-export const generateRandomString = () =>
-  Math.random().toString(20).substring(2, 18)
+export const formatMediumDate = (date: string, locale: string) =>
+  new Intl.DateTimeFormat(locale, {
+    dateStyle: "medium",
+    timeZone: "UTC",
+  }).format(new Date(date))
 
 export const formatMediumDateTime = (date: string, locale: string) =>
   new Intl.DateTimeFormat(locale, {
-    dateStyle: "medium",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    timeZoneName: "short",
+    hour12: false,
     timeZone: "UTC",
   }).format(new Date(date))
