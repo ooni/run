@@ -1,4 +1,4 @@
-import Document from 'next/document'
+import Document, { Head, Html, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 
 export default class MyDocument extends Document {
@@ -22,4 +22,23 @@ export default class MyDocument extends Document {
       sheet.seal()
     }
   }
+
+  render() {
+		return (
+			<Html>
+				<Head>
+					<script
+						defer
+						src="https://cloud.umami.is/script.js"
+						data-website-id="dbcccbba-4a4e-4a6a-a026-c2ea17e14117"
+						data-domains="run.ooni.io,run.ooni.org"
+					/>
+				</Head>
+				<body>
+					<Main />
+					<NextScript />
+				</body>
+			</Html>
+		)
+	}
 }
