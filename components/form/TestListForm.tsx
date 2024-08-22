@@ -59,32 +59,32 @@ export type TestList = {
 }
 
 const minmaxIntlValidation = Yup.string()
-  .required("Required field.")
-  .min(2, "Must be at least 2 characters.")
-  .max(50, "Should be shorter that 50 characters.")
+  .required("TestListForm.Validation.Required")
+  .min(2, "TestListForm.Validation.Min2")
+  .max(50, "TestListForm.Validation.Max50")
 const minIntlValidation = Yup.string()
-  .required("Required field.")
-  .min(2, "Must be at least 2 characters.")
+  .required("TestListForm.Validation.Required")
+  .min(2, "TestListForm.Validation.Min2")
 
 const validationSchema = Yup.object({
   name: minmaxIntlValidation,
   name_intl: Yup.array().of(
     Yup.object({
-      key: Yup.string().required("Required field."),
+      key: Yup.string().required("TestListForm.Validation.Required"),
       value: minmaxIntlValidation,
     }),
   ),
   short_description: minmaxIntlValidation,
   short_description_intl: Yup.array().of(
     Yup.object({
-      key: Yup.string().required("Required field."),
+      key: Yup.string().required("TestListForm.Validation.Required"),
       value: minmaxIntlValidation,
     }),
   ),
   description: minIntlValidation,
   description_intl: Yup.array().of(
     Yup.object({
-      key: Yup.string().required("Required field."),
+      key: Yup.string().required("TestListForm.Validation.Required"),
       value: minIntlValidation,
     }),
   ),
@@ -92,23 +92,23 @@ const validationSchema = Yup.object({
   color: Yup.string().defined(),
   author: Yup.string().defined(),
   expiration_date: Yup.string()
-    .required("Required field.")
+    .required("TestListForm.Validation.Required")
     .test(
       "is-future",
-      "Should be in the future.",
+      "TestListForm.Validation.FutureDate",
       (value) => new Date(value) > new Date(),
     ),
   nettests: Yup.array()
     .required()
     .of(
       Yup.object({
-        test_name: Yup.string().required("Required field."),
+        test_name: Yup.string().required("TestListForm.Validation.Required"),
         inputs: Yup.array()
           .required()
           .when("test_name", {
             is: "web_connectivity",
             // biome-ignore lint/suspicious/noThenProperty: <explanation>
-            then: (schema) => schema.min(1, "At least 1 URL is required."),
+            then: (schema) => schema.min(1, "TestListForm.Validation.Min1Url"),
             otherwise: (schema) => schema.min(0),
           })
           .of(
@@ -116,7 +116,7 @@ const validationSchema = Yup.object({
               .defined()
               .test(
                 "is-valid-url",
-                'Should be a valid URL format e.g "https://ooni.org/post/"',
+                "Error.UrlFormat",
                 (value) => {
                   if (value == null) return true
                   try {
@@ -257,7 +257,7 @@ const TestListForm = ({
                       {...field}
                       label={`${intl.formatMessage({ id: "TestListForm.Label.TestListName" })} *`}
                       placeholder=""
-                      error={fieldState?.error?.message}
+                      error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
                     />
                   )}
                   name="name"
@@ -272,7 +272,7 @@ const TestListForm = ({
                       {...field}
                       label={`${intl.formatMessage({ id: "TestListForm.Label.ShortDescription" })} *`}
                       placeholder=""
-                      error={fieldState?.error?.message}
+                      error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
                     />
                   )}
                   name="short_description"
@@ -288,7 +288,7 @@ const TestListForm = ({
                       label={`${intl.formatMessage({ id: "TestListForm.Label.Description" })} *`}
                       placeholder=""
                       minHeight="78px"
-                      error={fieldState?.error?.message}
+                      error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
                     />
                   )}
                   name="description"
@@ -322,7 +322,7 @@ const TestListForm = ({
                       <Input
                         {...field}
                         label={`${intl.formatMessage({ id: "TestListForm.Label.ExpirationDate" })} *`}
-                        error={fieldState?.error?.message}
+                        error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
                         placeholder="YYYY-MM-DD"
                         onFocus={() => setShowDatePicker(true)}
                         onKeyDown={() => setShowDatePicker(false)}

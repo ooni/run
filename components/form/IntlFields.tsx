@@ -39,10 +39,10 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
                     <Select
                       {...field}
                       label={intl.formatMessage({
-                        id: "TestListForm.IntlFields.Language",
+                        id: "TestListForm.Intl.Language",
                       })}
                       width={1}
-                      error={fieldState?.error?.message}
+                      error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
                     >
                       <option value="" />
                       {langOptions.map(({ key, name }) => (
@@ -54,7 +54,7 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
                     {/* TODO: fix this in ooni-components and remove from here */}
                     {fieldState?.error?.message && (
                       <Text color="red7" fontSize="12px" mt="2px">
-                        {fieldState?.error?.message}
+                        {intl.formatMessage({ id: fieldState?.error?.message })}
                       </Text>
                     )}
                   </StyledLabel>
@@ -74,7 +74,7 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
                             id: "TestListForm.Intl.Translation",
                           })}
                           {...field}
-                          error={fieldState?.error?.message}
+                          error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
                         />
                       </StyledLabel>
                     )}

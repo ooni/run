@@ -37,7 +37,7 @@ const AdminNettestFields = ({ name }: FieldsPropTypes) => {
                     <Input
                       {...field}
                       label={`${index + 1}. ${intl.formatMessage({ id: "Home.Heading.TestName" })}`}
-                      error={fieldState?.error?.message}
+                      error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
                       placeholder=""
                     />
                   )}

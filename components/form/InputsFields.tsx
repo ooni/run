@@ -79,7 +79,7 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
                     onPaste={(e: ClipboardEvent) =>
                       handlePaste(e, index, field.onChange)
                     }
-                    error={fieldState?.error?.message}
+                    error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
                   />
                 )}
                 name={`${name}[${index}]`}
@@ -112,7 +112,7 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
       <Controller
         render={({ fieldState }) => (
           <Text color="red7" fontSize={12} mt={1}>
-            {fieldState?.error?.message}
+            {!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
           </Text>
         )}
         name={name}

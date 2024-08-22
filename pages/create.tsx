@@ -1,15 +1,17 @@
 import type { NextPage } from "next"
 
-import { Box, Container, Flex, Text } from "ooni-components"
+import { Box, Container, Flex } from "ooni-components"
 import { useEffect, useMemo } from "react"
-import { FormattedMessage } from "react-intl"
+import { useIntl } from "react-intl"
 
 import TestListForm from "components/form/TestListForm"
 import SpinLoader from "components/vendor/SpinLoader"
 import useUser from "hooks/useUser"
 import { createRunLink, getUserEmail } from "lib/api"
+import Markdown from "markdown-to-jsx"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
+import { Heading } from "ooni-components"
 import useSWRMutation from "swr/mutation"
 
 const OONIRunHero = dynamic(() => import("components/OONIRunHero"))
@@ -68,6 +70,7 @@ const createLink = async (_: any, { arg }: any) => {
 }
 
 const Create: NextPage = () => {
+  const intl = useIntl()
   const router = useRouter()
   const { loading, user } = useUser()
   const isAdmin = useMemo(() => user?.role === "admin", [user])
@@ -105,22 +108,22 @@ const Create: NextPage = () => {
           <SpinLoader />
         </Flex>
       ) : (
-        <Container pt={4} maxWidth={800}>
-          <Flex justifyContent="center">
-            <Box width={[1, 1, 3 / 4]}>
-              <FormattedMessage
-                tagName={Text}
-                id="WhatCanYouDoText.WebCensorship"
-              />
-              <TestListForm
-                isAdmin={isAdmin}
-                defaultValues={defaultValues}
-                onSubmit={onSubmit}
-              />
-              <Box>{JSON.stringify(error?.message)}</Box>
-            </Box>
-          </Flex>
-        </Container>
+        <Box maxWidth="800px" mx="auto" pt={4}>
+          <Heading h={2} mb={2}>
+            {intl.formatMessage({ id: "Navbar.Create" })}
+          </Heading>
+          <Box>
+            <Markdown>
+              {intl.formatMessage({ id: "WhatCanYouDoText.WebCensorship" })}
+            </Markdown>
+            <TestListForm
+              isAdmin={isAdmin}
+              defaultValues={defaultValues}
+              onSubmit={onSubmit}
+            />
+            <Box>{JSON.stringify(error?.message)}</Box>
+          </Box>
+        </Box>
       )}
     </>
   )

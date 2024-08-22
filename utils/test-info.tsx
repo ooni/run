@@ -1,16 +1,16 @@
-import React from "react"
+import type React from "react"
 
 import { theme } from "ooni-components"
 
-import { FaBeer } from "react-icons/fa"
 import {
-  NettestGroupWebsites,
+  NettestGroupCircumvention,
+  NettestGroupExperimental,
   NettestGroupInstantMessaging,
   NettestGroupMiddleBoxes,
   NettestGroupPerformance,
-  NettestGroupCircumvention,
-  NettestGroupExperimental,
+  NettestGroupWebsites,
 } from "ooni-components/icons"
+import { FaBeer } from "react-icons/fa"
 import { FormattedMessage } from "react-intl"
 
 type testGroups = {

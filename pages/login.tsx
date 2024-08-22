@@ -2,13 +2,15 @@ import OONIRunHero from "components/OONIRunHero"
 import LoginForm from "components/login/LoginForm"
 // import SpinLoader from 'components/vendor/SpinLoader'
 import useUser from "hooks/useUser"
+import Markdown from "markdown-to-jsx"
 import NLink from "next/link"
 import { useRouter } from "next/router"
 import { Box, Container, Flex, Heading, Text } from "ooni-components"
 import { useEffect, useState } from "react"
-import { FormattedMessage } from "react-intl"
+import { FormattedMessage, useIntl } from "react-intl"
 
 const Login = () => {
+  const intl = useIntl()
   const router = useRouter()
   const { token } = router.query
 
@@ -40,7 +42,7 @@ const Login = () => {
           {!token && !submitted && (
             <>
               <Text fontSize={1} my={3} textAlign="center">
-                <FormattedMessage id="Login.EnterEmail" />
+                <Markdown>{intl.formatMessage({ id: "Login.EnterEmail" })}</Markdown>
               </Text>
               <Box style={{ width: "300px" }} alignSelf="center">
                 <LoginForm
