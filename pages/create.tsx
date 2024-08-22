@@ -1,20 +1,17 @@
-import type { NextPage } from "next"
+import type { NextPage } from 'next'
+import { useEffect, useMemo } from 'react'
+import { useIntl } from 'react-intl'
 
-import { Box, Container, Flex } from "ooni-components"
-import { useEffect, useMemo } from "react"
-import { useIntl } from "react-intl"
+import TestListForm from 'components/form/TestListForm'
+import SpinLoader from 'components/vendor/SpinLoader'
+import useUser from 'hooks/useUser'
+import { createRunLink, getUserEmail } from 'lib/api'
+import Markdown from 'markdown-to-jsx'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+import useSWRMutation from 'swr/mutation'
 
-import TestListForm from "components/form/TestListForm"
-import SpinLoader from "components/vendor/SpinLoader"
-import useUser from "hooks/useUser"
-import { createRunLink, getUserEmail } from "lib/api"
-import Markdown from "markdown-to-jsx"
-import dynamic from "next/dynamic"
-import { useRouter } from "next/router"
-import { Heading } from "ooni-components"
-import useSWRMutation from "swr/mutation"
-
-const OONIRunHero = dynamic(() => import("components/OONIRunHero"))
+const OONIRunHero = dynamic(() => import('components/OONIRunHero'))
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const transformKeyValue = ({ key, value }: any) => ({ [key]: value })
@@ -45,16 +42,16 @@ export const transformOutgoingData = (data: any) => {
 }
 
 const defaultValues = {
-  name: "",
-  short_description: "",
-  description: "",
-  icon: "",
-  color: "#000000",
+  name: '',
+  short_description: '',
+  description: '',
+  icon: '',
+  color: '#000000',
   author: getUserEmail(),
-  expiration_date: "",
+  expiration_date: '',
   nettests: [
     {
-      test_name: "web_connectivity",
+      test_name: 'web_connectivity',
       inputs: [],
       options: [],
       backend_options: [],
@@ -73,17 +70,17 @@ const Create: NextPage = () => {
   const intl = useIntl()
   const router = useRouter()
   const { loading, user } = useUser()
-  const isAdmin = useMemo(() => user?.role === "admin", [user])
+  const isAdmin = useMemo(() => user?.role === 'admin', [user])
 
   useEffect(() => {
-    if (!user && !loading) router.push("/")
+    if (!user && !loading) router.push('/')
   }, [user, loading, router])
 
   const {
     trigger: onSubmit,
     isMutating,
     error,
-  } = useSWRMutation("createLink", createLink, {
+  } = useSWRMutation('createLink', createLink, {
     onSuccess: (data) => {
       router.push(`/v2/${data.oonirun_link_id}`)
     },
@@ -104,26 +101,24 @@ const Create: NextPage = () => {
     <>
       <OONIRunHero />
       {!user || loading ? (
-        <Flex p={6} justifyItems="center" alignItems="center">
+        <div className="flex p-32 justify-center items-center">
           <SpinLoader />
-        </Flex>
+        </div>
       ) : (
-        <Box maxWidth="800px" mx="auto" pt={4}>
-          <Heading h={2} mb={2}>
-            {intl.formatMessage({ id: "Navbar.Create" })}
-          </Heading>
-          <Box>
-            <Markdown>
-              {intl.formatMessage({ id: "WhatCanYouDoText.WebCensorship" })}
-            </Markdown>
-            <TestListForm
-              isAdmin={isAdmin}
-              defaultValues={defaultValues}
-              onSubmit={onSubmit}
-            />
-            <Box>{JSON.stringify(error?.message)}</Box>
-          </Box>
-        </Box>
+        <div className="container pt-8 max-w-[800px]">
+          <h2 className="mb-3">
+            {intl.formatMessage({ id: 'Navbar.Create' })}
+          </h2>
+          <Markdown>
+            {intl.formatMessage({ id: 'WhatCanYouDoText.WebCensorship' })}
+          </Markdown>
+          <TestListForm
+            isAdmin={isAdmin}
+            defaultValues={defaultValues}
+            onSubmit={onSubmit}
+          />
+          <div>{JSON.stringify(error?.message)}</div>
+        </div>
       )}
     </>
   )

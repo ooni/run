@@ -1,32 +1,15 @@
-import { Box, Flex } from "ooni-components"
-import { MdOutlineInventory2 } from "react-icons/md"
-import { useIntl } from "react-intl"
-import { styled } from "styled-components"
-
-const StyledArchivedTag = styled(Flex)`
-border-radius: 4px;
-text-transform: uppercase;
-letter-spacing: 1.25px;
-}`
+import { MdOutlineInventory2 } from 'react-icons/md'
+import { useIntl } from 'react-intl'
 
 const ArchivedTag = () => {
   const intl = useIntl()
   return (
-    <Box sx={{ display: "inline-block" }}>
-      <StyledArchivedTag
-        bg="gray6"
-        color="white"
-        fontSize={0}
-        lineHeight={1.2}
-        fontWeight="600"
-        px={2}
-        py={1}
-        alignItems="center"
-      >
-        <span>{intl.formatMessage({ id: "ArchivedTag.Expired" })}</span>
+    <div className="inline-block">
+      <div className="flex uppercase tracking-wide bg-gray-600 text-white text-xs font-bold px-2 py-1 items-center rounded gap-1">
+        <span>{intl.formatMessage({ id: 'ArchivedTag.Expired' })}</span>
         <MdOutlineInventory2 />
-      </StyledArchivedTag>
-    </Box>
+      </div>
+    </div>
   )
 }
 

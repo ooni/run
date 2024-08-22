@@ -1,38 +1,37 @@
-import { yupResolver } from "@hookform/resolvers/yup"
-import Compact from "@uiw/react-color-compact"
-import { format } from "date-fns"
-import { Box, Button, Flex, Input, Text } from "ooni-components"
-import { Controller, FormProvider, useForm } from "react-hook-form"
-import { FormattedMessage, useIntl } from "react-intl"
-import styled from "styled-components"
-import * as Yup from "yup"
+import { yupResolver } from '@hookform/resolvers/yup'
+import Compact from '@uiw/react-color-compact'
+import { format } from 'date-fns'
+import { Input } from 'ooni-components'
+import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { FormattedMessage, useIntl } from 'react-intl'
+import * as Yup from 'yup'
 
-import DescriptorIcon from "components/DescriptorIcon"
-import dynamic from "next/dynamic"
-import { Textarea } from "ooni-components"
-import { useEffect, useState } from "react"
-import { FaCheck } from "react-icons/fa6"
-import type { icons } from "utils/icons"
-import DatePicker from "./DatePicker"
+import DescriptorIcon from 'components/DescriptorIcon'
+import dynamic from 'next/dynamic'
+import { Textarea } from 'ooni-components'
+import { useEffect, useState } from 'react'
+import { FaCheck } from 'react-icons/fa6'
+import { twMerge } from 'tailwind-merge'
+import type { icons } from 'utils/icons'
+import DatePicker from './DatePicker'
 
-const IconModal = dynamic(() => import("./IconModal"))
-const IntlFields = dynamic(() => import("./IntlFields"))
-const NettestFields = dynamic(() => import("./NettestFields"))
-const AdminNettestFields = dynamic(() => import("./AdminNettestFields"))
-const ButtonSpinner = dynamic(() => import("components/ButtonSpinner"))
+const IconModal = dynamic(() => import('./IconModal'))
+const IntlFields = dynamic(() => import('./IntlFields'))
+const NettestFields = dynamic(() => import('./NettestFields'))
+const AdminNettestFields = dynamic(() => import('./AdminNettestFields'))
+// const ButtonSpinner = dynamic(() => import("components/ButtonSpinner"))
 
 export type FieldsPropTypes = {
   name: string
 }
 
-export const StyledLabel = styled(Text).attrs({
-  fontSize: 1,
-  fontWeight: 600,
-})``
+export const StyledLabel = ({ className = '', ...props }) => (
+  <label className={twMerge('text-base font-semibold', className)} {...props} />
+)
 
-export const StyledInputWrapper = styled.div`
-  margin-bottom: ${(props) => props.theme.space[4]}px;
-`
+export const StyledInputWrapper = ({ ...props }) => (
+  <div {...props} className="mb-8" />
+)
 
 type Nettest = {
   test_name: string
@@ -58,32 +57,32 @@ export type TestList = {
 }
 
 const minmaxIntlValidation = Yup.string()
-  .required("TestListForm.Validation.Required")
-  .min(2, "TestListForm.Validation.Min2")
-  .max(50, "TestListForm.Validation.Max50")
+  .required('TestListForm.Validation.Required')
+  .min(2, 'TestListForm.Validation.Min2')
+  .max(50, 'TestListForm.Validation.Max50')
 const minIntlValidation = Yup.string()
-  .required("TestListForm.Validation.Required")
-  .min(2, "TestListForm.Validation.Min2")
+  .required('TestListForm.Validation.Required')
+  .min(2, 'TestListForm.Validation.Min2')
 
 const validationSchema = Yup.object({
   name: minmaxIntlValidation,
   name_intl: Yup.array().of(
     Yup.object({
-      key: Yup.string().required("TestListForm.Validation.Required"),
+      key: Yup.string().required('TestListForm.Validation.Required'),
       value: minmaxIntlValidation,
     }),
   ),
   short_description: minmaxIntlValidation,
   short_description_intl: Yup.array().of(
     Yup.object({
-      key: Yup.string().required("TestListForm.Validation.Required"),
+      key: Yup.string().required('TestListForm.Validation.Required'),
       value: minmaxIntlValidation,
     }),
   ),
   description: minIntlValidation,
   description_intl: Yup.array().of(
     Yup.object({
-      key: Yup.string().required("TestListForm.Validation.Required"),
+      key: Yup.string().required('TestListForm.Validation.Required'),
       value: minIntlValidation,
     }),
   ),
@@ -91,44 +90,40 @@ const validationSchema = Yup.object({
   color: Yup.string().defined(),
   author: Yup.string().defined(),
   expiration_date: Yup.string()
-    .required("TestListForm.Validation.Required")
+    .required('TestListForm.Validation.Required')
     .test(
-      "is-future",
-      "TestListForm.Validation.FutureDate",
+      'is-future',
+      'TestListForm.Validation.FutureDate',
       (value) => new Date(value) > new Date(),
     ),
   nettests: Yup.array()
     .required()
     .of(
       Yup.object({
-        test_name: Yup.string().required("TestListForm.Validation.Required"),
+        test_name: Yup.string().required('TestListForm.Validation.Required'),
         inputs: Yup.array()
           .required()
-          .when("test_name", {
-            is: "web_connectivity",
+          .when('test_name', {
+            is: 'web_connectivity',
             // biome-ignore lint/suspicious/noThenProperty: <explanation>
-            then: (schema) => schema.min(1, "TestListForm.Validation.Min1Url"),
+            then: (schema) => schema.min(1, 'TestListForm.Validation.Min1Url'),
             otherwise: (schema) => schema.min(0),
           })
           .of(
             Yup.string()
               .defined()
-              .test(
-                "is-valid-url",
-                "Error.UrlFormat",
-                (value) => {
-                  if (value == null) return true
-                  try {
-                    const url = new URL(value)
-                    if (url.protocol !== "http:" && url.protocol !== "https:") {
-                      return false
-                    }
-                    return true
-                  } catch {
+              .test('is-valid-url', 'Error.UrlFormat', (value) => {
+                if (value == null) return true
+                try {
+                  const url = new URL(value)
+                  if (url.protocol !== 'http:' && url.protocol !== 'https:') {
                     return false
                   }
-                },
-              ),
+                  return true
+                } catch {
+                  return false
+                }
+              }),
           ),
         options: Yup.array()
           .required()
@@ -166,34 +161,34 @@ const TestListForm = ({
   }, [])
 
   const formMethods = useForm<TestList>({
-    mode: "onSubmit",
+    mode: 'onSubmit',
     defaultValues,
     resolver: yupResolver(validationSchema),
   })
   const { control, formState, handleSubmit, setValue, watch, getValues } =
     formMethods
-  const iconValue = watch("icon") as keyof typeof icons
+  const iconValue = watch('icon') as keyof typeof icons
 
   const { isSubmitting } = formState
 
   const [showDatePicker, setShowDatePicker] = useState(false)
   const handleRangeSelect = (date: Date | undefined) => {
     if (date) {
-      setValue("expiration_date", format(date, "y-MM-dd"))
+      setValue('expiration_date', format(date, 'y-MM-dd'))
       setShowDatePicker(false)
     }
   }
 
   return (
-    <Flex flexDirection="column">
+    <div className="flex flex-col">
       <datalist id="url-prefixes">
         <option value="https://" />
         <option value="http://" />
       </datalist>
       <FormProvider {...formMethods}>
         <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-          <Flex flexDirection="column" my={5}>
-            <Box>
+          <div className="flex flex-col my-16">
+            <div>
               <StyledInputWrapper>
                 <Controller
                   render={({ field }) => (
@@ -201,7 +196,7 @@ const TestListForm = ({
                       type="hidden"
                       {...field}
                       label={intl.formatMessage({
-                        id: "TestListForm.Label.Icon",
+                        id: 'TestListForm.Label.Icon',
                       })}
                     />
                   )}
@@ -209,15 +204,15 @@ const TestListForm = ({
                   control={control}
                 />
                 {iconValue && (
-                  <Box fontSize={3}>
+                  <div className="text-2xl">
                     <DescriptorIcon icon={iconValue} />
-                  </Box>
+                  </div>
                 )}
                 <IconModal setValue={setValue} iconValue={iconValue} />
               </StyledInputWrapper>
               <StyledInputWrapper>
-                <StyledLabel mb={1}>
-                  {intl.formatMessage({ id: "TestListForm.Label.Color" })}
+                <StyledLabel className="mb-1">
+                  {intl.formatMessage({ id: 'TestListForm.Label.Color' })}
                 </StyledLabel>
                 <Controller
                   render={({ field }) => (
@@ -225,7 +220,8 @@ const TestListForm = ({
                       {...field}
                       color={field.value}
                       style={{
-                        border: "1px solid gray",
+                        border: '1px solid gray',
+                        width: '247px',
                       }}
                       onChange={(color) => {
                         field.onChange(color.hex)
@@ -241,9 +237,12 @@ const TestListForm = ({
                   render={({ field, fieldState }) => (
                     <Input
                       {...field}
-                      label={`${intl.formatMessage({ id: "TestListForm.Label.TestListName" })} *`}
+                      label={`${intl.formatMessage({ id: 'TestListForm.Label.TestListName' })} *`}
                       placeholder=""
-                      error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
+                      error={
+                        !!fieldState?.error?.message &&
+                        intl.formatMessage({ id: fieldState?.error?.message })
+                      }
                     />
                   )}
                   name="name"
@@ -256,9 +255,12 @@ const TestListForm = ({
                   render={({ field, fieldState }) => (
                     <Input
                       {...field}
-                      label={`${intl.formatMessage({ id: "TestListForm.Label.ShortDescription" })} *`}
+                      label={`${intl.formatMessage({ id: 'TestListForm.Label.ShortDescription' })} *`}
                       placeholder=""
-                      error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
+                      error={
+                        !!fieldState?.error?.message &&
+                        intl.formatMessage({ id: fieldState?.error?.message })
+                      }
                     />
                   )}
                   name="short_description"
@@ -271,10 +273,13 @@ const TestListForm = ({
                   render={({ field, fieldState }) => (
                     <Textarea
                       {...field}
-                      label={`${intl.formatMessage({ id: "TestListForm.Label.Description" })} *`}
+                      label={`${intl.formatMessage({ id: 'TestListForm.Label.Description' })} *`}
                       placeholder=""
                       minHeight="78px"
-                      error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
+                      error={
+                        !!fieldState?.error?.message &&
+                        intl.formatMessage({ id: fieldState?.error?.message })
+                      }
                     />
                   )}
                   name="description"
@@ -290,7 +295,7 @@ const TestListForm = ({
                         {...field}
                         disabled
                         bg="gray3"
-                        label={`${intl.formatMessage({ id: "TestListForm.Label.Email" })} *`}
+                        label={`${intl.formatMessage({ id: 'TestListForm.Label.Email' })} *`}
                       />
                     )}
                     name="author"
@@ -307,8 +312,11 @@ const TestListForm = ({
                     <>
                       <Input
                         {...field}
-                        label={`${intl.formatMessage({ id: "TestListForm.Label.ExpirationDate" })} *`}
-                        error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
+                        label={`${intl.formatMessage({ id: 'TestListForm.Label.ExpirationDate' })} *`}
+                        error={
+                          !!fieldState?.error?.message &&
+                          intl.formatMessage({ id: fieldState?.error?.message })
+                        }
                         placeholder="YYYY-MM-DD"
                         onFocus={() => setShowDatePicker(true)}
                         onKeyDown={() => setShowDatePicker(false)}
@@ -316,7 +324,7 @@ const TestListForm = ({
                       {showDatePicker && (
                         <DatePicker
                           handleRangeSelect={handleRangeSelect}
-                          initialDate={getValues("expiration_date")}
+                          initialDate={getValues('expiration_date')}
                           close={() => setShowDatePicker(false)}
                         />
                       )}
@@ -329,26 +337,27 @@ const TestListForm = ({
               ) : (
                 <NettestFields name="nettests" />
               )}
-            </Box>
-            <Box textAlign="end" mb={4}>
-              <Button
+            </div>
+            <div className="flex justify-end mb-8">
+              <button
+                className="btn btn-primary"
                 type="submit"
-                endIcon={<FaCheck />}
-                loading={isSubmitting}
                 disabled={isSubmitting}
-                spinner={<ButtonSpinner />}
               >
-                {linkId ? (
-                  <FormattedMessage id="Button.Update" />
-                ) : (
-                  <FormattedMessage id="Button.Generate" />
-                )}
-              </Button>
-            </Box>
-          </Flex>
+                <span className="flex gap-1 items-center">
+                  {linkId ? (
+                    <FormattedMessage id="Button.Update" />
+                  ) : (
+                    <FormattedMessage id="Button.Generate" />
+                  )}{' '}
+                  <FaCheck />
+                </span>
+              </button>
+            </div>
+          </div>
         </form>
       </FormProvider>
-    </Flex>
+    </div>
   )
 }
 

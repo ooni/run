@@ -1,4 +1,4 @@
-import { useRouter } from "next/router"
+import { useRouter } from 'next/router'
 import {
   createContext,
   useCallback,
@@ -6,7 +6,7 @@ import {
   useEffect,
   useMemo,
   useState,
-} from "react"
+} from 'react'
 
 import {
   apiEndpoints,
@@ -14,13 +14,13 @@ import {
   getTokenCreatedAt,
   loginUser,
   refreshToken,
-} from "lib/api"
+} from 'lib/api'
 
 const TWELVE_HOURS = 1000 * 60 * 60 * 12
 const TEN_MINUTES = 1000 * 60 * 10
 
 type User = {
-  role: "admin" | "user"
+  role: 'admin' | 'user'
   is_logged_in: boolean
 }
 
@@ -62,7 +62,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         else setUser(null)
       })
       .catch((e) => {
-        console.log("user not logged in")
+        console.log('user not logged in')
         setUser(null)
       })
       .finally(() => setLoading(false))
@@ -70,13 +70,13 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   const afterLogin = useCallback(() => {
     setTimeout(() => {
-      router.push("/create")
+      router.push('/create')
     }, 2000)
   }, [router])
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (token && router.pathname === "/login") {
+    if (token && router.pathname === '/login') {
       loginUser(token)
         .then(() => {
           getUser()
@@ -135,9 +135,9 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   // }
 
   const logout = () => {
-    document.cookie = "token=; Path=/; Max-Age=-1; SameSite=Strict; Secure"
+    document.cookie = 'token=; Path=/; Max-Age=-1; SameSite=Strict; Secure'
     getUser()
-    router.push("/")
+    router.push('/')
   }
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>

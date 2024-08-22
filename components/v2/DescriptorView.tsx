@@ -1,15 +1,14 @@
 // import { formatDuration, intervalToDuration } from "date-fns"
-import NLink from "next/link"
-import { Box, Button, Flex, Heading } from "ooni-components"
-import { useMemo, type ReactNode } from "react"
-import { BsTwitter } from "react-icons/bs"
-import { MdOpenInNew } from "react-icons/md"
-import { FormattedMessage, useIntl } from "react-intl"
-import { formatMediumDateTime } from "utils"
-import Code from "../Code"
-import DescriptorDetails from "./DescriptorDetails"
-import NettestsBox from "./NettestsBox"
-import Revisions from "./Revisions"
+import NLink from 'next/link'
+import { useMemo, type ReactNode } from 'react'
+import { BsTwitter } from 'react-icons/bs'
+import { MdOpenInNew } from 'react-icons/md'
+import { FormattedMessage, useIntl } from 'react-intl'
+import { formatMediumDateTime } from 'utils'
+import Code from '../Code'
+import DescriptorDetails from './DescriptorDetails'
+import NettestsBox from './NettestsBox'
+import Revisions from './Revisions'
 
 type ExpirationBoxProps = {
   expirationString: string
@@ -36,39 +35,24 @@ const ExpirationBox = ({ expirationString, linkId }: ExpirationBoxProps) => {
   )
 
   return (
-    <Flex
-      p={4}
-      my={4}
-      sx={{
-        borderColor: "red9",
-        borderStyle: "solid",
-        borderWidth: "2px",
-        borderRadius: "8px",
-        color: "red9",
-        gap: 3,
-        alignItems: "center",
-        flexWrap: "wrap",
-      }}
-    >
-      <Box suppressHydrationWarning={true}>
+    <div className="flex p-8 my-8 border-2 border-red-900 rounded-lg text-red-900 gap-4 items-center flex-wrap">
+      <div suppressHydrationWarning={true}>
         {formatMessage(
-          { id: "DescriptorDetails.ExpirationNotice" },
+          { id: 'DescriptorDetails.ExpirationNotice' },
           {
             date: expirationDate,
-
           },
         )}
-        <NLink href={`/edit/${linkId}`}>
-          <Button
-            size="small"
-            mx={3}
-            sx={{ backgroundColor: "red9", borderColor: "red9" }}
-          >
-            {formatMessage({ id: 'DescriptorDetails.UpdateButton' })}
-          </Button>
-        </NLink>
-      </Box>
-    </Flex>
+      </div>
+      <NLink href={`/edit/${linkId}`} className="inline-block">
+        <button
+          type="button"
+          className="btn btn-sm inline-block bg-red-900 border-red-900 text-white"
+        >
+          {formatMessage({ id: 'DescriptorDetails.UpdateButton' })}
+        </button>
+      </NLink>
+    </div>
   )
 }
 
@@ -79,7 +63,7 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
 
   const message = encodeURIComponent(
     intl.formatMessage({
-      id: "Share.Twitter.Tweet",
+      id: 'Share.Twitter.Tweet',
     }),
   )
   const url = encodeURIComponent(universalLink)
@@ -87,11 +71,14 @@ const TwitterButton = ({ universalLink }: TwitterButtonProps) => {
 
   return (
     <a href={tweetUrl} target="_blank" rel="noreferrer">
-      <Button hollow size="small" endIcon={<BsTwitter />}>
-        {intl.formatMessage({
-          id: "Share.Twitter.Button",
-        })}
-      </Button>
+      <button className="btn btn-primary-hollow btn-sm" type="button">
+        <span className="flex gap-1 items-center">
+          {intl.formatMessage({
+            id: 'Share.Twitter.Button',
+          })}{' '}
+          <BsTwitter />
+        </span>
+      </button>
     </a>
   )
 }
@@ -107,44 +94,36 @@ const DescriptorView = ({
   const isMobile = useMemo(() => {
     if (userAgent) {
       const uaFamily = JSON.parse(userAgent).family
-      return uaFamily === "iOS" || uaFamily === "Android"
+      return uaFamily === 'iOS' || uaFamily === 'Android'
     }
     return false
   }, [userAgent])
 
   return (
     <>
-      <Flex
-        justifyContent="space-between"
-        flexDirection={["column-reverse", "column-reverse", "row"]}
-      >
-        <Heading h={4}>
-          {intl.formatMessage({ id: "RevisionView.LinkInfo" })}
-        </Heading>
+      <div className="flex justify-between flex-col-reverse lg:flex-row">
+        <h4>{intl.formatMessage({ id: 'RevisionView.LinkInfo' })}</h4>
 
         {!descriptor.is_expired && (
-          <Flex
-            alignItems="start"
-            justifyContent="end"
-            sx={{ gap: 2 }}
-            flexWrap="wrap"
-          >
+          <div className="flex items-start justify-end gap-3 flex-wrap">
             <NLink href={`/edit/${linkId}`}>
-              <Button hollow size="small">
-                {intl.formatMessage({ id: "General.Edit" })}
-              </Button>
+              <button className="btn btn-primary-hollow btn-sm" type="button">
+                {intl.formatMessage({ id: 'General.Edit' })}
+              </button>
             </NLink>
             {deepLink && isMobile && (
               <NLink href={deepLink}>
-                <Button hollow size="small" endIcon={<MdOpenInNew />}>
-                  <FormattedMessage id="Modal.Button.Link" />
-                </Button>
+                <button className="btn btn-primary-hollow btn-sm" type="button">
+                  <span className="flex gap-1 items-center">
+                    <FormattedMessage id="Modal.Button.Link" /> <MdOpenInNew />
+                  </span>
+                </button>
               </NLink>
             )}
             <TwitterButton universalLink={runLink} />
-          </Flex>
+          </div>
         )}
-      </Flex>
+      </div>
 
       <DescriptorDetails descriptor={descriptor} />
 
@@ -156,29 +135,21 @@ const DescriptorView = ({
       )}
 
       {!descriptor.is_expired && (
-        <Box
-          p={3}
-          my={4}
-          sx={{
-            border: "1px solid",
-            borderColor: "blue5",
-            borderRadius: "8px",
-          }}
-        >
-          <Heading mb={2} mt={0} h={3}>
+        <div className="p-4 my-8 border border-blue-500 rounded-lg">
+          <h3 className="mb-2 mt-0">
             <FormattedMessage id="Modal.Heading.ShareThisURL" />
-          </Heading>
+          </h3>
           <Code text={runLink} />
-        </Box>
+        </div>
       )}
 
-      <Box mt={4}>
+      <div className="mt-8">
         <NettestsBox nettests={descriptor.nettests} />
-      </Box>
+      </div>
 
-      <Box mt={4}>
+      <div className="mt-8">
         <Revisions length={descriptor.revision} linkId={linkId} />
-      </Box>
+      </div>
     </>
   )
 }

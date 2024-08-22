@@ -1,11 +1,5 @@
-import NLink from "next/link"
-import { Box, Heading } from "ooni-components"
-import { useIntl } from "react-intl"
-import styled from "styled-components"
-
-const StyledLink = styled(NLink)`
-text-decoration: underline;
-`
+import Link from 'next/link'
+import { useIntl } from 'react-intl'
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const Revisions = ({ length, linkId }: any) => {
@@ -16,15 +10,16 @@ const Revisions = ({ length, linkId }: any) => {
     <>
       {!!revisionsLength && (
         <>
-          <Heading h={4}>
-            {intl.formatMessage({ id: "Revisions.Title" })}
-          </Heading>
+          <h4>{intl.formatMessage({ id: 'Revisions.Title' })}</h4>
           {[...Array(revisionsLength).keys()].reverse().map((i) => (
-            <Box mb={3} key={i}>
-              <StyledLink href={`/revisions/${linkId}?revision=${i + 1}`}>
+            <div className="mb-4" key={i}>
+              <Link
+                className="underline"
+                href={`/revisions/${linkId}?revision=${i + 1}`}
+              >
                 v{i + 1}
-              </StyledLink>
-            </Box>
+              </Link>
+            </div>
           ))}
         </>
       )}

@@ -1,9 +1,9 @@
-import OONIRunHero from "components/OONIRunHero"
-import OONIRunHeroMinimal from "components/OONIRunHeroMinimal"
-import RevisionView from "components/revisions/RevisionView"
-import { getRunLink, getRunLinkRevision } from "lib/api"
-import type { GetServerSideProps } from "next"
-import type { ParsedUrlQuery } from "node:querystring"
+import OONIRunHero from 'components/OONIRunHero'
+import OONIRunHeroMinimal from 'components/OONIRunHeroMinimal'
+import RevisionView from 'components/revisions/RevisionView'
+import { getRunLink, getRunLinkRevision } from 'lib/api'
+import type { GetServerSideProps } from 'next'
+import type { ParsedUrlQuery } from 'node:querystring'
 
 type Props = {
   runLink: Descriptor

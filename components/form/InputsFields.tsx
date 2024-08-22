@@ -1,9 +1,9 @@
-import { Box, Button, Flex, Input, Text } from "ooni-components"
-import { useCallback } from "react"
-import { Controller, useFieldArray, useFormContext } from "react-hook-form"
-import { FaRegTrashCan } from "react-icons/fa6"
-import { useIntl } from "react-intl"
-import type { FieldsPropTypes } from "./TestListForm"
+import { Input } from 'ooni-components'
+import { useCallback } from 'react'
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form'
+import { FaRegTrashCan } from 'react-icons/fa6'
+import { useIntl } from 'react-intl'
+import type { FieldsPropTypes } from './TestListForm'
 
 const InputsFields = ({ name }: FieldsPropTypes) => {
   const intl = useIntl()
@@ -15,9 +15,9 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
 
   const onKeyPress = useCallback(
     (e: KeyboardEvent, index: number) => {
-      if (e.key === "Enter") {
+      if (e.key === 'Enter') {
         e.preventDefault()
-        append("", {
+        append('', {
           shouldFocus: true,
           focusName: `${name}[${index + 1}]`,
         })
@@ -35,13 +35,13 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
       // block the usual paste action
       e.preventDefault()
 
-      const pastedText = e.clipboardData?.getData("Text")
+      const pastedText = e.clipboardData?.getData('Text')
       if (pastedText) {
         const newEntries = [
           ...new Set(
             pastedText
-              .replace(/\r?\n|\r|\t/g, " ")
-              .split(" ")
+              .replace(/\r?\n|\r|\t/g, ' ')
+              .split(' ')
               .filter((line: string) => !!line.length),
           ),
         ]
@@ -65,9 +65,9 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
   return (
     <>
       {fields.map((item, index) => (
-        <Box key={item.id} mt={3}>
-          <Flex alignItems="center">
-            <Box width="100%">
+        <div className="mt-4" key={item.id}>
+          <div className="flex items-center">
+            <div className="w-full">
               <Controller
                 key={`input-${item.id}`}
                 render={({ field, fieldState }) => (
@@ -79,41 +79,40 @@ const InputsFields = ({ name }: FieldsPropTypes) => {
                     onPaste={(e: ClipboardEvent) =>
                       handlePaste(e, index, field.onChange)
                     }
-                    error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
+                    error={
+                      !!fieldState?.error?.message &&
+                      intl.formatMessage({ id: fieldState?.error?.message })
+                    }
                   />
                 )}
                 name={`${name}[${index}]`}
                 control={control}
               />
-            </Box>
-            <Box ml={2}>
-              <Button
-                variant="iconButton"
-                type="button"
-                onClick={() => remove(index)}
-              >
+            </div>
+            <div className="ml-2">
+              <button type="button" onClick={() => remove(index)}>
                 <FaRegTrashCan size={20} />
-              </Button>
-            </Box>
-          </Flex>
-        </Box>
+              </button>
+            </div>
+          </div>
+        </div>
       ))}
 
-      <Button
-        mt={2}
-        variant="link"
+      <button
+        className="mt-2 appearance-none text-blue-500 hover:text-blue-800 block"
         type="button"
         onClick={() => {
-          append("", { shouldFocus: true })
+          append('', { shouldFocus: true })
         }}
       >
-        {intl.formatMessage({ id: "TestListForm.Inputs.AddInput" })} +
-      </Button>
+        {intl.formatMessage({ id: 'TestListForm.Inputs.AddInput' })} +
+      </button>
       <Controller
         render={({ fieldState }) => (
-          <Text color="red7" fontSize={12} mt={1}>
-            {!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
-          </Text>
+          <div className="text-red-700 text-xs mt-1">
+            {!!fieldState?.error?.message &&
+              intl.formatMessage({ id: fieldState?.error?.message })}
+          </div>
         )}
         name={name}
         control={control}

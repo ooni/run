@@ -1,34 +1,27 @@
-import Markdown from "markdown-to-jsx"
-import NLink from "next/link"
-import { Box, Heading, Text } from "ooni-components"
-import { MdKeyboardArrowRight } from "react-icons/md"
-import { useIntl } from "react-intl"
-import styled from "styled-components"
-import { formatMediumDate } from "utils"
-import type { icons } from "utils/icons"
-import ArchivedTag from "./ArchivedTag"
-import DescriptorIcon from "./DescriptorIcon"
+import Markdown from 'markdown-to-jsx'
+import Link, { type LinkProps } from 'next/link'
+import { MdKeyboardArrowRight } from 'react-icons/md'
+import { useIntl } from 'react-intl'
+import { formatMediumDate } from 'utils'
+import type { icons } from 'utils/icons'
+import ArchivedTag from './ArchivedTag'
+import DescriptorIcon from './DescriptorIcon'
 
 type Span = {
   children: React.ReactNode
 }
 const Span = ({ children }: Span) => <span>{children}</span>
 
-const StyledLink = styled(NLink)`
-  display: flex;
-  justify-content: space-between;
-  color: black;
-  line-height: 1.3;
-  background: #FFF;
-  padding: ${(props) => props.theme.space[3]}px;
-  border: 1px solid ${(props) => props.theme.colors.gray3};
-  border-radius: 8px;
-  cursor: pointer;
-  position: relative;
-  &:hover {
-    color: ${(props) => props.theme.colors.blue5};
-  }
-`
+// type StyledLink = {
+//   href: string
+// }
+const StyledLink = ({ href, ...props }: LinkProps) => (
+  <Link
+    href={href}
+    {...props}
+    className="flex justify-between text-black leading-[1.3] bg-white p-4 border border-gray-300 rounded-lg cursor-pointer relative hover:text-blue-500"
+  />
+)
 
 type DescriptorCard = {
   descriptor: Descriptor
@@ -39,55 +32,51 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
 
   return (
     <StyledLink href={`/v2/${descriptor.oonirun_link_id}`}>
-      <Box alignSelf="start">
-        <Box mb={1}>
-          <Heading h={4} m={0} display="inline" mr={2}>
+      <div className="self-start">
+        <div className="mb-1">
+          <h4 className="m-0 inline mr-2">
             {descriptor?.icon && (
-              <Box as="span" verticalAlign="text-top">
-                <DescriptorIcon icon={descriptor.icon as keyof typeof icons} />
-              </Box>
+              <DescriptorIcon icon={descriptor.icon as keyof typeof icons} />
             )}
             {descriptor.name}
-          </Heading>
+          </h4>
           {!!descriptor.is_expired && (
-            <Box as="span" verticalAlign="super">
+            <span className="align-text-bottom">
               <ArchivedTag />
-            </Box>
+            </span>
           )}
-        </Box>
-        <Text mb={2}>
+        </div>
+        <div className="mb-2">
           {descriptor.author && (
-            <Text as="span">
+            <span>
               {formatMessage(
-                { id: "DescriptorCard.CreatedBy" },
+                { id: 'DescriptorCard.CreatedBy' },
                 {
                   author: (
-                    <Text as="span" fontWeight="bold">
-                      {descriptor.author}
-                    </Text>
+                    <span className="font-bold">{descriptor.author}</span>
                   ),
                 },
-              )}{" "}
-              |{" "}
-            </Text>
-          )}{" "}
+              )}{' '}
+              |{' '}
+            </span>
+          )}{' '}
           {formatMessage(
-            { id: "DescriptorCard.Updated" },
+            { id: 'DescriptorCard.Updated' },
             { date: formatMediumDate(descriptor.date_updated, locale) },
-          )}{" "}
-          |{" "}
+          )}{' '}
+          |{' '}
           {descriptor.is_expired
             ? formatMessage(
-                { id: "DescriptorCard.Expired" },
+                { id: 'DescriptorCard.Expired' },
                 { date: formatMediumDate(descriptor.expiration_date, locale) },
               )
             : formatMessage(
-                { id: "DescriptorCard.Expiring" },
+                { id: 'DescriptorCard.Expiring' },
                 { date: formatMediumDate(descriptor.expiration_date, locale) },
               )}
-        </Text>
+        </div>
         {descriptor.short_description && (
-          <Text color="gray5">
+          <div className="text-gray-500">
             <Markdown
               options={{
                 overrides: {
@@ -99,12 +88,12 @@ const DescriptorCard = ({ descriptor }: DescriptorCard) => {
             >
               {descriptor.short_description}
             </Markdown>
-          </Text>
+          </div>
         )}
-      </Box>
-      <Box alignSelf="center">
+      </div>
+      <div className="self-center">
         <MdKeyboardArrowRight />
-      </Box>
+      </div>
     </StyledLink>
   )
 }

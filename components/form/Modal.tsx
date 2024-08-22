@@ -1,41 +1,18 @@
-import { Flex } from "ooni-components"
-import type { UseFormSetValue } from "react-hook-form"
-import { styled } from "styled-components"
-import { icons } from "utils/icons"
-import type { TestList } from "./TestListForm"
+import type { UseFormSetValue } from 'react-hook-form'
+import { icons } from 'utils/icons'
+import type { TestList } from './TestListForm'
 
-const ItemContainer = styled.div`
-  padding: 8px;
-  width: 12%;
-  box-sizing: border-box;
-  @media (max-width: 1024px) {
-    width: 30%;
-  }
-  @media (max-width: 300px) {
-    width: 50%;
-  }
-`
-
-const ItemWrapper = styled.div`
-  height: 57px;
-`
-
-const ListContainer = styled(Flex)`
-  flex-wrap: wrap;
-  justify-content: center;
-`
-
-const StyledIconButton = styled.button`
-  font-size: 10px;
-  min-width: 50px;
-  width: 100%;
-  background: none;
-  border: none;
-  &:hover {
-    cursor: pointer;
-    color: gray;
-  }
-`
+// const StyledIconButton = styled.button`
+//   font-size: 10px;
+//   min-width: 50px;
+//   width: 100%;
+//   background: none;
+//   border: none;
+//   &:hover {
+//     cursor: pointer;
+//     color: gray;
+//   }
+// `
 
 type IModal = {
   setValue: UseFormSetValue<TestList>
@@ -44,28 +21,29 @@ type IModal = {
 
 const IModal = ({ setShow, setValue }: IModal) => {
   return (
-    <ListContainer>
+    <div className="flex flex-wrap justify-center">
       {Object.entries(icons).map(([name, icon]) => {
         const IconComponent = icon as React.ElementType
         return (
-          <ItemContainer key={name}>
-            <StyledIconButton
+          <div className="p-2 w-1/2 lg:w-1/3 xl:w-[12%] box-border" key={name}>
+            <button
+              className="text-xs min-w-12 w-full appearance-none cursor-pointer hover:text-gray-600"
               type="button"
               id={name}
               onClick={() => {
-                setValue("icon", name, {
+                setValue('icon', name, {
                   shouldValidate: false,
                 })
                 setShow(false)
               }}
             >
-              <IconComponent size="40" />
-              <div style={{ overflow: "hidden" }}>{name}</div>
-            </StyledIconButton>
-          </ItemContainer>
+              <IconComponent size="40" className="mx-auto" />
+              <div style={{ overflow: 'hidden' }}>{name}</div>
+            </button>
+          </div>
         )
       })}
-    </ListContainer>
+    </div>
   )
 }
 
