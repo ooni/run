@@ -1,4 +1,4 @@
-import LocaleSwitcher from "components/LocaleSwitcher"
+// import LocaleSwitcher from "components/LocaleSwitcher"
 import useUser from "hooks/useUser"
 import NLink from "next/link"
 import { useRouter } from "next/router"
@@ -154,7 +154,7 @@ export const NavBar = () => {
                   </StyledNavItem>
                 </>
               )}
-              <LocaleSwitcher />
+              {/* <LocaleSwitcher /> */}
             </Flex>
           </Box>
         </StyledResponsiveMenu>
