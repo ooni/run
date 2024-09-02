@@ -14,7 +14,6 @@ import { useEffect, useState } from "react"
 import { FaCheck } from "react-icons/fa6"
 import type { icons } from "utils/icons"
 import DatePicker from "./DatePicker"
-import V1MigrationField from "./V1MigrationField"
 
 const IconModal = dynamic(() => import("./IconModal"))
 const IntlFields = dynamic(() => import("./IntlFields"))
@@ -185,21 +184,8 @@ const TestListForm = ({
     }
   }
 
-  const [showV1Modal, setShowV1Modal] = useState(false)
-
   return (
     <Flex flexDirection="column">
-      <Box mt={4}>
-        <Button variant="link" onClick={() => setShowV1Modal(true)}>
-          {intl.formatMessage({ id: "TestListForm.MigrationModalLink" })}
-        </Button>
-        <V1MigrationField
-          show={showV1Modal}
-          onClose={() => setShowV1Modal(false)}
-          nettests={getValues("nettests")}
-          setValue={setValue}
-        />
-      </Box>
       <datalist id="url-prefixes">
         <option value="https://" />
         <option value="http://" />

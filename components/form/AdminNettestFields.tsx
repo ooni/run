@@ -1,4 +1,5 @@
 import { Box, Button, Checkbox, Heading, Input } from "ooni-components"
+import { useState } from "react"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
 import { FaPlus, FaRegTrashCan } from "react-icons/fa6"
 import { useIntl } from "react-intl"
@@ -9,11 +10,14 @@ import {
   StyledLabel,
   type FieldsPropTypes,
 } from "./TestListForm"
+import V1MigrationField from "./V1MigrationField"
 
 const AdminNettestFields = ({ name }: FieldsPropTypes) => {
   const intl = useIntl()
-  const { control } = useFormContext()
+  const { control, getValues, setValue } = useFormContext()
   const { fields, append, remove } = useFieldArray({ name, control })
+  const [showV1Modal, setShowV1Modal] = useState(false)
+
   return (
     <>
       <Heading h={2} fontWeight={300} mt={4}>
@@ -48,10 +52,21 @@ const AdminNettestFields = ({ name }: FieldsPropTypes) => {
               <StyledInputWrapper>
                 <StyledLabel>
                   {intl.formatMessage({
-                    id: "TestListForm.AdminNettests.Inputs",
+                    id: "TestListForm.NettestFields.Urls",
                   })}
                 </StyledLabel>
                 <InputsFields name={`${name}[${index}].inputs`} />
+                <Box mt={3}>
+                  <Button type="button" variant="link" onClick={() => setShowV1Modal(true)}>
+                    {intl.formatMessage({ id: "TestListForm.MigrationModalLink" })}
+                  </Button>
+                  <V1MigrationField
+                    show={showV1Modal}
+                    onClose={() => setShowV1Modal(false)}
+                    nettests={getValues("nettests")}
+                    setValue={setValue}
+                  />
+                </Box>
               </StyledInputWrapper>
               <StyledInputWrapper>
                 <StyledLabel>

@@ -55,18 +55,18 @@ const ExpirationBox = ({ expirationString, linkId }: ExpirationBoxProps) => {
           { id: "DescriptorDetails.ExpirationNotice" },
           {
             date: expirationDate,
-            button: (str: ReactNode) => (
-              <NLink href={`/edit/${linkId}`}>
-                <Button
-                  size="small"
-                  sx={{ backgroundColor: "red9", borderColor: "red9" }}
-                >
-                  {str}
-                </Button>
-              </NLink>
-            ),
+
           },
         )}
+        <NLink href={`/edit/${linkId}`}>
+          <Button
+            size="small"
+            mx={3}
+            sx={{ backgroundColor: "red9", borderColor: "red9" }}
+          >
+            {formatMessage({ id: 'DescriptorDetails.UpdateButton' })}
+          </Button>
+        </NLink>
       </Box>
     </Flex>
   )

@@ -1,4 +1,5 @@
-import { Input } from "ooni-components"
+import { Box, Button, Input } from "ooni-components"
+import { useState } from "react"
 import { Controller, useFieldArray, useFormContext } from "react-hook-form"
 import { useIntl } from "react-intl"
 import InputsFields from "./InputsFields"
@@ -7,11 +8,14 @@ import {
   StyledLabel,
   type FieldsPropTypes,
 } from "./TestListForm"
+import V1MigrationField from "./V1MigrationField"
 
 const NettestFields = ({ name }: FieldsPropTypes) => {
   const intl = useIntl()
-  const { control } = useFormContext()
+  const { control, getValues, setValue } = useFormContext()
   const { fields } = useFieldArray({ name, control })
+  const [showV1Modal, setShowV1Modal] = useState(false)
+
   return (
     <>
       <ul>
@@ -33,6 +37,17 @@ const NettestFields = ({ name }: FieldsPropTypes) => {
                 {intl.formatMessage({ id: "TestListForm.NettestFields.Urls" })}
               </StyledLabel>
               <InputsFields name={`${name}[${index}].inputs`} />
+              <Box mt={3}>
+                <Button type="button" variant="link" onClick={() => setShowV1Modal(true)}>
+                  {intl.formatMessage({ id: "TestListForm.MigrationModalLink" })}
+                </Button>
+                <V1MigrationField
+                  show={showV1Modal}
+                  onClose={() => setShowV1Modal(false)}
+                  nettests={getValues("nettests")}
+                  setValue={setValue}
+                />
+              </Box>
             </StyledInputWrapper>
           </li>
         ))}

@@ -1,8 +1,7 @@
 import { Box, Button, Flex, Input, Modal } from "ooni-components"
 import { useState } from "react"
-import type { UseFormSetValue } from "react-hook-form"
+import type { FieldValues, UseFormSetValue } from "react-hook-form"
 import { useIntl } from "react-intl"
-import type { TestList } from "./TestListForm"
 
 const getInputsFromV1Link = (val: string) => {
   const url = new URL(val)
@@ -15,7 +14,7 @@ const getInputsFromV1Link = (val: string) => {
 
 type V1MigrationFieldProps = {
   nettests: Nettest[]
-  setValue: UseFormSetValue<TestList>
+  setValue: UseFormSetValue<FieldValues>
   show: boolean
   onClose: () => void
 }
@@ -28,15 +27,12 @@ const V1MigrationField = ({
 }: V1MigrationFieldProps) => {
   const intl = useIntl()
   const [V1InputError, setV1InputError] = useState<null | string>(null)
-  const migrateV1Link = (e: React.SyntheticEvent) => {
-    e.preventDefault()
+  const [inputValue, setInputValue] = useState("")
+  const migrateV1Link = () => {
     // https://run.ooni.io/nettest?tn=web_connectivity&ta=%7B%22urls%22%3A%5B%22https%3A%2F%2Ftwitter.com%2F%22%2C%22https%3A%2F%2Ffacebook.cok%2F%22%5D%7D&mv=1.2.0
-    const target = e.target as typeof e.target & {
-      v1Link: { value: string }
-    }
 
     try {
-      const inputs = getInputsFromV1Link(target.v1Link.value)
+      const inputs = getInputsFromV1Link(inputValue)
       let updatedNettests = nettests
       if (nettests.some((n) => n.test_name === "web_connectivity")) {
         updatedNettests = nettests.map((n) => {
@@ -66,23 +62,25 @@ const V1MigrationField = ({
   return (
     <Modal show={show} onHideClick={onClose} minWidth="800px">
       <Box p={4}>
-        <form onSubmit={migrateV1Link} autoComplete="off">
-          <Input
-            name="v1Link"
-            label={intl.formatMessage({ id: "MigrationModal.RunLink" })}
-            error={V1InputError}
-            onChange={() => setV1InputError(null)}
-            mb={3}
-          />
-          <Flex justifyContent="end" sx={{ gap: 3 }}>
-            <Button type="submit">
-              {intl.formatMessage({ id: "MigrationModal.AddUrls" })}
-            </Button>
-            <Button hollow onClick={() => onClose()}>
-              {intl.formatMessage({ id: "General.Cancel" })}
-            </Button>
-          </Flex>
-        </form>
+        <Input
+          name="v1Link"
+          label={intl.formatMessage({ id: "MigrationModal.RunLink" })}
+          error={V1InputError}
+          value={inputValue}
+          onChange={(e: React.FormEvent<HTMLInputElement>) => {
+            setInputValue(e.currentTarget.value)
+            setV1InputError(null)
+          }}
+          mb={3}
+        />
+        <Flex justifyContent="end" sx={{ gap: 3 }}>
+          <Button onClick={() => migrateV1Link()}>
+            {intl.formatMessage({ id: "MigrationModal.AddUrls" })}
+          </Button>
+          <Button hollow onClick={() => onClose()}>
+            {intl.formatMessage({ id: "General.Cancel" })}
+          </Button>
+        </Flex>
       </Box>
     </Modal>
   )

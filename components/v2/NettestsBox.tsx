@@ -9,6 +9,7 @@ type NettestsInputsProps = {
 }
 
 const NettestsInputs = ({ inputs }: NettestsInputsProps) => {
+  const intl = useIntl()
   const [collapsed, setCollapsed] = useState(false)
   return (
     <>
@@ -19,7 +20,7 @@ const NettestsInputs = ({ inputs }: NettestsInputsProps) => {
         mb={2}
         onClick={() => setCollapsed(!collapsed)}
       >
-        INPUTS ({inputs.length}){" "}
+        {intl.formatMessage({ id: "TestListForm.NettestFields.Urls" })} ({inputs.length}){" "}
         <Box as="span" ml={3}>
           {collapsed ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
         </Box>
