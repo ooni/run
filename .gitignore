@@ -17,3 +17,5 @@ yalc.lock
 /blob-report/
 /playwright/.cache/
 public/mockServiceWorker.js
+# Sentry Config File
+.env.sentry-build-plugin

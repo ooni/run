@@ -5,6 +5,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.6.0",
     "@next/bundle-analyzer": "^14.2.3",
+    "@sentry/nextjs": "^8",
     "@uiw/react-color-compact": "^2.3.0",
     "axios": "^1.7.2",
     "cookie": "^0.6.0",

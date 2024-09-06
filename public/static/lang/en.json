@@ -139,5 +139,8 @@
   "DateRange.OneMonth": "One month",
   "DateRange.SixMonths": "Six months",
   "DateRange.Apply": "Apply",
-  "DateRange.Cancel": "Cancel"
+  "DateRange.Cancel": "Cancel",
+  "Error.404.PageNotFound": "Page Not Found",
+  "Error.404.Heading": "The requested page does not exist",
+  "Error.404.Message": "We could not find the content you were looking for."
 }
