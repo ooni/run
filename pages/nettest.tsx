@@ -1,28 +1,22 @@
-import OONIRunHeroMinimal from "components/OONIRunHeroMinimal"
-import MetaTags from "components/v2/MetaTags"
-import type { GetServerSideProps } from "next"
-import type { ParsedUrlQuery } from "node:querystring"
-import { Box, Button, Container, Heading, Link, Text } from "ooni-components"
-import { FaExclamationTriangle } from "react-icons/fa"
-import { FormattedMessage } from "react-intl"
-import styled from "styled-components"
-import { getEncodedQuery } from "utils/links"
-import mobileApp from "../config/mobileApp"
+import OONIRunHeroMinimal from 'components/OONIRunHeroMinimal'
+import MetaTags from 'components/v2/MetaTags'
+import type { GetServerSideProps } from 'next'
+import type { ParsedUrlQuery } from 'node:querystring'
+import { FaExclamationTriangle } from 'react-icons/fa'
+import { FormattedMessage } from 'react-intl'
+import { getEncodedQuery } from 'utils/links'
+import mobileApp from '../config/mobileApp'
 
-const StyledCode = styled.code`
-  font-family: courier, monospace;
-`
-
-const installLink = "https://ooni.org/install"
+const installLink = 'https://ooni.org/install'
 
 const getCustomURI = (query: ParsedUrlQuery) => {
-  let uri = "ooni://nettest?"
+  let uri = 'ooni://nettest?'
   uri += getEncodedQuery(query)
   return uri
 }
 
 const getUniversalLink = (query: ParsedUrlQuery) => {
-  let uri = "https://run.ooni.io/nettest?"
+  let uri = 'https://run.ooni.io/nettest?'
   uri += getEncodedQuery(query)
   return uri
 }
@@ -40,11 +34,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   req,
   query,
 }) => {
-  const userAgent = req ? req.headers["user-agent"] : navigator.userAgent
+  const userAgent = req ? req.headers['user-agent'] : navigator.userAgent
 
   const deepLink = getCustomURI(query)
-  const description = "Run OONI Probe"
-  const title = "OONI Run | Coordinate website censorship testing"
+  const description = 'Run OONI Probe'
+  const title = 'OONI Run | Coordinate website censorship testing'
   const universalLink = getUniversalLink(query)
 
   const props: Props = {
@@ -77,57 +71,48 @@ const Nettest = ({
         universalLink={universalLink}
       />
       <OONIRunHeroMinimal />
-      <Container p={4}>
-        <Box
-          sx={{
-            border: "2px solid",
-            borderColor: "red8",
-            color: "red8",
-            p: 3,
-            mb: 3,
-            borderRadius: "4px",
-          }}
-        >
+      <div className="container p-8">
+        <div className="border-2 border-red-800 text-red-800 p-4 mb-4 rounded-md">
           <p>
-            <FaExclamationTriangle />{" "}
+            <FaExclamationTriangle />{' '}
             <FormattedMessage
               id="Nettest.DeprecationWarning"
               values={{
-                login: (string) => <Link href="/login">{string}</Link>,
+                login: (string) => <a href="/login">{string}</a>,
               }}
             />
           </p>
-        </Box>
-        <Heading pt={2} h={2}>
+        </div>
+        <h2 className="pt-2">
           <FormattedMessage id="Nettest.Heading.HaveMobileApp" />
-        </Heading>
-        <Text pt={2} pb={3}>
+        </h2>
+        <div className="pt-2 pb-4">
           <FormattedMessage id="Nettest.Text.HaveMobileApp" />
-        </Text>
+        </div>
 
-        <Link href={deepLink}>
-          <Button>
+        <a href={deepLink}>
+          <button type="button" className="btn btn-primary">
             <FormattedMessage id="Nettest.Button.Run" />
-          </Button>
-        </Link>
+          </button>
+        </a>
 
-        <Heading pt={4} h={2}>
+        <h2 className="pt-8">
           <FormattedMessage id="Nettest.Heading.InstallApp" />
-        </Heading>
-        <Text pt={2} pb={3}>
+        </h2>
+        <div className="pt-2 pb-4">
           <FormattedMessage id="Nettest.Text.InstallApp" />
-        </Text>
+        </div>
 
-        <Link href={installLink}>
-          <Button>
+        <a href={installLink}>
+          <button type="button" className="btn btn-primary">
             <FormattedMessage id="Nettest.Button.Install" />
-          </Button>
-        </Link>
+          </button>
+        </a>
 
-        <Box mt={5}>
-          <StyledCode>{userAgent}</StyledCode>
-        </Box>
-      </Container>
+        <div className="mt-16">
+          <code className="font-mono">{userAgent}</code>
+        </div>
+      </div>
     </>
   )
 }

@@ -1,11 +1,10 @@
-import DescriptorIcon from "components/DescriptorIcon"
+import DescriptorIcon from 'components/DescriptorIcon'
 // import { differenceInDays } from "date-fns"
-import Markdown from "markdown-to-jsx"
-import { Box, Heading, Text } from "ooni-components"
-import { useMemo } from "react"
-import { useIntl } from "react-intl"
-import { formatMediumDate } from "utils"
-import ArchivedTag from "../ArchivedTag"
+import Markdown from 'markdown-to-jsx'
+import { useMemo } from 'react'
+import { useIntl } from 'react-intl'
+import { formatMediumDate } from 'utils'
+import ArchivedTag from '../ArchivedTag'
 
 type ExpirationDateProps = {
   expirationString: string
@@ -25,14 +24,14 @@ const ExpirationDate = ({ expirationString }: ExpirationDateProps) => {
 
   return (
     // <Text as="span" color={warningColor && "red5"}>
-    <Text as="span">
+    <span>
       {formatMessage(
-        { id: "DescriptorDetails.ExpirationDate" },
+        { id: 'DescriptorDetails.ExpirationDate' },
         {
           date: expirationDate,
         },
-      )}{" "}
-    </Text>
+      )}{' '}
+    </span>
   )
 }
 
@@ -43,63 +42,57 @@ const DescriptorDetails = ({
   const { locale, formatMessage } = useIntl()
   return (
     <>
-      <Heading
-        h={2}
-        lineHeight={1}
-        display="inline"
-        verticalAlign="middle"
-        mr={3}
-      >
+      <h2 className="leading-none inline align-middle mr-4">
         {descriptor.icon && (
-          <Box as="span" verticalAlign="text-bottom">
+          <span className="align-text-bottom">
             <DescriptorIcon icon={descriptor.icon} />
-          </Box>
+          </span>
         )}
         {descriptor.name}
-      </Heading>
+      </h2>
 
       {descriptor.is_expired && <ArchivedTag />}
 
-      <Text fontSize={14} my={3}>
+      <div className="text-sm my-4">
         {descriptor.author ? (
           <>
             {formatMessage(
-              { id: "DescriptorDetails.CreatedByOn" },
+              { id: 'DescriptorDetails.CreatedByOn' },
               {
                 author: <strong>{descriptor.author}</strong>,
                 date: formatMediumDate(descriptor?.date_created, locale),
               },
-            )}{" "}
+            )}{' '}
           </>
         ) : (
           <>
             {formatMessage(
-              { id: "DescriptorDetails.CreatedOn" },
+              { id: 'DescriptorDetails.CreatedOn' },
               {
                 date: formatMediumDate(descriptor?.date_created, locale),
               },
-            )}{" "}
+            )}{' '}
           </>
         )}
         {descriptor.date_updated && (
           <>
             {formatMessage(
-              { id: "DescriptorDetails.LastUpdated" },
+              { id: 'DescriptorDetails.LastUpdated' },
               {
                 date: formatMediumDate(descriptor.date_updated, locale),
               },
-            )}{" "}
+            )}{' '}
           </>
         )}
         {descriptor.expiration_date && (
           <ExpirationDate expirationString={descriptor.expiration_date} />
         )}
-      </Text>
+      </div>
 
       {descriptor.short_description && (
-        <Text mb={3}>
+        <div className="mb-4">
           <Markdown>{descriptor.short_description}</Markdown>
-        </Text>
+        </div>
       )}
 
       {descriptor.description && <Markdown>{descriptor.description}</Markdown>}

@@ -1,26 +1,16 @@
-import NLink from "next/link"
-import { Box, LogoOONIRun } from "ooni-components"
-import { FormattedMessage } from "react-intl"
-
-import styled from "styled-components"
-const BrandContainer = styled.div`
-  max-width: 100%;
-  svg {
-    max-width: 100%;
-  }
-`
+import Link from 'next/link'
+import { LogoOONIRun } from 'ooni-components'
+import { FormattedMessage } from 'react-intl'
 
 const OONIRunHeroMinimal = () => (
-  <Box bg="base" color="white" fontSize={1} p={3}>
-    <BrandContainer>
-      <NLink href="/">
-        <LogoOONIRun height="24px" />
-      </NLink>
-    </BrandContainer>
-    <Box mt={2}>
+  <div className="bg-blue-500 text-white text-base p-4">
+    <Link href="/">
+      <LogoOONIRun className="h-[28px]" />
+    </Link>
+    <div className="mt-2">
       <FormattedMessage id="Hero.SubTitle" />
-    </Box>
-  </Box>
+    </div>
+  </div>
 )
 
 export default OONIRunHeroMinimal

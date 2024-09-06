@@ -15,7 +15,11 @@
   },
   "javascript": {
     "formatter": {
-      "semicolons": "asNeeded"
+      "semicolons": "asNeeded",
+      "quoteStyle": "single"
     }
+  },
+  "files": {
+    "ignore": [".next/", "scripts/", "public/", "config/"]
   }
 }

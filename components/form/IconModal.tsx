@@ -1,17 +1,17 @@
-import SpinLoader from "components/vendor/SpinLoader"
-import dynamic from "next/dynamic"
-import { Button, Flex, Modal } from "ooni-components"
-import { useState } from "react"
-import type { UseFormSetValue } from "react-hook-form"
-import { MdAdd, MdRefresh } from "react-icons/md"
-import { useIntl } from "react-intl"
-import type { TestList } from "./TestListForm"
+import SpinLoader from 'components/vendor/SpinLoader'
+import dynamic from 'next/dynamic'
+import { Modal } from 'ooni-components'
+import { useState } from 'react'
+import type { UseFormSetValue } from 'react-hook-form'
+import { MdAdd, MdRefresh } from 'react-icons/md'
+import { useIntl } from 'react-intl'
+import type { TestList } from './TestListForm'
 
-const IModal = dynamic(() => import("../form/Modal"), {
+const IModal = dynamic(() => import('../form/Modal'), {
   loading: () => (
-    <Flex height="500px" justifyItems="center" alignItems="center">
+    <div className="flex h-[500px] justify-center items-center">
       <SpinLoader />
-    </Flex>
+    </div>
   ),
   ssr: false,
 })
@@ -28,27 +28,30 @@ const IconModal = ({ setValue, iconValue }: IconModal) => {
   return (
     <>
       {iconValue ? (
-        <Button
-          size="small"
-          variant="link"
-          endIcon={<MdRefresh />}
+        <button
+          type="button"
+          className="appearance-none text-blue-500 hover:text-blue-800"
           onClick={() => setShowIconModal(true)}
         >
-          {intl.formatMessage({ id: "TestListForm.Icon.Replace" })}
-        </Button>
+          <span className="flex gap-1 items-center">
+            {intl.formatMessage({ id: 'TestListForm.Icon.Replace' })}{' '}
+            <MdRefresh />
+          </span>
+        </button>
       ) : (
-        <Button
-          size="small"
-          endIcon={<MdAdd />}
+        <button
+          type="button"
+          className="btn btn-primary btn-sm"
           onClick={() => setShowIconModal(true)}
         >
-          {intl.formatMessage({ id: "TestListForm.Icon.Select" })}
-        </Button>
+          <span className="flex gap-1 items-center">
+            {intl.formatMessage({ id: 'TestListForm.Icon.Select' })} <MdAdd />
+          </span>
+        </button>
       )}
       <Modal
         show={showIconModal}
-        py={4}
-        width={1000}
+        className="max-w-[1000px] w-3/4"
         onHideClick={(e: Event) => {
           e.preventDefault()
           setShowIconModal(false)

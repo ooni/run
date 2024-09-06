@@ -1,28 +1,23 @@
-import OONIRunHero from "components/OONIRunHero"
-import useUser from "hooks/useUser"
-import Markdown from "markdown-to-jsx"
-import NLink from "next/link"
-import { Box, Button, Container, Flex, Text } from "ooni-components"
-import { useIntl } from "react-intl"
-import { styled } from "styled-components"
+import OONIRunHero from 'components/OONIRunHero'
+import useUser from 'hooks/useUser'
+import Markdown from 'markdown-to-jsx'
+import NLink from 'next/link'
+import { useIntl } from 'react-intl'
 
-const StyledCard = styled(Box)`
-  border: 1px solid ${({ theme }) => theme.colors.gray4};
-  border-radius: 8px;
-  height: 100%;
-  padding: 24px;
-`
+const StyledCard = ({ ...props }) => (
+  <div {...props} className="border border-gray-400 rounded-lg h-full p-6" />
+)
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const CardTitle = (props: any) => (
-  <Text fontSize={1} fontWeight="bold" mb={3} {...props} />
+  <div className="text-base font-bold mb-4" {...props} />
 )
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const CardText = (props: any) => (
-  <Text sx={{ lineHeight: "1.3" }}>
+  <div className="leading-[1.3]">
     <Markdown {...props} />
-  </Text>
+  </div>
 )
 
 const Home = () => {
@@ -32,65 +27,64 @@ const Home = () => {
   return (
     <>
       <OONIRunHero />
-      <Container>
-        <Text
-          maxWidth="572px"
-          fontSize={[1, 2]}
-          lineHeight="24px"
-          mx="auto"
-          mt="40px"
-          mb="24px"
-        >
-          <Markdown>{intl.formatMessage({ id: "Home.About" })}</Markdown>
-        </Text>
-        <Flex sx={{ gap: 3, flexDirection: ["column", "column", "row"] }}>
-          <Box width={[1, 1, 1 / 3]}>
+      <div className="container">
+        <div className="max-w-[572px] mx-auto mt-10 mb-6 text-base lg:text-xl leading-6">
+          <Markdown>{intl.formatMessage({ id: 'Home.About' })}</Markdown>
+        </div>
+        <div className="flex gap-4 flex-col lg:flex-row">
+          <div className="w-full lg:w-1/3">
             <StyledCard>
               <CardTitle>
-                {intl.formatMessage({ id: "Home.Box1.Title" })}
+                {intl.formatMessage({ id: 'Home.Box1.Title' })}
               </CardTitle>
               <CardText>
-                {intl.formatMessage({ id: "Home.Box1.Description" })}
+                {intl.formatMessage({ id: 'Home.Box1.Description' })}
               </CardText>
             </StyledCard>
-          </Box>
-          <Box width={[1, 1, 1 / 3]}>
+          </div>
+          <div className="w-full lg:w-1/3">
             <StyledCard>
               <CardTitle>
-                {intl.formatMessage({ id: "Home.Box2.Title" })}
+                {intl.formatMessage({ id: 'Home.Box2.Title' })}
               </CardTitle>
               <CardText>
-                {intl.formatMessage({ id: "Home.Box2.Description" })}
+                {intl.formatMessage({ id: 'Home.Box2.Description' })}
               </CardText>
             </StyledCard>
-          </Box>
-          <Box width={[1, 1, 1 / 3]}>
+          </div>
+          <div className="w-full lg:w-1/3">
             <StyledCard>
               <CardTitle>
-                {intl.formatMessage({ id: "Home.Box3.Title" })}
+                {intl.formatMessage({ id: 'Home.Box3.Title' })}
               </CardTitle>
               <CardText>
-                {intl.formatMessage({ id: "Home.Box3.Description" })}
+                {intl.formatMessage({ id: 'Home.Box3.Description' })}
               </CardText>
             </StyledCard>
-          </Box>
-        </Flex>
-        <Box textAlign="center" my={4}>
+          </div>
+        </div>
+        <div className="text-center my-8">
           {user?.is_logged_in ? (
-            <NLink href="/create">
-              <Button type="button" fontSize={[1, 2]} size="large">
-                {intl.formatMessage({ id: "Home.Button.CreateRunLink" })}
-              </Button>
+            <NLink href="/create" className="inline-block">
+              <button
+                className="btn btn-primary btn-lg text-base md:text-xl"
+                type="button"
+              >
+                {intl.formatMessage({ id: 'Home.Button.CreateRunLink' })}
+              </button>
             </NLink>
           ) : (
-            <NLink href="/login">
-              <Button type="button" fontSize={[1, 2]} size="large">
-                {intl.formatMessage({ id: "Home.Button.Login" })}
-              </Button>
+            <NLink href="/login" className="inline-block">
+              <button
+                className="btn btn-primary btn-lg text-base md:text-xl"
+                type="button"
+              >
+                {intl.formatMessage({ id: 'Home.Button.Login' })}
+              </button>
             </NLink>
           )}
-        </Box>
-      </Container>
+        </div>
+      </div>
     </>
   )
 }

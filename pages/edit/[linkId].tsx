@@ -1,15 +1,14 @@
-import TestListForm from "components/form/TestListForm"
-import useUser from "hooks/useUser"
-import { getRunLink, getUserEmail, updateRunLink } from "lib/api"
-import type { GetServerSidePropsContext } from "next"
-import dynamic from "next/dynamic"
-import { useRouter } from "next/router"
-import type { ParsedUrlQuery } from "node:querystring"
-import { Container } from "ooni-components"
-import { transformOutgoingData } from "pages/create"
-import { useCallback, useMemo } from "react"
+import TestListForm from 'components/form/TestListForm'
+import useUser from 'hooks/useUser'
+import { getRunLink, getUserEmail, updateRunLink } from 'lib/api'
+import type { GetServerSidePropsContext } from 'next'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+import type { ParsedUrlQuery } from 'node:querystring'
+import { transformOutgoingData } from 'pages/create'
+import { useCallback, useMemo } from 'react'
 
-const OONIRunHero = dynamic(() => import("components/OONIRunHero"))
+const OONIRunHero = dynamic(() => import('components/OONIRunHero'))
 
 const transformIntoArray = (obj: object) =>
   Object.entries(obj).map(([k, v]) => ({
@@ -28,13 +27,13 @@ const transformNettests = (nettest: any) => ({
 const transformIncomingData = (formData: any) => {
   return {
     ...formData,
-    color: formData?.color ? formData.color : "#000000",
+    color: formData?.color ? formData.color : '#000000',
     author: formData?.author || getUserEmail(),
     name_intl: transformIntoArray(formData.name_intl),
     description_intl: transformIntoArray(formData.description_intl),
     short_description_intl: transformIntoArray(formData.short_description_intl),
     nettests: formData.nettests.map(transformNettests),
-    expiration_date: formData.expiration_date.split("T")[0],
+    expiration_date: formData.expiration_date.split('T')[0],
   }
 }
 
@@ -70,7 +69,7 @@ export const getServerSideProps = async ({
   }
   return {
     redirect: {
-      destination: "/",
+      destination: '/',
     },
   }
 }
@@ -86,7 +85,7 @@ const EditRunLink = ({ runLink }: EditRunLinkProps) => {
   )
   const { push } = useRouter()
   const { user } = useUser()
-  const isAdmin = useMemo(() => user?.role === "admin", [user])
+  const isAdmin = useMemo(() => user?.role === 'admin', [user])
 
   const onSubmit = useCallback(
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -103,7 +102,7 @@ const EditRunLink = ({ runLink }: EditRunLinkProps) => {
   return (
     <>
       <OONIRunHero />
-      <Container>
+      <div className="container">
         {transformedRunLink && (
           <TestListForm
             isAdmin={isAdmin}
@@ -112,7 +111,7 @@ const EditRunLink = ({ runLink }: EditRunLinkProps) => {
             linkId={runLink.oonirun_link_id}
           />
         )}
-      </Container>
+      </div>
     </>
   )
 }

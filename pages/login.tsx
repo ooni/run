@@ -1,13 +1,12 @@
-import OONIRunHero from "components/OONIRunHero"
-import LoginForm from "components/login/LoginForm"
+import OONIRunHero from 'components/OONIRunHero'
+import LoginForm from 'components/login/LoginForm'
 // import SpinLoader from 'components/vendor/SpinLoader'
-import useUser from "hooks/useUser"
-import Markdown from "markdown-to-jsx"
-import NLink from "next/link"
-import { useRouter } from "next/router"
-import { Box, Container, Flex, Heading, Text } from "ooni-components"
-import { useEffect, useState } from "react"
-import { FormattedMessage, useIntl } from "react-intl"
+import useUser from 'hooks/useUser'
+import Markdown from 'markdown-to-jsx'
+import NLink from 'next/link'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { FormattedMessage, useIntl } from 'react-intl'
 
 const Login = () => {
   const intl = useIntl()
@@ -17,45 +16,47 @@ const Login = () => {
   const [submitted, setSubmitted] = useState(false)
 
   const redirectTo =
-    typeof window !== "undefined" ? window.location.origin : undefined
+    typeof window !== 'undefined' ? window.location.origin : undefined
 
   const { user, loading, error } = useUser()
 
   // If user is already logged in, redirect to home page
   useEffect(() => {
     if (!loading && user && !token) {
-      router.replace("/")
+      router.replace('/')
     }
   }, [user, loading, router, token])
 
   return (
     <>
       <OONIRunHero />
-      <Container my={4}>
-        <Flex alignItems="center" flexDirection="column">
-          <Heading h={1} fontSize={[3, 5]}>
+      <div className="container my-8">
+        <div className="flex items-center flex-col">
+          <h1>
             <FormattedMessage id="Login.Title" />
-          </Heading>
-        </Flex>
-        <Flex flexDirection="column">
+          </h1>
+        </div>
+        <div className="flex flex-col">
           {/* Before logging In */}
           {!token && !submitted && (
             <>
-              <Text fontSize={1} my={3} textAlign="center">
-                <Markdown>{intl.formatMessage({ id: "Login.EnterEmail" })}</Markdown>
-              </Text>
-              <Box style={{ width: "300px" }} alignSelf="center">
+              <div className="text-base my-4 text-center">
+                <Markdown>
+                  {intl.formatMessage({ id: 'Login.EnterEmail' })}
+                </Markdown>
+              </div>
+              <div className="w-[300px] self-center">
                 <LoginForm
                   onLogin={() => setSubmitted(true)}
                   redirectTo={redirectTo}
                 />
-              </Box>
+              </div>
             </>
           )}
           {!token && submitted && (
-            <Heading h={3} width={[1, 2 / 3]} textAlign="center" mx="auto">
+            <h3 className="w-full md:w-2/3 text-center mx-auto">
               <FormattedMessage id="Login.Submitted" />
-            </Heading>
+            </h3>
           )}
 
           {/* While logging In */}
@@ -63,34 +64,32 @@ const Login = () => {
             <>
               {/* <SpinLoader /> */}
               {/* <h2>LOADING</h2> */}
-              <Heading h={2} my={2} mx="auto">
+              <h2 className="my-2 mx-auto">
                 <FormattedMessage id="Login.LoggingIn" />
-              </Heading>
+              </h2>
             </>
           )}
 
           {/* After loggin in */}
           {user && !error && token && (
             <>
-              <Text fontSize={3} my={2} mx="auto">
+              <div className="text-2xl my-2 mx-auto">
                 <FormattedMessage id="Login.Success" />
-              </Text>
+              </div>
             </>
           )}
 
           {/* Errors */}
           {error && (
-            <Box width={[1, 1 / 3]} mx="auto" textAlign={"center"}>
-              <Box mb={3} p={4} bg="red1">
-                {error}
-              </Box>
+            <div className="w-full md:w-1/3 mx-auto text-center">
+              <div className="mb-4 p-8 bg-red-100">{error}</div>
               <NLink href="/login">
                 <FormattedMessage id="Login.Failure" />
               </NLink>
-            </Box>
+            </div>
           )}
-        </Flex>
-      </Container>
+        </div>
+      </div>
     </>
   )
 }

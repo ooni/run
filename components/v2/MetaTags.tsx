@@ -1,5 +1,5 @@
-import type mobileApp from "config/mobileApp"
-import Head from "next/head"
+import type mobileApp from 'config/mobileApp'
+import Head from 'next/head'
 
 type MetaTagsProps = {
   deepLink: string

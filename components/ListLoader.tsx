@@ -1,4 +1,4 @@
-import ContentLoader from "react-content-loader"
+import ContentLoader from 'react-content-loader'
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const Loader = (props: any) => (

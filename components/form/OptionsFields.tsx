@@ -1,15 +1,8 @@
-import { Box, Button, Flex, Input } from "ooni-components"
-import { Controller, useFieldArray, useFormContext } from "react-hook-form"
-import { FaRegTrashCan } from "react-icons/fa6"
-import { useIntl } from "react-intl"
-import styled from "styled-components"
-import type { FieldsPropTypes } from "./TestListForm"
-
-const StyledLabel = styled.div`
-label {
-  font-size: 12px;
-}
-`
+import { Input } from 'ooni-components'
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form'
+import { FaRegTrashCan } from 'react-icons/fa6'
+import { useIntl } from 'react-intl'
+import type { FieldsPropTypes } from './TestListForm'
 
 const OptionsFields = ({ name }: FieldsPropTypes) => {
   const intl = useIntl()
@@ -18,68 +11,62 @@ const OptionsFields = ({ name }: FieldsPropTypes) => {
   return (
     <>
       {fields.map((item, index) => (
-        <Box key={item.id} mt={3}>
-          <Flex flexDirection={["column", "row"]}>
-            <Box width={[1, 4 / 12]} mr={[0, 2]} pr={[28, 0]}>
+        <div className="mt-4" key={item.id}>
+          <div className="flex flex-col md:flex-row">
+            <div className="w-full md:w-4/12 mr-0 md:mr-2 pr-7 md:pr-0">
               <Controller
                 key={`${name}[${index}]-${item.id}-key`}
                 render={({ field }) => (
-                  <StyledLabel>
-                    <Input
-                      {...field}
-                      label={intl.formatMessage({
-                        id: "TestListForm.OptionsFields.Key",
-                      })}
-                    />
-                  </StyledLabel>
+                  <Input
+                    {...field}
+                    label={intl.formatMessage({
+                      id: 'TestListForm.OptionsFields.Key',
+                    })}
+                  />
                 )}
                 name={`${name}[${index}].key`}
                 control={control}
               />
-            </Box>
-            <Flex width={[1, 8 / 12]} alignItems="end">
-              <Box width={1} mt={[2, 0]}>
+            </div>
+            <div className="flex w-full md:w-8/12 items-end">
+              <div className="w-full mt-2 md:mt-0">
                 <Controller
                   key={`${name}[${index}]-${item.id}-value`}
                   render={({ field }) => (
-                    <StyledLabel>
-                      <Input
-                        {...field}
-                        label={intl.formatMessage({
-                          id: "TestListForm.OptionsFields.Value",
-                        })}
-                      />
-                    </StyledLabel>
+                    <Input
+                      {...field}
+                      label={intl.formatMessage({
+                        id: 'TestListForm.OptionsFields.Value',
+                      })}
+                    />
                   )}
                   name={`${name}[${index}].value`}
                   control={control}
                 />
-              </Box>
-              <Button
-                mb={12}
-                ml={2}
-                variant="iconButton"
+              </div>
+              <button
+                type="button"
+                className="mb-3 ml-2"
                 onClick={() => remove(index)}
               >
                 <FaRegTrashCan size={20} />
-              </Button>
-            </Flex>
-          </Flex>
-        </Box>
+              </button>
+            </div>
+          </div>
+        </div>
       ))}
-      <Button
-        mt={2}
-        variant="link"
+      <button
+        className="mt-2 appearance-none text-blue-500 hover:text-blue-800 block"
         type="button"
         onClick={() => {
-          append({ key: "", value: "" })
+          append({ key: '', value: '' })
         }}
       >
         {intl.formatMessage({
-          id: "TestListForm.OptionsFields.AddOption",
-        })}{" "}
+          id: 'TestListForm.OptionsFields.AddOption',
+        })}{' '}
         +
-      </Button>
+      </button>
     </>
   )
 }

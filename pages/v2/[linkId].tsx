@@ -1,21 +1,20 @@
-import OONIRunHero from "components/OONIRunHero"
-import OONIRunHeroMinimal from "components/OONIRunHeroMinimal"
-import CTA from "components/v2/CTA"
-import DescriptorView from "components/v2/DescriptorView"
-import MetaTags from "components/v2/MetaTags"
-import PublicDescriptorView from "components/v2/PublicDescriptorView"
-import mobileApp from "config/mobileApp"
-import { getRunLink } from "lib/api"
-import type { GetServerSideProps } from "next"
-import type { ParsedUrlQuery } from "node:querystring"
-import { Box, Container, Flex, Heading } from "ooni-components"
-import { useIntl } from "react-intl"
-import { getIntentURIv2, getUniversalQuery } from "utils/links"
-import OONI404 from "/public/static/images/OONI_404.svg"
+import OONIRunHero from 'components/OONIRunHero'
+import OONIRunHeroMinimal from 'components/OONIRunHeroMinimal'
+import CTA from 'components/v2/CTA'
+import DescriptorView from 'components/v2/DescriptorView'
+import MetaTags from 'components/v2/MetaTags'
+import PublicDescriptorView from 'components/v2/PublicDescriptorView'
+import mobileApp from 'config/mobileApp'
+import { getRunLink } from 'lib/api'
+import type { GetServerSideProps } from 'next'
+import type { ParsedUrlQuery } from 'node:querystring'
+import { useIntl } from 'react-intl'
+import { getIntentURIv2, getUniversalQuery } from 'utils/links'
+import OONI404 from '/public/static/images/OONI_404.svg'
 
-const useragent = require("useragent/index.js")
+const useragent = require('useragent/index.js')
 
-const installLink = "https://ooni.org/install"
+const installLink = 'https://ooni.org/install'
 
 type Props = {
   deepLink: string
@@ -45,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const { linkId } = params as QParams
   const {
     cookies,
-    headers: { "user-agent": userAgent, referer, host },
+    headers: { 'user-agent': userAgent, referer, host },
   } = req
 
   const refererHost = referer ? new URL(referer).host : null
@@ -56,8 +55,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   let error = null
   const deepLink = `ooni://runv2/${linkId}`
 
-  const description = "Run OONI Probe"
-  const title = "OONI Run | Coordinate website censorship testing"
+  const description = 'Run OONI Probe'
+  const title = 'OONI Run | Coordinate website censorship testing'
   const universalLink = `https://${host}/v2/${linkId}`
 
   try {
@@ -77,7 +76,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const universalQuery = runLink
     ? getUniversalQuery(
         runLink?.nettests
-          ?.filter((n) => n.test_name === "web_connectivity")
+          ?.filter((n) => n.test_name === 'web_connectivity')
           .flatMap((n) => n.inputs),
       )
     : null
@@ -85,12 +84,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   const iOSDeepLink = `ooni://${universalQuery}`
 
   const storeLink =
-    ua.os.family === "iOS" ? mobileApp.appStoreLink : mobileApp.googlePlayLink
+    ua.os.family === 'iOS' ? mobileApp.appStoreLink : mobileApp.googlePlayLink
 
   let withWindowLocation = false
 
   if (runLink && !fallback && host !== refererHost && !runLink?.is_expired) {
-    if (ua.os.family === "Android") {
+    if (ua.os.family === 'Android') {
       if (Number(ua.major) >= 25) {
         // This is the preferred method for Chrome mobile >= 25
         return {
@@ -101,9 +100,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
         }
       }
       withWindowLocation = true
-    } else if (ua.os.family === "iOS" && Number(ua.os.major) >= 9) {
+    } else if (ua.os.family === 'iOS' && Number(ua.os.major) >= 9) {
       // Nothing special is needed as the universal link should just work
-    } else if (ua.os.family === "iOS" && Number(ua.os.major) < 9) {
+    } else if (ua.os.family === 'iOS' && Number(ua.os.major) < 9) {
       withWindowLocation = true
     }
   }
@@ -141,7 +140,7 @@ const Nettest = ({
   error,
 }: Props) => {
   const intl = useIntl()
-  const isIOS = JSON.parse(userAgent)?.os?.family === "iOS"
+  const isIOS = JSON.parse(userAgent)?.os?.family === 'iOS'
   const displayDeepLink = isIOS ? iOSDeepLink : deepLink
 
   const windowScript = `window.onload = function() {
@@ -167,7 +166,7 @@ const Nettest = ({
             universalLink={universalLink}
           />
           {isMine ? (
-            <Container px={[3, 3, 4]} py={4}>
+            <div className="container px-4 lg:px-8 py-8">
               <DescriptorView
                 descriptor={runLink}
                 deepLink={displayDeepLink}
@@ -175,16 +174,16 @@ const Nettest = ({
                 linkId={linkId}
                 userAgent={userAgent}
               />
-            </Container>
+            </div>
           ) : (
-            <Box bg="gray0">
-              <Container px={[3, 3, 4]} py={4}>
+            <div className="bg-gray-50">
+              <div className="container px-4 lg:px-8 py-8">
                 <CTA
                   linkTitle={runLink?.name}
                   deepLink={displayDeepLink}
                   // installLink={installLink}
                 />
-                <Box mt={4}>
+                <div className="mt-8">
                   <PublicDescriptorView
                     descriptor={runLink}
                     deepLink={displayDeepLink}
@@ -192,9 +191,9 @@ const Nettest = ({
                     linkId={linkId}
                     userAgent={userAgent}
                   />
-                </Box>
-              </Container>
-            </Box>
+                </div>
+              </div>
+            </div>
           )}
           <>
             {withWindowLocation && (
@@ -209,40 +208,40 @@ const Nettest = ({
                   id="l"
                   width="1"
                   height="1"
-                  style={{ visibility: "hidden" }}
+                  style={{ visibility: 'hidden' }}
                 />
               </>
             )}
           </>
         </>
       ) : (
-        <Container my={5}>
-          <Flex justifyContent="center" alignItems="center">
-            <Box>
+        <div className="container my-16">
+          <div className="flex justify-center items-center">
+            <div>
               <OONI404 height="200px" />
-            </Box>
-            <Box pl={5}>
-              <Heading h={4}>
-                {intl.formatMessage({ id: "LinkView.Error.DoesNotExist" })}
-              </Heading>
-            </Box>
-          </Flex>
-        </Container>
+            </div>
+            <div className="pl-16">
+              <h4>
+                {intl.formatMessage({ id: 'LinkView.Error.DoesNotExist' })}
+              </h4>
+            </div>
+          </div>
+        </div>
       )}
       {error && (
-        <Container my={5}>
-          <Flex justifyContent="center" alignItems="center">
-            <Box>
+        <div className="container my-16">
+          <div className="flex justify-center items-center">
+            <div>
               <OONI404 height="200px" />
-            </Box>
-            <Box pl={5}>
-              <Heading h={4}>
-                {intl.formatMessage({ id: "LinkView.Error.ServerError" })}
-              </Heading>
+            </div>
+            <div className="pl-16">
+              <h4>
+                {intl.formatMessage({ id: 'LinkView.Error.ServerError' })}
+              </h4>
               <p>{JSON.stringify(error)}</p>
-            </Box>
-          </Flex>
-        </Container>
+            </div>
+          </div>
+        </div>
       )}
     </>
   )

@@ -1,21 +1,14 @@
-import { Box, Button, Flex, Input, Select, Text } from "ooni-components"
-import { Controller, useFieldArray, useFormContext } from "react-hook-form"
-import { FaRegTrashCan } from "react-icons/fa6"
-import { useIntl } from "react-intl"
-import styled from "styled-components"
-import supportedLanguages from "../../utils/supportedLanguages"
-import type { FieldsPropTypes } from "./TestListForm"
-
-const StyledLabel = styled.div`
-label {
-  font-size: 12px;
-}
-`
+import { Input, Select } from 'ooni-components'
+import { Controller, useFieldArray, useFormContext } from 'react-hook-form'
+import { FaRegTrashCan } from 'react-icons/fa6'
+import { useIntl } from 'react-intl'
+import supportedLanguages from '../../utils/supportedLanguages'
+import type { FieldsPropTypes } from './TestListForm'
 
 const langOptions = supportedLanguages.map((lang) => ({
   key: lang,
-  name: new Intl.DisplayNames(["en"], { type: "language" }).of(
-    lang.replace("_", "-"),
+  name: new Intl.DisplayNames(['en'], { type: 'language' }).of(
+    lang.replace('_', '-'),
   ),
 }))
 
@@ -30,19 +23,22 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
   return (
     <>
       {fields.map((item, index) => (
-        <Box key={item.id} mt={3}>
-          <Flex flexDirection={["column", "row"]}>
-            <Box width={[1, 4 / 12]} mr={[0, 2]} pr={[28, 0]}>
+        <div className="mt-4" key={item.id}>
+          <div className="flex flex-col md:flex-row">
+            <div className="w-full md:w-4/12 mr-0 md:mr-2 pr-7 md:pr-0">
               <Controller
                 render={({ field, fieldState }) => (
-                  <StyledLabel>
+                  <>
                     <Select
                       {...field}
                       label={intl.formatMessage({
-                        id: "TestListForm.Intl.Language",
+                        id: 'TestListForm.Intl.Language',
                       })}
                       width={1}
-                      error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
+                      error={
+                        !!fieldState?.error?.message &&
+                        intl.formatMessage({ id: fieldState?.error?.message })
+                      }
                     >
                       <option value="" />
                       {langOptions.map(({ key, name }) => (
@@ -53,58 +49,57 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
                     </Select>
                     {/* TODO: fix this in ooni-components and remove from here */}
                     {fieldState?.error?.message && (
-                      <Text color="red7" fontSize="12px" mt="2px">
+                      <div className="text-red-700 text-xs mt-[2px]">
                         {intl.formatMessage({ id: fieldState?.error?.message })}
-                      </Text>
+                      </div>
                     )}
-                  </StyledLabel>
+                  </>
                 )}
                 name={`${name}[${index}].key`}
                 control={control}
               />
-            </Box>
-            <Box width={[1, 8 / 12]}>
-              <Flex flexDirection="row" mt={[2, 0]} alignItems="end">
-                <Box width={1}>
+            </div>
+            <div className="w-full md:w-8/12">
+              <div className="flex flex-row mt-2 md:mt-0 items-end">
+                <div className="w-full">
                   <Controller
                     render={({ field, fieldState }) => (
-                      <StyledLabel>
-                        <Input
-                          label={intl.formatMessage({
-                            id: "TestListForm.Intl.Translation",
-                          })}
-                          {...field}
-                          error={!!fieldState?.error?.message && intl.formatMessage({ id: fieldState?.error?.message })}
-                        />
-                      </StyledLabel>
+                      <Input
+                        label={intl.formatMessage({
+                          id: 'TestListForm.Intl.Translation',
+                        })}
+                        {...field}
+                        error={
+                          !!fieldState?.error?.message &&
+                          intl.formatMessage({ id: fieldState?.error?.message })
+                        }
+                      />
                     )}
                     name={`${name}[${index}].value`}
                     control={control}
                   />
-                </Box>
-                <Button
-                  mb={12}
-                  ml={2}
-                  variant="iconButton"
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-primary mb-3 ml-2"
                   onClick={() => remove(index)}
                 >
                   <FaRegTrashCan size={20} />
-                </Button>
-              </Flex>
-            </Box>
-          </Flex>
-        </Box>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       ))}
-      <Button
-        mt={2}
-        variant="link"
+      <button
+        className="mt-2 appearance-none text-blue-500 hover:text-blue-800"
         type="button"
         onClick={() => {
-          append({ key: "", value: "" })
+          append({ key: '', value: '' })
         }}
       >
-        {intl.formatMessage({ id: "TestListForm.Intl.AddTranslation" })} +
-      </Button>
+        {intl.formatMessage({ id: 'TestListForm.Intl.AddTranslation' })} +
+      </button>
     </>
   )
 }

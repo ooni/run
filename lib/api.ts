@@ -1,12 +1,12 @@
-import Axios, { type AxiosError } from "axios"
-import cookie from "cookie"
+import Axios, { type AxiosError } from 'axios'
+import cookie from 'cookie'
 
 export const apiEndpoints = {
-  USER_SESSION: "/api/v2/ooniauth/user-session",
-  USER_LOGIN: "/api/v2/ooniauth/user-login",
-  RUN_LINK: "/api/v2/oonirun/links",
+  USER_SESSION: '/api/v2/ooniauth/user-session',
+  USER_LOGIN: '/api/v2/ooniauth/user-login',
+  RUN_LINK: '/api/v2/oonirun/links',
   RUN_LINK_REVISION:
-    "/api/v2/oonirun/links/:linkId/full-descriptor/:revisionNr",
+    '/api/v2/oonirun/links/:linkId/full-descriptor/:revisionNr',
 }
 
 const SEVEN_DAYS_IN_SECONDS = 7 * 24 * 60 * 60
@@ -15,19 +15,19 @@ const setCookie = (tokenDetails: string) => {
 }
 
 const getBearerToken = () => {
-  return typeof document !== "undefined" && cookie.parse(document.cookie)?.token
+  return typeof document !== 'undefined' && cookie.parse(document.cookie)?.token
     ? JSON.parse(cookie.parse(document.cookie)?.token)?.token
     : null
 }
 
 export const getTokenCreatedAt = () => {
-  return typeof document !== "undefined" && cookie.parse(document.cookie)?.token
+  return typeof document !== 'undefined' && cookie.parse(document.cookie)?.token
     ? JSON.parse(cookie.parse(document.cookie)?.token)?.created_at
     : null
 }
 
 export const getUserEmail = () => {
-  return typeof document !== "undefined" && cookie.parse(document.cookie)?.token
+  return typeof document !== 'undefined' && cookie.parse(document.cookie)?.token
     ? JSON.parse(cookie.parse(document.cookie)?.token)?.email_address
     : null
 }
@@ -44,7 +44,7 @@ export const getAPI = async (endpoint: string, config: Config = {}) => {
   const bearerToken = getBearerToken()
   return await axios
     .request({
-      method: config.method ?? "GET",
+      method: config.method ?? 'GET',
       url: endpoint,
       ...(bearerToken && {
         headers: { Authorization: `Bearer ${bearerToken}` },
@@ -66,11 +66,11 @@ export const getAPI = async (endpoint: string, config: Config = {}) => {
 }
 
 const postAPI = async (endpoint: string, data = {}, params = {}) => {
-  return await getAPI(endpoint, { method: "POST", data, params })
+  return await getAPI(endpoint, { method: 'POST', data, params })
 }
 
 const putAPI = async (endpoint: string, data = {}, params = {}) => {
-  return await getAPI(endpoint, { method: "PUT", data, params })
+  return await getAPI(endpoint, { method: 'PUT', data, params })
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -93,8 +93,8 @@ export const getRunLinkRevision = (
   config = {},
 ) => {
   return getAPI(
-    apiEndpoints.RUN_LINK_REVISION.replace(":linkId", id).replace(
-      ":revisionNr",
+    apiEndpoints.RUN_LINK_REVISION.replace(':linkId', id).replace(
+      ':revisionNr',
       revision,
     ),
     config,
@@ -107,14 +107,14 @@ export const getList = (params = {}, config = {}) => {
 
 export const registerUser = async (
   email_address: string,
-  redirectUrl = "https://run.ooni.io",
+  redirectUrl = 'https://run.ooni.io',
 ) => {
   // current testing setup does not enable us to check process.env.NODE_ENV (it's set to production
   // in headless mode), therefore custom NEXT_PUBLIC_IS_TEST_ENV is used
   const redirectTo =
-    process.env.NODE_ENV === "development" ||
+    process.env.NODE_ENV === 'development' ||
     process.env.NEXT_PUBLIC_IS_TEST_ENV
-      ? "https://run.test.ooni.org/"
+      ? 'https://run.test.ooni.org/'
       : redirectUrl
   const data = await postAPI(apiEndpoints.USER_LOGIN, {
     email_address,
@@ -125,7 +125,7 @@ export const registerUser = async (
 
 export const loginUser = (login_token: string) => {
   return postAPI(apiEndpoints.USER_SESSION, { login_token }).then((data) => {
-    console.log("data", data)
+    console.log('data', data)
     const tokenDetails = JSON.stringify({
       token: data?.session_token,
       email_address: data?.email_address,

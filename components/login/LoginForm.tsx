@@ -1,12 +1,12 @@
-import { registerUser } from "lib/api"
-import dynamic from "next/dynamic"
-import { useRouter } from "next/router"
-import { Box, Button, Flex, Input } from "ooni-components"
-import { useCallback, useEffect, useState } from "react"
-import { Controller, useForm } from "react-hook-form"
-import { FormattedMessage } from "react-intl"
+import { registerUser } from 'lib/api'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+import { Input } from 'ooni-components'
+import { useCallback, useEffect, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { FormattedMessage } from 'react-intl'
 
-const ButtonSpinner = dynamic(() => import("components/ButtonSpinner"))
+const ButtonSpinner = dynamic(() => import('components/ButtonSpinner'))
 
 type LoginFormProps = {
   onLogin: () => void
@@ -19,15 +19,15 @@ export const LoginForm = ({ onLogin, redirectTo }: LoginFormProps) => {
   const [loginError, setError] = useState(null)
 
   const { handleSubmit, control, formState, reset } = useForm({
-    mode: "onTouched",
-    defaultValues: { email_address: "" },
+    mode: 'onTouched',
+    defaultValues: { email_address: '' },
   })
 
   const { errors, isValid, isDirty } = formState
 
   const onSubmit = useCallback(
     (data: { email_address: string }) => {
-      console.log("data", data)
+      console.log('data', data)
       const { email_address } = data
       const registerApi = async (email_address: string) => {
         try {
@@ -57,7 +57,7 @@ export const LoginForm = ({ onLogin, redirectTo }: LoginFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Flex flexDirection={["column"]}>
+      <div className="flex flex-col">
         <Controller
           render={({ field }) => (
             <Input
@@ -69,25 +69,26 @@ export const LoginForm = ({ onLogin, redirectTo }: LoginFormProps) => {
           rules={{
             pattern: {
               value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: "Not valid email address",
+              message: 'Not valid email address',
             },
             required: true,
           }}
           name="email_address"
           control={control}
         />
-        {loginError && <Box mt={1}>{loginError}</Box>}
-        <Box mt={3} alignSelf="center">
-          <Button
-            loading={submitting}
+        {loginError && <div className="mt-1">{loginError}</div>}
+        <div className="mt-3 self-center">
+          <button
+            className="btn btn-primary"
+            // loading={submitting}
             disabled={submitting || !isValid}
-            spinner={<ButtonSpinner />}
+            // spinner={<ButtonSpinner />}
             type="submit"
           >
             <FormattedMessage id="Login.Button" />
-          </Button>
-        </Box>
-      </Flex>
+          </button>
+        </div>
+      </div>
     </form>
   )
 }

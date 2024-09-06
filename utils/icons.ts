@@ -80,7 +80,7 @@ import {
   FaUtensils,
   FaVolcano,
   FaWineGlass,
-} from "react-icons/fa6"
+} from 'react-icons/fa6'
 
 export const icons = {
   FaAnchor,

@@ -1,18 +1,5 @@
-import { Box, Flex, theme } from "ooni-components"
-import { useState } from "react"
-import { MdOutlineCheckCircle, MdOutlineContentCopy } from "react-icons/md"
-import { styled } from "styled-components"
-
-const StyledCode = styled(Flex)`
-font-size: 14px;
-font-family: courier, monospace;
-white-space: pre-wrap;
-align-items: center;
-`
-
-const StyledIcon = styled(Box)`
-cursor: pointer;
-`
+import { useState } from 'react'
+import { MdOutlineCheckCircle, MdOutlineContentCopy } from 'react-icons/md'
 
 type Code = {
   text: string
@@ -22,10 +9,10 @@ const Code = ({ text }: Code) => {
   const [isCopied, setIsCopied] = useState(false)
 
   const copyTextToClipboard = async (text: string) => {
-    if ("clipboard" in navigator) {
+    if ('clipboard' in navigator) {
       return await navigator.clipboard.writeText(text)
     }
-    return document.execCommand("copy", true, text)
+    return document.execCommand('copy', true, text)
   }
 
   const handleCopyClick = () => {
@@ -42,16 +29,16 @@ const Code = ({ text }: Code) => {
   }
 
   return (
-    <StyledCode p={3} bg="blue1">
+    <div className="flex text-sm p-4 bg-blue-100 whitespace-pre-wrap items-center font-mono">
       {text}
-      <StyledIcon ml={2}>
+      <div className="ml-2 cursor-pointer">
         {isCopied ? (
-          <MdOutlineCheckCircle color={theme.colors.green7} size="24" />
+          <MdOutlineCheckCircle className="text-green-700" size="24" />
         ) : (
           <MdOutlineContentCopy onClick={handleCopyClick} size="24" />
         )}
-      </StyledIcon>
-    </StyledCode>
+      </div>
+    </div>
   )
 }
 

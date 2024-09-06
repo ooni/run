@@ -1,18 +1,12 @@
-import { getList } from "lib/api"
-import type { GetServerSideProps } from "next"
-import dynamic from "next/dynamic"
-import NLink from "next/link"
-import { Box, Button, Container, Flex, Heading } from "ooni-components"
-import { useIntl } from "react-intl"
-import styled from "styled-components"
-import OONI404 from "/public/static/images/OONI_404.svg"
+import { getList } from 'lib/api'
+import type { GetServerSideProps } from 'next'
+import dynamic from 'next/dynamic'
+import NLink from 'next/link'
+import { useIntl } from 'react-intl'
+import OONI404 from '/public/static/images/OONI_404.svg'
 
-const RunLinkList = dynamic(() => import("components/List"))
-const OONIRunHero = dynamic(() => import("components/OONIRunHero"))
-
-const StyledBox = styled(Box)`
-box-shadow: 0 50vh 0 50vh ${(props) => props.theme.colors.gray1};
-`
+const RunLinkList = dynamic(() => import('components/List'))
+const OONIRunHero = dynamic(() => import('components/OONIRunHero'))
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const { cookies } = req
@@ -22,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     return {
       redirect: {
         permanent: false,
-        destination: "/",
+        destination: '/',
       },
     }
 
@@ -62,43 +56,30 @@ const List = ({ runLinks = [], error }: ListProps) => {
   return (
     <>
       <OONIRunHero />
-      <StyledBox bg="gray1">
-        <Container py={4}>
-          <Heading h={2} mb={2}>
-            {intl.formatMessage({ id: "List.Title" })}
-          </Heading>
+      <div className="shadow-[0_50vh_0_50vh] shadow-gray-100 bg-gray-100">
+        <div className="container py-8">
+          <h2 className="mb-4">{intl.formatMessage({ id: 'List.Title' })}</h2>
           {runLinks.length ? (
             <RunLinkList runLinks={runLinks} />
           ) : (
-            <Flex
-              p="24px"
-              sx={{
-                gap: 4,
-                border: "1px solid",
-                borderColor: "gray3",
-                borderRadius: "8px",
-                bg: "white",
-              }}
-              justifyContent="space-between"
-              flexWrap="wrap"
-            >
-              <Box>
-                <Heading h={3} mb={3}>
-                  {intl.formatMessage({ id: "List.Empty" })}
-                </Heading>
+            <div className="flex p-6 gap-8 border border-gray-300 rounded-lg bg-white justify-between flex-wrap">
+              <div>
+                <h3 className="mb-4">
+                  {intl.formatMessage({ id: 'List.Empty' })}
+                </h3>
                 <NLink href="/create">
-                  <Button>
-                    {intl.formatMessage({ id: "List.Button.Create" })}
-                  </Button>
+                  <button type="button" className="btn btn-primary">
+                    {intl.formatMessage({ id: 'List.Button.Create' })}
+                  </button>
                 </NLink>
-              </Box>
-              <Box>
+              </div>
+              <div>
                 <OONI404 height="200px" />
-              </Box>
-            </Flex>
+              </div>
+            </div>
           )}
-        </Container>
-      </StyledBox>
+        </div>
+      </div>
     </>
   )
 }
