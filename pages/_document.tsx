@@ -3,7 +3,10 @@ import { getDirection } from './_app'
 
 export default class MyDocument extends Document {
   render = () => (
-    <Html dir={getDirection(this.props.locale)} lang={this.props.locale}>
+    <Html
+      dir={getDirection(this.props.locale as string)}
+      lang={this.props.locale}
+    >
       <Head>
         <script
           defer

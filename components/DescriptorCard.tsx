@@ -1,5 +1,6 @@
 import Markdown from 'markdown-to-jsx'
 import Link, { type LinkProps } from 'next/link'
+import type { ReactNode } from 'react'
 import { MdKeyboardArrowRight } from 'react-icons/md'
 import { useIntl } from 'react-intl'
 import { formatMediumDate } from 'utils'
@@ -12,10 +13,9 @@ type Span = {
 }
 const Span = ({ children }: Span) => <span>{children}</span>
 
-// type StyledLink = {
-//   href: string
-// }
-const StyledLink = ({ href, ...props }: LinkProps) => (
+type StyledLink = LinkProps & { children: ReactNode }
+
+const StyledLink = ({ href, ...props }: StyledLink) => (
   <Link
     href={href}
     {...props}

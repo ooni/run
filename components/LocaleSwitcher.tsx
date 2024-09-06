@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { getDirection } from 'pages/_app'
+import type { ReactNode } from 'react'
 import { useIntl } from 'react-intl'
 
 export const getLocalisedLanguageName = (
@@ -16,8 +17,13 @@ export const getLocalisedLanguageName = (
 }
 
 const languages = process.env.LOCALES
+type LanguageSelectProps = {
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
+  value: string
+  children: ReactNode
+}
 
-const LanguageSelect = (props) => (
+const LanguageSelect = (props: LanguageSelectProps) => (
   <div className="flex items-center mb-1">
     <select
       className="

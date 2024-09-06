@@ -1,6 +1,6 @@
 import { addDays, addMonths, parse } from 'date-fns'
 import { getDirection } from 'pages/_app'
-import { useState } from 'react'
+import { type MouseEvent, useState } from 'react'
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 import { useIntl } from 'react-intl'
@@ -90,7 +90,7 @@ const DatePicker = ({
       type="button"
       className="btn btn-dark-hollow btn-sm"
       key={range}
-      onClick={(e: Event) => {
+      onClick={(e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         selectRange(range)
       }}

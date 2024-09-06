@@ -98,6 +98,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   // periodically check if the token need to be refreshed and request a
   // new one if needed
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const interval = setInterval(() => {
       const tokenCreatedAt = getTokenCreatedAt()
@@ -116,7 +117,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     }, TEN_MINUTES)
 
     return () => clearInterval(interval)
-  }, [getUser])
+  }, [])
 
   // const login = () => {
   //   if (token) {

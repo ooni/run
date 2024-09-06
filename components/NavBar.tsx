@@ -3,11 +3,11 @@ import useUser from 'hooks/useUser'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import type React from 'react'
-import { useEffect, useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 import { MdClose, MdMenu } from 'react-icons/md'
 import { FormattedMessage } from 'react-intl'
 
-const StyledNavItem = ({ isActive = false, ...props }) => (
+const StyledNavItem = ({ isActive = false, href = '#', ...props }) => (
   <Link
     className={`
         block
@@ -19,11 +19,13 @@ const StyledNavItem = ({ isActive = false, ...props }) => (
         hover:border-b-2
         hover:border-white
         ${isActive ? 'pb-[4px] border-b-2 border-white' : 'pb-[6px]'}`}
+    href={href}
     {...props}
   />
 )
 
-const NavItem = ({ label, href, ...props }) => {
+type NavItemProps = { label: ReactNode; href: string }
+const NavItem = ({ label, href, ...props }: NavItemProps) => {
   const { pathname } = useRouter()
   const [isActive, setIsActive] = useState(false)
 
@@ -47,7 +49,7 @@ export const NavBar = () => {
 
   const [showMenu, setShowMenu] = useState(false)
 
-  const logoutUser = (e) => {
+  const logoutUser = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault()
     setShowMenu(false)
     logout()
@@ -90,7 +92,7 @@ export const NavBar = () => {
                   label={<FormattedMessage id="Navbar.Create" />}
                   href="/create"
                 />
-                <StyledNavItem onClick={logoutUser} isActive={false} href="#">
+                <StyledNavItem onClick={logoutUser} isActive={false}>
                   <FormattedMessage id="Navbar.Logout" />
                 </StyledNavItem>
               </>
