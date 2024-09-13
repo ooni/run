@@ -11,8 +11,8 @@ export default class MyDocument extends Document {
         <script
           defer
           src="https://cloud.umami.is/script.js"
-          data-website-id="dbcccbba-4a4e-4a6a-a026-c2ea17e14117"
-          data-domains="run.ooni.io,run.ooni.org"
+          data-website-id="2127f76c-e852-43d9-b40c-dcceca8907e7"
+          data-domains="run.ooni.org"
         />
       </Head>
       <body>
