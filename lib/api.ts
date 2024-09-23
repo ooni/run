@@ -54,14 +54,12 @@ export const getAPI = async (endpoint: string, config: Config = {}) => {
     .then((res) => res.data)
     .catch((e: Error | AxiosError) => {
       if (Axios.isAxiosError(e)) {
-        if (e.status && e.status >= 500) {
-          const error =
-            e?.response?.data?.error || e?.response?.data?.detail || e?.message
-          throw new Error(error)
-        }
-      } else {
-        throw new Error(e.message)
+        const error = JSON.stringify(
+          e?.response?.data?.error || e?.response?.data?.detail || e?.message,
+        )
+        throw new Error(error)
       }
+      throw new Error(e.message)
     })
 }
 
@@ -116,11 +114,10 @@ export const registerUser = async (
     process.env.NEXT_PUBLIC_IS_TEST_ENV
       ? 'https://run.test.ooni.org/'
       : redirectUrl
-  const data = await postAPI(apiEndpoints.USER_LOGIN, {
+  return await postAPI(apiEndpoints.USER_LOGIN, {
     email_address,
     redirect_to: redirectTo,
   })
-  return data
 }
 
 export const loginUser = (login_token: string) => {

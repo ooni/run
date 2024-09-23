@@ -1,12 +1,8 @@
 import { registerUser } from 'lib/api'
-import dynamic from 'next/dynamic'
-import { useRouter } from 'next/router'
 import { Input } from 'ooni-components'
 import { useCallback, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { FormattedMessage } from 'react-intl'
-
-const ButtonSpinner = dynamic(() => import('components/ButtonSpinner'))
 
 type LoginFormProps = {
   onLogin: () => void
@@ -14,7 +10,6 @@ type LoginFormProps = {
 }
 
 export const LoginForm = ({ onLogin, redirectTo }: LoginFormProps) => {
-  const router = useRouter()
   const [submitting, setSubmitting] = useState(false)
   const [loginError, setError] = useState(null)
 
@@ -76,13 +71,13 @@ export const LoginForm = ({ onLogin, redirectTo }: LoginFormProps) => {
           name="email_address"
           control={control}
         />
-        {loginError && <div className="mt-1">{loginError}</div>}
+        {loginError && (
+          <div className="mt-1 text-red-800 text-sm">{loginError}</div>
+        )}
         <div className="mt-3 self-center">
           <button
             className="btn btn-primary"
-            // loading={submitting}
             disabled={submitting || !isValid}
-            // spinner={<ButtonSpinner />}
             type="submit"
           >
             <FormattedMessage id="Login.Button" />
