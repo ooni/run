@@ -7,6 +7,7 @@ type CTAProps = {
 }
 
 const CTA = ({ linkTitle, deepLink }: CTAProps) => {
+  console.log('CTA deepLink', deepLink)
   const intl = useIntl()
   return (
     <div className="bg-white p-6 border border-blue-600">

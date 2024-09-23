@@ -1,27 +1,30 @@
 import OONIRunHero from 'components/OONIRunHero'
 import OONIRunHeroMinimal from 'components/OONIRunHeroMinimal'
-import CTA from 'components/v2/CTA'
+// import CTA from 'components/v2/CTA'
 import DescriptorView from 'components/v2/DescriptorView'
 import MetaTags from 'components/v2/MetaTags'
 import PublicDescriptorView from 'components/v2/PublicDescriptorView'
 import mobileApp from 'config/mobileApp'
 import { getRunLink } from 'lib/api'
 import type { GetServerSideProps } from 'next'
+import dynamic from 'next/dynamic'
 import type { ParsedUrlQuery } from 'node:querystring'
+import { useMemo } from 'react'
 import { useIntl } from 'react-intl'
 import { getIntentURIv2, getUniversalQuery } from 'utils/links'
 import OONI404 from '/public/static/images/OONI_404.svg'
 
-const useragent = require('useragent/index.js')
+const CTA = dynamic(() => import('components/v2/CTA'), {
+  ssr: false,
+})
 
-const installLink = 'https://ooni.org/install'
+const useragent = require('useragent/index.js')
 
 type Props = {
   deepLink: string
   iOSDeepLink: string
   withWindowLocation: boolean
   storeLink: string
-  installLink: string
   userAgent: string
   universalLink: string
   title: string
@@ -112,7 +115,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     iOSDeepLink,
     withWindowLocation,
     storeLink,
-    installLink,
     userAgent: JSON.stringify(ua),
     universalLink,
     title,
@@ -131,7 +133,6 @@ const Nettest = ({
   iOSDeepLink,
   withWindowLocation,
   storeLink,
-  installLink,
   universalLink,
   title,
   description,
@@ -140,13 +141,17 @@ const Nettest = ({
   error,
 }: Props) => {
   const intl = useIntl()
-  const isIOS =
-    typeof window !== 'undefined' // TODO: remove after iOS testing
-      ? JSON.parse(userAgent)?.os?.family === 'iOS' && // TODO: remove after iOS testing
-        window.location.hostname !== 'run.test.ooni.org' // TODO: remove after iOS testing
-      : JSON.parse(userAgent)?.os?.family === 'iOS'
-  const displayDeepLink = isIOS ? iOSDeepLink : deepLink
+  const isIOS = false
+  // typeof window !== 'undefined' // TODO: remove after iOS testing
+  //   ? JSON.parse(userAgent)?.os?.family === 'iOS' && // TODO: remove after iOS testing
+  //     window.location.hostname !== 'run.test.ooni.org' // TODO: remove after iOS testing
+  //   : JSON.parse(userAgent)?.os?.family === 'iOS'
+  const displayDeepLink = useMemo(
+    () => (isIOS ? iOSDeepLink : deepLink),
+    [isIOS, deepLink, iOSDeepLink],
+  )
   console.log('isIOS', isIOS)
+  console.log('displayDeepLink', displayDeepLink)
   const windowScript = `window.onload = function() {
     document.getElementById('l').src = '${displayDeepLink}';
     setTimeout(function() {
@@ -182,11 +187,7 @@ const Nettest = ({
           ) : (
             <div className="bg-gray-50">
               <div className="container px-4 lg:px-8 py-8">
-                <CTA
-                  linkTitle={runLink?.name}
-                  deepLink={displayDeepLink}
-                  // installLink={installLink}
-                />
+                <CTA linkTitle={runLink?.name} deepLink={displayDeepLink} />
                 <div className="mt-8">
                   <PublicDescriptorView
                     descriptor={runLink}
