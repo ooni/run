@@ -5,8 +5,7 @@ import { useIntl } from 'react-intl'
 
 const getInputsFromV1Link = (val: string) => {
   const url = new URL(val)
-  if (url.hostname !== 'run.ooni.io' && url.hostname !== 'run.ooni.org')
-    throw Error
+  if (url.hostname !== 'run.ooni.io') throw Error
   if (url.pathname !== '/nettest') throw Error
   if (!url.searchParams.get('ta')) throw Error
   return JSON.parse(url.searchParams.get('ta') || '')?.urls

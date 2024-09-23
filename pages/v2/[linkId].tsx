@@ -140,7 +140,10 @@ const Nettest = ({
   error,
 }: Props) => {
   const intl = useIntl()
-  const isIOS = JSON.parse(userAgent)?.os?.family === 'iOS'
+  const isIOS =
+    JSON.parse(userAgent)?.os?.family === 'iOS' &&
+    window?.location?.hostname !== 'run.test.ooni.org' //TODO: remove after iOS testing
+
   const displayDeepLink = isIOS ? iOSDeepLink : deepLink
 
   const windowScript = `window.onload = function() {
@@ -162,7 +165,7 @@ const Nettest = ({
             description={description}
             mobileApp={mobileApp}
             deepLink={deepLink}
-            iOSDeepLink={iOSDeepLink}
+            iOSDeepLink={displayDeepLink}
             universalLink={universalLink}
           />
           {isMine ? (
