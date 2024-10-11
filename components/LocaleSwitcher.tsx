@@ -3,6 +3,24 @@ import { getDirection } from 'pages/_app'
 import type { ReactNode } from 'react'
 import { useIntl } from 'react-intl'
 
+import '@formatjs/intl-displaynames/polyfill'
+
+import '@formatjs/intl-displaynames/locale-data/ar'
+import '@formatjs/intl-displaynames/locale-data/de'
+import '@formatjs/intl-displaynames/locale-data/en'
+import '@formatjs/intl-displaynames/locale-data/es'
+import '@formatjs/intl-displaynames/locale-data/fa'
+import '@formatjs/intl-displaynames/locale-data/fr'
+import '@formatjs/intl-displaynames/locale-data/my'
+import '@formatjs/intl-displaynames/locale-data/pt'
+import '@formatjs/intl-displaynames/locale-data/ru'
+import '@formatjs/intl-displaynames/locale-data/sw'
+import '@formatjs/intl-displaynames/locale-data/th'
+import '@formatjs/intl-displaynames/locale-data/tr'
+import '@formatjs/intl-displaynames/locale-data/vi'
+import '@formatjs/intl-displaynames/locale-data/zh-Hans'
+import '@formatjs/intl-displaynames/locale-data/zh-Hant'
+
 export const getLocalisedLanguageName = (
   regionCode: string,
   locale: string,
