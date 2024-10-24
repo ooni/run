@@ -1,26 +1,25 @@
-import React, { useMemo, useState, useCallback } from 'react'
-import styled from 'styled-components'
-import { FormattedMessage, useIntl } from 'react-intl'
 import {
-  Heading,
-  Text,
-  Container,
-  Input,
-  Button,
-  Link,
-  Flex,
   Box,
+  Button,
+  Container,
+  Flex,
+  Heading,
+  Input,
+  Link,
   Modal,
-  TwitterShareButton
-} from 'ooni-components'
-import { BsTwitter } from 'react-icons/bs'
+  Text,
+} from "ooni-components"
+import React, { useCallback, useMemo, useState } from "react"
+import { BsTwitter } from "react-icons/bs"
+import { FormattedMessage, useIntl } from "react-intl"
+import styled from "styled-components"
 
-import Layout from '../components/Layout'
-import { getUniversalLink } from '../utils/links'
-import GraphicsOctopusModal from '../components/svgs/GraphicsOctopusModal.svg'
-import OONIRunHero from '../components/OONIRunHero'
+import Layout from "../components/Layout"
+import OONIRunHero from "../components/OONIRunHero"
+import GraphicsOctopusModal from "../components/svgs/GraphicsOctopusModal.svg"
+import { getUniversalLink } from "../utils/links"
 
-import URLs from '../components/URLs'
+import URLs from "../components/URLs"
 
 const StyleLinkButton = styled(Button)`
   text-transform: none;
@@ -54,15 +53,25 @@ const GraphicsWithGradient = styled(Box)`
 
 const TwitterButton = ({ universalLink }) => {
   const intl = useIntl()
-  const message = encodeURIComponent(intl.formatMessage({ id: 'Share.Twitter.Tweet', defaultMessage: 'Run OONI Probe to test for censorship!' }))
+  const message = encodeURIComponent(
+    intl.formatMessage({
+      id: "Share.Twitter.Tweet",
+      defaultMessage: "Run OONI Probe to test for censorship!",
+    }),
+  )
   const url = encodeURIComponent(universalLink)
   const tweetUrl = `https://twitter.com/intent/tweet?text=${message}&url=${url}`
 
   return (
-    <a href={tweetUrl} taget='_blank'>
+    <a href={tweetUrl} taget="_blank">
       <Button>
-        <Flex alignContent='center'>
-          <Text mr={2}>{intl.formatMessage({id: 'Share.Twitter.Button', defaultMessage: 'Tweet'})}</Text>
+        <Flex alignContent="center">
+          <Text mr={2}>
+            {intl.formatMessage({
+              id: "Share.Twitter.Button",
+              defaultMessage: "Tweet",
+            })}
+          </Text>
           <BsTwitter />
         </Flex>
       </Button>
@@ -70,19 +79,30 @@ const TwitterButton = ({ universalLink }) => {
   )
 }
 
+export async function getServerSideProps(context) {
+  return {
+    redirect: {
+      destination: "https://run.ooni.org",
+      permanent: true,
+    },
+  }
+}
+
 const Home = () => {
   const [urls, setUrls] = useState([])
   const [showModal, setShowModal] = useState(false)
 
   const onSubmitURLs = useCallback(({ urls }) => {
-    setUrls(urls.map((url) => {
-      return {"url": new URL(url.url).toString()}
-    }))
+    setUrls(
+      urls.map((url) => {
+        return { url: new URL(url.url).toString() }
+      }),
+    )
     setShowModal(true)
   }, [])
 
   const [universalLink, embedCode] = useMemo(() => {
-    console.log('generating links and embed code')
+    console.log("generating links and embed code")
     const universalLink = getUniversalLink(urls.map((e) => e.url))
     const embedCode = `
 /* For a simple button */
@@ -101,14 +121,14 @@ const Home = () => {
 
   return (
     <Layout>
-      <OONIRunHero href={'https://ooni.org'} />
+      <OONIRunHero href={"https://ooni.org"} />
 
       <Container pt={4} maxWidth={800}>
-        <Flex justifyContent='center'>
+        <Flex justifyContent="center">
           <Box width={[1, 1, 2 / 4]}>
             <FormattedMessage
               tagName={Text}
-              id='WhatCanYouDoText.WebCensorship'
+              id="WhatCanYouDoText.WebCensorship"
               defaultMessage='Add websites below that you would like to test for censorship. Click "Generate" to create a link based on those websites. Share that link with OONI Probe mobile app users so that they can test the websites of your choice!'
             />
             <URLs onSubmit={onSubmitURLs} />
@@ -118,51 +138,69 @@ const Home = () => {
         <Modal
           onHideClick={() => setShowModal(false)}
           show={showModal}
-          closeButton='right'
-          borderRadius='20px'
-          width='70%'
+          closeButton="right"
+          borderRadius="20px"
+          width="70%"
         >
-          <Flex flexWrap='wrap' style={{ minHeight: '100%' }}>
-            <Box width={[1, 1, 1 / 4]} style={{ backgroundColor: '#8ED8F8' }}>
+          <Flex flexWrap="wrap" style={{ minHeight: "100%" }}>
+            <Box width={[1, 1, 1 / 4]} style={{ backgroundColor: "#8ED8F8" }}>
               <GraphicsWithGradient>
                 <GraphicsOctopusModal />
               </GraphicsWithGradient>
             </Box>
             <Box width={[1, 1, 3 / 4]} px={[3, 4]} pt={3} pb={3}>
-              <Heading h={1} textAlign='center'>
-                <FormattedMessage id='Modal.Heading.LinkReady' defaultMessage='Your link is ready!' />
+              <Heading h={1} textAlign="center">
+                <FormattedMessage
+                  id="Modal.Heading.LinkReady"
+                  defaultMessage="Your link is ready!"
+                />
               </Heading>
 
-              <Heading pt={4} pb={2} h={3} textAlign='center'>
-                <FormattedMessage id='Modal.Heading.ShareIt' defaultMessage='Share it on social media' />
+              <Heading pt={4} pb={2} h={3} textAlign="center">
+                <FormattedMessage
+                  id="Modal.Heading.ShareIt"
+                  defaultMessage="Share it on social media"
+                />
               </Heading>
-              <Flex alignItems='center' justifyContent='center'>
+              <Flex alignItems="center" justifyContent="center">
                 <Box pr={2}>
                   <TwitterButton universalLink={universalLink} />
                 </Box>
                 <Box pr={2}>
                   <Link href={universalLink}>
                     <StyleLinkButton>
-                      <FormattedMessage id='Modal.Button.Link' defaultMessage='Link' />
+                      <FormattedMessage
+                        id="Modal.Button.Link"
+                        defaultMessage="Link"
+                      />
                     </StyleLinkButton>
                   </Link>
                 </Box>
               </Flex>
 
               <Heading pt={4} pb={2} h={3}>
-                <FormattedMessage id='Modal.Heading.ShareThisURL' defaultMessage='Share this link with OONI Probe mobile app users' />
+                <FormattedMessage
+                  id="Modal.Heading.ShareThisURL"
+                  defaultMessage="Share this link with OONI Probe mobile app users"
+                />
               </Heading>
               <Input value={universalLink} />
 
               <Heading pt={4} pb={2} h={3}>
-                <FormattedMessage id='Modal.Heading.EmbedThisCode' defaultMessage='Or embed this code on your website' />
+                <FormattedMessage
+                  id="Modal.Heading.EmbedThisCode"
+                  defaultMessage="Or embed this code on your website"
+                />
               </Heading>
-              <Input type='textarea' rows={6} value={embedCode} />
+              <Input type="textarea" rows={6} value={embedCode} />
 
               <Box pt={4}>
-                <Flex justifyContent='center' align='center'>
+                <Flex justifyContent="center" align="center">
                   <Button onClick={() => setShowModal(false)}>
-                    <FormattedMessage id='Modal.Button.Done' defaultMessage='Done' />
+                    <FormattedMessage
+                      id="Modal.Button.Done"
+                      defaultMessage="Done"
+                    />
                   </Button>
                 </Flex>
               </Box>
