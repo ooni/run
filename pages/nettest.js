@@ -118,6 +118,7 @@ const Nettest = ({
             padding: "16px",
             marginBottom: "32px",
             borderRadius: "6px",
+            lineHeight: 1.3
           }}
         >
           <p>
