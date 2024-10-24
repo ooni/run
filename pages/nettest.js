@@ -1,3 +1,5 @@
+import React from "react";
+
 import Head from "next/head";
 import {
 	Box,
@@ -9,10 +11,13 @@ import {
 	Link,
 	Text,
 } from "ooni-components";
-import { FaExclamationTriangle } from "react-icons/fa";
 import { FormattedMessage } from "react-intl";
-import styled from "styled-components";
+
 import { getEncodedQuery } from "utils/links";
+
+import { FaExclamationTriangle } from "react-icons/fa";
+
+import styled from "styled-components";
 import Layout from "../components/Layout";
 import OONIRunHero from "../components/OONIRunHero";
 import mobileApp from "../config/mobileApp";
@@ -20,7 +25,6 @@ const StyledCode = styled.code`
 font-family: courier, monospace;
 `;
 
-const useragent = require("useragent/index.js");
 const installLink = "https://ooni.org/install";
 const getCustomURI = (query) => {
 	let uri = "ooni://nettest?";
@@ -49,6 +53,7 @@ export const getServerSideProps = async ({ req, query }) => {
 	};
 	return { props };
 };
+
 const Nettest = ({
 	userAgent,
 	deepLink,
@@ -121,6 +126,7 @@ const Nettest = ({
 						color: "#c92a2a",
 						padding: "16px",
 						marginBottom: "32px",
+						borderRadius: "6px",
 					}}
 				>
 					<p>
