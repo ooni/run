@@ -140,13 +140,9 @@ const Nettest = ({
   error,
 }: Props) => {
   const intl = useIntl()
-  const isIOS =
-    typeof window !== 'undefined' // TODO: remove after iOS testing
-      ? JSON.parse(userAgent)?.os?.family === 'iOS' && // TODO: remove after iOS testing
-        window.location.hostname !== 'run.test.ooni.org' // TODO: remove after iOS testing
-      : JSON.parse(userAgent)?.os?.family === 'iOS'
+  const isIOS = JSON.parse(userAgent)?.os?.family === 'iOS'
   const displayDeepLink = isIOS ? iOSDeepLink : deepLink
-  console.log('isIOS', isIOS)
+  
   const windowScript = `window.onload = function() {
     document.getElementById('l').src = '${displayDeepLink}';
     setTimeout(function() {
@@ -166,7 +162,7 @@ const Nettest = ({
             description={description}
             mobileApp={mobileApp}
             deepLink={deepLink}
-            iOSDeepLink={displayDeepLink}
+            iOSDeepLink={iOSDeepLink}
             universalLink={universalLink}
           />
           {isMine ? (
