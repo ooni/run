@@ -7,4 +7,15 @@ dist/*
 package-lock.json
 yarn-error.log
 lang/.messages
+next-env.d.ts
+.env*.local
+.yalc
+yalc.lock
 .env.local
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+public/mockServiceWorker.js
+# Sentry Config File
+.env.sentry-build-plugin
