@@ -2,18 +2,6 @@ import type { UseFormSetValue } from 'react-hook-form'
 import { icons } from 'utils/icons'
 import type { TestList } from './TestListForm'
 
-// const StyledIconButton = styled.button`
-//   font-size: 10px;
-//   min-width: 50px;
-//   width: 100%;
-//   background: none;
-//   border: none;
-//   &:hover {
-//     cursor: pointer;
-//     color: gray;
-//   }
-// `
-
 type IModal = {
   setValue: UseFormSetValue<TestList>
   setShow: (value: boolean) => void

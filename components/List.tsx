@@ -1,15 +1,5 @@
 import DescriptorCard from './DescriptorCard'
 
-// const StyledGrid = styled(Box)`
-// display: grid;
-// grid-template-columns: 1fr;
-// grid-auto-rows: 1fr;
-// gap: 16px 24px;
-// @media (min-width: 800px) {
-//   grid-template-columns: 1fr 1fr;
-// }
-// `
-
 type ListProps = {
   runLinks: Descriptor[]
 }

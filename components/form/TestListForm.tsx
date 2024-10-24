@@ -19,7 +19,6 @@ const IconModal = dynamic(() => import('./IconModal'))
 const IntlFields = dynamic(() => import('./IntlFields'))
 const NettestFields = dynamic(() => import('./NettestFields'))
 const AdminNettestFields = dynamic(() => import('./AdminNettestFields'))
-// const ButtonSpinner = dynamic(() => import("components/ButtonSpinner"))
 
 export type FieldsPropTypes = {
   name: string
