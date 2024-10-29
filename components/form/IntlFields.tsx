@@ -81,7 +81,7 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
                 </div>
                 <button
                   type="button"
-                  className="btn btn-primary mb-3 ml-2"
+                  className="mb-3 ml-2"
                   onClick={() => remove(index)}
                 >
                   <FaRegTrashCan size={20} />
