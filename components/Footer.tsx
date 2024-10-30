@@ -83,7 +83,7 @@ const Footer = () => {
               label={intl.formatMessage({ id: 'Footer.Link.Code' })}
             />
             <FooterLink
-              href="https://api.ooni.io/"
+              href="https://api.ooni.org/"
               label={intl.formatMessage({ id: 'Footer.Link.API' })}
             />
           </div>

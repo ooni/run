@@ -59,7 +59,6 @@
     "test": "playwright test",
     "build:analyze": "ANALYZE=true next build",
     "extract": "node ./scripts/extract '{pages,components,utils}/*.{js,ts,tsx}'",
-    "genurl": "babel-node scripts/genurl.js",
     "script:build-translations": "node ./scripts/build-translations.js"
   },
   "msw": {

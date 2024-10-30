@@ -26,16 +26,3 @@ Create a build:
 ```
 yarn run build
 ```
-
-
-Upload a release:
-
-```
-yarn run release
-```
-
-Generate a OONI Run link:
-
-```
-yarn run genurl -- path/to/list.csv
-```
