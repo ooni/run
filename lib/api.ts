@@ -112,7 +112,7 @@ export const registerUser = async (
   const redirectTo =
     process.env.NODE_ENV === 'development' ||
     process.env.NEXT_PUBLIC_IS_TEST_ENV
-      ? 'https://run.test.ooni.org'
+      ? `https://run.test.ooni.org${new URL(redirectUrl)?.pathname || ''}`
       : redirectUrl
   return await postAPI(apiEndpoints.USER_LOGIN, {
     email_address,

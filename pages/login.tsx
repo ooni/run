@@ -16,7 +16,9 @@ const Login = () => {
   const [submitted, setSubmitted] = useState(false)
 
   const redirectTo =
-    typeof window !== 'undefined' ? window.location.origin : undefined
+    typeof window !== 'undefined'
+      ? `${window.location.origin}/${intl.locale}`
+      : undefined
 
   const { user, loading, error } = useUser()
 
