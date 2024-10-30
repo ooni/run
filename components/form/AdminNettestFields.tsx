@@ -55,7 +55,7 @@ const AdminNettestFields = ({ name }: FieldsPropTypes) => {
             <InputsFields name={`${name}[${index}].inputs`} />
             <div className="mt-4">
               <button
-                className="appearance-none cursor-pointer text-blue-500 hover:text-blue-900"
+                className="appearance-none cursor-pointer text-blue-500 hover:text-blue-900 text-start"
                 type="button"
                 onClick={() => setShowV1Modal(true)}
               >

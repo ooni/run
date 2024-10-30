@@ -1,9 +1,7 @@
 import type { ParsedUrlQuery } from 'node:querystring'
 import mobileApp from '../config/mobileApp'
 
-// export const baseURL = 'https://run.ooni.io'
-
-export const baseURL = 'https://run.test.ooni.org'
+export const baseURL = 'https://run.ooni.org'
 
 export const minimumVersion = '1.2.0'
 
@@ -29,10 +27,6 @@ export const getEncodedQuery = (query: ParsedUrlQuery) => {
     uri += encodeURIComponent(mv)
   }
   return uri
-}
-
-export const getUniversalLink = (urls: string[]) => {
-  return `${baseURL}/${getUniversalQuery(urls)}`
 }
 
 export const getUniversalQuery = (urls: string[]) => {

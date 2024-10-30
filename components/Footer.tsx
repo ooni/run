@@ -41,7 +41,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="py-6 w-1/2 md:w-1/5">
+          <div className="py-6 w-1/2 md:w-1/5 px-1">
             <FooterHead>
               {intl.formatMessage({ id: 'Footer.Heading.About' })}
             </FooterHead>
@@ -66,7 +66,7 @@ const Footer = () => {
               label={intl.formatMessage({ id: 'Footer.Link.Contact' })}
             />
           </div>
-          <div className="py-6 w-1/2 md:w-1/5">
+          <div className="py-6 w-1/2 md:w-1/5 px-1">
             <FooterHead>
               {intl.formatMessage({ id: 'Footer.Heading.OONIProbe' })}
             </FooterHead>
@@ -83,11 +83,11 @@ const Footer = () => {
               label={intl.formatMessage({ id: 'Footer.Link.Code' })}
             />
             <FooterLink
-              href="https://api.ooni.io/"
+              href="https://api.ooni.org/"
               label={intl.formatMessage({ id: 'Footer.Link.API' })}
             />
           </div>
-          <div className="py-6 w-1/2 md:w-1/5">
+          <div className="py-6 w-1/2 md:w-1/5 px-1">
             <FooterHead>
               {intl.formatMessage({ id: 'Footer.Heading.Updates' })}
             </FooterHead>

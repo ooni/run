@@ -4,7 +4,6 @@ const langs = [
   'de',
   'el',
   'es',
-  'en',
   'fa',
   'fr',
   'hi',

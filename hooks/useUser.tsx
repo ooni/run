@@ -68,19 +68,23 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       .finally(() => setLoading(false))
   }
 
-  const afterLogin = useCallback(() => {
-    setTimeout(() => {
-      router.push('/create')
-    }, 2000)
-  }, [router])
+  const afterLogin = useCallback(
+    (redirectTo: string) => {
+      const locale = new URL(redirectTo)?.pathname || ''
+      setTimeout(() => {
+        router.push(`${locale}/create`)
+      }, 2000)
+    },
+    [router],
+  )
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (token && router.pathname === '/login') {
       loginUser(token)
-        .then(() => {
+        .then((data) => {
           getUser()
-          afterLogin()
+          afterLogin(data?.redirect_to)
         })
         .catch((e) => {
           console.log(e)

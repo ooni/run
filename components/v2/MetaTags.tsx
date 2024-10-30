@@ -31,7 +31,7 @@ const MetaTags = ({
       {title && <meta name="og:title" content={title} />}
       <meta
         name="og:image"
-        content="https://run.ooni.io/static/images/Run-VerticalColorW400px.png"
+        content="https://run.ooni.org/static/images/Run-VerticalColorW400px.png"
       />
       {description && <meta name="og:description" content={description} />}
 
@@ -49,7 +49,7 @@ const MetaTags = ({
 
       <meta
         name="twitter:image"
-        content="https://run.ooni.io/static/images/Run-VerticalColorW400px.png"
+        content="https://run.ooni.org/static/images/Run-VerticalColorW400px.png"
       />
       <meta name="twitter:app:name:iphone" content={mobileApp.iPhoneName} />
       <meta name="twitter:app:id:iphone" content={mobileApp.iPhoneID} />

@@ -105,14 +105,14 @@ export const getList = (params = {}, config = {}) => {
 
 export const registerUser = async (
   email_address: string,
-  redirectUrl = 'https://run.ooni.io',
+  redirectUrl = 'https://run.ooni.org',
 ) => {
   // current testing setup does not enable us to check process.env.NODE_ENV (it's set to production
   // in headless mode), therefore custom NEXT_PUBLIC_IS_TEST_ENV is used
   const redirectTo =
     process.env.NODE_ENV === 'development' ||
     process.env.NEXT_PUBLIC_IS_TEST_ENV
-      ? 'https://run.test.ooni.org/'
+      ? `https://run.test.ooni.org${new URL(redirectUrl)?.pathname || ''}`
       : redirectUrl
   return await postAPI(apiEndpoints.USER_LOGIN, {
     email_address,

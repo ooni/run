@@ -1,9 +1,9 @@
-import Head from "next/head"
-import { useRouter } from "next/router"
-import { FormattedMessage, useIntl } from "react-intl"
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { FormattedMessage, useIntl } from 'react-intl'
 
-import OONIRunHero from "components/OONIRunHero"
-import OONI404 from "public/static/images/OONI_404.svg"
+import OONIRunHero from 'components/OONIRunHero'
+import OONI404 from 'public/static/images/OONI_404.svg'
 
 const Custom404 = () => {
   const router = useRouter()
@@ -11,7 +11,7 @@ const Custom404 = () => {
   return (
     <>
       <Head>
-        <title>{intl.formatMessage({ id: "Error.404.PageNotFound" })}</title>
+        <title>{intl.formatMessage({ id: 'Error.404.PageNotFound' })}</title>
       </Head>
       <OONIRunHero />
       <div className="container">
@@ -21,10 +21,7 @@ const Custom404 = () => {
               <FormattedMessage id="Error.404.Heading" />
             </h4>
             <div className="mb-3">
-              <FormattedMessage
-                id="Error.404.Message"
-                defaultMessage="We could not find the content you were looking for."
-              />
+              <FormattedMessage id="Error.404.Message" />
             </div>
           </div>
           <div className="p-32">
