@@ -78,6 +78,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
         runLink?.nettests
           ?.filter((n) => n.test_name === 'web_connectivity')
           .flatMap((n) => n.inputs),
+        linkId,
       )
     : null
 
@@ -142,7 +143,7 @@ const Nettest = ({
   const intl = useIntl()
   const isIOS = JSON.parse(userAgent)?.os?.family === 'iOS'
   const displayDeepLink = isIOS ? iOSDeepLink : deepLink
-  
+
   const windowScript = `window.onload = function() {
     document.getElementById('l').src = '${displayDeepLink}';
     setTimeout(function() {
