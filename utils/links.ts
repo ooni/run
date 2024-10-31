@@ -9,10 +9,11 @@ export interface Query extends ParsedUrlQuery {
   tn: string
   mv: string
   ta?: string
+  runId: string
 }
 
 export const getEncodedQuery = (query: ParsedUrlQuery) => {
-  const { tn, ta, mv } = query
+  const { tn, ta, mv, runId } = query
   let uri = ''
   if (tn !== undefined && !Array.isArray(tn)) {
     uri = 'tn='
@@ -26,14 +27,19 @@ export const getEncodedQuery = (query: ParsedUrlQuery) => {
     uri += '&mv='
     uri += encodeURIComponent(mv)
   }
+  if (runId !== undefined && !Array.isArray(runId)) {
+    uri += '&runId='
+    uri += encodeURIComponent(runId)
+  }
   return uri
 }
 
-export const getUniversalQuery = (urls: string[]) => {
+export const getUniversalQuery = (urls: string[], runId: string) => {
   const testName = 'web_connectivity'
   const query: Query = {
     tn: testName,
     mv: minimumVersion,
+    runId,
   }
   if (testName === 'web_connectivity' && urls) {
     query.ta = JSON.stringify({
