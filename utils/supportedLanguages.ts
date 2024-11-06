@@ -21,6 +21,9 @@ const langs = [
   'tr',
   'zh_CN',
   'zh_TW',
+  'my',
+  'vi',
+  'km',
 ]
 
 export default langs
