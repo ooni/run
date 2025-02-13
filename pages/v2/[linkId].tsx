@@ -9,19 +9,15 @@ import { getRunLink } from 'lib/api'
 import type { GetServerSideProps } from 'next'
 import type { ParsedUrlQuery } from 'node:querystring'
 import { useIntl } from 'react-intl'
-import { getIntentURIv2, getUniversalQuery } from 'utils/links'
+import { getIntentURIv2 } from 'utils/links'
 import OONI404 from '/public/static/images/OONI_404.svg'
 
 const useragent = require('useragent/index.js')
 
-const installLink = 'https://ooni.org/install'
-
 type Props = {
   deepLink: string
-  iOSDeepLink: string
   withWindowLocation: boolean
   storeLink: string
-  installLink: string
   userAgent: string
   universalLink: string
   title: string
@@ -73,17 +69,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     }
   }
 
-  const universalQuery = runLink
-    ? getUniversalQuery(
-        runLink?.nettests
-          ?.filter((n) => n.test_name === 'web_connectivity')
-          .flatMap((n) => n.inputs),
-        linkId,
-      )
-    : null
-
-  const iOSDeepLink = `ooni://${universalQuery}`
-
   const storeLink =
     ua.os.family === 'iOS' ? mobileApp.appStoreLink : mobileApp.googlePlayLink
 
@@ -110,10 +95,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
   const props: Props = {
     deepLink,
-    iOSDeepLink,
     withWindowLocation,
     storeLink,
-    installLink,
     userAgent: JSON.stringify(ua),
     universalLink,
     title,
@@ -129,10 +112,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 const Nettest = ({
   userAgent,
   deepLink,
-  iOSDeepLink,
   withWindowLocation,
   storeLink,
-  installLink,
   universalLink,
   title,
   description,
@@ -141,11 +122,9 @@ const Nettest = ({
   error,
 }: Props) => {
   const intl = useIntl()
-  const isIOS = JSON.parse(userAgent)?.os?.family === 'iOS'
-  const displayDeepLink = isIOS ? iOSDeepLink : deepLink
 
   const windowScript = `window.onload = function() {
-    document.getElementById('l').src = '${displayDeepLink}';
+    document.getElementById('l').src = '${deepLink}';
     setTimeout(function() {
       window.location = '${storeLink}';
     }, 500)
@@ -163,14 +142,13 @@ const Nettest = ({
             description={description}
             mobileApp={mobileApp}
             deepLink={deepLink}
-            iOSDeepLink={iOSDeepLink}
             universalLink={universalLink}
           />
           {isMine ? (
             <div className="container px-4 lg:px-8 py-8">
               <DescriptorView
                 descriptor={runLink}
-                deepLink={displayDeepLink}
+                deepLink={deepLink}
                 runLink={universalLink}
                 linkId={linkId}
                 userAgent={userAgent}
@@ -179,15 +157,11 @@ const Nettest = ({
           ) : (
             <div className="bg-gray-50">
               <div className="container px-4 lg:px-8 py-8">
-                <CTA
-                  linkTitle={runLink?.name}
-                  deepLink={displayDeepLink}
-                  // installLink={installLink}
-                />
+                <CTA linkTitle={runLink?.name} deepLink={deepLink} />
                 <div className="mt-8">
                   <PublicDescriptorView
                     descriptor={runLink}
-                    deepLink={displayDeepLink}
+                    deepLink={deepLink}
                     runLink={universalLink}
                     linkId={linkId}
                     userAgent={userAgent}
@@ -229,7 +203,7 @@ const Nettest = ({
           </div>
         </div>
       )}
-      {error && (
+      {/* {error && (
         <div className="container my-16">
           <div className="flex justify-center items-center">
             <div>
@@ -243,7 +217,7 @@ const Nettest = ({
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </>
   )
 }
