@@ -8,13 +8,13 @@ import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/ar'
 import '@formatjs/intl-displaynames/locale-data/de'
 import '@formatjs/intl-displaynames/locale-data/en'
+import '@formatjs/intl-displaynames/locale-data/es'
 import '@formatjs/intl-displaynames/locale-data/id'
-// import '@formatjs/intl-displaynames/locale-data/es'
 // import '@formatjs/intl-displaynames/locale-data/fa'
 // import '@formatjs/intl-displaynames/locale-data/fr'
 import '@formatjs/intl-displaynames/locale-data/km'
 // import '@formatjs/intl-displaynames/locale-data/my'
-// import '@formatjs/intl-displaynames/locale-data/pt'
+import '@formatjs/intl-displaynames/locale-data/pt'
 import '@formatjs/intl-displaynames/locale-data/ru'
 // import '@formatjs/intl-displaynames/locale-data/sw'
 // import '@formatjs/intl-displaynames/locale-data/th'
@@ -23,10 +23,9 @@ import '@formatjs/intl-displaynames/locale-data/tr'
 import '@formatjs/intl-displaynames/locale-data/zh-Hans'
 import '@formatjs/intl-displaynames/locale-data/zh-Hant'
 
-
 const getLocale = (locale: string) => {
   if (locale === 'zh-cn') return 'zh-Hans'
-  // if (locale === 'pt-BR') return 'pt'
+  if (locale === 'pt-br') return 'pt'
   return locale
 }
 
