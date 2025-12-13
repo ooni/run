@@ -10,11 +10,8 @@ import { useCallback, useMemo } from 'react'
 
 const OONIRunHero = dynamic(() => import('components/OONIRunHero'))
 
-const transformIntoArray = (obj: object) =>
-  Object.entries(obj).map(([k, v]) => ({
-    key: k,
-    value: v,
-  }))
+const transformIntoArray = (obj: object | undefined | null) =>
+  obj ? Object.entries(obj).map(([k, v]) => ({ key: k, value: v })) : []
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const transformNettests = (nettest: any) => ({
