@@ -284,7 +284,7 @@ const TestListForm = ({
                   name="description"
                   control={control}
                 />
-                <IntlFields name="description_intl" />
+                <IntlFields name="description_intl" inputType="textarea" />
               </StyledInputWrapper>
               {isClient && (
                 <StyledInputWrapper>
