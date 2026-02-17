@@ -1,4 +1,4 @@
-import { Input, Select } from 'ooni-components'
+import { Input, Textarea, Select } from 'ooni-components'
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import { useIntl } from 'react-intl'
@@ -12,7 +12,7 @@ const langOptions = supportedLanguages.map((lang) => ({
   ),
 }))
 
-const IntlFields = ({ name }: FieldsPropTypes) => {
+const IntlFields = ({ name, inputType = 'text' }: FieldsPropTypes & { inputType?: 'text' | 'textarea' }) => {
   const intl = useIntl()
   const { control } = useFormContext()
   const { fields, append, remove } = useFieldArray({
@@ -63,20 +63,23 @@ const IntlFields = ({ name }: FieldsPropTypes) => {
               <div className="flex flex-row mt-2 md:mt-0 items-end">
                 <div className="w-full">
                   <Controller
-                    render={({ field, fieldState }) => (
-                      <Input
-                        label={intl.formatMessage({
-                          id: 'TestListForm.Intl.Translation',
-                        })}
-                        {...field}
-                        error={
-                          !!fieldState?.error?.message &&
-                          intl.formatMessage({ id: fieldState?.error?.message })
-                        }
-                      />
-                    )}
-                    name={`${name}[${index}].value`}
-                    control={control}
+                  render={({ field, fieldState }) => {
+                    const Component = inputType === 'textarea' ? Textarea : Input
+                    return (
+                    <Component
+                      label={intl.formatMessage({
+                      id: 'TestListForm.Intl.Translation',
+                      })}
+                      {...field}
+                      error={
+                      !!fieldState?.error?.message &&
+                      intl.formatMessage({ id: fieldState?.error?.message })
+                      }
+                    />
+                    )
+                  }}
+                  name={`${name}[${index}].value`}
+                  control={control}
                   />
                 </div>
                 <button
