@@ -141,5 +141,6 @@
   "DateRange.Apply": "Aplicar",
   "DateRange.Cancel": "Cancelar",
   "Error.404.Heading": "A página requisitada não existe",
-  "Error.404.Message": "Não conseguimos encontrar o conteúdo que você estava procurando."
+  "Error.404.Message": "Não conseguimos encontrar o conteúdo que você estava procurando.",
+  "Error.404.PageNotFound": "Página Não Encontrada"
 }
