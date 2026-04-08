@@ -139,5 +139,8 @@
   "DateRange.OneMonth": "Один месяц",
   "DateRange.SixMonths": "Шесть месяцев",
   "DateRange.Apply": "Применить",
-  "DateRange.Cancel": "Отмена"
+  "DateRange.Cancel": "Отмена",
+  "Error.404.PageNotFound": "Страница не найдена",
+  "Error.404.Heading": "Запрашиваемая страница не существует",
+  "Error.404.Message": "Мы не смогли ничего найти по вашему запросу."
 }
