@@ -65,5 +65,6 @@
   "Nettest.DownloadIOS": "Sbedd OONI Probe ɣef iOS",
   "Nettest.DownloadFdroid": "Sbedd OONI Probe ɣef F-Droid",
   "Login.Button": "Ceɣɣeɛ-iyi-d aseɣwen",
-  "Login.Title": "Ttxil qqen akken ad kemmleḍ"
+  "Login.Title": "Ttxil qqen akken ad kemmleḍ",
+  "Button.Update": "Leqqem"
 }
