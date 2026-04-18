@@ -36,8 +36,8 @@
   "LinkView.Error.DoesNotExist": "OONI Run bağlantısı bulunamadı",
   "LinkView.Error.ServerError": "Bir sorun çıktı.",
   "TestListForm.Validation.Required": "Zorunlu alan",
-  "TestListForm.Validation.Min2": "En az 2 karakter uzunluğunda olmalıdır",
-  "TestListForm.Validation.Max50": "En fazla 50 karakter uzunluğunda olmalıdır",
+  "TestListForm.Validation.Min2": "En az 2 karakter uzunluğunda olmalıdır.",
+  "TestListForm.Validation.Max50": "En fazla 50 karakter uzunluğunda olmalıdır.",
   "TestListForm.Validation.FutureDate": "Geçerlilik sonu tarihi gelecekte olmalıdır.",
   "TestListForm.Validation.Min1Url": "En az 1 adres olması zorunludur.",
   "TestListForm.MigrationModalLink": "Eski OONI Run v1 bağlantılarınız mı var? Bu tür bağlantılardan adresler eklemek için buraya tıklayın.",
@@ -139,5 +139,7 @@
   "DateRange.OneMonth": "Bir ay",
   "DateRange.SixMonths": "Altı ay",
   "DateRange.Apply": "Uygula",
-  "DateRange.Cancel": "İptal"
+  "DateRange.Cancel": "İptal",
+  "Error.404.PageNotFound": "Sayfa bulunamadı",
+  "Error.404.Heading": "İstenilen sayfa bulunamadı"
 }
