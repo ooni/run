@@ -89,7 +89,7 @@
   "Navbar.List": "OONI Run bağlantılarım",
   "Navbar.Create": "OONI Run bağlantısı oluştur",
   "Login.Title": "Lütfen ilerlemek için oturum açın",
-  "Login.EnterEmail": "E-posta adresinizi ekleyin ve oturum açmak için e-postanıza gönderilen bağlantıya tıklayın.\n\nBir OONI Run bağlantısı oluşturduğunuzda, e-posta adresinizi kaydedeceğiz. Bu, OONI Run bağlantınızı alan OONI Probe kullanıcılarının bağlantıya güvenmesini sağlar.",
+  "Login.EnterEmail": "E-posta adresinizi yazın ve oturum açmak için gönderilen bağlantıya tıklayın.\n\nBir OONI Run bağlantısı oluşturduğunuzda, e-posta adresinizi kaydederiz. Böylece, OONI Run bağlantınızı alan OONI Probe kullanıcıları bağlantıya güvenebilir.",
   "Login.Submitted": "Oturum açma isteğiniz gönderildi. Etkinleştirmek ve hesabınızda oturum açma bağlantısını görmek için e-postanızı denetleyin.",
   "Login.LoggingIn": "Oturum açılıyor...",
   "Login.Failure": "Yeniden oturum açmayı dene",
@@ -113,7 +113,7 @@
   "Footer.Link.Slack": "Slack",
   "Footer.Text.Copyright": "© {currentYear} Open Observatory of Network Interference (OONI)",
   "Footer.Text.CCommons": "İçerikler Creative Commons lisansı koşulları altında yayınlanıyor.",
-  "Tests.WebConnectivity.Name": "Site bağlantısı sınaması",
+  "Tests.WebConnectivity.Name": "İnternet bağlantısı sınaması",
   "Tests.Telegram.Name": "Telegram sınaması",
   "Tests.Facebook.Name": "Facebook Messenger sınaması",
   "Tests.WhatsApp.Name": "WhatsApp sınaması",
@@ -141,5 +141,6 @@
   "DateRange.Apply": "Uygula",
   "DateRange.Cancel": "İptal",
   "Error.404.PageNotFound": "Sayfa bulunamadı",
-  "Error.404.Heading": "İstenilen sayfa bulunamadı"
+  "Error.404.Heading": "İstenilen sayfa bulunamadı",
+  "Error.404.Message": "Aradığınız içerik bulunamadı."
 }
