@@ -66,5 +66,6 @@
   "Nettest.DownloadFdroid": "Sbedd OONI Probe ɣef F-Droid",
   "Login.Button": "Ceɣɣeɛ-iyi-d aseɣwen",
   "Login.Title": "Ttxil qqen akken ad kemmleḍ",
-  "Button.Update": "Leqqem"
+  "Button.Update": "Leqqem",
+  "TestListForm.OptionsFields.Key": "Tasarut"
 }
