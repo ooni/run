@@ -139,5 +139,7 @@
   "DateRange.OneMonth": "Um mês",
   "DateRange.SixMonths": "Seis meses",
   "DateRange.Apply": "Aplicar",
-  "DateRange.Cancel": "Cancelar"
+  "DateRange.Cancel": "Cancelar",
+  "Error.404.Heading": "A página requisitada não existe",
+  "Error.404.Message": "Não conseguimos encontrar o conteúdo que você estava procurando."
 }
