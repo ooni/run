@@ -42,7 +42,8 @@ export const getLocalisedLanguageName = (
   }
 }
 
-const languages = process.env.LOCALES
+import { SUPPORTED_LANGUAGES as languages } from 'lib/i18n'
+
 type LanguageSelectProps = {
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
   value: string
