@@ -11,15 +11,31 @@ const { basename } = require('node:path')
 
 const LANG_DIR = './public/static/lang/'
 const DEFAULT_LOCALE = 'en'
+const SUPPORTED_LANGUAGES = [
+  'ar',
+  'de',
+  'en',
+  'es',
+  'id',
+  // 'ja',
+  // 'kab',
+  'km',
+  'pt-br',
+  'ru',
+  'sr',
+  'tr',
+  'zh-cn',
+]
 
 function getSupportedLanguages() {
-  const supportedLanguages = new Set()
-  supportedLanguages.add(DEFAULT_LOCALE) // at least 1 supported language
-  // biome-ignore lint/complexity/noForEach: <explanation>
-  glob
-    .sync(`${LANG_DIR}/**/*.json`)
-    .forEach((f) => supportedLanguages.add(basename(f, '.json')))
-  return [...supportedLanguages]
+  return SUPPORTED_LANGUAGES
+  // const supportedLanguages = new Set()
+  // supportedLanguages.add(DEFAULT_LOCALE) // at least 1 supported language
+  // // biome-ignore lint/complexity/noForEach: <explanation>
+  // glob
+  //   .sync(`${LANG_DIR}/**/*.json`)
+  //   .forEach((f) => supportedLanguages.add(basename(f, '.json')))
+  // return [...supportedLanguages]
 }
 
 module.exports = withBundleAnalyzer(
@@ -27,7 +43,7 @@ module.exports = withBundleAnalyzer(
     {
       output: 'standalone',
       reactStrictMode: true,
-      swcMinify: true,
+      // swcMinify: true,
       i18n: {
         locales: getSupportedLanguages(),
         defaultLocale: DEFAULT_LOCALE,
