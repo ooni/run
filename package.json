@@ -28,7 +28,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.0",
+    "@babel/core": "^7.29.6",
     "@biomejs/biome": "^1.6.4",
     "@formatjs/cli": "^6.2.7",
     "@playwright/test": "^1.42.1",
