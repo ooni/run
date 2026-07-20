@@ -7,7 +7,7 @@
     "@sentry/nextjs": "^10.66.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@uiw/react-color-compact": "^2.3.0",
-    "axios": "^1.16.0",
+    "axios": "^1.18.0",
     "cookie": "^0.7.0",
     "date-fns": "^3.6.0",
     "markdown-to-jsx": "^7.4.7",
