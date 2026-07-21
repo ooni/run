@@ -50,6 +50,16 @@ module.exports = withSentryConfig(
         },
       ]
     },
+    async redirects() {
+      return [
+        {
+          source: '/nettest', // v1 links
+          destination:
+            'https://ooni.org/support/ooni-run/#updating-old-ooni-run-links',
+          permanent: true,
+        },
+      ]
+    },
   },
   {
     org: 'ooni',
