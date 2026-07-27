@@ -3,7 +3,7 @@ import type { GetServerSideProps } from 'next'
 import dynamic from 'next/dynamic'
 import NLink from 'next/link'
 import { useIntl } from 'react-intl'
-import OONI404 from '/public/static/images/OONI_404.svg'
+import OONI404 from '@/public/static/images/OONI_404.svg'
 
 const RunLinkList = dynamic(() => import('components/List'))
 const OONIRunHero = dynamic(() => import('components/OONIRunHero'))

@@ -1,8 +1,8 @@
 import { Fira_Sans } from 'next/font/google'
 import { useRouter } from 'next/router'
 import NProgress from 'nprogress'
-import 'ooni-components/dist/tailwind.css'
 import { useEffect, useMemo } from 'react'
+import 'styles/globals.css'
 import '../public/static/nprogress.css'
 
 import type { AppProps } from 'next/app'

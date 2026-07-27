@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { FormattedMessage, useIntl } from 'react-intl'
 
 import OONIRunHero from 'components/OONIRunHero'
-import OONI404 from 'public/static/images/OONI_404.svg'
+import OONI404 from '@/public/static/images/OONI_404.svg'
 
 const Custom404 = () => {
   const router = useRouter()

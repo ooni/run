@@ -10,7 +10,7 @@ import type { GetServerSideProps } from 'next'
 import type { ParsedUrlQuery } from 'node:querystring'
 import { useIntl } from 'react-intl'
 import { getIntentURIv2 } from 'utils/links'
-import OONI404 from '/public/static/images/OONI_404.svg'
+import OONI404 from '@/public/static/images/OONI_404.svg'
 
 const useragent = require('useragent/index.js')
 

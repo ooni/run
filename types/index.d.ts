@@ -4,7 +4,6 @@ declare module 'ooni-components/icons'
 namespace NodeJS {
   interface ProcessEnv {
     NODE_ENV: string
-    LOCALES: string[]
   }
 }
 

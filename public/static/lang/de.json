@@ -32,7 +32,7 @@
   "Nettest.DeprecationWarning": "Diese Version von OONI Run Links wird am 1. Januar 2025 veraltet sein.\nUm auf die neueste Version (OONI Run v2) zu migrieren, <login>melde dich an</login> und erzeuge neue Links.",
   "List.Title": "Meine OONI Run Links",
   "List.Empty": "Du hast noch keine OONI Run Links",
-  "List.Button.Create": "Erstelle deinen ersten OONI Run Link",
+  "List.Button.Create": "Erstelle deinen ersten Link",
   "LinkView.Error.DoesNotExist": "OONI Run Link ist nicht vorhanden",
   "LinkView.Error.ServerError": "Etwas ist schief gegangen.",
   "TestListForm.Validation.Required": "Pflichtfeld",
@@ -139,5 +139,8 @@
   "DateRange.OneMonth": "Ein Monat",
   "DateRange.SixMonths": "Sechs Monate",
   "DateRange.Apply": "Anwenden",
-  "DateRange.Cancel": "Abbrechen"
+  "DateRange.Cancel": "Abbrechen",
+  "Error.404.PageNotFound": "Seite nicht gefunden",
+  "Error.404.Heading": "Die angeforderte Seite existiert nicht",
+  "Error.404.Message": "Wir konnten den gesuchten Inhalt nicht finden."
 }

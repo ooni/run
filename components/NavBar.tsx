@@ -40,8 +40,6 @@ const NavItem = ({ label, href, ...props }: NavItemProps) => {
   )
 }
 
-const languages = process.env.LOCALES
-
 export const NavBar = () => {
   const router = useRouter()
   const { pathname } = router
