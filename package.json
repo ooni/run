@@ -41,7 +41,7 @@
     "autoprefixer": "^10.4.20",
     "json2csv": "^6.0.0-alpha.2",
     "msw": "^2.2.13",
-    "postcss": "^8.5.10",
+    "postcss": "^8.5.18",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.4.3",
     "uglify-js": "^3.17.4"
