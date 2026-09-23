@@ -5,7 +5,6 @@ const { DEFAULT_LOCALE, SUPPORTED_LANGUAGES } = require('./lib/i18n')
 
 module.exports = withSentryConfig(
   {
-    output: 'standalone',
     reactStrictMode: true,
     turbopack: {
       rules: {
