@@ -46,6 +46,8 @@
   "TestListForm.Label.ShortDescription": "Short description",
   "TestListForm.Label.Description": "Description",
   "TestListForm.Label.Email": "Author's Email",
+  "TestListForm.Label.PublishEmail": "Publish author's email",
+  "TestListForm.Help.PublishEmail": "Others can see who created this link and contact you. Uncheck to remain anonymous.",
   "TestListForm.Label.ExpirationDate": "Expiration Date",
   "TestListForm.Label.Icon": "Icon",
   "TestListForm.OptionsFields.Key": "Key",
