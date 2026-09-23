@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import Compact from '@uiw/react-color-compact'
 import { format } from 'date-fns'
-import { Input } from 'ooni-components'
+import { Checkbox, Input } from 'ooni-components'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { FormattedMessage, useIntl } from 'react-intl'
 import * as Yup from 'yup'
@@ -51,6 +51,7 @@ export type TestList = {
   icon: string
   color: string
   author: string
+  publish_email: boolean
   expiration_date: string
   nettests: Nettest[]
 }
@@ -88,6 +89,7 @@ const validationSchema = Yup.object({
   icon: Yup.string().defined(),
   color: Yup.string().defined(),
   author: Yup.string().defined(),
+  publish_email: Yup.boolean().defined(),
   expiration_date: Yup.string()
     .required('TestListForm.Validation.Required')
     .test(
@@ -274,7 +276,7 @@ const TestListForm = ({
                       {...field}
                       label={`${intl.formatMessage({ id: 'TestListForm.Label.Description' })} *`}
                       placeholder=""
-                      minHeight="78px"
+                      style={{ minHeight: '78px' }}
                       error={
                         !!fieldState?.error?.message &&
                         intl.formatMessage({ id: fieldState?.error?.message })
@@ -287,7 +289,7 @@ const TestListForm = ({
                 <IntlFields name="description_intl" inputType="textarea" />
               </StyledInputWrapper>
               {isClient && (
-                <StyledInputWrapper>
+                <>
                   <Controller
                     render={({ field }) => (
                       <Input
@@ -295,12 +297,44 @@ const TestListForm = ({
                         disabled
                         bg="gray3"
                         label={`${intl.formatMessage({ id: 'TestListForm.Label.Email' })} *`}
+                        className="mb-2"
                       />
                     )}
                     name="author"
                     control={control}
                   />
-                </StyledInputWrapper>
+                  <StyledInputWrapper>
+                    <Controller
+                      render={({
+                        field: { value, onChange, ...fieldProps },
+                      }) => (
+                        <>
+                          <Checkbox
+                            {...fieldProps}
+                            onChange={(
+                              event: React.ChangeEvent<HTMLInputElement>,
+                            ) => onChange(event.target.checked)}
+                            checked={value}
+                            aria-describedby="publish_email-help"
+                            label={intl.formatMessage({
+                              id: 'TestListForm.Label.PublishEmail',
+                            })}
+                          />
+                          <p
+                            id="publish_email-help"
+                            className="text-sm text-gray-600 mt-1 ms-7"
+                          >
+                            {intl.formatMessage({
+                              id: 'TestListForm.Help.PublishEmail',
+                            })}
+                          </p>
+                        </>
+                      )}
+                      name="publish_email"
+                      control={control}
+                    />
+                  </StyledInputWrapper>
+                </>
               )}
 
               <StyledInputWrapper>

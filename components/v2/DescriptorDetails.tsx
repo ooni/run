@@ -5,6 +5,7 @@ import { useMemo } from 'react'
 import { useIntl } from 'react-intl'
 import { formatMediumDate } from 'utils'
 import ArchivedTag from '../ArchivedTag'
+import useUser from 'hooks/useUser'
 
 type ExpirationDateProps = {
   expirationString: string
@@ -40,6 +41,9 @@ const DescriptorDetails = ({
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 }: any) => {
   const { locale, formatMessage } = useIntl()
+  const { user } = useUser()
+  const isAdmin = useMemo(() => user?.role === 'admin', [user])
+
   return (
     <>
       <h2 className="leading-none inline align-middle mr-4">
@@ -54,7 +58,7 @@ const DescriptorDetails = ({
       {descriptor.is_expired && <ArchivedTag />}
 
       <div className="text-sm my-4">
-        {descriptor.author ? (
+        {descriptor.author && (descriptor?.publish_email || isAdmin) ? (
           <>
             {formatMessage(
               { id: 'DescriptorDetails.CreatedByOn' },

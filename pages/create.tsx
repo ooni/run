@@ -48,6 +48,7 @@ const defaultValues = {
   icon: '',
   color: '#000000',
   author: getUserEmail(),
+  publish_email: true,
   expiration_date: '',
   nettests: [
     {
