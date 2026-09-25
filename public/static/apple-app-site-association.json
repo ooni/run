@@ -1,10 +1,24 @@
 {
   "applinks": {
-    "apps": [],
     "details": [
       {
-        "appID": "MADPSAYN6T.org.openobservatory.ooniprobe",
-        "paths": ["/nettest*"]
+        "appIDs": ["MADPSAYN6T.org.openobservatory.ooniprobe"],
+        "components": [
+          {
+            "/": "/login",
+            "?": { "token": "*" },
+            "comment": "Login link must have a token query param to open in the app"
+          },
+          {
+            "/": "/login",
+            "exclude": true,
+            "comment": "Bare /login with no token falls back to the website"
+          },
+          {
+            "/": "/v2/*",
+            "comment": "Matches /v2/<link_id> links, e.g. /v2/10270"
+          }
+        ]
       }
     ]
   }

@@ -40,6 +40,10 @@ module.exports = withSentryConfig(
           destination: '/api/apple-app-site-association',
         },
         {
+          source: '/.well-known/apple-app-site-association',
+          destination: '/api/apple-app-site-association',
+        },
+        {
           source: '/.well-known/assetlinks.json',
           destination: '/api/assetlinks',
         },
