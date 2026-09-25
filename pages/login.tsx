@@ -73,9 +73,9 @@ const Login = () => {
           {/* While logging In */}
           {token && !user && !error && (
             <>
-              <h2 className="my-2 mx-auto text-center">
+              {/* <h2 className="my-2 mx-auto text-center">
                 <FormattedMessage id="Login.LoggingIn" />
-              </h2>
+              </h2> */}
               <div className="flex flex-col gap-3 items-center my-6">
                 <button
                   type="button"
@@ -83,13 +83,13 @@ const Login = () => {
                   disabled={loading}
                   onClick={login}
                 >
-                  <FormattedMessage id="Login.Button.ConfirmLogin" />
+                  Start session in the browser
                 </button>
                 <a
                   className="btn btn-primary-hollow"
                   href={`ooni://login?token=${encodeURIComponent(token)}`}
                 >
-                  <FormattedMessage id="Login.Button.OpenInProbe" />
+                  Open in OONI Probe app (with login token)
                 </a>
               </div>
             </>
@@ -99,7 +99,7 @@ const Login = () => {
           {user && !error && token && (
             <>
               <div className="text-2xl my-2 mx-auto text-center">
-                <FormattedMessage id="Login.Success" />
+                Successfully logged in.
               </div>
               <div className="flex flex-col gap-3 items-center my-6">
                 <NLink href="/create" className="btn btn-primary">
@@ -110,7 +110,7 @@ const Login = () => {
                     className="btn btn-primary-hollow"
                     href={`ooni://login?token=${encodeURIComponent(sessionToken)}`}
                   >
-                    <FormattedMessage id="Login.Button.OpenInProbe" />
+                    Open in OONI Probe app (with session token)
                   </a>
                 )}
               </div>
