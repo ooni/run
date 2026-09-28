@@ -2,7 +2,7 @@
   "applinks": {
     "details": [
       {
-        "appIDs": ["MADPSAYN6T.org.openobservatory.ooniprobe"],
+        "appIDs": ["MADPSAYN6T.org.openobservatory.ooniprobe", "TT53HD8N84.org.ooni.probe-desktop"],
         "components": [
           {
             "/": "/login",
