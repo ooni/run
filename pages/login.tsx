@@ -2,6 +2,7 @@ import OONIRunHero from 'components/OONIRunHero'
 import LoginForm from 'components/login/LoginForm'
 // import SpinLoader from 'components/vendor/SpinLoader'
 import useUser from 'hooks/useUser'
+import { getSessionToken } from 'lib/api'
 import Markdown from 'markdown-to-jsx'
 import NLink from 'next/link'
 import { useRouter } from 'next/router'
@@ -11,7 +12,8 @@ import { FormattedMessage, useIntl } from 'react-intl'
 const Login = () => {
   const intl = useIntl()
   const router = useRouter()
-  const { token } = router.query
+  const tokenParam = router.query.token
+  const token = Array.isArray(tokenParam) ? tokenParam[0] : tokenParam
 
   const [submitted, setSubmitted] = useState(false)
 
@@ -20,14 +22,21 @@ const Login = () => {
       ? `${window.location.origin}/${intl.locale}`
       : undefined
 
-  const { user, loading, error } = useUser()
+  const { user, loading, error, login } = useUser()
+  const [sessionToken, setSessionToken] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (user) {
+      setSessionToken(getSessionToken())
+    }
+  }, [user])
 
   // If user is already logged in, redirect to home page
-  useEffect(() => {
-    if (!loading && user && !token) {
-      router.replace('/')
-    }
-  }, [user, loading, router, token])
+  // useEffect(() => {
+  //   if (!loading && user && !token) {
+  //     router.replace('/')
+  //   }
+  // }, [user, loading, router, token])
 
   return (
     <>
@@ -64,19 +73,46 @@ const Login = () => {
           {/* While logging In */}
           {token && !user && !error && (
             <>
-              {/* <SpinLoader /> */}
-              {/* <h2>LOADING</h2> */}
-              <h2 className="my-2 mx-auto">
+              {/* <h2 className="my-2 mx-auto text-center">
                 <FormattedMessage id="Login.LoggingIn" />
-              </h2>
+              </h2> */}
+              <div className="flex flex-col gap-3 items-center my-6">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  disabled={loading}
+                  onClick={login}
+                >
+                  Start session in the browser
+                </button>
+                <a
+                  className="btn btn-primary-hollow"
+                  href={`ooni://login?token=${encodeURIComponent(token)}`}
+                >
+                  Open in OONI Probe app (with login token)
+                </a>
+              </div>
             </>
           )}
 
           {/* After loggin in */}
           {user && !error && token && (
             <>
-              <div className="text-2xl my-2 mx-auto">
-                <FormattedMessage id="Login.Success" />
+              <div className="text-2xl my-2 mx-auto text-center">
+                Successfully logged in.
+              </div>
+              <div className="flex flex-col gap-3 items-center my-6">
+                <NLink href="/create" className="btn btn-primary">
+                  <FormattedMessage id="Login.Button.CreateLink" />
+                </NLink>
+                {sessionToken && (
+                  <a
+                    className="btn btn-primary-hollow"
+                    href={`ooni://login?token=${encodeURIComponent(sessionToken)}`}
+                  >
+                    Open in OONI Probe app (with session token)
+                  </a>
+                )}
               </div>
             </>
           )}
