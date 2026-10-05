@@ -29,7 +29,7 @@ type UserContext = {
   loading: boolean
   error: null | string
   logout: () => void
-  // login: () => void
+  login: () => void // login: (token: string) => void
 }
 
 const UserContext = createContext<UserContext>({
@@ -37,7 +37,7 @@ const UserContext = createContext<UserContext>({
   loading: false,
   error: null,
   logout: () => {},
-  // login: () => {},
+  login: () => {},
 })
 
 type UserProviderProps = {
@@ -51,8 +51,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       ? router.query.token[0]
       : router.query.token
     : null
-  const [user, setUser] = useState(null)
-  const [error, setError] = useState(null)
+  const [user, setUser] = useState<User | null>(null)
+  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   const getUser = () => {
@@ -72,28 +72,29 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     (redirectTo: string) => {
       const locale = new URL(redirectTo)?.pathname || ''
       setTimeout(() => {
-        router.push(`${locale}/create`)
+        // router.push(`${locale}/create`)
+        console.log('logged in')
       }, 2000)
     },
     [router],
   )
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    if (token && router.pathname === '/login') {
-      loginUser(token)
-        .then((data) => {
-          getUser()
-          afterLogin(data?.redirect_to)
-        })
-        .catch((e) => {
-          console.log(e)
-          setError(e.message)
-        })
-    } else {
-      setError(null)
-    }
-  }, [token, router.pathname])
+  // useEffect(() => {
+  //   if (token && router.pathname === '/login') {
+  //     loginUser(token)
+  //       .then((data) => {
+  //         getUser()
+  //         afterLogin(data?.redirect_to)
+  //       })
+  //       .catch((e) => {
+  //         console.log(e)
+  //         setError(e.message)
+  //       })
+  //   } else {
+  //     setError(null)
+  //   }
+  // }, [token, router.pathname])
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -123,21 +124,21 @@ export const UserProvider = ({ children }: UserProviderProps) => {
     return () => clearInterval(interval)
   }, [])
 
-  // const login = () => {
-  //   if (token) {
-  //     // setLoading(true)
-  //     loginUser(token)
-  //       .then((data) => {
-  //         setUser(data)
-  //         if (data?.redirect_to) afterLogin(data.redirect_to)
-  //       })
-  //       .catch((e: Error) => {
-  //         console.log(e)
-  //         setError(error)
-  //       })
-  //       .finally(() => setLoading(false))
-  //   }
-  // }
+  const login = () => {
+    if (!token) return
+    setLoading(true)
+    setError(null)
+    loginUser(token)
+      .then((data) => {
+        getUser()
+        if (data?.redirect_to) afterLogin(data.redirect_to)
+      })
+      .catch((e: Error) => {
+        console.log(e)
+        setError(e.message)
+      })
+      .finally(() => setLoading(false))
+  }
 
   const logout = () => {
     document.cookie = 'token=; Path=/; Max-Age=-1; SameSite=Strict; Secure'
@@ -151,7 +152,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       user,
       loading,
       error,
-      // login,
+      login,
       logout,
     }),
     [user, loading, error],
