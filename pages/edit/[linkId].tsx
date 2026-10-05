@@ -26,6 +26,7 @@ const transformIncomingData = (formData: any) => {
     ...formData,
     color: formData?.color ? formData.color : '#000000',
     author: formData?.author || getUserEmail(),
+    publish_email: formData?.publish_email ?? true,
     name_intl: transformIntoArray(formData.name_intl),
     description_intl: transformIntoArray(formData.description_intl),
     short_description_intl: transformIntoArray(formData.short_description_intl),

@@ -5,7 +5,6 @@ const { DEFAULT_LOCALE, SUPPORTED_LANGUAGES } = require('./lib/i18n')
 
 module.exports = withSentryConfig(
   {
-    output: 'standalone',
     reactStrictMode: true,
     turbopack: {
       rules: {
@@ -38,6 +37,10 @@ module.exports = withSentryConfig(
       return [
         {
           source: '/apple-app-site-association',
+          destination: '/api/apple-app-site-association',
+        },
+        {
+          source: '/.well-known/apple-app-site-association',
           destination: '/api/apple-app-site-association',
         },
         {
