@@ -45,7 +45,7 @@
   "TestListForm.Label.TestListName": "您的 OONI Run 链接标题",
   "TestListForm.Label.ShortDescription": "简短描述",
   "TestListForm.Label.Description": "描述",
-  "TestListForm.Label.Email": "作者电子邮箱",
+  "TestListForm.Label.Email": "作者的电子邮件地址",
   "TestListForm.Label.ExpirationDate": "到期日期",
   "TestListForm.Label.Icon": "图标",
   "TestListForm.OptionsFields.Key": "键",
@@ -142,5 +142,7 @@
   "DateRange.Cancel": "取消",
   "Error.404.PageNotFound": "页面未找到",
   "Error.404.Heading": "请求的页面不存在",
-  "Error.404.Message": "我们找不到您要查找的内容。"
+  "Error.404.Message": "我们找不到您要查找的内容。",
+  "TestListForm.Label.PublishEmail": "发布作者的电子邮件地址",
+  "TestListForm.Help.PublishEmail": "其他人可以查看谁创建了此链接并联系您。取消选中即可不公开显示您的电子邮件地址。"
 }

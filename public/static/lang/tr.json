@@ -142,5 +142,7 @@
   "DateRange.Cancel": "İptal",
   "Error.404.PageNotFound": "Sayfa bulunamadı",
   "Error.404.Heading": "İstenilen sayfa bulunamadı",
-  "Error.404.Message": "Aradığınız içerik bulunamadı."
+  "Error.404.Message": "Aradığınız içerik bulunamadı.",
+  "TestListForm.Label.PublishEmail": "Yazarın e-postasını yayınla",
+  "TestListForm.Help.PublishEmail": "Diğer kullanıcılar bu bağlantıyı kimin oluşturduğunu görebilir ve sizinle iletişime geçebilir. E-posta adresinizin herkese açık olarak görüntülenmemesi için bu seçeneğin işaretini kaldırın."
 }
