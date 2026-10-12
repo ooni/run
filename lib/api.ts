@@ -20,6 +20,8 @@ const getBearerToken = () => {
     : null
 }
 
+export const getSessionToken = getBearerToken
+
 export const getTokenCreatedAt = () => {
   return typeof document !== 'undefined' && cookie.parse(document.cookie)?.token
     ? JSON.parse(cookie.parse(document.cookie)?.token)?.created_at
