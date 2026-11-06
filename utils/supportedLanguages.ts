@@ -17,6 +17,8 @@ const langs = [
   'sw',
   'sk',
   'sq',
+  'sr',
+  'sr_Cyrl',
   'th',
   'tr',
   'zh_CN',
