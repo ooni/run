@@ -142,5 +142,7 @@
   "DateRange.Cancel": "Abbrechen",
   "Error.404.PageNotFound": "Seite nicht gefunden",
   "Error.404.Heading": "Die angeforderte Seite existiert nicht",
-  "Error.404.Message": "Wir konnten den gesuchten Inhalt nicht finden."
+  "Error.404.Message": "Wir konnten den gesuchten Inhalt nicht finden.",
+  "TestListForm.Label.PublishEmail": "E-Mail-Adresse des Autors veröffentlichen",
+  "TestListForm.Help.PublishEmail": "Andere können sehen, wer diesen Link erstellt hat, und Kontakt mit Ihnen aufnehmen. Deaktiviere dieses Kontrollkästchen, wenn deine E-Mail-Adresse nicht öffentlich angezeigt werden soll."
 }
