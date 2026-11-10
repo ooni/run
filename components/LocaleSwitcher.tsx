@@ -3,7 +3,7 @@ import { getDirection } from 'pages/_app'
 import type { ReactNode } from 'react'
 import { useIntl } from 'react-intl'
 
-import '@formatjs/intl-displaynames/polyfill'
+import '@formatjs/intl-displaynames/polyfill.js'
 
 import '@formatjs/intl-displaynames/locale-data/ar'
 import '@formatjs/intl-displaynames/locale-data/de'

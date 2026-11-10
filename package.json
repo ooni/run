@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "@formatjs/intl-displaynames": "^8.0.3",
     "@hookform/resolvers": "^3.6.0",
     "@sentry/nextjs": "^10.66.0",
     "@tailwindcss/postcss": "^4.3.3",

@@ -1310,6 +1310,11 @@
   dependencies:
     tslib "^2.7.0"
 
+"@formatjs/fast-memoize@3.1.7":
+  version "3.1.7"
+  resolved "https://registry.yarnpkg.com/@formatjs/fast-memoize/-/fast-memoize-3.1.7.tgz#5f79b3756e4bcb5faee47b3a2f01216e1212c9e4"
+  integrity sha512-zXfhLpvA6T7+efdt9JLbBwZ00tT7NsBMDVnDu8rpHeNNv8KfRZAMo2gkG0k9lK/Nzc//3kJ9pImsfuJxk3KhUA==
+
 "@formatjs/icu-messageformat-parser@2.8.0":
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-2.8.0.tgz#dccbc591720b9acc01bdf064fae655dd1f1470ac"
@@ -1336,6 +1341,13 @@
     "@formatjs/intl-localematcher" "0.5.5"
     tslib "^2.7.0"
 
+"@formatjs/intl-displaynames@^8.0.3":
+  version "8.0.3"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-displaynames/-/intl-displaynames-8.0.3.tgz#ed2075b515466761960cddad59fb0916e781c5fa"
+  integrity sha512-UhKG1OwrbQzZNKIcmZu+/JR5SOxE25RWmUzxaNfQ04AJ4OwxNkTvAbVX0ojnkm0i8Qs4E8ElIoBdA6F8XTkJXw==
+  dependencies:
+    "@formatjs/intl-localematcher" "0.10.1"
+
 "@formatjs/intl-listformat@7.6.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-listformat/-/intl-listformat-7.6.0.tgz#30163ba5859d315a567681ce6c99e40c2f2cf4b0"
@@ -1344,6 +1356,13 @@
     "@formatjs/ecma402-abstract" "2.2.0"
     "@formatjs/intl-localematcher" "0.5.5"
     tslib "^2.7.0"
+
+"@formatjs/intl-localematcher@0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@formatjs/intl-localematcher/-/intl-localematcher-0.10.1.tgz#bf0cc98f9138e129132d79d53cef16f0fb060225"
+  integrity sha512-gBqglQK9rXuHsLmM8wzTMBy4Xo4d0jamirIVKuEL8F1rwbskWdpMA1kZarSkny+uvr5q/K6GSzE0Rcq1wZLl3g==
+  dependencies:
+    "@formatjs/fast-memoize" "3.1.7"
 
 "@formatjs/intl-localematcher@0.5.5":
   version "0.5.5"
